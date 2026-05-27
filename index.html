@@ -870,12 +870,54 @@
     ];
 
     const documents = [
-      { title: "Política de Seguridad y Salud en el Trabajo", desc: "Compromiso de liderazgo, prevención de incidentes, cumplimiento legal y mejora continua." },
-      { title: "Matriz IPER", desc: "Identificación de peligros y evaluación de riesgos del despacho de combustible líquido." },
-      { title: "Plan de Emergencias", desc: "Roles, contactos, procedimientos de actuación, evacuación y punto de encuentro." },
-      { title: "Plan Anual de Capacitación", desc: "Cursos, frecuencia, responsables, evaluación y registros de asistencia." },
-      { title: "Plano de Evacuación", desc: "Recorridos, salidas, extintores, baldes absorbentes y punto de encuentro." },
-      { title: "Registro de Simulacros", desc: "Evidencia de pruebas del plan, tiempos de respuesta y acciones correctivas." }
+      {
+        title: "Política de Seguridad y Salud en el Trabajo",
+        desc: "Compromiso de liderazgo, prevención de incidentes, cumplimiento legal y mejora continua.",
+        version: "Rev. 01",
+        fecha: "2026",
+        responsable: "Grupo 22 - UTN BA",
+        link: "politica-sst.pdf"
+      },
+      {
+        title: "Matriz IPER",
+        desc: "Identificación de peligros y evaluación de riesgos del despacho de combustible líquido.",
+        version: "Rev. 02",
+        fecha: "06/05/2026",
+        responsable: "Grupo 22 - UTN BA",
+        link: "matriz-iper.pdf"
+      },
+      {
+        title: "Plan de Emergencias",
+        desc: "Roles, contactos, procedimientos de actuación, evacuación y punto de encuentro.",
+        version: "Rev. 01",
+        fecha: "2026",
+        responsable: "Grupo 22 - UTN BA",
+        link: "plan-emergencias.pdf"
+      },
+      {
+        title: "Plan Anual de Capacitación",
+        desc: "Cursos, frecuencia, responsables, evaluación y registros de asistencia.",
+        version: "Rev. 01",
+        fecha: "2026",
+        responsable: "Grupo 22 - UTN BA",
+        link: "plan-capacitacion.pdf"
+      },
+      {
+        title: "Plano de Evacuación",
+        desc: "Recorridos, salidas, extintores, baldes absorbentes y punto de encuentro.",
+        version: "Rev. 01",
+        fecha: "2026",
+        responsable: "Grupo 22 - UTN BA",
+        link: "plano-evacuacion.pdf"
+      },
+      {
+        title: "Registro de Simulacros",
+        desc: "Evidencia de pruebas del plan, tiempos de respuesta y acciones correctivas.",
+        version: "Rev. 01",
+        fecha: "2026",
+        responsable: "Grupo 22 - UTN BA",
+        link: "registro-simulacros.pdf"
+      }
     ];
 
     const today = new Date("2026-05-27T12:00:00");
@@ -986,7 +1028,11 @@
         <div class="doc-card">
           <strong>📄 ${doc.title}</strong>
           <span>${doc.desc}</span>
-          <button class="secondary" onclick="showToast('Documento abierto en modo demostración: ${doc.title}')">Ver documento</button>
+          <small><b>Versión:</b> ${doc.version} · <b>Fecha:</b> ${doc.fecha}</small>
+          <small><b>Responsable:</b> ${doc.responsable}</small>
+          <a href="${doc.link}" target="_blank" rel="noopener">
+            <button class="secondary">Ver / Descargar documento</button>
+          </a>
         </div>
       `).join("");
 
