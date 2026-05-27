@@ -571,6 +571,7 @@
         <button class="nav-btn" data-section="simulacros">🧯 Simulacros</button>
         <button class="nav-btn" data-section="documentos">📁 Documentación</button>
         <button class="nav-btn" data-section="reportes">📝 Reportes SST</button>
+        <button class="nav-btn" data-section="institucional">🏛️ Institucional</button>
       </nav>
 
       <div class="side-card">
@@ -704,6 +705,29 @@
             </div>
           </div>
         </div>
+
+        <div class="grid two" style="margin-top:18px;">
+          <div class="card">
+            <h3>🚗 Procedimiento ante atropellamiento / incidente vehicular</h3>
+            <div class="step-list">
+              <div class="step"><div>Detener inmediatamente la circulación vehicular en el sector afectado.</div></div>
+              <div class="step"><div>Activar alarma interna y notificar al encargado de turno.</div></div>
+              <div class="step"><div>Señalizar y aislar el área para evitar nuevos riesgos.</div></div>
+              <div class="step"><div>Brindar primeros auxilios solo si se cuenta con capacitación y es seguro hacerlo.</div></div>
+              <div class="step"><div>Solicitar SAME/emergencia médica y, si corresponde, Policía.</div></div>
+              <div class="step"><div>No mover al lesionado salvo riesgo inminente de incendio, explosión o atropellamiento secundario.</div></div>
+              <div class="step"><div>Registrar el incidente y preservar la escena para investigación.</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Emergencias contempladas</h3>
+            <div class="doc-card"><strong>🔥 Incendio / explosión</strong><span>Surtidores, playa, sector GNC o instalaciones eléctricas.</span></div>
+            <div class="doc-card"><strong>⚠️ Derrame de combustible</strong><span>Contención, aislamiento, eliminación de fuentes de ignición y disposición segura.</span></div>
+            <div class="doc-card"><strong>⛽ Fuga de GNC</strong><span>Suspensión de carga, corte de emergencia, evacuación preventiva y comunicación externa.</span></div>
+            <div class="doc-card"><strong>🚗 Atropellamiento vehicular</strong><span>Riesgo asociado a ingreso, egreso y maniobra permanente de vehículos.</span></div>
+          </div>
+        </div>
       </section>
 
       <section class="section" id="simulacros">
@@ -766,6 +790,7 @@
                 <option>Matafuego obstruido</option>
                 <option>Falla eléctrica</option>
                 <option>Circulación vehicular</option>
+                <option>Atropellamiento / incidente vehicular</option>
                 <option>Fuga / olor a gas</option>
                 <option>Uso de EPP</option>
               </select>
@@ -781,6 +806,41 @@
           </div>
         </div>
       </section>
+
+
+      <section class="section" id="institucional">
+        <div class="grid two">
+          <div class="card">
+            <h3>Comité académico y validación SST</h3>
+            <p>Este panel identifica a los docentes de referencia del proyecto académico, sin asignarlos como personal operativo de la estación.</p>
+            <div class="grid" id="teachersList"></div>
+          </div>
+
+          <div class="card">
+            <h3>Normativa y criterios aplicados</h3>
+            <p>Marco de referencia utilizado para la propuesta de gestión, capacitación, emergencias y control documental.</p>
+            <div class="grid" id="legalList"></div>
+          </div>
+        </div>
+
+        <div class="grid two" style="margin-top:18px;">
+          <div class="card">
+            <h3>Riesgos operacionales contemplados</h3>
+            <div class="grid" id="riskList"></div>
+          </div>
+          <div class="card">
+            <h3>Flujograma de actuación ante emergencias</h3>
+            <p>El sistema queda preparado para incorporar el flujograma elaborado en Visio como evidencia documental del proceso de toma de decisiones.</p>
+            <div class="doc-card">
+              <strong>🔁 Flujograma de toma de decisiones</strong>
+              <span>Secuencia de actuación ante incendio, derrame, fuga de GNC, atropellamiento vehicular o emergencia médica.</span>
+              <small><b>Estado:</b> pendiente de carga del archivo final de Visio</small>
+              <button class="secondary" onclick="showToast('Podés subir el flujograma como PDF o imagen y vincularlo desde la sección Documentación SST.')">Ver integración sugerida</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -809,6 +869,7 @@
           <option>Derrame de combustible</option>
           <option>Fuga de GNC</option>
           <option>Evacuación general</option>
+          <option>Atropellamiento / incidente vehicular</option>
         </select>
         <input id="drillTime" placeholder="Tiempo de evacuación, ej: 3m 20s" />
         <select id="drillResult">
@@ -848,7 +909,8 @@
       "Ergonomía",
       "Autocontrol preventivo",
       "Manejo seguro de combustibles",
-      "Prevención psicosocial"
+      "Prevención psicosocial",
+      "Prevención de atropellamiento y circulación vehicular"
     ];
 
     let trainings = JSON.parse(localStorage.getItem("ypfTrainings")) || [
@@ -917,7 +979,41 @@
         fecha: "2026",
         responsable: "Grupo 22 - UTN BA",
         link: "registro-simulacros.pdf"
+      },
+      {
+        title: "Flujograma de Actuación ante Emergencias",
+        desc: "Secuencia de toma de decisiones ante incendio, derrame, fuga GNC, atropellamiento o emergencia médica.",
+        version: "Rev. 01",
+        fecha: "2026",
+        responsable: "Grupo 22 - UTN BA",
+        link: "flujograma-emergencias.pdf"
       }
+    ];
+
+
+
+    const teachers = [
+      { name: "Lic. Martín Bruno", role: "Validación SST y enfoque preventivo" },
+      { name: "Ing. José Navío", role: "Supervisión técnica y criterios de seguridad" },
+      { name: "Ing. Victor Morera", role: "Evaluación operativa y control de riesgos" },
+      { name: "Lic. Sebastián Ezpeleta", role: "Gestión preventiva y mejora continua" }
+    ];
+
+    const legalReferences = [
+      { title: "Ley 19.587", desc: "Higiene y Seguridad en el Trabajo. Marco general de prevención y protección de la salud laboral." },
+      { title: "Decreto 351/79", desc: "Reglamentación de condiciones de higiene y seguridad, prevención de incendios y condiciones ambientales." },
+      { title: "ISO 45001:2018", desc: "Sistema de Gestión de Seguridad y Salud en el Trabajo, liderazgo, participación, competencia y mejora continua." },
+      { title: "Resoluciones SRT", desc: "Protocolos, mediciones, capacitación, registros y requisitos aplicables según riesgos identificados." },
+      { title: "IRAM / Señalización", desc: "Criterios de señalización, evacuación, identificación de recursos y punto de encuentro." }
+    ];
+
+    const operationalRisks = [
+      { title: "Incendio / explosión", desc: "Presencia de combustibles, vapores inflamables, electricidad estática y fuentes de ignición." },
+      { title: "Derrame de combustible", desc: "Riesgo operativo durante carga, descarga o falla de mangueras, picos y surtidores." },
+      { title: "Fuga de GNC", desc: "Riesgo asociado a presión, acoples, válvulas, compresores y carga vehicular." },
+      { title: "Atropellamiento vehicular", desc: "Ingreso, egreso y circulación permanente de vehículos dentro de la playa de carga." },
+      { title: "Exposición a vapores", desc: "Inhalación de vapores de hidrocarburos, sustancias irritantes o inflamables." },
+      { title: "Emergencia médica", desc: "Lesiones, quemaduras, golpes, descompensaciones o accidentes durante la operación." }
     ];
 
     const today = new Date("2026-05-27T12:00:00");
@@ -1131,12 +1227,46 @@
       document.getElementById("drillDate").value = "2026-06-10";
     }
 
+
+    function renderInstitutional() {
+      const teachersEl = document.getElementById("teachersList");
+      if (teachersEl) {
+        teachersEl.innerHTML = teachers.map(t => `
+          <div class="doc-card">
+            <strong>👤 ${t.name}</strong>
+            <span>${t.role}</span>
+          </div>
+        `).join("");
+      }
+
+      const legalEl = document.getElementById("legalList");
+      if (legalEl) {
+        legalEl.innerHTML = legalReferences.map(l => `
+          <div class="doc-card">
+            <strong>⚖️ ${l.title}</strong>
+            <span>${l.desc}</span>
+          </div>
+        `).join("");
+      }
+
+      const riskEl = document.getElementById("riskList");
+      if (riskEl) {
+        riskEl.innerHTML = operationalRisks.map(r => `
+          <div class="doc-card">
+            <strong>⚠️ ${r.title}</strong>
+            <span>${r.desc}</span>
+          </div>
+        `).join("");
+      }
+    }
+
     function refreshAll() {
       renderTrainingTable();
       renderDashboard();
       renderDrills();
       renderDocuments();
       renderReports();
+      renderInstitutional();
     }
 
     document.querySelectorAll(".nav-btn").forEach(btn => {
@@ -1151,7 +1281,8 @@
           emergencias: "Preparación y respuesta ante emergencias",
           simulacros: "Simulacros y verificación",
           documentos: "Control documental SST",
-          reportes: "Participación y reportes preventivos"
+          reportes: "Participación y reportes preventivos",
+          institucional: "Supervisión académica y marco aplicado"
         };
         document.getElementById("pageTitle").textContent = titles[btn.dataset.section];
       });
