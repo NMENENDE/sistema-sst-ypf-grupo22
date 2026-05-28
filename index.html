@@ -907,6 +907,57 @@
       flex-shrink: 0;
     }
 
+
+    /* Correcciones finales: formularios, checklist y responsive */
+    .grid.two {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+      align-items: start;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+
+    .form-grid textarea {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+
+    .report-card {
+      overflow: hidden;
+    }
+
+    .inspection-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .inspection-check {
+      cursor: pointer;
+    }
+
+    .check-item {
+      cursor: pointer;
+    }
+
+    .check-item span {
+      line-height: 1.35;
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -1298,36 +1349,102 @@
 
 
 
-      <section class="section" id="inspeccion">
-        <div class="grid two">
-          <div class="card">
-            <h3>Checklist digital de inspección SST</h3>
-            <p>Control preventivo rápido para recorridas de seguridad en playa, tienda y sector GNC.</p>
-            <div class="checklist" id="checklistSST"></div>
-            <br>
-            <button class="primary" onclick="completeInspection()">Finalizar inspección</button>
-          </div>
+      
+<section class="section" id="inspeccion">
+  <div class="grid two">
 
-          <div class="card">
-            <h3>Resultado de inspección</h3>
-            <div id="inspectionResult" class="doc-card">
-              <strong>Inspección pendiente</strong>
-              <span>Completá el checklist para generar el resultado preventivo.</span>
-            </div>
+    <div class="card">
+      <h3>Checklist digital de inspección SST</h3>
 
-            <h3 style="margin-top:18px;">Criterios de cumplimiento</h3>
-            <div class="inspection-scale">
-              <div class="scale-row scale-good"><span>90% a 100%</span><span>Satisfactoria</span></div>
-              <div class="scale-row scale-mid"><span>70% a 89%</span><span>Con observaciones</span></div>
-              <div class="scale-row scale-bad"><span>Menor a 70%</span><span>Con desvíos</span></div>
-            </div>
+      <p>
+        Control preventivo rápido para recorridas de seguridad en playa,
+        tienda, sector GNC y áreas operativas.
+      </p>
 
-            <div class="inspection-actions">
-              <button class="secondary" onclick="resetInspection()">Nueva inspección</button>
-            </div>
-          </div>
+      <div class="checklist" id="checklistSST">
+        <label class="check-item">
+          <span>Matafuegos visibles, accesibles y señalizados</span>
+          <input type="checkbox" class="inspection-check">
+        </label>
+
+        <label class="check-item">
+          <span>Salidas y vías de evacuación despejadas</span>
+          <input type="checkbox" class="inspection-check">
+        </label>
+
+        <label class="check-item">
+          <span>Kit antiderrame disponible en zona operativa</span>
+          <input type="checkbox" class="inspection-check">
+        </label>
+
+        <label class="check-item">
+          <span>Señalización de emergencia visible</span>
+          <input type="checkbox" class="inspection-check">
+        </label>
+
+        <label class="check-item">
+          <span>Personal con EPP e indumentaria en buen estado</span>
+          <input type="checkbox" class="inspection-check">
+        </label>
+
+        <label class="check-item">
+          <span>Zona de circulación vehicular ordenada y señalizada</span>
+          <input type="checkbox" class="inspection-check">
+        </label>
+
+        <label class="check-item">
+          <span>Botiquín disponible y accesible</span>
+          <input type="checkbox" class="inspection-check">
+        </label>
+
+        <label class="check-item">
+          <span>Punto de encuentro identificado en plano de evacuación</span>
+          <input type="checkbox" class="inspection-check">
+        </label>
+      </div>
+
+      <div class="inspection-actions">
+        <button class="primary" onclick="completeInspection()">Finalizar inspección</button>
+        <button class="secondary" onclick="resetInspection()">Nueva inspección</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Resultado de inspección</h3>
+
+      <div id="inspectionResult" class="doc-card">
+        <strong>Inspección pendiente</strong>
+        <span>Completá el checklist para generar el resultado preventivo.</span>
+      </div>
+
+      <h3 style="margin-top:18px;">Criterios de cumplimiento</h3>
+
+      <div class="inspection-scale">
+        <div class="scale-row scale-good">
+          <span>90% a 100%</span>
+          <span>Satisfactoria</span>
         </div>
-      </section>
+
+        <div class="scale-row scale-mid">
+          <span>70% a 89%</span>
+          <span>Con observaciones</span>
+        </div>
+
+        <div class="scale-row scale-bad">
+          <span>Menor a 70%</span>
+          <span>Con desvíos</span>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        El checklist permite documentar desvíos, generar evidencia preventiva
+        y proponer acciones correctivas dentro del Sistema SST.
+      </div>
+    </div>
+
+  </div>
+</section>
+
 
       <section class="section" id="institucional">
         <div class="grid two">
@@ -1363,7 +1480,7 @@
 
       <section class="section" id="reportes">
         <div class="grid two">
-          <div class="card">
+          <div class="card report-card">
             <h3>Reporte de condición insegura</h3>
             <div class="form-grid">
               <input id="reportName" placeholder="Nombre" />
@@ -1827,19 +1944,22 @@
       const container = document.getElementById("checklistSST");
       if (!container) return;
 
-      container.innerHTML = inspectionItems.map((item, index) => `
+      // Si el checklist ya está cargado en el HTML, no lo pisa.
+      if (container.querySelectorAll(".inspection-check").length > 0) return;
+
+      container.innerHTML = inspectionItems.map((item) => `
         <label class="check-item">
           <span>${item}</span>
-          <input type="checkbox" class="inspection-check" data-index="${index}">
+          <input type="checkbox" class="inspection-check">
         </label>
       `).join("");
     }
 
     function completeInspection() {
-      const checks = Array.from(document.querySelectorAll(".inspection-check"));
+      const checks = Array.from(document.querySelectorAll("#checklistSST .inspection-check"));
       const completed = checks.filter(c => c.checked).length;
       const total = checks.length;
-      const percent = Math.round((completed / total) * 100);
+      const percent = total ? Math.round((completed / total) * 100) : 0;
       const result = document.getElementById("inspectionResult");
       const now = new Date();
       const fecha = now.toLocaleDateString("es-AR");
@@ -1849,6 +1969,7 @@
       let cls = "vencido";
       let boxClass = "inspection-result-bad";
       let recommendation = "Requiere intervención inmediata, registro de desvíos y asignación de acciones correctivas.";
+
       if (percent >= 90) {
         status = "Inspección satisfactoria";
         cls = "vigente";
@@ -1870,17 +1991,20 @@
         <small><b>Criterio:</b> 90-100% satisfactorio · 70-89% con observaciones · menor a 70% con desvíos.</small>
         <small>${recommendation}</small>
       `;
+
       showToast("✅ Inspección SST finalizada. Resultado generado automáticamente.");
     }
 
     function resetInspection() {
-      document.querySelectorAll(".inspection-check").forEach(check => check.checked = false);
+      document.querySelectorAll("#checklistSST .inspection-check").forEach(check => check.checked = false);
+
       const result = document.getElementById("inspectionResult");
       result.className = "doc-card";
       result.innerHTML = `
         <strong>Inspección pendiente</strong>
         <span>Completá el checklist para generar el resultado preventivo.</span>
       `;
+
       showToast("🔄 Checklist reiniciado para una nueva inspección.");
     }
 
