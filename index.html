@@ -29,6 +29,10 @@
 
     * { box-sizing: border-box; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
@@ -48,7 +52,9 @@
       padding: 26px 20px;
       position: sticky;
       top: 0;
-      height: 100vh;
+      min-height: 100vh;
+      max-height: 100vh;
+      overflow-y: auto;
       box-shadow: 10px 0 30px rgba(0, 63, 125, 0.18);
       z-index: 10;
     }
@@ -130,19 +136,33 @@
 
     .side-card {
       margin-top: 28px;
-      padding: 17px;
+      padding: 18px;
       border-radius: 20px;
       background: rgba(255,255,255,0.14);
       border: 1px solid rgba(255,255,255,0.18);
+      min-height: auto;
+      height: auto;
+      overflow: visible;
     }
 
-    .side-card strong { display: block; margin-bottom: 6px; }
-    .side-card p { margin: 0; font-size: 13px; line-height: 1.45; opacity: 0.9; }
+    .side-card strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .side-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.95;
+    }
 
     main {
-  padding: 28px;
-  overflow: visible;
-}
+      padding: 28px;
+      overflow: visible;
+    }
 
     .topbar {
       display: flex;
@@ -828,7 +848,13 @@
 
     @media (max-width: 1050px) {
       .app { grid-template-columns: 1fr; }
-      aside { position: relative; height: auto; }
+      aside {
+        position: relative;
+        height: auto;
+        min-height: auto;
+        max-height: none;
+        overflow-y: visible;
+      }
       nav { grid-template-columns: repeat(2, 1fr); }
       .grid.cards, .grid.two, .grid.three { grid-template-columns: 1fr; }
     }
@@ -1175,7 +1201,7 @@
         </div>
 
         <div class="card" style="margin-top:18px;">
-          <h3>Proyecto desarrollado por el Grupo 22</h3>
+          <h3>Proyecto desarrollado por Grupo 22</h3>
           <p>La aplicación se presenta como una propuesta de mejora digital orientada a fortalecer la trazabilidad documental, la gestión de capacitaciones, la preparación ante emergencias, la participación del personal y la mejora continua del Sistema de Gestión de Seguridad y Salud en el Trabajo.</p>
         </div>
       </section>
