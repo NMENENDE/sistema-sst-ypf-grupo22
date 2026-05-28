@@ -988,6 +988,19 @@
       font-weight: 700;
     }
 
+
+    .kpi-card small {
+      color: var(--gray-500);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .kpi-card strong span {
+      font-size: inherit;
+      color: inherit;
+      text-transform: none;
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -1135,20 +1148,57 @@
           Propuesta de valor: el sistema permite trazabilidad de capacitaciones, control de vencimientos, alertas por correo, registros de simulacros, documentación crítica y reportes preventivos. En una implementación real puede conectarse a Google Sheets, Apps Script, Firebase o un servidor corporativo.
         </div>
 
-        <div class="card" style="margin-top:18px;">
-          <div class="kpi-intro">
-            <h3>Indicadores KPI SST</h3>
-            <p>Panel visual de seguimiento preventivo para controlar documentación, simulacros, observaciones, incidentes y acciones correctivas.</p>
-          </div>
-          <div class="kpi-grid">
-            <div class="kpi-card" data-info="Porcentaje de documentos SST cargados y disponibles para consulta dentro del sistema digital."><span>Documentos vigentes</span><strong>📁 100%</strong></div>
-            <div class="kpi-card" data-info="Cantidad de simulacros registrados para verificar la preparación y respuesta ante emergencias."><span>Simulacros realizados</span><strong>🧯 2</strong></div>
-            <div class="kpi-card" data-info="Observaciones preventivas detectadas durante recorridas, inspecciones o reportes del personal."><span>Observaciones SST</span><strong>👁️ 5</strong></div>
-            <div class="kpi-card" data-info="Eventos que no generaron daño, pero que pudieron transformarse en accidentes si no se corregían."><span>Casi accidentes</span><strong>⚠️ 3</strong></div>
-            <div class="kpi-card" data-info="Registro de eventos vinculados a ingreso, circulación, maniobras o egreso de vehículos en playa."><span>Incidentes vehiculares</span><strong>🚗 1</strong></div>
-            <div class="kpi-card" data-info="Medidas implementadas para corregir desvíos detectados y evitar su repetición."><span>Acciones correctivas</span><strong>✅ 4</strong></div>
-          </div>
-        </div>
+        
+<div class="card" style="margin-top:18px;">
+  <div class="kpi-intro">
+    <h3>Indicadores KPI SST</h3>
+    <p>Panel dinámico de seguimiento preventivo basado en registros reales cargados dentro del Sistema SST.</p>
+  </div>
+
+  <div class="kpi-grid">
+
+    <div class="kpi-card" data-info="Cantidad de documentos SST integrados digitalmente en la biblioteca documental.">
+      <span>DOCUMENTOS SST</span>
+      <strong>📁 <span id="kpiDocs">0</span></strong>
+      <small>documentos integrados</small>
+    </div>
+
+    <div class="kpi-card" data-info="Cantidad de simulacros registrados dentro del sistema.">
+      <span>SIMULACROS</span>
+      <strong>🧯 <span id="kpiSimulacros">0</span></strong>
+      <small>registros operativos</small>
+    </div>
+
+    <div class="kpi-card" data-info="Cantidad de reportes preventivos u observaciones SST cargadas por el usuario.">
+      <span>OBSERVACIONES SST</span>
+      <strong>👁️ <span id="kpiReports">0</span></strong>
+      <small>reportes activos</small>
+    </div>
+
+    <div class="kpi-card" data-info="Cantidad de inspecciones finalizadas mediante el checklist digital.">
+      <span>INSPECCIONES SST</span>
+      <strong>✅ <span id="kpiInspections">0</span></strong>
+      <small>inspecciones realizadas</small>
+    </div>
+
+    <div class="kpi-card" data-info="Seguimientos preventivos derivados de reportes e inspecciones realizadas.">
+      <span>ACCIONES CORRECTIVAS</span>
+      <strong>📌 <span id="kpiActions">0</span></strong>
+      <small>seguimientos preventivos</small>
+    </div>
+
+    <div class="kpi-card" data-info="Porcentaje de capacitaciones vigentes en relación con el total de capacitaciones cargadas.">
+      <span>CUMPLIMIENTO CAPACITACIÓN</span>
+      <strong>🎓 <span id="kpiTrainingCompliance">0%</span></strong>
+      <small>estado del plan anual</small>
+    </div>
+
+  </div>
+
+  <div class="footer-note" style="margin-top:16px;">
+    Indicadores automáticos del Sistema SST · Actualización dinámica según documentos, simulacros, reportes, inspecciones y capacitaciones cargadas.
+  </div>
+</div>
       </section>
 
       <section class="section" id="capacitaciones">
@@ -1939,6 +1989,7 @@
       localStorage.setItem("ypfReports", JSON.stringify(reports));
       document.getElementById("reportDescription").value = "";
       renderReports();
+      updateKPIs();
       showToast("Reporte recibido. Se generó registro para seguimiento preventivo.");
     }
 
@@ -2050,6 +2101,7 @@
       localStorage.setItem("ypfInspectionHistory", JSON.stringify(inspectionHistory));
 
       renderInspectionHistory();
+      updateKPIs();
 
       showToast("✅ Inspección SST finalizada y guardada en el historial.");
     }
@@ -2101,8 +2153,32 @@
       inspectionHistory = [];
       localStorage.removeItem("ypfInspectionHistory");
       renderInspectionHistory();
+      updateKPIs();
 
       showToast("🗑️ Historial de inspecciones eliminado.");
+    }
+
+
+    function updateKPIs() {
+      const docsEl = document.getElementById("kpiDocs");
+      const simulacrosEl = document.getElementById("kpiSimulacros");
+      const reportsEl = document.getElementById("kpiReports");
+      const inspectionsEl = document.getElementById("kpiInspections");
+      const actionsEl = document.getElementById("kpiActions");
+      const trainingComplianceEl = document.getElementById("kpiTrainingCompliance");
+
+      if (docsEl) docsEl.textContent = documents.length;
+      if (simulacrosEl) simulacrosEl.textContent = drills.length;
+      if (reportsEl) reportsEl.textContent = reports.length;
+      if (inspectionsEl) inspectionsEl.textContent = inspectionHistory.length;
+
+      const correctiveActions = reports.length + inspectionHistory.filter(item => item.percent < 90).length;
+      if (actionsEl) actionsEl.textContent = correctiveActions;
+
+      const statuses = trainings.map(t => statusFor(t.due));
+      const vigente = statuses.filter(s => s === "Vigente").length;
+      const compliance = trainings.length ? Math.round((vigente / trainings.length) * 100) : 0;
+      if (trainingComplianceEl) trainingComplianceEl.textContent = compliance + "%";
     }
 
     function refreshAll() {
@@ -2114,6 +2190,7 @@
       renderAcademic();
       renderInspectionChecklist();
       renderInspectionHistory();
+      updateKPIs();
     }
 
     document.querySelectorAll(".nav-btn").forEach(btn => {
