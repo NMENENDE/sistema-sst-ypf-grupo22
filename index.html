@@ -2013,241 +2013,6 @@
       filter: brightness(0.98);
     }
 
-
-    @media (max-width: 650px) {
-      .modal {
-        align-items: flex-start;
-        overflow-y: auto;
-        padding: 14px;
-      }
-
-      .modal-content {
-        margin-top: 18px;
-        width: 100%;
-        max-height: calc(100vh - 36px);
-        overflow-y: auto;
-      }
-
-      .training-action-row button,
-      .institutional-actions button,
-      .training-controls button {
-        min-height: 46px;
-      }
-    }
-
-
-    /* ===== Plan anual de capacitación UTN-YPF - versión estable ===== */
-    .annual-plan-card {
-      background: radial-gradient(circle at top right, rgba(0,163,224,0.10), transparent 35%), rgba(255,255,255,0.94);
-    }
-
-    .annual-plan-head {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-bottom:14px;
-    }
-
-    .annual-badge {
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
-      border-radius:999px;
-      padding:8px 12px;
-      background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark));
-      color:white;
-      font-weight:900;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.03em;
-    }
-
-    .training-calendar {
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:14px;
-      margin-top:14px;
-    }
-
-    .calendar-month-card {
-      border:1px solid var(--gray-200);
-      border-radius:20px;
-      background:white;
-      overflow:hidden;
-      box-shadow:0 10px 22px rgba(15,23,42,.06);
-      display:grid;
-    }
-
-    .calendar-month-title {
-      background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark));
-      color:white;
-      padding:11px 14px;
-      font-weight:900;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-    }
-
-    .calendar-month-title span {
-      font-size:12px;
-      opacity:.9;
-    }
-
-    .calendar-course {
-      padding:14px;
-      display:grid;
-      gap:8px;
-      border-left:6px solid var(--ypf-sky);
-    }
-
-    .calendar-course strong {
-      color:var(--ypf-blue-dark);
-      line-height:1.25;
-    }
-
-    .calendar-course small {
-      color:var(--gray-500);
-      font-weight:700;
-      line-height:1.35;
-    }
-
-    .calendar-course .pill {
-      width:fit-content;
-    }
-
-    .training-plan-note {
-      background:linear-gradient(135deg,var(--ypf-blue-light),#ffffff);
-      border:1px solid #cfe7ff;
-      color:var(--ypf-blue-dark);
-      border-radius:18px;
-      padding:14px;
-      font-weight:800;
-      line-height:1.45;
-      margin-top:12px;
-    }
-
-
-    /* ===== Gestión avanzada: asignación de capacitaciones y legajo de personal ===== */
-    .course-assign-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .personnel-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-
-    .person-card {
-      border: 1px solid var(--gray-200);
-      border-radius: 22px;
-      padding: 16px;
-      background: white;
-      display: grid;
-      gap: 12px;
-      box-shadow: 0 10px 22px rgba(15,23,42,0.06);
-      border-left: 6px solid var(--ypf-blue);
-    }
-
-    .person-card h3 {
-      margin: 0;
-      color: var(--ypf-blue-dark);
-    }
-
-    .person-meta {
-      display: grid;
-      gap: 6px;
-      color: var(--gray-700);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .person-kpi-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .person-kpi {
-      border: 1px solid var(--gray-200);
-      border-radius: 14px;
-      padding: 10px;
-      text-align: center;
-      background: var(--gray-50);
-    }
-
-    .person-kpi strong {
-      display: block;
-      color: var(--ypf-blue-dark);
-      font-size: 22px;
-    }
-
-    .person-kpi span {
-      font-size: 10px;
-      color: var(--gray-500);
-      font-weight: 900;
-      text-transform: uppercase;
-    }
-
-    .person-training-list {
-      display: grid;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .person-training-item {
-      border: 1px solid var(--gray-200);
-      border-radius: 14px;
-      padding: 10px;
-      display: grid;
-      gap: 6px;
-      background: #fff;
-    }
-
-    .person-training-item small {
-      color: var(--gray-500);
-      font-weight: 700;
-    }
-
-    .remove-assignment {
-      background: #fee2e2 !important;
-      color: #991b1b !important;
-      border: 1px solid #fecaca !important;
-      padding: 8px 10px !important;
-      font-size: 12px;
-    }
-
-    .operator-checklist {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-      max-height: 330px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .operator-check {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border: 1px solid var(--gray-200);
-      border-radius: 14px;
-      padding: 10px;
-      background: var(--gray-50);
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .operator-check input {
-      width: auto;
-    }
-
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -2329,7 +2094,6 @@
       <nav>
         <button class="nav-btn active" data-section="dashboard">📊 Panel general</button>
         <button class="nav-btn" data-section="capacitaciones">🎓 Capacitaciones</button>
-        <button class="nav-btn" data-section="personal">👥 Personal</button>
         <button class="nav-btn" data-section="emergencias">🚨 Emergencias</button>
         <button class="nav-btn" data-section="simulacros">🧯 Simulacros</button>
         <button class="nav-btn" data-section="documentos">📁 Documentación</button>
@@ -2425,28 +2189,10 @@
 
         <div style="display:flex; flex-wrap:wrap; gap:10px;">
           <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
-          <button class="primary" id="assignTrainingBtn" type="button" onclick="openModal('trainingModal')">+ Asignar capacitación</button>
+          <button class="primary" onclick="openModal('trainingModal')">+ Asignar capacitación</button>
         </div>
       </div>
     </div>
-
-
-    <div class="card annual-plan-card">
-      <div class="annual-plan-head">
-        <div>
-          <h3>📅 Plan anual de capacitación SST</h3>
-          <p>Cronograma UTN–YPF para el puesto “Atención y carga de combustible en playa”.</p>
-        </div>
-        <span class="annual-badge">Cronograma 2026</span>
-      </div>
-
-      <div class="training-plan-note">
-        Este cronograma funciona como base del plan anual. El legajo individual permite verificar qué capacitaciones fueron realizadas, pendientes o vencidas.
-      </div>
-
-      <div class="training-calendar" id="annualTrainingCalendar"></div>
-    </div>
-
 
     <div class="training-dashboard-strip">
       <div class="training-mini-stat">
@@ -2881,21 +2627,6 @@
 
 
 
-
-      <section class="section" id="personal">
-        <div class="card">
-          <div class="toolbar">
-            <div>
-              <h3>Legajo del personal</h3>
-              <p>Información individual del personal y seguimiento de capacitaciones asignadas, aprobadas y vencidas.</p>
-            </div>
-            <input class="search" id="personSearch" placeholder="Buscar por nombre, DNI, legajo o cargo..." />
-          </div>
-
-          <div class="personnel-grid" id="personnelGrid"></div>
-        </div>
-      </section>
-
       <section class="section" id="reportes">
         <div class="grid two">
           <div class="card report-card">
@@ -3027,45 +2758,10 @@
     </div>
   </div>
 
-
-  <div class="modal" id="assignCourseModal">
-    <div class="modal-content">
-      <h3>Asignar capacitación a operadores</h3>
-      <p id="assignCourseTitle">Seleccioná uno o más operadores para asignar el curso.</p>
-
-      <div class="operator-checklist" id="operatorChecklist"></div>
-
-      <div class="footer-note">
-        La asignación quedará registrada en el legajo individual de cada trabajador. Si el curso ya estaba asignado, no se duplicará.
-      </div>
-
-      <br>
-      <button class="primary" type="button" onclick="confirmCourseAssignment()">Asignar capacitación</button>
-      <button class="secondary" type="button" onclick="closeModal('assignCourseModal')">Cancelar</button>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
+<div class="toast" id="toast"></div>
 
 
   <script>
-
-    const annualTrainingPlan = [
-      { month:"Enero", date:"2026-01-20", course:"Seguridad Laboral Básica", short:"Orden, limpieza y prevención de enfermedades profesionales." },
-      { month:"Febrero", date:"2026-02-18", course:"Uso de EPP y Señalización", short:"Uso, cuidado y mantenimiento de EPP e interpretación de señalización." },
-      { month:"Marzo", date:"2026-03-18", course:"Actos y Condiciones Inseguras", short:"Prevención de accidentes, incidentes y reporte de condiciones inseguras." },
-      { month:"Abril", date:"2026-04-16", course:"Riesgo de incendio y uso de extintores", short:"Prevención de incendios, clases de fuego y uso correcto de extintores." },
-      { month:"Mayo", date:"2026-05-14", course:"Riesgo químico: vapores inflamables/tóxicos", short:"Exposición a vapores inflamables, tóxicos e irritantes." },
-      { month:"Junio", date:"2026-06-12", course:"Control y contención de derrames", short:"Actuación ante derrames, contención y disposición segura." },
-      { month:"Julio", date:"2026-07-15", course:"Riesgo eléctrico y electricidad estática", short:"Riesgo eléctrico, bloqueo, EPP y electricidad estática." },
-      { month:"Agosto", date:"2026-08-13", course:"RCP y Primeros Auxilios", short:"Primeros auxilios, RCP, quemaduras, heridas y traumatismos." },
-      { month:"Septiembre", date:"2026-09-10", course:"Plan de evacuación y simulacros", short:"Roles, vías de evacuación, punto de encuentro y simulacros." },
-      { month:"Octubre", date:"2026-10-15", course:"Ergonomía", short:"Posturas forzadas, manipulación de cargas y recomendaciones preventivas." },
-      { month:"Noviembre", date:"2026-11-12", course:"Autocontrol preventivo", short:"Identificación de riesgos y verificación de condiciones seguras." },
-      { month:"Diciembre", date:"2026-12-10", course:"Manejo seguro de combustibles", short:"Manipulación segura, carga y descarga, derrames y fuentes de ignición." },
-      { month:"Diciembre", date:"2026-12-17", course:"Prevención psicosocial", short:"Estrés laboral, burnout, factores psicosociales y cultura de bienestar." }
-    ];
-
     const employees = [
       { name: "Carina Valeria Lamboglia", role: "Encargada de evacuación", email: "carina.lamboglia@ypf-utn.com" },
       { name: "Marianela Soledad Lobo", role: "Brigadista de primeros auxilios", email: "marianela.lobo@ypf-utn.com" },
@@ -3348,7 +3044,7 @@
         return `
           <div class="training-action-row">
             <button class="secondary" onclick="simulateEmail(${idx})">Enviar mail</button>
-            ${needsUpdate ? `<button class="secondary training-update-btn" type="button" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
+            ${needsUpdate ? `<button class="secondary training-update-btn" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
           </div>
         `;
       };
@@ -3616,24 +3312,8 @@
       showToast("Reporte recibido. Se generó registro para seguimiento preventivo.");
     }
 
-    function openModal(id) {
-      const modal = document.getElementById(id);
-      if (!modal) {
-        showToast("No se encontró la ventana solicitada.");
-        return;
-      }
-
-      modal.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeModal(id) {
-      const modal = document.getElementById(id);
-      if (!modal) return;
-
-      modal.classList.remove("active");
-      document.body.style.overflow = "";
-    }
+    function openModal(id) { document.getElementById(id).classList.add("active"); }
+    function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 
     function showToast(message) {
       const toast = document.getElementById("toast");
@@ -3647,29 +3327,23 @@
 
     function markTrainingCompleted(index) {
       const training = trainings[index];
-      if (!training) {
-        showToast("No se encontró la capacitación a actualizar.");
-        return;
-      }
+      if (!training) return;
 
-      const completedDate = today.toISOString().slice(0, 10);
-      const nextDueDate = new Date(today);
-      nextDueDate.setFullYear(nextDueDate.getFullYear() + 1);
-      const nextDueISO = nextDueDate.toISOString().slice(0, 10);
+      const todayISO = today.toISOString().slice(0, 10);
+      const nextYear = new Date(today);
+      nextYear.setFullYear(nextYear.getFullYear() + 1);
+      const nextYearISO = nextYear.toISOString().slice(0, 10);
 
       training.done = true;
-      training.completed = completedDate;
-      training.due = nextDueISO;
+      training.completed = todayISO;
+      training.due = nextYearISO;
 
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
 
       refreshAll();
+      showEmployeeTrainingDetail(training.employee);
 
-      setTimeout(() => {
-        showEmployeeTrainingDetail(training.employee);
-      }, 0);
-
-      showToast(`✅ ${training.employee}: "${training.course}" pasó a realizada vigente.`);
+      showToast(`✅ Capacitación "${training.course}" actualizada como realizada y vigente para ${training.employee}.`);
     }
 
     function updateTrainingDashboard() {
@@ -3912,191 +3586,8 @@
       showToast("🗑️ Historial de inspecciones eliminado.");
     }
 
-
-
-    let selectedCourseToAssign = null;
-
-    function openAssignCourseModal(course) {
-      selectedCourseToAssign = course;
-
-      let modal = document.getElementById("assignCourseModal");
-
-      if (!modal) {
-        const wrapper = document.createElement("div");
-        wrapper.innerHTML = `
-          <div class="modal" id="assignCourseModal">
-            <div class="modal-content">
-              <h3>Asignar capacitación a operadores</h3>
-              <p id="assignCourseTitle">Seleccioná uno o más operadores para asignar el curso.</p>
-              <div class="operator-checklist" id="operatorChecklist"></div>
-              <div class="footer-note">
-                La asignación quedará registrada en el legajo individual de cada trabajador. Si el curso ya estaba asignado, no se duplicará.
-              </div>
-              <br>
-              <button class="primary" type="button" onclick="confirmCourseAssignment()">Asignar capacitación</button>
-              <button class="secondary" type="button" onclick="closeModal('assignCourseModal')">Cancelar</button>
-            </div>
-          </div>
-        `;
-        document.body.appendChild(wrapper.firstElementChild);
-        modal = document.getElementById("assignCourseModal");
-      }
-
-      const title = document.getElementById("assignCourseTitle");
-      const checklist = document.getElementById("operatorChecklist");
-
-      if (title) {
-        title.innerHTML = `<b>Curso:</b> ${course}<br><small>Seleccioná los operadores alcanzados por esta capacitación.</small>`;
-      }
-
-      if (checklist) {
-        checklist.innerHTML = employees.map(emp => {
-          const extra = personnelExtra[emp.name] || {};
-          return `
-            <label class="operator-check">
-              <input type="checkbox" value="${emp.name}">
-              <span>
-                ${emp.name}<br>
-                <small>${extra.legajo || "Sin legajo"} · ${extra.cargo || emp.role}</small>
-              </span>
-            </label>
-          `;
-        }).join("");
-      }
-
-      openModal("assignCourseModal");
-    }
-
-    function confirmCourseAssignment() {
-      if (!selectedCourseToAssign) {
-        showToast("No hay curso seleccionado.");
-        return;
-      }
-
-      const selected = Array.from(document.querySelectorAll("#operatorChecklist input:checked")).map(input => input.value);
-
-      if (!selected.length) {
-        showToast("Seleccioná al menos un operador.");
-        return;
-      }
-
-      selected.forEach(name => {
-        const emp = employees.find(e => e.name === name);
-        const plan = annualTrainingPlan.find(p => p.course === selectedCourseToAssign);
-        if (!emp || !plan) return;
-
-        const exists = trainings.some(t => t.employee === emp.name && t.course === selectedCourseToAssign);
-
-        if (!exists) {
-          trainings.push({
-            employee: emp.name,
-            role: emp.role,
-            email: emp.email,
-            course: selectedCourseToAssign,
-            done: false,
-            completed: "",
-            due: plan.date
-          });
-        }
-      });
-
-      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
-      closeModal("assignCourseModal");
-      refreshAll();
-
-      showToast(`Capacitación asignada a ${selected.length} operador/es.`);
-    }
-
-    function removeTrainingAssignment(employeeName, course) {
-      if (!confirm("¿Eliminar esta asignación del legajo?")) return;
-
-      trainings = trainings.filter(t => !(t.employee === employeeName && t.course === course));
-      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
-      refreshAll();
-
-      showToast("Asignación eliminada correctamente.");
-    }
-
-    function renderPersonnel() {
-      const grid = document.getElementById("personnelGrid");
-      if (!grid) return;
-
-      const query = document.getElementById("personSearch")?.value.toLowerCase() || "";
-
-      const filtered = employees.filter(emp => {
-        const extra = personnelExtra[emp.name] || {};
-        const text = `${emp.name} ${extra.dni || ""} ${extra.legajo || ""} ${extra.cargo || emp.role}`.toLowerCase();
-        return text.includes(query);
-      });
-
-      grid.innerHTML = filtered.map(emp => {
-        const extra = personnelExtra[emp.name] || {};
-        const assigned = trainings.filter(t => t.employee === emp.name);
-        const aprobados = assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer");
-        const vencidos = assigned.filter(t => trainingState(t) === "Realizada vencida");
-        const pendientes = assigned.filter(t => trainingState(t) === "Pendiente");
-
-        const list = assigned.length ? assigned.map(t => `
-          <div class="person-training-item">
-            <strong>${t.course}</strong>
-            <small>Estado: <span class="pill ${trainingStateClass(trainingState(t))}">${trainingState(t)}</span></small>
-            <small>Fecha: ${formatDate(t.due)}</small>
-            <button class="secondary remove-assignment" type="button" onclick="removeTrainingAssignment('${escapeJsText(emp.name)}', '${escapeJsText(t.course)}')">Eliminar asignación</button>
-          </div>
-        `).join("") : `<div class="training-empty">Sin capacitaciones asignadas.</div>`;
-
-        return `
-          <div class="person-card">
-            <div>
-              <h3>${emp.name}</h3>
-              <div class="person-meta">
-                <span><b>DNI:</b> ${extra.dni || "No cargado"}</span>
-                <span><b>Edad:</b> ${extra.edad || "No cargada"}</span>
-                <span><b>Legajo:</b> ${extra.legajo || "No cargado"}</span>
-                <span><b>Cargo:</b> ${extra.cargo || emp.role}</span>
-                <span><b>Email:</b> ${emp.email}</span>
-              </div>
-            </div>
-
-            <div class="person-kpi-row">
-              <div class="person-kpi"><strong>${aprobados.length}</strong><span>Aprobadas</span></div>
-              <div class="person-kpi"><strong>${pendientes.length}</strong><span>Pendientes</span></div>
-              <div class="person-kpi"><strong>${vencidos.length}</strong><span>Vencidas</span></div>
-            </div>
-
-            <div class="person-training-list">
-              ${list}
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderAnnualTrainingPlan() {
-      const container = document.getElementById("annualTrainingCalendar");
-      if (!container) return;
-
-      container.innerHTML = annualTrainingPlan.map(item => `
-        <div class="calendar-month-card">
-          <div class="calendar-month-title">
-            <strong>${item.month}</strong>
-            <span>${formatDate(item.date)}</span>
-          </div>
-
-          <div class="calendar-course">
-            <strong>${item.course}</strong>
-            <small>${item.short}</small>
-            <span class="pill programado">Curso planificado</span>
-              <div class="course-assign-actions"><button class="secondary" type="button" onclick="openAssignCourseModal('${item.course.replace(/\'/g, "\\\'")}')">Asignar operadores</button></div>
-          </div>
-        </div>
-      `).join("");
-    }
-
     function refreshAll() {
       renderTrainingTable();
-      renderAnnualTrainingPlan();
-      renderPersonnel();
       renderEmployeeProfiles();
       updateTrainingDashboard();
       renderDashboard();
@@ -4117,7 +3608,6 @@
         const titles = {
           dashboard: "Panel general SST",
           capacitaciones: "Gestión de capacitaciones",
-          personal: "Legajo del personal",
           emergencias: "Preparación y respuesta ante emergencias",
           simulacros: "Simulacros y verificación",
           documentos: "Control documental SST",
@@ -4133,25 +3623,6 @@
     document.getElementById("statusFilter").addEventListener("change", renderEmployeeProfiles);
 
     normalizeTrainings();
-
-    const assignTrainingBtn = document.getElementById("assignTrainingBtn");
-    if (assignTrainingBtn) {
-      assignTrainingBtn.addEventListener("click", () => openModal("trainingModal"));
-      assignTrainingBtn.addEventListener("touchend", (event) => {
-        event.preventDefault();
-        openModal("trainingModal");
-      }, { passive: false });
-    }
-
-    document.addEventListener("click", (event) => {
-      const modal = event.target.classList && event.target.classList.contains("modal") ? event.target : null;
-      if (modal && modal.id) {
-        closeModal(modal.id);
-      }
-    });
-
-    document.getElementById("personSearch")?.addEventListener("input", renderPersonnel);
-
     populateSelectors();
     refreshAll();
   </script>
