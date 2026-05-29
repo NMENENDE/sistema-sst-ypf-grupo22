@@ -2129,6 +2129,125 @@
       margin-top:12px;
     }
 
+
+    /* ===== Gestión avanzada: asignación de capacitaciones y legajo de personal ===== */
+    .course-assign-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .personnel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .person-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 22px;
+      padding: 16px;
+      background: white;
+      display: grid;
+      gap: 12px;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.06);
+      border-left: 6px solid var(--ypf-blue);
+    }
+
+    .person-card h3 {
+      margin: 0;
+      color: var(--ypf-blue-dark);
+    }
+
+    .person-meta {
+      display: grid;
+      gap: 6px;
+      color: var(--gray-700);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .person-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .person-kpi {
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+      background: var(--gray-50);
+    }
+
+    .person-kpi strong {
+      display: block;
+      color: var(--ypf-blue-dark);
+      font-size: 22px;
+    }
+
+    .person-kpi span {
+      font-size: 10px;
+      color: var(--gray-500);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .person-training-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .person-training-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 10px;
+      display: grid;
+      gap: 6px;
+      background: #fff;
+    }
+
+    .person-training-item small {
+      color: var(--gray-500);
+      font-weight: 700;
+    }
+
+    .remove-assignment {
+      background: #fee2e2 !important;
+      color: #991b1b !important;
+      border: 1px solid #fecaca !important;
+      padding: 8px 10px !important;
+      font-size: 12px;
+    }
+
+    .operator-checklist {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+      max-height: 330px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .operator-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 10px;
+      background: var(--gray-50);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .operator-check input {
+      width: auto;
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -2210,6 +2329,7 @@
       <nav>
         <button class="nav-btn active" data-section="dashboard">📊 Panel general</button>
         <button class="nav-btn" data-section="capacitaciones">🎓 Capacitaciones</button>
+        <button class="nav-btn" data-section="personal">👥 Personal</button>
         <button class="nav-btn" data-section="emergencias">🚨 Emergencias</button>
         <button class="nav-btn" data-section="simulacros">🧯 Simulacros</button>
         <button class="nav-btn" data-section="documentos">📁 Documentación</button>
@@ -2760,6 +2880,21 @@
 </section>
 
 
+
+
+      <section class="section" id="personal">
+        <div class="card">
+          <div class="toolbar">
+            <div>
+              <h3>Legajo del personal</h3>
+              <p>Información individual del personal y seguimiento de capacitaciones asignadas, aprobadas y vencidas.</p>
+            </div>
+            <input class="search" id="personSearch" placeholder="Buscar por nombre, DNI, legajo o cargo..." />
+          </div>
+
+          <div class="personnel-grid" id="personnelGrid"></div>
+        </div>
+      </section>
 
       <section class="section" id="reportes">
         <div class="grid two">
@@ -3760,6 +3895,141 @@
     }
 
 
+
+    let selectedCourseToAssign = null;
+
+    function openAssignCourseModal(course) {
+      selectedCourseToAssign = course;
+      const title = document.getElementById("assignCourseTitle");
+      const checklist = document.getElementById("operatorChecklist");
+
+      if (title) {
+        title.innerHTML = `<b>Curso:</b> ${course}<br><small>Seleccioná los operadores alcanzados por esta capacitación.</small>`;
+      }
+
+      if (checklist) {
+        checklist.innerHTML = employees.map(emp => {
+          const extra = personnelExtra[emp.name] || {};
+          return `
+            <label class="operator-check">
+              <input type="checkbox" value="${emp.name}">
+              <span>
+                ${emp.name}<br>
+                <small>${extra.legajo || "Sin legajo"} · ${extra.cargo || emp.role}</small>
+              </span>
+            </label>
+          `;
+        }).join("");
+      }
+
+      openModal("assignCourseModal");
+    }
+
+    function confirmCourseAssignment() {
+      if (!selectedCourseToAssign) {
+        showToast("No hay curso seleccionado.");
+        return;
+      }
+
+      const selected = Array.from(document.querySelectorAll("#operatorChecklist input:checked")).map(input => input.value);
+
+      if (!selected.length) {
+        showToast("Seleccioná al menos un operador.");
+        return;
+      }
+
+      selected.forEach(name => {
+        const emp = employees.find(e => e.name === name);
+        const plan = annualTrainingPlan.find(p => p.course === selectedCourseToAssign);
+        if (!emp || !plan) return;
+
+        const exists = trainings.some(t => t.employee === emp.name && t.course === selectedCourseToAssign);
+
+        if (!exists) {
+          trainings.push({
+            employee: emp.name,
+            role: emp.role,
+            email: emp.email,
+            course: selectedCourseToAssign,
+            done: false,
+            completed: "",
+            due: plan.date
+          });
+        }
+      });
+
+      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+      closeModal("assignCourseModal");
+      refreshAll();
+
+      showToast(`Capacitación asignada a ${selected.length} operador/es.`);
+    }
+
+    function removeTrainingAssignment(employeeName, course) {
+      if (!confirm("¿Eliminar esta asignación del legajo?")) return;
+
+      trainings = trainings.filter(t => !(t.employee === employeeName && t.course === course));
+      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+      refreshAll();
+
+      showToast("Asignación eliminada correctamente.");
+    }
+
+    function renderPersonnel() {
+      const grid = document.getElementById("personnelGrid");
+      if (!grid) return;
+
+      const query = document.getElementById("personSearch")?.value.toLowerCase() || "";
+
+      const filtered = employees.filter(emp => {
+        const extra = personnelExtra[emp.name] || {};
+        const text = `${emp.name} ${extra.dni || ""} ${extra.legajo || ""} ${extra.cargo || emp.role}`.toLowerCase();
+        return text.includes(query);
+      });
+
+      grid.innerHTML = filtered.map(emp => {
+        const extra = personnelExtra[emp.name] || {};
+        const assigned = trainings.filter(t => t.employee === emp.name);
+        const aprobados = assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer");
+        const vencidos = assigned.filter(t => trainingState(t) === "Realizada vencida");
+        const pendientes = assigned.filter(t => trainingState(t) === "Pendiente");
+
+        const list = assigned.length ? assigned.map(t => `
+          <div class="person-training-item">
+            <strong>${t.course}</strong>
+            <small>Estado: <span class="pill ${trainingStateClass(trainingState(t))}">${trainingState(t)}</span></small>
+            <small>Fecha: ${formatDate(t.due)}</small>
+            <button class="secondary remove-assignment" type="button" onclick="removeTrainingAssignment('${escapeJsText(emp.name)}', '${escapeJsText(t.course)}')">Eliminar asignación</button>
+          </div>
+        `).join("") : `<div class="training-empty">Sin capacitaciones asignadas.</div>`;
+
+        return `
+          <div class="person-card">
+            <div>
+              <h3>${emp.name}</h3>
+              <div class="person-meta">
+                <span><b>DNI:</b> ${extra.dni || "No cargado"}</span>
+                <span><b>Edad:</b> ${extra.edad || "No cargada"}</span>
+                <span><b>Legajo:</b> ${extra.legajo || "No cargado"}</span>
+                <span><b>Cargo:</b> ${extra.cargo || emp.role}</span>
+                <span><b>Email:</b> ${emp.email}</span>
+              </div>
+            </div>
+
+            <div class="person-kpi-row">
+              <div class="person-kpi"><strong>${aprobados.length}</strong><span>Aprobadas</span></div>
+              <div class="person-kpi"><strong>${pendientes.length}</strong><span>Pendientes</span></div>
+              <div class="person-kpi"><strong>${vencidos.length}</strong><span>Vencidas</span></div>
+            </div>
+
+            <div class="person-training-list">
+              ${list}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
     function renderAnnualTrainingPlan() {
       const container = document.getElementById("annualTrainingCalendar");
       if (!container) return;
@@ -3775,6 +4045,7 @@
             <strong>${item.course}</strong>
             <small>${item.short}</small>
             <span class="pill programado">Curso planificado</span>
+              <div class="course-assign-actions"><button class="secondary" type="button" onclick="openAssignCourseModal(\`${item.course}\`)">Asignar operadores</button></div>
           </div>
         </div>
       `).join("");
@@ -3783,6 +4054,7 @@
     function refreshAll() {
       renderTrainingTable();
       renderAnnualTrainingPlan();
+      renderPersonnel();
       renderEmployeeProfiles();
       updateTrainingDashboard();
       renderDashboard();
@@ -3803,6 +4075,7 @@
         const titles = {
           dashboard: "Panel general SST",
           capacitaciones: "Gestión de capacitaciones",
+          personal: "Legajo del personal",
           emergencias: "Preparación y respuesta ante emergencias",
           simulacros: "Simulacros y verificación",
           documentos: "Control documental SST",
