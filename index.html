@@ -3027,7 +3027,25 @@
     </div>
   </div>
 
-<div class="toast" id="toast"></div>
+
+  <div class="modal" id="assignCourseModal">
+    <div class="modal-content">
+      <h3>Asignar capacitación a operadores</h3>
+      <p id="assignCourseTitle">Seleccioná uno o más operadores para asignar el curso.</p>
+
+      <div class="operator-checklist" id="operatorChecklist"></div>
+
+      <div class="footer-note">
+        La asignación quedará registrada en el legajo individual de cada trabajador. Si el curso ya estaba asignado, no se duplicará.
+      </div>
+
+      <br>
+      <button class="primary" type="button" onclick="confirmCourseAssignment()">Asignar capacitación</button>
+      <button class="secondary" type="button" onclick="closeModal('assignCourseModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 
 
   <script>
@@ -3900,6 +3918,30 @@
 
     function openAssignCourseModal(course) {
       selectedCourseToAssign = course;
+
+      let modal = document.getElementById("assignCourseModal");
+
+      if (!modal) {
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = `
+          <div class="modal" id="assignCourseModal">
+            <div class="modal-content">
+              <h3>Asignar capacitación a operadores</h3>
+              <p id="assignCourseTitle">Seleccioná uno o más operadores para asignar el curso.</p>
+              <div class="operator-checklist" id="operatorChecklist"></div>
+              <div class="footer-note">
+                La asignación quedará registrada en el legajo individual de cada trabajador. Si el curso ya estaba asignado, no se duplicará.
+              </div>
+              <br>
+              <button class="primary" type="button" onclick="confirmCourseAssignment()">Asignar capacitación</button>
+              <button class="secondary" type="button" onclick="closeModal('assignCourseModal')">Cancelar</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(wrapper.firstElementChild);
+        modal = document.getElementById("assignCourseModal");
+      }
+
       const title = document.getElementById("assignCourseTitle");
       const checklist = document.getElementById("operatorChecklist");
 
@@ -4045,7 +4087,7 @@
             <strong>${item.course}</strong>
             <small>${item.short}</small>
             <span class="pill programado">Curso planificado</span>
-              <div class="course-assign-actions"><button class="secondary" type="button" onclick="openAssignCourseModal(\`${item.course}\`)">Asignar operadores</button></div>
+              <div class="course-assign-actions"><button class="secondary" type="button" onclick="openAssignCourseModal('${item.course.replace(/\'/g, "\\\'")}')">Asignar operadores</button></div>
           </div>
         </div>
       `).join("");
@@ -4107,6 +4149,8 @@
         closeModal(modal.id);
       }
     });
+
+    document.getElementById("personSearch")?.addEventListener("input", renderPersonnel);
 
     populateSelectors();
     refreshAll();
