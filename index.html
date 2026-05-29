@@ -2041,39 +2041,94 @@
       background: radial-gradient(circle at top right, rgba(0,163,224,0.10), transparent 35%), rgba(255,255,255,0.94);
     }
     .annual-plan-head {
-      display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
     }
     .annual-badge {
-      display:inline-flex; align-items:center; gap:7px; border-radius:999px; padding:8px 12px;
-      background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark)); color:white;
-      font-weight:900; font-size:12px; text-transform:uppercase; letter-spacing:.03em;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      border-radius:999px;
+      padding:8px 12px;
+      background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark));
+      color:white;
+      font-weight:900;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.03em;
     }
     .training-calendar {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin-top:14px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:14px;
+      margin-top:14px;
     }
     .calendar-month-card {
-      border:1px solid var(--gray-200); border-radius:20px; background:white; overflow:hidden;
-      box-shadow:0 10px 22px rgba(15,23,42,.06); display:grid;
+      border:1px solid var(--gray-200);
+      border-radius:20px;
+      background:white;
+      overflow:hidden;
+      box-shadow:0 10px 22px rgba(15,23,42,.06);
+      display:grid;
     }
     .calendar-month-title {
-      background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark)); color:white; padding:11px 14px;
-      font-weight:900; display:flex; justify-content:space-between; gap:10px; align-items:center;
+      background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark));
+      color:white;
+      padding:11px 14px;
+      font-weight:900;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
     }
-    .calendar-month-title span { font-size:12px; opacity:.9; }
-    .calendar-course { padding:14px; display:grid; gap:8px; border-left:6px solid var(--ypf-sky); }
-    .calendar-course strong { color:var(--ypf-blue-dark); line-height:1.25; }
-    .calendar-course small { color:var(--gray-500); font-weight:700; line-height:1.35; }
-    .calendar-course .pill { width:fit-content; }
-    .calendar-course:hover { background:#fbfdff; }
+    .calendar-month-title span {
+      font-size:12px;
+      opacity:.9;
+    }
+    .calendar-course {
+      padding:14px;
+      display:grid;
+      gap:8px;
+      border-left:6px solid var(--ypf-sky);
+    }
+    .calendar-course strong {
+      color:var(--ypf-blue-dark);
+      line-height:1.25;
+    }
+    .calendar-course small {
+      color:var(--gray-500);
+      font-weight:700;
+      line-height:1.35;
+    }
+    .calendar-course .pill {
+      width:fit-content;
+    }
+    .calendar-course:hover {
+      background:#fbfdff;
+    }
     .training-plan-note {
-      background:linear-gradient(135deg,var(--ypf-blue-light),#ffffff); border:1px solid #cfe7ff;
-      color:var(--ypf-blue-dark); border-radius:18px; padding:14px; font-weight:800; line-height:1.45; margin-top:12px;
+      background:linear-gradient(135deg,var(--ypf-blue-light),#ffffff);
+      border:1px solid #cfe7ff;
+      color:var(--ypf-blue-dark);
+      border-radius:18px;
+      padding:14px;
+      font-weight:800;
+      line-height:1.45;
+      margin-top:12px;
     }
-    .training-item .training-action-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
-    .training-update-btn { background:#dcfce7 !important; color:#166534 !important; border:1px solid #bbf7d0 !important; }
     .plan-origin {
-      font-size:11px; font-weight:900; color:var(--ypf-blue-dark); background:var(--ypf-blue-light);
-      border:1px solid #cfe7ff; padding:5px 8px; border-radius:999px; width:fit-content;
+      font-size:11px;
+      font-weight:900;
+      color:var(--ypf-blue-dark);
+      background:var(--ypf-blue-light);
+      border:1px solid #cfe7ff;
+      padding:5px 8px;
+      border-radius:999px;
+      width:fit-content;
     }
 
     .print-only { display: none; }
@@ -2309,7 +2364,7 @@
           </div>
 
           <div class="training-note">
-            La gestión se realiza por trabajador y se alimenta desde el Plan Anual de Capacitación. Si una capacitación pendiente o vencida se realiza, el sistema actualiza el legajo, recalcula el cumplimiento y la mueve automáticamente al grupo de capacitaciones realizadas vigentes.
+            La gestión se realiza por trabajador. Si una capacitación pendiente o vencida se realiza, el sistema actualiza el legajo, recalcula el cumplimiento y la mueve automáticamente al grupo de capacitaciones realizadas vigentes.
           </div>
         </div>
       </div>
@@ -3086,7 +3141,6 @@
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
       refreshAll();
       showEmployeeTrainingDetail(employee.name);
-
       showToast(`✅ ${employee.name}: "${course}" registrada como realizada y vigente.`);
     }
 
@@ -3211,8 +3265,7 @@
       updateTrainingDashboard();
     }
 
-    
-function showEmployeeTrainingDetail(employeeName) {
+    function showEmployeeTrainingDetail(employeeName) {
       const employee = employees.find(e => e.name === employeeName);
       const detail = document.getElementById("employeeTrainingDetail");
       if (!employee || !detail) return;
@@ -3282,8 +3335,7 @@ function showEmployeeTrainingDetail(employeeName) {
       return;
     }
 
-    
-function renderDashboard() {
+    function renderDashboard() {
       const total = employees.length;
       const allRecords = getAllPlanRecords();
       const states = allRecords.map(t => trainingState(t));
