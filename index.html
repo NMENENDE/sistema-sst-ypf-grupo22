@@ -1001,6 +1001,148 @@
       text-transform: none;
     }
 
+
+    /* Fichas de capacitación por trabajador */
+    .employee-training-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .employee-profile-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      display: grid;
+      gap: 10px;
+      transition: 0.18s ease;
+    }
+
+    .employee-profile-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(15,23,42,0.10);
+    }
+
+    .employee-profile-card strong {
+      color: var(--ypf-blue-dark);
+      font-size: 15px;
+    }
+
+    .employee-kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .employee-kpi {
+      border-radius: 14px;
+      padding: 10px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      text-align: center;
+    }
+
+    .employee-kpi b {
+      display: block;
+      color: var(--ypf-blue-dark);
+      font-size: 20px;
+    }
+
+    .employee-kpi small {
+      color: var(--gray-500);
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .employee-detail-header {
+      background: linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
+      color: white;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .employee-detail-header h3 {
+      color: white;
+      margin: 0 0 6px;
+    }
+
+    .employee-detail-header p {
+      margin: 0;
+      color: rgba(255,255,255,0.9);
+      font-weight: 700;
+    }
+
+    .training-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .training-summary-card {
+      border-radius: 16px;
+      padding: 13px;
+      background: white;
+      border: 1px solid var(--gray-200);
+    }
+
+    .training-summary-card strong {
+      display: block;
+      font-size: 24px;
+      color: var(--ypf-blue-dark);
+    }
+
+    .training-summary-card span {
+      color: var(--gray-500);
+      font-weight: 800;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .norm-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .norm-item small {
+      display: block;
+      font-weight: 700;
+      color: var(--gray-700);
+      line-height: 1.35;
+    }
+
+    .phva-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .phva-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      padding: 16px;
+      border-left: 6px solid var(--ypf-blue);
+    }
+
+    .phva-card h4 {
+      margin: 0 0 8px;
+      color: var(--ypf-blue-dark);
+    }
+
+    .phva-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--gray-700);
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -1149,38 +1291,69 @@
         </div>
       </section>
 
-      <section class="section" id="capacitaciones">
-        <div class="card">
-          <div class="toolbar">
-            <div>
-              <input class="search" id="employeeSearch" placeholder="Buscar empleado o curso..." />
-              <select id="statusFilter">
-                <option value="todos">Todos los estados</option>
-                <option value="Vigente">Vigente</option>
-                <option value="Por vencer">Por vencer</option>
-                <option value="Vencido">Vencido</option>
-              </select>
-            </div>
-            <div>
-              <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
-              <button class="primary" onclick="openModal('trainingModal')">+ Nueva capacitación</button>
-            </div>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Empleado</th>
-                <th>Puesto / rol</th>
-                <th>Curso asignado</th>
-                <th>Vencimiento</th>
-                <th>Estado</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody id="trainingTable"></tbody>
-          </table>
+      
+<section class="section" id="capacitaciones">
+  <div class="grid two">
+
+    <div class="card">
+      <div class="toolbar">
+        <div>
+          <h3>Fichas de capacitación del personal</h3>
+          <p>Ingresá a cada trabajador para consultar historial, cursos vigentes, vencidos, pendientes y porcentaje de cumplimiento.</p>
         </div>
-      </section>
+        <div>
+          <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
+          <button class="primary" onclick="openModal('trainingModal')">+ Nueva capacitación</button>
+        </div>
+      </div>
+
+      <input class="search" id="employeeSearch" placeholder="Buscar trabajador, rol o curso..." />
+
+      <div class="employee-training-grid" id="employeeProfiles"></div>
+    </div>
+
+    <div class="card">
+      <div id="employeeTrainingDetail">
+        <div class="employee-detail-header">
+          <h3>Seleccioná un trabajador</h3>
+          <p>El sistema mostrará su historial completo de capacitación y el estado de cumplimiento individual.</p>
+        </div>
+
+        <div class="footer-note">
+          Esta vista permite pasar de una tabla general a una gestión individual por trabajador, fortaleciendo la trazabilidad y el seguimiento preventivo del Plan Anual de Capacitación.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:18px;">
+    <h3>Registro general de capacitaciones</h3>
+    <p>Vista completa de cursos cargados, vencimientos y alertas simuladas.</p>
+
+    <select id="statusFilter" style="max-width:280px; margin-bottom:14px;">
+      <option value="todos">Todos los estados</option>
+      <option value="Vigente">Vigente</option>
+      <option value="Por vencer">Por vencer</option>
+      <option value="Vencido">Vencido</option>
+    </select>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Empleado</th>
+          <th>Puesto / rol</th>
+          <th>Curso asignado</th>
+          <th>Vencimiento</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="trainingTable"></tbody>
+    </table>
+  </div>
+</section>
+
 
       <section class="section" id="emergencias">
         <div class="card emergency-hero">
@@ -1483,37 +1656,75 @@
 
 
 
-      <section class="section" id="institucional">
-        <div class="grid two">
-          <div class="card">
-            <h3>Supervisión académica</h3>
-            <p>Docentes de referencia para validación académica del proyecto.</p>
-            <div class="grid" id="academicList"></div>
-          </div>
+      
+<section class="section" id="institucional">
+  <div class="grid two">
+    <div class="card">
+      <h3>Supervisión académica</h3>
+      <p>Docentes de referencia para el seguimiento y validación académica del proyecto desarrollado por Grupo 22.</p>
+      <div class="grid" id="academicList"></div>
+    </div>
 
-          <div class="card">
-            <h3>Normativa aplicada</h3>
-            <p>Marco normativo y técnico considerado para la propuesta de gestión SST.</p>
-            <div class="norm-list" id="normList"></div>
-          </div>
-        </div>
+    <div class="card">
+      <h3>Normativa aplicada</h3>
+      <p>Marco legal, técnico y preventivo considerado para la propuesta de gestión SST e IPER.</p>
+      <div class="norm-list" id="normList"></div>
+    </div>
+  </div>
 
-        <div class="card" style="margin-top:18px;">
-          <h3>Mejora continua del Sistema SST</h3>
-          <p>Seguimiento bajo enfoque PHVA: planificar, hacer, verificar y actuar. Este bloque vincula la app con la lógica de un sistema de gestión preventivo.</p>
-          <div class="improvement-timeline">
-            <div class="improvement-item"><strong>Planificar:</strong> IPER, matriz legal, plan de capacitación y plan de emergencias.</div>
-            <div class="improvement-item"><strong>Hacer:</strong> capacitaciones, simulacros, inspecciones, reportes y comunicación interna.</div>
-            <div class="improvement-item"><strong>Verificar:</strong> indicadores, registros, auditorías internas y observaciones preventivas.</div>
-            <div class="improvement-item"><strong>Actuar:</strong> acciones correctivas, actualización documental y mejora del desempeño SST.</div>
-          </div>
-        </div>
+  <div class="card" style="margin-top:18px;">
+    <h3>Mejora continua del Sistema SST</h3>
+    <p>Aplicación del ciclo PHVA como criterio de gestión preventiva, trazabilidad documental y mejora del desempeño SST.</p>
 
-        <div class="card" style="margin-top:18px;">
-          <h3>Proyecto desarrollado por Grupo 22</h3>
-          <p>La aplicación se presenta como una propuesta de mejora digital orientada a fortalecer la trazabilidad documental, la gestión de capacitaciones, la preparación ante emergencias, la participación del personal y la mejora continua del Sistema de Gestión de Seguridad y Salud en el Trabajo.</p>
-        </div>
-      </section>
+    <div class="phva-grid">
+      <div class="phva-card">
+        <h4>🔵 Planificar</h4>
+        <ul>
+          <li>Análisis de contexto.</li>
+          <li>Matriz IPER.</li>
+          <li>Matriz legal aplicable.</li>
+          <li>Plan anual de capacitación.</li>
+        </ul>
+      </div>
+
+      <div class="phva-card">
+        <h4>🟢 Hacer</h4>
+        <ul>
+          <li>Ejecución de capacitaciones.</li>
+          <li>Simulacros de emergencia.</li>
+          <li>Inspecciones preventivas.</li>
+          <li>Control operativo en playa y GNC.</li>
+        </ul>
+      </div>
+
+      <div class="phva-card">
+        <h4>🟡 Verificar</h4>
+        <ul>
+          <li>Checklist digital.</li>
+          <li>Historial de inspecciones.</li>
+          <li>Reportes SST.</li>
+          <li>Seguimiento documental.</li>
+        </ul>
+      </div>
+
+      <div class="phva-card">
+        <h4>🔴 Actuar</h4>
+        <ul>
+          <li>Acciones correctivas.</li>
+          <li>Actualización documental.</li>
+          <li>Mejora de procedimientos.</li>
+          <li>Retroalimentación del sistema.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px;">
+    <h3>Proyecto desarrollado por Grupo 22</h3>
+    <p>La aplicación se presenta como una propuesta de mejora digital orientada a fortalecer la trazabilidad documental, la gestión de capacitaciones, la preparación ante emergencias, la participación del personal y la mejora continua del Sistema de Gestión de Seguridad y Salud en el Trabajo.</p>
+  </div>
+</section>
+
 
       <section class="section" id="reportes">
         <div class="grid two">
@@ -1712,18 +1923,24 @@
     ];
 
     const academicSupervisors = [
-      { name: "Martín Bruno", function: "Validación SST y criterios preventivos" },
-      { name: "José Navío", function: "Supervisión técnica y operativa" },
-      { name: "Victor Morera", function: "Evaluación de riesgos y controles" },
-      { name: "Sebastián Ezpeleta", function: "Gestión preventiva y mejora continua" }
+      { name: "Martín Bruno", function: "Seguimiento académico y criterios preventivos" },
+      { name: "José Navío", function: "Supervisión técnica y operativa del proyecto" },
+      { name: "Víctor Morera", function: "Evaluación de riesgos, controles y mejora continua" },
+      { name: "Sebastián Ezpeleta", function: "Gestión SST, documentación y enfoque preventivo" }
     ];
 
     const normativeFramework = [
-      "Ley 19.587 - Higiene y Seguridad en el Trabajo",
-      "Decreto 351/79 - Reglamentación de condiciones de higiene y seguridad",
-      "ISO 45001:2018 - Sistema de Gestión de Seguridad y Salud en el Trabajo",
-      "Resoluciones SRT aplicables a capacitación, mediciones y registros",
-      "Normativa IRAM sobre señalización, evacuación y seguridad contra incendio"
+      { title: "Ley 19.587/72", desc: "Ley Nacional de Higiene y Seguridad en el Trabajo." },
+      { title: "Decreto 351/79", desc: "Reglamentación general de las condiciones de higiene y seguridad en los establecimientos laborales." },
+      { title: "Ley 24.557", desc: "Ley sobre Riesgos del Trabajo y prevención de accidentes y enfermedades profesionales." },
+      { title: "Resolución SRT 905/15", desc: "Funciones de los Servicios de Higiene y Seguridad y Medicina del Trabajo." },
+      { title: "Resolución SRT 84/12", desc: "Protocolo para medición de iluminación en el ambiente laboral." },
+      { title: "Resolución SRT 85/12", desc: "Protocolo para medición de ruido en el ambiente laboral." },
+      { title: "Resolución SRT 30/23", desc: "Criterios para evaluación de estrés térmico por calor." },
+      { title: "Resolución SRT 886/15", desc: "Protocolo de ergonomía y evaluación de factores de riesgo ergonómico." },
+      { title: "Resolución SRT 900/15", desc: "Medición y verificación de puesta a tierra y continuidad de masas." },
+      { title: "ISO 45001:2018", desc: "Sistema de Gestión de Seguridad y Salud en el Trabajo." },
+      { title: "Normativa IRAM aplicable", desc: "Criterios de señalización, evacuación, seguridad contra incendio y comunicación visual preventiva." }
     ];
 
     const inspectionItems = [
@@ -1759,6 +1976,119 @@
 
     function formatDate(dateString) {
       return new Date(dateString + "T12:00:00").toLocaleDateString("es-AR");
+    }
+
+
+    function getEmployeeTrainings(employeeName) {
+      return trainings.filter(t => t.employee === employeeName);
+    }
+
+    function getEmployeeTrainingStats(employeeName) {
+      const assigned = getEmployeeTrainings(employeeName);
+      const total = assigned.length;
+      const vigente = assigned.filter(t => statusFor(t.due) === "Vigente").length;
+      const porVencer = assigned.filter(t => statusFor(t.due) === "Por vencer").length;
+      const vencido = assigned.filter(t => statusFor(t.due) === "Vencido").length;
+      const compliance = total ? Math.round((vigente / total) * 100) : 0;
+
+      return { assigned, total, vigente, porVencer, vencido, compliance };
+    }
+
+    function escapeJsText(text) {
+      return String(text).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    }
+
+    function renderEmployeeProfiles() {
+      const container = document.getElementById("employeeProfiles");
+      if (!container) return;
+
+      const query = document.getElementById("employeeSearch")?.value.toLowerCase() || "";
+
+      const filteredEmployees = employees.filter(emp => {
+        const stats = getEmployeeTrainingStats(emp.name);
+        const text = `${emp.name} ${emp.role} ${stats.assigned.map(t => t.course).join(" ")}`.toLowerCase();
+        return text.includes(query);
+      });
+
+      container.innerHTML = filteredEmployees.map(emp => {
+        const stats = getEmployeeTrainingStats(emp.name);
+
+        return `
+          <div class="employee-profile-card">
+            <strong>${emp.name}</strong>
+            <small>${emp.role}</small>
+
+            <div class="employee-kpis">
+              <div class="employee-kpi"><b>${stats.compliance}%</b><small>Cumpl.</small></div>
+              <div class="employee-kpi"><b>${stats.vencido}</b><small>Venc.</small></div>
+              <div class="employee-kpi"><b>${stats.porVencer}</b><small>Próx.</small></div>
+            </div>
+
+            <button class="secondary" onclick="showEmployeeTrainingDetail('${escapeJsText(emp.name)}')">
+              Ver historial
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function showEmployeeTrainingDetail(employeeName) {
+      const employee = employees.find(e => e.name === employeeName);
+      const detail = document.getElementById("employeeTrainingDetail");
+      if (!employee || !detail) return;
+
+      const stats = getEmployeeTrainingStats(employee.name);
+
+      const trainingRows = stats.assigned.length ? stats.assigned.map((t) => {
+        const status = statusFor(t.due);
+        const days = daysTo(t.due);
+        const label = status === "Vigente" ? `Vigente · ${days} días` : status === "Por vencer" ? `Por vencer · ${days} días` : `Vencido hace ${Math.abs(days)} días`;
+        const trainingIndex = trainings.indexOf(t);
+
+        return `
+          <tr>
+            <td>${t.course}</td>
+            <td>${formatDate(t.due)}</td>
+            <td><span class="pill ${statusClass(status)}">● ${label}</span></td>
+            <td><button class="secondary" onclick="simulateEmail(${trainingIndex})">Enviar mail</button></td>
+          </tr>
+        `;
+      }).join("") : `
+        <tr>
+          <td colspan="4">No hay capacitaciones cargadas para este trabajador.</td>
+        </tr>
+      `;
+
+      detail.innerHTML = `
+        <div class="employee-detail-header">
+          <h3>${employee.name}</h3>
+          <p>${employee.role} · ${employee.email}</p>
+        </div>
+
+        <div class="training-summary">
+          <div class="training-summary-card"><strong>${stats.compliance}%</strong><span>Cumplimiento</span></div>
+          <div class="training-summary-card"><strong>${stats.total}</strong><span>Cursos cargados</span></div>
+          <div class="training-summary-card"><strong>${stats.vigente}</strong><span>Vigentes</span></div>
+          <div class="training-summary-card"><strong>${stats.porVencer}</strong><span>Por vencer</span></div>
+          <div class="training-summary-card"><strong>${stats.vencido}</strong><span>Vencidos</span></div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Curso</th>
+              <th>Vencimiento</th>
+              <th>Estado</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>${trainingRows}</tbody>
+        </table>
+
+        <div class="footer-note">
+          Indicador individual calculado en función de los cursos vigentes sobre el total de capacitaciones cargadas para el trabajador.
+        </div>
+      `;
     }
 
     function renderTrainingTable() {
@@ -1975,7 +2305,10 @@
       const norms = document.getElementById("normList");
       if (norms) {
         norms.innerHTML = normativeFramework.map(n => `
-          <div class="norm-item">${n}</div>
+          <div class="norm-item">
+            <strong>${n.title}</strong>
+            <small>${n.desc}</small>
+          </div>
         `).join("");
       }
     }
@@ -2105,6 +2438,7 @@
 
     function refreshAll() {
       renderTrainingTable();
+      renderEmployeeProfiles();
       renderDashboard();
       renderDrills();
       renderDocuments();
@@ -2134,7 +2468,10 @@
       });
     });
 
-    document.getElementById("employeeSearch").addEventListener("input", renderTrainingTable);
+    document.getElementById("employeeSearch").addEventListener("input", () => {
+      renderTrainingTable();
+      renderEmployeeProfiles();
+    });
     document.getElementById("statusFilter").addEventListener("change", renderTrainingTable);
 
     populateSelectors();
