@@ -1232,6 +1232,382 @@
       }
     }
 
+
+    /* ===== Corrección y mejora premium capacitación / institucional ===== */
+
+    .modal {
+      z-index: 9999;
+    }
+
+    .modal-content {
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+
+    .training-hero {
+      background:
+        radial-gradient(circle at top right, rgba(0,163,224,0.18), transparent 38%),
+        linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
+      color: white;
+      border-radius: 24px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .training-hero::after {
+      content: "SST";
+      position: absolute;
+      right: 20px;
+      bottom: -22px;
+      font-size: 88px;
+      font-weight: 900;
+      opacity: 0.08;
+      letter-spacing: -0.05em;
+    }
+
+    .training-hero h3 {
+      color: white;
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+
+    .training-hero p {
+      margin: 0;
+      color: rgba(255,255,255,0.9);
+      font-weight: 700;
+      max-width: 760px;
+    }
+
+    .training-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .training-controls input,
+    .training-controls select {
+      background: rgba(255,255,255,0.96);
+      min-width: 240px;
+    }
+
+    .training-layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.95fr) minmax(420px, 1.05fr);
+      gap: 22px;
+      margin-top: 18px;
+      align-items: start;
+    }
+
+    .employee-training-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 16px;
+      max-height: 720px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .employee-profile-card {
+      border: 1px solid rgba(203,213,225,0.85);
+      border-radius: 20px;
+      padding: 16px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92));
+      display: grid;
+      gap: 12px;
+      transition: 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .employee-profile-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--ypf-blue), var(--ypf-sky));
+    }
+
+    .employee-profile-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(15,23,42,0.10);
+    }
+
+    .employee-profile-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .employee-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--ypf-blue-light), white);
+      color: var(--ypf-blue-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      border: 1px solid #cfe7ff;
+      flex: 0 0 auto;
+    }
+
+    .employee-profile-card strong {
+      color: var(--ypf-blue-dark);
+      font-size: 15px;
+    }
+
+    .employee-profile-card small {
+      color: var(--gray-500);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .employee-kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .employee-kpi {
+      border-radius: 14px;
+      padding: 10px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      text-align: center;
+    }
+
+    .employee-kpi b {
+      display: block;
+      color: var(--ypf-blue-dark);
+      font-size: 21px;
+    }
+
+    .employee-kpi small {
+      color: var(--gray-500);
+      font-weight: 900;
+      font-size: 10.5px;
+      text-transform: uppercase;
+    }
+
+    .employee-detail-panel {
+      position: sticky;
+      top: 22px;
+    }
+
+    .employee-detail-header {
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.20), transparent 35%),
+        linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
+      color: white;
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .employee-detail-header h3 {
+      color: white;
+      margin: 0 0 6px;
+      font-size: 24px;
+    }
+
+    .employee-detail-header p {
+      margin: 0;
+      color: rgba(255,255,255,0.9);
+      font-weight: 700;
+    }
+
+    .training-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .training-summary-card {
+      border-radius: 16px;
+      padding: 13px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 8px 18px rgba(15,23,42,0.06);
+    }
+
+    .training-summary-card strong {
+      display: block;
+      font-size: 24px;
+      color: var(--ypf-blue-dark);
+    }
+
+    .training-summary-card span {
+      color: var(--gray-500);
+      font-weight: 900;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .training-group {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .training-group h4 {
+      margin: 10px 0 0;
+      color: var(--ypf-blue-dark);
+      font-size: 16px;
+    }
+
+    .training-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 13px;
+      background: white;
+      display: grid;
+      gap: 6px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.04);
+    }
+
+    .training-item strong {
+      color: var(--ypf-blue-dark);
+    }
+
+    .training-item small {
+      color: var(--gray-500);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .training-empty {
+      border: 1px dashed var(--gray-300);
+      border-radius: 16px;
+      padding: 14px;
+      background: var(--gray-50);
+      color: var(--gray-500);
+      font-weight: 800;
+    }
+
+    .training-table-card {
+      margin-top: 18px;
+    }
+
+    .training-table-wrap {
+      overflow-x: auto;
+    }
+
+    .institutional-summary {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at top right, rgba(0,163,224,0.08), transparent 38%),
+        rgba(255,255,255,0.94);
+    }
+
+    .institutional-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .modal-list {
+      display: grid;
+      gap: 12px;
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-top: 12px;
+    }
+
+    .modal-list-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 14px;
+      background: var(--gray-50);
+      display: grid;
+      gap: 5px;
+    }
+
+    .modal-list-item strong {
+      color: var(--ypf-blue-dark);
+    }
+
+    .modal-list-item small {
+      color: var(--gray-700);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .phva-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .phva-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      padding: 16px;
+      border-left: 6px solid var(--ypf-blue);
+    }
+
+    .phva-card h4 {
+      margin: 0 0 8px;
+      color: var(--ypf-blue-dark);
+    }
+
+    .phva-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--gray-700);
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1180px) {
+      .training-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .employee-detail-panel {
+        position: relative;
+        top: auto;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .title h2 {
+        font-size: 28px;
+        line-height: 1.12;
+      }
+
+      .institutional-summary {
+        min-height: auto;
+      }
+
+      .training-controls {
+        display: grid;
+      }
+
+      .training-controls input,
+      .training-controls select {
+        min-width: 0;
+      }
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -1381,27 +1757,39 @@
       </section>
 
       
-<section class="section" id="capacitaciones">
-  <div class="grid two">
 
-    <div class="card">
-      <div class="toolbar">
-        <div>
-          <h3>Fichas de capacitación del personal</h3>
-          <p>Ingresá a cada trabajador para consultar historial, capacitaciones realizadas, pendientes, vencidas y porcentaje individual de cumplimiento.</p>
-        </div>
-        <div>
-          <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
-          <button class="primary" onclick="openModal('trainingModal')">+ Nueva capacitación</button>
-        </div>
+<section class="section" id="capacitaciones">
+  <div class="training-hero">
+    <h3>Gestión de competencias y capacitación SST</h3>
+    <p>Seguimiento individual del personal, trazabilidad de cursos realizados, pendientes, vencimientos y alertas preventivas.</p>
+
+    <div class="training-controls">
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <input class="search" id="employeeSearch" placeholder="Buscar trabajador, rol o curso..." />
+        <select id="statusFilter">
+          <option value="todos">Todos los estados</option>
+          <option value="Realizada vigente">Realizada vigente</option>
+          <option value="Realizada por vencer">Realizada por vencer</option>
+          <option value="Realizada vencida">Realizada vencida</option>
+          <option value="Pendiente">Pendiente</option>
+        </select>
       </div>
 
-      <input class="search" id="employeeSearch" placeholder="Buscar trabajador, rol o curso..." />
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
+        <button class="primary" onclick="openModal('trainingModal')">+ Nueva capacitación</button>
+      </div>
+    </div>
+  </div>
 
+  <div class="training-layout">
+    <div class="card">
+      <h3>Personal registrado</h3>
+      <p>Seleccioná una persona para visualizar su legajo de capacitación SST.</p>
       <div class="employee-training-grid" id="employeeProfiles"></div>
     </div>
 
-    <div class="card">
+    <div class="card employee-detail-panel">
       <div id="employeeTrainingDetail">
         <div class="employee-detail-header">
           <h3>Seleccioná un trabajador</h3>
@@ -1409,41 +1797,35 @@
         </div>
 
         <div class="footer-note">
-          Esta vista permite pasar de una tabla general a una gestión individual por trabajador, fortaleciendo la trazabilidad y el seguimiento preventivo del Plan Anual de Capacitación.
+          Esta vista permite gestionar competencias por trabajador, diferenciando capacitaciones realizadas, pendientes, vigentes, por vencer y vencidas.
         </div>
       </div>
     </div>
-
   </div>
 
-  <div class="card" style="margin-top:18px;">
+  <div class="card training-table-card">
     <h3>Registro general de capacitaciones</h3>
     <p>Vista completa de cursos cargados, realización, vencimientos y alertas simuladas.</p>
 
-    <select id="statusFilter" style="max-width:280px; margin-bottom:14px;">
-      <option value="todos">Todos los estados</option>
-      <option value="Realizada vigente">Realizada vigente</option>
-      <option value="Realizada por vencer">Realizada por vencer</option>
-      <option value="Realizada vencida">Realizada vencida</option>
-      <option value="Pendiente">Pendiente</option>
-    </select>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Empleado</th>
-          <th>Puesto / rol</th>
-          <th>Curso asignado</th>
-          <th>Realización</th>
-          <th>Vencimiento</th>
-          <th>Estado</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody id="trainingTable"></tbody>
-    </table>
+    <div class="training-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Empleado</th>
+            <th>Puesto / rol</th>
+            <th>Curso asignado</th>
+            <th>Realización</th>
+            <th>Vencimiento</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="trainingTable"></tbody>
+      </table>
+    </div>
   </div>
 </section>
+
 
 
       <section class="section" id="emergencias">
@@ -1748,6 +2130,7 @@
 
 
       
+
 <section class="section" id="institucional">
   <div class="grid two">
     <div class="card institutional-summary">
@@ -1757,7 +2140,9 @@
       </div>
 
       <div class="institutional-actions">
-        <button class="secondary" onclick="openModal('academicModal')">Ver equipo docente</button>
+        <button class="secondary" type="button" onclick="renderAcademic(); openModal('academicModal');">
+          Ver equipo docente
+        </button>
       </div>
     </div>
 
@@ -1768,7 +2153,9 @@
       </div>
 
       <div class="institutional-actions">
-        <button class="secondary" onclick="openModal('normativeModal')">Ver normativa aplicada</button>
+        <button class="secondary" type="button" onclick="renderAcademic(); openModal('normativeModal');">
+          Ver normativa aplicada
+        </button>
       </div>
     </div>
   </div>
@@ -1825,6 +2212,7 @@
     <p>La aplicación se presenta como una propuesta de mejora digital orientada a fortalecer la trazabilidad documental, la gestión de competencias, la preparación ante emergencias, la participación del personal y la mejora continua del Sistema de Gestión de Seguridad y Salud en el Trabajo.</p>
   </div>
 </section>
+
 
 
       <section class="section" id="reportes">
@@ -1921,6 +2309,27 @@
     </button>
   </div>
 </div>
+
+
+  <div class="modal" id="academicModal">
+    <div class="modal-content">
+      <h3>👨‍🏫 Equipo docente</h3>
+      <p>Docentes de referencia para el seguimiento académico y técnico del proyecto.</p>
+      <div class="modal-list" id="academicModalList"></div>
+      <br>
+      <button class="secondary" type="button" onclick="closeModal('academicModal')">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="modal" id="normativeModal">
+    <div class="modal-content">
+      <h3>📚 Normativa aplicada</h3>
+      <p>Marco legal y técnico considerado en la propuesta SST.</p>
+      <div class="modal-list" id="normativeModalList"></div>
+      <br>
+      <button class="secondary" type="button" onclick="closeModal('normativeModal')">Cerrar</button>
+    </div>
+  </div>
 
 <div class="toast" id="toast"></div>
 
@@ -2043,7 +2452,7 @@
       { title: "Resolución SRT 905/15", desc: "Funciones de los Servicios de Higiene y Seguridad y Medicina del Trabajo." },
       { title: "Resolución SRT 84/12", desc: "Protocolo para medición de iluminación en el ambiente laboral." },
       { title: "Resolución SRT 85/12", desc: "Protocolo para medición de ruido en el ambiente laboral." },
-      { title: "Resolución SRT 30/23", desc: "Criterios para evaluación de estrés térmico por calor." },
+      { title: "Resolución SRT 30/23", desc: "Evaluación del estrés térmico por calor." },
       { title: "Resolución SRT 886/15", desc: "Protocolo de ergonomía y evaluación de factores de riesgo ergonómico." },
       { title: "Resolución SRT 900/15", desc: "Medición y verificación de puesta a tierra y continuidad de masas." },
       { title: "ISO 45001:2018", desc: "Sistema de Gestión de Seguridad y Salud en el Trabajo." },
@@ -2060,6 +2469,17 @@
       "Botiquín disponible y accesible",
       "Punto de encuentro identificado en plano de evacuación"
     ];
+
+
+    function normalizeTrainings() {
+      trainings = trainings.map(t => ({
+        ...t,
+        done: typeof t.done === "boolean" ? t.done : true,
+        completed: t.completed || (typeof t.done === "boolean" && !t.done ? "" : t.due)
+      }));
+
+      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+    }
 
     const today = new Date("2026-05-27T12:00:00");
 
@@ -2634,6 +3054,7 @@
     });
     document.getElementById("statusFilter").addEventListener("change", renderTrainingTable);
 
+    normalizeTrainings();
     populateSelectors();
     refreshAll();
   </script>
