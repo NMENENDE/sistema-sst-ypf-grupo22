@@ -1995,6 +1995,24 @@
       margin: 3px 0;
     }
 
+
+    .training-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .training-update-btn {
+      background: #dcfce7 !important;
+      color: #166534 !important;
+      border: 1px solid #bbf7d0 !important;
+    }
+
+    .training-update-btn:hover {
+      filter: brightness(0.98);
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -2210,7 +2228,7 @@
           </div>
 
           <div class="training-note">
-            La gestión se realiza por trabajador. Las “capacitaciones requeridas” son todas las capacitaciones asignadas a esa persona; el cumplimiento surge de comparar cuántas están realizadas y vigentes frente al total requerido.
+            La gestión se realiza por trabajador. Si una capacitación pendiente o vencida se realiza, el sistema actualiza el legajo, recalcula el cumplimiento y la mueve automáticamente al grupo de capacitaciones realizadas vigentes.
           </div>
         </div>
       </div>
@@ -3014,7 +3032,22 @@
       const detail = document.getElementById("employeeTrainingDetail");
       if (!employee || !detail) return;
 
+      window.selectedTrainingEmployee = employee.name;
+
       const stats = getEmployeeTrainingStats(employee.name);
+
+      const buildActionButtons = (t) => {
+        const idx = trainings.indexOf(t);
+        const state = trainingState(t);
+        const needsUpdate = state === "Pendiente" || state === "Realizada vencida";
+
+        return `
+          <div class="training-action-row">
+            <button class="secondary" onclick="simulateEmail(${idx})">Enviar mail</button>
+            ${needsUpdate ? `<button class="secondary training-update-btn" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
+          </div>
+        `;
+      };
 
       const buildGroup = (title, icon, list, extraClass = "") => `
         <div class="training-group">
@@ -3025,7 +3058,7 @@
               <small><b>Realización:</b> ${t.done && t.completed ? formatDate(t.completed) : "Pendiente"}</small>
               <small><b>Vencimiento / programación:</b> ${formatDate(t.due)}</small>
               <span class="pill ${trainingStateClass(trainingState(t))}">● ${trainingStateLabel(t)}</span>
-              <button class="secondary" onclick="simulateEmail(${trainings.indexOf(t)})">Enviar mail</button>
+              ${buildActionButtons(t)}
             </div>
           `).join("") : `<div class="training-empty">No hay registros en esta categoría.</div>`}
         </div>
@@ -3219,7 +3252,9 @@
         return;
       }
 
-      trainings.push({
+      const existingIndex = trainings.findIndex(t => t.employee === employee.name && t.course === course);
+
+      const updatedRecord = {
         employee: employee.name,
         role: employee.role,
         email,
@@ -3227,14 +3262,23 @@
         done,
         completed: done ? completed : "",
         due
-      });
+      };
+
+      if (existingIndex >= 0) {
+        trainings[existingIndex] = { ...trainings[existingIndex], ...updatedRecord };
+      } else {
+        trainings.push(updatedRecord);
+      }
 
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
       closeModal("trainingModal");
       refreshAll();
       showEmployeeTrainingDetail(employee.name);
 
-      showToast(done ? "Capacitación realizada registrada correctamente." : "Capacitación pendiente/programada registrada correctamente.");
+      showToast(existingIndex >= 0
+        ? "Capacitación actualizada correctamente en el legajo del trabajador."
+        : (done ? "Capacitación realizada registrada correctamente." : "Capacitación pendiente/programada registrada correctamente.")
+      );
     }
 
     function addDrill() {
@@ -3279,6 +3323,28 @@
       window.toastTimer = setTimeout(() => toast.style.display = "none", 4200);
     }
 
+
+
+    function markTrainingCompleted(index) {
+      const training = trainings[index];
+      if (!training) return;
+
+      const todayISO = today.toISOString().slice(0, 10);
+      const nextYear = new Date(today);
+      nextYear.setFullYear(nextYear.getFullYear() + 1);
+      const nextYearISO = nextYear.toISOString().slice(0, 10);
+
+      training.done = true;
+      training.completed = todayISO;
+      training.due = nextYearISO;
+
+      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+
+      refreshAll();
+      showEmployeeTrainingDetail(training.employee);
+
+      showToast(`✅ Capacitación "${training.course}" actualizada como realizada y vigente para ${training.employee}.`);
+    }
 
     function updateTrainingDashboard() {
       const states = trainings.map(t => trainingState(t));
