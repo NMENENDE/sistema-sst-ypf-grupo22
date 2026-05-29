@@ -1977,6 +1977,24 @@
       }
     }
 
+
+    .auto-action-note {
+      font-size: 12px;
+      color: var(--gray-500);
+      font-weight: 800;
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+
+    .bar-tooltip ul {
+      margin: 6px 0 0;
+      padding-left: 16px;
+    }
+
+    .bar-tooltip li {
+      margin: 3px 0;
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -2115,7 +2133,7 @@
           </div>
 
           <div class="card">
-            <h3>Próximas acciones automáticas</h3>
+            <h3>Próximas acciones automáticas globales</h3><p>Alertas generadas sobre todas las capacitaciones cargadas en el sistema.</p>
             <div class="step-list" id="autoActions"></div>
           </div>
         </div>
@@ -2192,7 +2210,7 @@
           </div>
 
           <div class="training-note">
-            La gestión se realiza por trabajador para evitar listados extensos y permitir una lectura clara de la situación individual: realizadas, pendientes, vencidas y próximas a vencer.
+            La gestión se realiza por trabajador. Las “capacitaciones requeridas” son todas las capacitaciones asignadas a esa persona; el cumplimiento surge de comparar cuántas están realizadas y vigentes frente al total requerido.
           </div>
         </div>
       </div>
@@ -3038,7 +3056,7 @@
         </div>
 
         <div class="footer-note">
-          Indicador individual = capacitaciones realizadas y vigentes / capacitaciones requeridas × 100.
+          Indicador individual = capacitaciones realizadas y vigentes / capacitaciones requeridas asignadas al trabajador × 100.
         </div>
       `;
     }
@@ -3062,19 +3080,45 @@
       document.getElementById("expiredCount").textContent = vencidas;
       document.getElementById("globalProgress").style.width = compliance + "%";
 
-      const courseCounts = courses.slice(0, 7).map(course => ({
-        course,
-        count: trainings.filter(t => t.course === course).length
-      }));
+      const courseCounts = courses.slice(0, 7).map(course => {
+        const records = trainings.filter(t => t.course === course);
+        return {
+          course,
+          count: records.length,
+          records
+        };
+      });
+
       const max = Math.max(...courseCounts.map(c => c.count), 1);
+
       document.getElementById("courseChart").innerHTML = courseCounts.map(c => {
         const percentage = Math.round((c.count / max) * 100);
+
+        const realizadas = c.records
+          .filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer")
+          .map(t => `${t.employee} (${trainingState(t)})`);
+
+        const pendientesCurso = c.records
+          .filter(t => trainingState(t) === "Pendiente")
+          .map(t => `${t.employee} (pendiente)`);
+
+        const vencidasCurso = c.records
+          .filter(t => trainingState(t) === "Realizada vencida")
+          .map(t => `${t.employee} (vencida)`);
+
+        const peopleList = `
+          ${realizadas.length ? `<b>Realizadas:</b><ul>${realizadas.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+          ${pendientesCurso.length ? `<b>Pendientes:</b><ul>${pendientesCurso.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+          ${vencidasCurso.length ? `<b>Vencidas:</b><ul>${vencidasCurso.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+          ${!c.records.length ? "Sin trabajadores asignados actualmente." : ""}
+        `;
+
         return `
           <div class="bar-item">
             <div class="bar-tooltip">
-              Curso: ${c.course}<br>
-              Registros cargados: ${c.count}<br>
-              Representa el nivel de seguimiento dentro del plan anual de capacitación SST.
+              <b>Curso:</b> ${c.course}<br>
+              <b>Capacitaciones requeridas:</b> ${c.count}<br>
+              ${peopleList}
             </div>
             <div class="bar-title-row">
               <span>${c.course}</span>
@@ -3092,7 +3136,16 @@
         .slice(0, 4);
 
       document.getElementById("autoActions").innerHTML = actions.length ? actions.map(a => `
-        <div class="step"><div><strong>${a.employee}</strong><br>${a.course}<br><span class="pill ${trainingStateClass(a.state)}">${a.state}</span></div></div>
+        <div class="step">
+          <div>
+            <strong>${a.employee}</strong><br>
+            ${a.course}<br>
+            <span class="pill ${trainingStateClass(a.state)}">${a.state}</span>
+            <div class="auto-action-note">
+              Acción global del sistema: revisar vencimiento, programar capacitación o enviar alerta.
+            </div>
+          </div>
+        </div>
       `).join("") : `<div class="step"><div>No hay vencimientos críticos próximos.</div></div>`;
     }
 
