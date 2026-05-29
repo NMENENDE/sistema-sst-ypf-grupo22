@@ -1002,6 +1002,28 @@
     }
 
 
+    /* Ajustes finales: título superior y vista institucional */
+    .title h2 {
+      max-width: 900px;
+      line-height: 1.12;
+      word-break: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .institutional-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .institutional-summary {
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
     /* Fichas de capacitación por trabajador */
     .employee-training-grid {
       display: grid;
@@ -1078,7 +1100,7 @@
 
     .training-summary {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
       gap: 10px;
       margin: 14px 0;
     }
@@ -1103,6 +1125,36 @@
       text-transform: uppercase;
     }
 
+    .training-group {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .training-group h4 {
+      margin: 10px 0 0;
+      color: var(--ypf-blue-dark);
+    }
+
+    .training-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 13px;
+      background: white;
+      display: grid;
+      gap: 6px;
+    }
+
+    .training-item strong {
+      color: var(--ypf-blue-dark);
+    }
+
+    .training-item small {
+      color: var(--gray-500);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
     .norm-item strong {
       display: block;
       margin-bottom: 4px;
@@ -1112,6 +1164,33 @@
       display: block;
       font-weight: 700;
       color: var(--gray-700);
+      line-height: 1.35;
+    }
+
+    .modal-list {
+      display: grid;
+      gap: 12px;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .modal-list-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 14px;
+      background: var(--gray-50);
+      display: grid;
+      gap: 5px;
+    }
+
+    .modal-list-item strong {
+      color: var(--ypf-blue-dark);
+    }
+
+    .modal-list-item small {
+      color: var(--gray-700);
+      font-weight: 700;
       line-height: 1.35;
     }
 
@@ -1141,6 +1220,16 @@
       color: var(--gray-700);
       font-weight: 700;
       line-height: 1.5;
+    }
+
+    @media (max-width: 650px) {
+      .title h2 {
+        font-size: 28px;
+      }
+
+      .institutional-summary {
+        min-height: auto;
+      }
     }
 
     .print-only { display: none; }
@@ -1299,7 +1388,7 @@
       <div class="toolbar">
         <div>
           <h3>Fichas de capacitación del personal</h3>
-          <p>Ingresá a cada trabajador para consultar historial, cursos vigentes, vencidos, pendientes y porcentaje de cumplimiento.</p>
+          <p>Ingresá a cada trabajador para consultar historial, capacitaciones realizadas, pendientes, vencidas y porcentaje individual de cumplimiento.</p>
         </div>
         <div>
           <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
@@ -1316,7 +1405,7 @@
       <div id="employeeTrainingDetail">
         <div class="employee-detail-header">
           <h3>Seleccioná un trabajador</h3>
-          <p>El sistema mostrará su historial completo de capacitación y el estado de cumplimiento individual.</p>
+          <p>El sistema mostrará el historial completo de capacitación y el cumplimiento individual.</p>
         </div>
 
         <div class="footer-note">
@@ -1329,13 +1418,14 @@
 
   <div class="card" style="margin-top:18px;">
     <h3>Registro general de capacitaciones</h3>
-    <p>Vista completa de cursos cargados, vencimientos y alertas simuladas.</p>
+    <p>Vista completa de cursos cargados, realización, vencimientos y alertas simuladas.</p>
 
     <select id="statusFilter" style="max-width:280px; margin-bottom:14px;">
       <option value="todos">Todos los estados</option>
-      <option value="Vigente">Vigente</option>
-      <option value="Por vencer">Por vencer</option>
-      <option value="Vencido">Vencido</option>
+      <option value="Realizada vigente">Realizada vigente</option>
+      <option value="Realizada por vencer">Realizada por vencer</option>
+      <option value="Realizada vencida">Realizada vencida</option>
+      <option value="Pendiente">Pendiente</option>
     </select>
 
     <table>
@@ -1344,6 +1434,7 @@
           <th>Empleado</th>
           <th>Puesto / rol</th>
           <th>Curso asignado</th>
+          <th>Realización</th>
           <th>Vencimiento</th>
           <th>Estado</th>
           <th>Acción</th>
@@ -1659,16 +1750,26 @@
       
 <section class="section" id="institucional">
   <div class="grid two">
-    <div class="card">
-      <h3>Supervisión académica</h3>
-      <p>Docentes de referencia para el seguimiento y validación académica del proyecto desarrollado por Grupo 22.</p>
-      <div class="grid" id="academicList"></div>
+    <div class="card institutional-summary">
+      <div>
+        <h3>👨‍🏫 Supervisión académica</h3>
+        <p>Proyecto desarrollado bajo seguimiento docente de la Tecnicatura en Seguridad e Higiene en el Trabajo – UTN BA.</p>
+      </div>
+
+      <div class="institutional-actions">
+        <button class="secondary" onclick="openModal('academicModal')">Ver equipo docente</button>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>Normativa aplicada</h3>
-      <p>Marco legal, técnico y preventivo considerado para la propuesta de gestión SST e IPER.</p>
-      <div class="norm-list" id="normList"></div>
+    <div class="card institutional-summary">
+      <div>
+        <h3>📚 Normativa aplicada</h3>
+        <p>Marco legal, técnico y preventivo utilizado para IPER, emergencias, capacitación y gestión SST.</p>
+      </div>
+
+      <div class="institutional-actions">
+        <button class="secondary" onclick="openModal('normativeModal')">Ver normativa aplicada</button>
+      </div>
     </div>
   </div>
 
@@ -1721,7 +1822,7 @@
 
   <div class="card" style="margin-top:18px;">
     <h3>Proyecto desarrollado por Grupo 22</h3>
-    <p>La aplicación se presenta como una propuesta de mejora digital orientada a fortalecer la trazabilidad documental, la gestión de capacitaciones, la preparación ante emergencias, la participación del personal y la mejora continua del Sistema de Gestión de Seguridad y Salud en el Trabajo.</p>
+    <p>La aplicación se presenta como una propuesta de mejora digital orientada a fortalecer la trazabilidad documental, la gestión de competencias, la preparación ante emergencias, la participación del personal y la mejora continua del Sistema de Gestión de Seguridad y Salud en el Trabajo.</p>
   </div>
 </section>
 
@@ -1851,12 +1952,18 @@
     ];
 
     let trainings = JSON.parse(localStorage.getItem("ypfTrainings")) || [
-      { employee: employees[0].name, role: employees[0].role, email: employees[0].email, course: "Plan de evacuación y simulacros", due: "2026-06-15" },
-      { employee: employees[1].name, role: employees[1].role, email: employees[1].email, course: "RCP y Primeros Auxilios", due: "2026-07-30" },
-      { employee: employees[2].name, role: employees[2].role, email: employees[2].email, course: "Riesgo químico: vapores inflamables/tóxicos", due: "2026-06-05" },
-      { employee: employees[3].name, role: employees[3].role, email: employees[3].email, course: "Riesgo de incendio y uso de extintores", due: "2026-05-20" },
-      { employee: employees[4].name, role: employees[4].role, email: employees[4].email, course: "Control y contención de derrames", due: "2026-08-12" },
-      { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Uso de EPP y Señalización", due: "2026-06-22" }
+      { employee: employees[0].name, role: employees[0].role, email: employees[0].email, course: "Plan de evacuación y simulacros", done: true, completed: "2026-03-15", due: "2026-06-15" },
+      { employee: employees[0].name, role: employees[0].role, email: employees[0].email, course: "Uso de EPP y Señalización", done: true, completed: "2026-02-20", due: "2027-02-20" },
+      { employee: employees[1].name, role: employees[1].role, email: employees[1].email, course: "RCP y Primeros Auxilios", done: true, completed: "2026-04-12", due: "2026-07-30" },
+      { employee: employees[1].name, role: employees[1].role, email: employees[1].email, course: "Actos y Condiciones Inseguras", done: false, completed: "", due: "2026-06-20" },
+      { employee: employees[2].name, role: employees[2].role, email: employees[2].email, course: "Riesgo químico: vapores inflamables/tóxicos", done: true, completed: "2025-06-05", due: "2026-06-05" },
+      { employee: employees[2].name, role: employees[2].role, email: employees[2].email, course: "Manejo seguro de combustibles", done: true, completed: "2026-03-18", due: "2027-03-18" },
+      { employee: employees[3].name, role: employees[3].role, email: employees[3].email, course: "Riesgo de incendio y uso de extintores", done: true, completed: "2025-05-20", due: "2026-05-20" },
+      { employee: employees[3].name, role: employees[3].role, email: employees[3].email, course: "Plan de evacuación y simulacros", done: false, completed: "", due: "2026-06-25" },
+      { employee: employees[4].name, role: employees[4].role, email: employees[4].email, course: "Control y contención de derrames", done: true, completed: "2026-05-12", due: "2026-08-12" },
+      { employee: employees[4].name, role: employees[4].role, email: employees[4].email, course: "Autocontrol preventivo", done: true, completed: "2026-04-01", due: "2027-04-01" },
+      { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Uso de EPP y Señalización", done: true, completed: "2026-03-22", due: "2026-06-22" },
+      { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Prevención psicosocial", done: false, completed: "", due: "2026-07-10" }
     ];
 
     let drills = JSON.parse(localStorage.getItem("ypfDrills")) || [
@@ -1923,10 +2030,10 @@
     ];
 
     const academicSupervisors = [
-      { name: "Martín Bruno", function: "Seguimiento académico y criterios preventivos" },
-      { name: "José Navío", function: "Supervisión técnica y operativa del proyecto" },
-      { name: "Víctor Morera", function: "Evaluación de riesgos, controles y mejora continua" },
-      { name: "Sebastián Ezpeleta", function: "Gestión SST, documentación y enfoque preventivo" }
+      { name: "Lic. Martín Bruno", function: "Seguimiento académico y criterios preventivos" },
+      { name: "Ing. José Navío", function: "Supervisión técnica y operativa del proyecto" },
+      { name: "Ing. Víctor Morera", function: "Evaluación de riesgos, controles y mejora continua" },
+      { name: "Lic. Sebastián Ezpeleta", function: "Gestión SST, documentación y enfoque preventivo" }
     ];
 
     const normativeFramework = [
@@ -1979,19 +2086,49 @@
     }
 
 
+    function trainingState(t) {
+      if (!t.done) return "Pendiente";
+
+      const dueStatus = statusFor(t.due);
+
+      if (dueStatus === "Vigente") return "Realizada vigente";
+      if (dueStatus === "Por vencer") return "Realizada por vencer";
+      return "Realizada vencida";
+    }
+
+    function trainingStateClass(state) {
+      if (state === "Realizada vigente") return "vigente";
+      if (state === "Realizada por vencer") return "por-vencer";
+      if (state === "Realizada vencida") return "vencido";
+      return "programado";
+    }
+
+    function trainingStateLabel(t) {
+      const state = trainingState(t);
+
+      if (state === "Pendiente") return "Pendiente / programada";
+
+      const days = daysTo(t.due);
+      if (state === "Realizada vigente") return `Realizada · vigente ${days} días`;
+      if (state === "Realizada por vencer") return `Realizada · por vencer ${days} días`;
+      return `Realizada · vencida hace ${Math.abs(days)} días`;
+    }
+
     function getEmployeeTrainings(employeeName) {
       return trainings.filter(t => t.employee === employeeName);
     }
 
     function getEmployeeTrainingStats(employeeName) {
       const assigned = getEmployeeTrainings(employeeName);
-      const total = assigned.length;
-      const vigente = assigned.filter(t => statusFor(t.due) === "Vigente").length;
-      const porVencer = assigned.filter(t => statusFor(t.due) === "Por vencer").length;
-      const vencido = assigned.filter(t => statusFor(t.due) === "Vencido").length;
-      const compliance = total ? Math.round((vigente / total) * 100) : 0;
+      const required = assigned.length;
+      const realizadas = assigned.filter(t => t.done).length;
+      const vigentes = assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer").length;
+      const porVencer = assigned.filter(t => trainingState(t) === "Realizada por vencer").length;
+      const vencidas = assigned.filter(t => trainingState(t) === "Realizada vencida").length;
+      const pendientes = assigned.filter(t => trainingState(t) === "Pendiente").length;
+      const compliance = required ? Math.round((vigentes / required) * 100) : 0;
 
-      return { assigned, total, vigente, porVencer, vencido, compliance };
+      return { assigned, required, realizadas, vigentes, porVencer, vencidas, pendientes, compliance };
     }
 
     function escapeJsText(text) {
@@ -2020,8 +2157,8 @@
 
             <div class="employee-kpis">
               <div class="employee-kpi"><b>${stats.compliance}%</b><small>Cumpl.</small></div>
-              <div class="employee-kpi"><b>${stats.vencido}</b><small>Venc.</small></div>
-              <div class="employee-kpi"><b>${stats.porVencer}</b><small>Próx.</small></div>
+              <div class="employee-kpi"><b>${stats.vencidas}</b><small>Venc.</small></div>
+              <div class="employee-kpi"><b>${stats.pendientes}</b><small>Pend.</small></div>
             </div>
 
             <button class="secondary" onclick="showEmployeeTrainingDetail('${escapeJsText(emp.name)}')">
@@ -2039,25 +2176,24 @@
 
       const stats = getEmployeeTrainingStats(employee.name);
 
-      const trainingRows = stats.assigned.length ? stats.assigned.map((t) => {
-        const status = statusFor(t.due);
-        const days = daysTo(t.due);
-        const label = status === "Vigente" ? `Vigente · ${days} días` : status === "Por vencer" ? `Por vencer · ${days} días` : `Vencido hace ${Math.abs(days)} días`;
-        const trainingIndex = trainings.indexOf(t);
-
-        return `
-          <tr>
-            <td>${t.course}</td>
-            <td>${formatDate(t.due)}</td>
-            <td><span class="pill ${statusClass(status)}">● ${label}</span></td>
-            <td><button class="secondary" onclick="simulateEmail(${trainingIndex})">Enviar mail</button></td>
-          </tr>
-        `;
-      }).join("") : `
-        <tr>
-          <td colspan="4">No hay capacitaciones cargadas para este trabajador.</td>
-        </tr>
+      const buildGroup = (title, icon, list) => `
+        <div class="training-group">
+          <h4>${icon} ${title}</h4>
+          ${list.length ? list.map(t => `
+            <div class="training-item">
+              <strong>${t.course}</strong>
+              <small><b>Realización:</b> ${t.done && t.completed ? formatDate(t.completed) : "Pendiente"}</small>
+              <small><b>Vencimiento / programación:</b> ${formatDate(t.due)}</small>
+              <span class="pill ${trainingStateClass(trainingState(t))}">● ${trainingStateLabel(t)}</span>
+              <button class="secondary" onclick="simulateEmail(${trainings.indexOf(t)})">Enviar mail</button>
+            </div>
+          `).join("") : `<div class="training-item"><small>No hay registros en esta categoría.</small></div>`}
+        </div>
       `;
+
+      const realizadas = stats.assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer");
+      const pendientes = stats.assigned.filter(t => trainingState(t) === "Pendiente");
+      const vencidas = stats.assigned.filter(t => trainingState(t) === "Realizada vencida");
 
       detail.innerHTML = `
         <div class="employee-detail-header">
@@ -2067,26 +2203,18 @@
 
         <div class="training-summary">
           <div class="training-summary-card"><strong>${stats.compliance}%</strong><span>Cumplimiento</span></div>
-          <div class="training-summary-card"><strong>${stats.total}</strong><span>Cursos cargados</span></div>
-          <div class="training-summary-card"><strong>${stats.vigente}</strong><span>Vigentes</span></div>
-          <div class="training-summary-card"><strong>${stats.porVencer}</strong><span>Por vencer</span></div>
-          <div class="training-summary-card"><strong>${stats.vencido}</strong><span>Vencidos</span></div>
+          <div class="training-summary-card"><strong>${stats.required}</strong><span>Requeridas</span></div>
+          <div class="training-summary-card"><strong>${stats.realizadas}</strong><span>Realizadas</span></div>
+          <div class="training-summary-card"><strong>${stats.pendientes}</strong><span>Pendientes</span></div>
+          <div class="training-summary-card"><strong>${stats.vencidas}</strong><span>Vencidas</span></div>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Curso</th>
-              <th>Vencimiento</th>
-              <th>Estado</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody>${trainingRows}</tbody>
-        </table>
+        ${buildGroup("Capacitaciones realizadas vigentes / por vencer", "✅", realizadas)}
+        ${buildGroup("Capacitaciones pendientes o programadas", "⚠️", pendientes)}
+        ${buildGroup("Capacitaciones realizadas vencidas", "❌", vencidas)}
 
         <div class="footer-note">
-          Indicador individual calculado en función de los cursos vigentes sobre el total de capacitaciones cargadas para el trabajador.
+          Indicador individual = capacitaciones realizadas y vigentes / capacitaciones requeridas × 100.
         </div>
       `;
     }
@@ -2095,26 +2223,28 @@
       const query = document.getElementById("employeeSearch")?.value.toLowerCase() || "";
       const filter = document.getElementById("statusFilter")?.value || "todos";
       const tbody = document.getElementById("trainingTable");
+      if (!tbody) return;
+
       tbody.innerHTML = "";
 
       const filtered = trainings.filter(t => {
-        const status = statusFor(t.due);
+        const state = trainingState(t);
         const matchesText = `${t.employee} ${t.course} ${t.role}`.toLowerCase().includes(query);
-        const matchesStatus = filter === "todos" || filter === status;
+        const matchesStatus = filter === "todos" || filter === state;
         return matchesText && matchesStatus;
       });
 
       filtered.forEach((t, index) => {
-        const status = statusFor(t.due);
-        const days = daysTo(t.due);
-        const label = status === "Vigente" ? `Vigente · ${days} días` : status === "Por vencer" ? `Por vencer · ${days} días` : `Vencido hace ${Math.abs(days)} días`;
+        const state = trainingState(t);
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><strong>${t.employee}</strong><br><small>${t.email}</small></td>
           <td>${t.role}</td>
           <td>${t.course}</td>
+          <td>${t.done && t.completed ? formatDate(t.completed) : "Pendiente"}</td>
           <td>${formatDate(t.due)}</td>
-          <td><span class="pill ${statusClass(status)}">● ${label}</span></td>
+          <td><span class="pill ${trainingStateClass(state)}">● ${trainingStateLabel(t)}</span></td>
           <td><button class="secondary" onclick="simulateEmail(${index})">Enviar mail</button></td>
         `;
         tbody.appendChild(tr);
@@ -2123,15 +2253,16 @@
 
     function renderDashboard() {
       const total = employees.length;
-      const statuses = trainings.map(t => statusFor(t.due));
-      const vigente = statuses.filter(s => s === "Vigente").length;
-      const porVencer = statuses.filter(s => s === "Por vencer").length;
-      const vencidas = statuses.filter(s => s === "Vencido").length;
-      const compliance = Math.round((vigente / trainings.length) * 100);
+      const states = trainings.map(t => trainingState(t));
+      const vigentes = states.filter(s => s === "Realizada vigente" || s === "Realizada por vencer").length;
+      const porVencer = states.filter(s => s === "Realizada por vencer").length;
+      const vencidas = states.filter(s => s === "Realizada vencida").length;
+      const pendientes = states.filter(s => s === "Pendiente").length;
+      const compliance = trainings.length ? Math.round((vigentes / trainings.length) * 100) : 0;
 
       document.getElementById("totalEmployees").textContent = total;
       document.getElementById("compliance").textContent = compliance + "%";
-      document.getElementById("nearExpire").textContent = porVencer;
+      document.getElementById("nearExpire").textContent = porVencer + pendientes;
       document.getElementById("expiredCount").textContent = vencidas;
       document.getElementById("globalProgress").style.width = compliance + "%";
 
@@ -2159,13 +2290,13 @@
       }).join("");
 
       const actions = trainings
-        .map(t => ({ ...t, status: statusFor(t.due), days: daysTo(t.due) }))
-        .filter(t => t.status !== "Vigente")
+        .map(t => ({ ...t, state: trainingState(t), days: daysTo(t.due) }))
+        .filter(t => t.state !== "Realizada vigente")
         .sort((a,b) => a.days - b.days)
         .slice(0, 4);
 
       document.getElementById("autoActions").innerHTML = actions.length ? actions.map(a => `
-        <div class="step"><div><strong>${a.employee}</strong><br>${a.course}<br><span class="pill ${statusClass(a.status)}">${a.status}</span></div></div>
+        <div class="step"><div><strong>${a.employee}</strong><br>${a.course}<br><span class="pill ${trainingStateClass(a.state)}">${a.state}</span></div></div>
       `).join("") : `<div class="step"><div>No hay vencimientos críticos próximos.</div></div>`;
     }
 
@@ -2211,13 +2342,13 @@
 
     function simulateEmail(index) {
       const t = trainings[index];
-      const status = statusFor(t.due);
-      showToast(`📧 Mail simulado para ${t.employee}: la capacitación "${t.course}" se encuentra ${status.toLowerCase()} y vence el ${formatDate(t.due)}.`);
+      const state = trainingState(t);
+      showToast(`📧 Mail simulado para ${t.employee}: la capacitación "${t.course}" figura como ${state.toLowerCase()} con fecha de vencimiento/programación ${formatDate(t.due)}.`);
     }
 
     function simulateAllEmails() {
-      const count = trainings.filter(t => statusFor(t.due) !== "Vigente").length;
-      showToast(`📧 Disparador automático simulado: se enviaron ${count} alertas por capacitaciones vencidas o próximas a vencer.`);
+      const count = trainings.filter(t => trainingState(t) !== "Realizada vigente").length;
+      showToast(`📧 Disparador automático simulado: se enviaron ${count} alertas por capacitaciones pendientes, vencidas o próximas a vencer.`);
     }
 
     function addTraining() {
@@ -2232,11 +2363,20 @@
         return;
       }
 
-      trainings.push({ employee: employee.name, role: employee.role, email, course, due });
+      trainings.push({
+        employee: employee.name,
+        role: employee.role,
+        email,
+        course,
+        done: true,
+        completed: today.toISOString().slice(0,10),
+        due
+      });
+
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
       closeModal("trainingModal");
       refreshAll();
-      showToast("Capacitación registrada correctamente.");
+      showToast("Capacitación registrada como realizada correctamente.");
     }
 
     function addDrill() {
@@ -2306,6 +2446,26 @@
       if (norms) {
         norms.innerHTML = normativeFramework.map(n => `
           <div class="norm-item">
+            <strong>${n.title}</strong>
+            <small>${n.desc}</small>
+          </div>
+        `).join("");
+      }
+
+      const academicModal = document.getElementById("academicModalList");
+      if (academicModal) {
+        academicModal.innerHTML = academicSupervisors.map(item => `
+          <div class="modal-list-item">
+            <strong>${item.name}</strong>
+            <small>${item.function}</small>
+          </div>
+        `).join("");
+      }
+
+      const normativeModal = document.getElementById("normativeModalList");
+      if (normativeModal) {
+        normativeModal.innerHTML = normativeFramework.map(n => `
+          <div class="modal-list-item">
             <strong>${n.title}</strong>
             <small>${n.desc}</small>
           </div>
