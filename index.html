@@ -2036,10 +2036,11 @@
     }
 
 
-    /* ===== Plan anual de capacitación UTN-YPF ===== */
+    /* ===== Plan anual de capacitación UTN-YPF - versión estable ===== */
     .annual-plan-card {
       background: radial-gradient(circle at top right, rgba(0,163,224,0.10), transparent 35%), rgba(255,255,255,0.94);
     }
+
     .annual-plan-head {
       display:flex;
       justify-content:space-between;
@@ -2048,6 +2049,7 @@
       flex-wrap:wrap;
       margin-bottom:14px;
     }
+
     .annual-badge {
       display:inline-flex;
       align-items:center;
@@ -2061,12 +2063,14 @@
       text-transform:uppercase;
       letter-spacing:.03em;
     }
+
     .training-calendar {
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
       gap:14px;
       margin-top:14px;
     }
+
     .calendar-month-card {
       border:1px solid var(--gray-200);
       border-radius:20px;
@@ -2075,6 +2079,7 @@
       box-shadow:0 10px 22px rgba(15,23,42,.06);
       display:grid;
     }
+
     .calendar-month-title {
       background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark));
       color:white;
@@ -2085,31 +2090,34 @@
       gap:10px;
       align-items:center;
     }
+
     .calendar-month-title span {
       font-size:12px;
       opacity:.9;
     }
+
     .calendar-course {
       padding:14px;
       display:grid;
       gap:8px;
       border-left:6px solid var(--ypf-sky);
     }
+
     .calendar-course strong {
       color:var(--ypf-blue-dark);
       line-height:1.25;
     }
+
     .calendar-course small {
       color:var(--gray-500);
       font-weight:700;
       line-height:1.35;
     }
+
     .calendar-course .pill {
       width:fit-content;
     }
-    .calendar-course:hover {
-      background:#fbfdff;
-    }
+
     .training-plan-note {
       background:linear-gradient(135deg,var(--ypf-blue-light),#ffffff);
       border:1px solid #cfe7ff;
@@ -2119,16 +2127,6 @@
       font-weight:800;
       line-height:1.45;
       margin-top:12px;
-    }
-    .plan-origin {
-      font-size:11px;
-      font-weight:900;
-      color:var(--ypf-blue-dark);
-      background:var(--ypf-blue-light);
-      border:1px solid #cfe7ff;
-      padding:5px 8px;
-      border-radius:999px;
-      width:fit-content;
     }
 
     .print-only { display: none; }
@@ -2317,13 +2315,13 @@
       <div class="annual-plan-head">
         <div>
           <h3>📅 Plan anual de capacitación SST</h3>
-          <p>Cronograma UTN–YPF para el puesto “Atención y carga de combustible en playa”. Cada curso del plan se transforma en capacitación requerida para el personal alcanzado.</p>
+          <p>Cronograma UTN–YPF para el puesto “Atención y carga de combustible en playa”.</p>
         </div>
         <span class="annual-badge">Cronograma 2026</span>
       </div>
 
       <div class="training-plan-note">
-        Las capacitaciones requeridas surgen del plan anual. El legajo de cada trabajador compara este cronograma contra los cursos realizados, pendientes o vencidos.
+        Este cronograma funciona como base del plan anual. El legajo individual permite verificar qué capacitaciones fueron realizadas, pendientes o vencidas.
       </div>
 
       <div class="training-calendar" id="annualTrainingCalendar"></div>
@@ -2898,6 +2896,23 @@
 
 
   <script>
+
+    const annualTrainingPlan = [
+      { month:"Enero", date:"2026-01-20", course:"Seguridad Laboral Básica", short:"Orden, limpieza y prevención de enfermedades profesionales." },
+      { month:"Febrero", date:"2026-02-18", course:"Uso de EPP y Señalización", short:"Uso, cuidado y mantenimiento de EPP e interpretación de señalización." },
+      { month:"Marzo", date:"2026-03-18", course:"Actos y Condiciones Inseguras", short:"Prevención de accidentes, incidentes y reporte de condiciones inseguras." },
+      { month:"Abril", date:"2026-04-16", course:"Riesgo de incendio y uso de extintores", short:"Prevención de incendios, clases de fuego y uso correcto de extintores." },
+      { month:"Mayo", date:"2026-05-14", course:"Riesgo químico: vapores inflamables/tóxicos", short:"Exposición a vapores inflamables, tóxicos e irritantes." },
+      { month:"Junio", date:"2026-06-12", course:"Control y contención de derrames", short:"Actuación ante derrames, contención y disposición segura." },
+      { month:"Julio", date:"2026-07-15", course:"Riesgo eléctrico y electricidad estática", short:"Riesgo eléctrico, bloqueo, EPP y electricidad estática." },
+      { month:"Agosto", date:"2026-08-13", course:"RCP y Primeros Auxilios", short:"Primeros auxilios, RCP, quemaduras, heridas y traumatismos." },
+      { month:"Septiembre", date:"2026-09-10", course:"Plan de evacuación y simulacros", short:"Roles, vías de evacuación, punto de encuentro y simulacros." },
+      { month:"Octubre", date:"2026-10-15", course:"Ergonomía", short:"Posturas forzadas, manipulación de cargas y recomendaciones preventivas." },
+      { month:"Noviembre", date:"2026-11-12", course:"Autocontrol preventivo", short:"Identificación de riesgos y verificación de condiciones seguras." },
+      { month:"Diciembre", date:"2026-12-10", course:"Manejo seguro de combustibles", short:"Manipulación segura, carga y descarga, derrames y fuentes de ignición." },
+      { month:"Diciembre", date:"2026-12-17", course:"Prevención psicosocial", short:"Estrés laboral, burnout, factores psicosociales y cultura de bienestar." }
+    ];
+
     const employees = [
       { name: "Carina Valeria Lamboglia", role: "Encargada de evacuación", email: "carina.lamboglia@ypf-utn.com" },
       { name: "Marianela Soledad Lobo", role: "Brigadista de primeros auxilios", email: "marianela.lobo@ypf-utn.com" },
@@ -2907,23 +2922,20 @@
       { name: "Tamara Yamila González", role: "Comunicación y capacitación", email: "tamara.gonzalez@ypf-utn.com" }
     ];
 
-    const courses = annualTrainingPlan.map(item => item.course);
-
-
-    const annualTrainingPlan = [
-      { month:"Enero", date:"2026-01-20", course:"Seguridad Laboral Básica", short:"Orden, limpieza y prevención de enfermedades profesionales.", contents:["Definiciones","Orden y limpieza","Enfermedades profesionales","Medidas preventivas"] },
-      { month:"Febrero", date:"2026-02-18", course:"Uso de EPP y Señalización", short:"Uso, cuidado y mantenimiento de EPP e interpretación de señalización.", contents:["Aspectos legales","Protección de manos","Tipos de señales","Señalización en estación"] },
-      { month:"Marzo", date:"2026-03-18", course:"Actos y Condiciones Inseguras", short:"Prevención de accidentes, incidentes y reporte de condiciones inseguras.", contents:["Actos inseguros","Condiciones inseguras","Accidentes e incidentes","Notificación"] },
-      { month:"Abril", date:"2026-04-16", course:"Riesgo de incendio y uso de extintores", short:"Prevención de incendios, clases de fuego y uso correcto de extintores.", contents:["Elementos del fuego","Clases de fuego","Agentes extintores","Uso de extintores"] },
-      { month:"Mayo", date:"2026-05-14", course:"Riesgo químico: vapores inflamables/tóxicos", short:"Exposición a vapores inflamables, tóxicos e irritantes.", contents:["Riesgo químico","Vías de ingreso","Efectos sobre la salud","Medidas preventivas"] },
-      { month:"Junio", date:"2026-06-12", course:"Control y contención de derrames", short:"Actuación ante derrames, contención y disposición segura.", contents:["Tipos de derrames","Kit antiderrame","Respuesta inmediata","Residuos contaminados"] },
-      { month:"Julio", date:"2026-07-15", course:"Riesgo eléctrico y electricidad estática", short:"Riesgo eléctrico, bloqueo, EPP y electricidad estática.", contents:["Distancias de seguridad","EPP","Bloqueo y consignación","Electricidad estática"] },
-      { month:"Agosto", date:"2026-08-13", course:"RCP y Primeros Auxilios", short:"Primeros auxilios, RCP, quemaduras, heridas y traumatismos.", contents:["RCP","Quemaduras","Heridas y hemorragias","Traumatismos"] },
-      { month:"Septiembre", date:"2026-09-10", course:"Plan de evacuación y simulacros", short:"Roles, vías de evacuación, punto de encuentro y simulacros.", contents:["Tipos de emergencias","Roles","Vías de evacuación","Punto de encuentro"] },
-      { month:"Octubre", date:"2026-10-15", course:"Ergonomía", short:"Posturas forzadas, manipulación de cargas y recomendaciones preventivas.", contents:["Definiciones","Beneficios","Res. SRT 886/15","Posturas forzadas"] },
-      { month:"Noviembre", date:"2026-11-12", course:"Autocontrol preventivo", short:"Identificación de riesgos y verificación de condiciones seguras.", contents:["Identificación de riesgos","Condiciones seguras","Comunicación","Medidas preventivas"] },
-      { month:"Diciembre", date:"2026-12-10", course:"Manejo seguro de combustibles", short:"Manipulación segura, carga y descarga, derrames y fuentes de ignición.", contents:["Características y riesgos","Carga y descarga","Prevención de derrames","Emergencias"] },
-      { month:"Diciembre", date:"2026-12-17", course:"Prevención psicosocial", short:"Estrés laboral, burnout, factores psicosociales y cultura de bienestar.", contents:["Estrés laboral","Burnout","Factores psicosociales","Hábitos saludables"] }
+    const courses = [
+      "Seguridad Laboral Básica",
+      "Uso de EPP y Señalización",
+      "Actos y Condiciones Inseguras",
+      "Riesgo de incendio y uso de extintores",
+      "Riesgo químico: vapores inflamables/tóxicos",
+      "Control y contención de derrames",
+      "Riesgo eléctrico y electricidad estática",
+      "RCP y Primeros Auxilios",
+      "Plan de evacuación y simulacros",
+      "Ergonomía",
+      "Autocontrol preventivo",
+      "Manejo seguro de combustibles",
+      "Prevención psicosocial"
     ];
 
     let trainings = JSON.parse(localStorage.getItem("ypfTrainings")) || [
@@ -3072,105 +3084,6 @@
     }
 
 
-
-    function getPlanItem(course) {
-      return annualTrainingPlan.find(item => item.course === course);
-    }
-
-    function getEmployeePlanRecords(employeeName) {
-      const employee = employees.find(e => e.name === employeeName);
-      if (!employee) return [];
-
-      return annualTrainingPlan.map(plan => {
-        const existing = trainings.find(t => t.employee === employee.name && t.course === plan.course);
-
-        if (existing) {
-          return { ...existing, planned: plan.date, plan };
-        }
-
-        return {
-          employee: employee.name,
-          role: employee.role,
-          email: employee.email,
-          course: plan.course,
-          done: false,
-          completed: "",
-          due: plan.date,
-          planned: plan.date,
-          plan,
-          fromPlan: true
-        };
-      });
-    }
-
-    function getAllPlanRecords() {
-      return employees.flatMap(emp => getEmployeePlanRecords(emp.name));
-    }
-
-    function markPlanCourseCompleted(employeeName, course) {
-      const employee = employees.find(e => e.name === employeeName);
-      const plan = getPlanItem(course);
-
-      if (!employee || !plan) {
-        showToast("No se encontró el curso del plan.");
-        return;
-      }
-
-      const existingIndex = trainings.findIndex(t => t.employee === employee.name && t.course === course);
-      const completedDate = today.toISOString().slice(0, 10);
-      const nextDueDate = new Date(today);
-      nextDueDate.setFullYear(nextDueDate.getFullYear() + 1);
-      const nextDueISO = nextDueDate.toISOString().slice(0, 10);
-
-      const updatedRecord = {
-        employee: employee.name,
-        role: employee.role,
-        email: employee.email,
-        course,
-        done: true,
-        completed: completedDate,
-        due: nextDueISO
-      };
-
-      if (existingIndex >= 0) {
-        trainings[existingIndex] = { ...trainings[existingIndex], ...updatedRecord };
-      } else {
-        trainings.push(updatedRecord);
-      }
-
-      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
-      refreshAll();
-      showEmployeeTrainingDetail(employee.name);
-      showToast(`✅ ${employee.name}: "${course}" registrada como realizada y vigente.`);
-    }
-
-    function renderAnnualTrainingPlan() {
-      const container = document.getElementById("annualTrainingCalendar");
-      if (!container) return;
-
-      container.innerHTML = annualTrainingPlan.map(item => {
-        const records = employees.map(emp => getEmployeePlanRecords(emp.name).find(r => r.course === item.course));
-        const completed = records.filter(r => trainingState(r) === "Realizada vigente" || trainingState(r) === "Realizada por vencer").length;
-        const total = records.length;
-        const percent = total ? Math.round((completed / total) * 100) : 0;
-
-        return `
-          <div class="calendar-month-card">
-            <div class="calendar-month-title">
-              <strong>${item.month}</strong>
-              <span>${formatDate(item.date)}</span>
-            </div>
-            <div class="calendar-course">
-              <strong>${item.course}</strong>
-              <small>${item.short}</small>
-              <span class="pill ${percent >= 80 ? "vigente" : percent >= 40 ? "por-vencer" : "programado"}">${percent}% del personal cumplido</span>
-              <small><b>Contenidos:</b> ${item.contents.join(" · ")}</small>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
     function trainingState(t) {
       if (!t.done) return "Pendiente";
 
@@ -3200,7 +3113,7 @@
     }
 
     function getEmployeeTrainings(employeeName) {
-      return getEmployeePlanRecords(employeeName);
+      return trainings.filter(t => t.employee === employeeName);
     }
 
     function getEmployeeTrainingStats(employeeName) {
@@ -3270,16 +3183,19 @@
       const detail = document.getElementById("employeeTrainingDetail");
       if (!employee || !detail) return;
 
+      window.selectedTrainingEmployee = employee.name;
+
       const stats = getEmployeeTrainingStats(employee.name);
 
       const buildActionButtons = (t) => {
+        const idx = trainings.indexOf(t);
         const state = trainingState(t);
         const needsUpdate = state === "Pendiente" || state === "Realizada vencida";
 
         return `
           <div class="training-action-row">
-            <button class="secondary" onclick="simulateEmailByRecord('${escapeJsText(t.employee)}', '${escapeJsText(t.course)}')">Enviar mail</button>
-            ${needsUpdate ? `<button class="secondary training-update-btn" type="button" onclick="markPlanCourseCompleted('${escapeJsText(t.employee)}', '${escapeJsText(t.course)}')">Registrar realización</button>` : ""}
+            <button class="secondary" onclick="simulateEmail(${idx})">Enviar mail</button>
+            ${needsUpdate ? `<button class="secondary training-update-btn" type="button" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
           </div>
         `;
       };
@@ -3290,10 +3206,8 @@
           ${list.length ? list.map(t => `
             <div class="training-item ${extraClass}">
               <strong>${t.course}</strong>
-              <span class="plan-origin">Plan anual · ${t.plan?.month || ""}</span>
-              <small><b>Fecha programada:</b> ${formatDate(t.planned || t.due)}</small>
               <small><b>Realización:</b> ${t.done && t.completed ? formatDate(t.completed) : "Pendiente"}</small>
-              <small><b>Vencimiento:</b> ${t.done ? formatDate(t.due) : "No aplica hasta su realización"}</small>
+              <small><b>Vencimiento / programación:</b> ${formatDate(t.due)}</small>
               <span class="pill ${trainingStateClass(trainingState(t))}">● ${trainingStateLabel(t)}</span>
               ${buildActionButtons(t)}
             </div>
@@ -3321,12 +3235,12 @@
 
         <div class="training-groups-wrap">
           ${buildGroup("Capacitaciones realizadas vigentes / por vencer", "✅", realizadas)}
-          ${buildGroup("Capacitaciones pendientes del cronograma", "⚠️", pendientes, "pending")}
+          ${buildGroup("Capacitaciones pendientes o programadas", "⚠️", pendientes, "pending")}
           ${buildGroup("Capacitaciones realizadas vencidas", "❌", vencidas, "expired")}
         </div>
 
         <div class="footer-note">
-          Indicador individual = capacitaciones del plan anual realizadas y vigentes / capacitaciones requeridas para el puesto × 100.
+          Indicador individual = capacitaciones realizadas y vigentes / capacitaciones requeridas asignadas al trabajador × 100.
         </div>
       `;
     }
@@ -3337,13 +3251,12 @@
 
     function renderDashboard() {
       const total = employees.length;
-      const allRecords = getAllPlanRecords();
-      const states = allRecords.map(t => trainingState(t));
+      const states = trainings.map(t => trainingState(t));
       const vigentes = states.filter(s => s === "Realizada vigente" || s === "Realizada por vencer").length;
       const porVencer = states.filter(s => s === "Realizada por vencer").length;
       const vencidas = states.filter(s => s === "Realizada vencida").length;
       const pendientes = states.filter(s => s === "Pendiente").length;
-      const compliance = allRecords.length ? Math.round((vigentes / allRecords.length) * 100) : 0;
+      const compliance = trainings.length ? Math.round((vigentes / trainings.length) * 100) : 0;
 
       document.getElementById("totalEmployees").textContent = total;
       document.getElementById("compliance").textContent = compliance + "%";
@@ -3351,9 +3264,13 @@
       document.getElementById("expiredCount").textContent = vencidas;
       document.getElementById("globalProgress").style.width = compliance + "%";
 
-      const courseCounts = annualTrainingPlan.slice(0, 7).map(plan => {
-        const records = employees.map(emp => getEmployeePlanRecords(emp.name).find(r => r.course === plan.course));
-        return { course: plan.course, count: records.length, records };
+      const courseCounts = courses.slice(0, 7).map(course => {
+        const records = trainings.filter(t => t.course === course);
+        return {
+          course,
+          count: records.length,
+          records
+        };
       });
 
       const max = Math.max(...courseCounts.map(c => c.count), 1);
@@ -3377,25 +3294,26 @@
           ${realizadas.length ? `<b>Realizadas:</b><ul>${realizadas.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
           ${pendientesCurso.length ? `<b>Pendientes:</b><ul>${pendientesCurso.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
           ${vencidasCurso.length ? `<b>Vencidas:</b><ul>${vencidasCurso.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+          ${!c.records.length ? "Sin trabajadores asignados actualmente." : ""}
         `;
 
         return `
           <div class="bar-item">
             <div class="bar-tooltip">
-              <b>Curso requerido:</b> ${c.course}<br>
-              <b>Personal alcanzado:</b> ${c.count}<br>
+              <b>Curso:</b> ${c.course}<br>
+              <b>Capacitaciones requeridas:</b> ${c.count}<br>
               ${peopleList}
             </div>
             <div class="bar-title-row">
               <span>${c.course}</span>
               <span>${c.count}</span>
             </div>
-            <div class="mini-bar" title="${c.course} - ${c.count} trabajadores alcanzados"><span style="width:${percentage}%"></span></div>
+            <div class="mini-bar" title="${c.course} - ${c.count} registros"><span style="width:${percentage}%"></span></div>
           </div>
         `;
       }).join("");
 
-      const actions = allRecords
+      const actions = trainings
         .map(t => ({ ...t, state: trainingState(t), days: daysTo(t.due) }))
         .filter(t => t.state !== "Realizada vigente")
         .sort((a,b) => a.days - b.days)
@@ -3408,7 +3326,7 @@
             ${a.course}<br>
             <span class="pill ${trainingStateClass(a.state)}">${a.state}</span>
             <div class="auto-action-note">
-              Acción global del sistema: revisar cronograma, registrar realización o enviar alerta.
+              Acción global del sistema: revisar vencimiento, programar capacitación o enviar alerta.
             </div>
           </div>
         </div>
@@ -3453,19 +3371,6 @@
           <small>Reportado por ${r.name} · ${formatDate(r.date)}</small>
         </div>
       `).join("");
-    }
-
-
-    function simulateEmailByRecord(employeeName, course) {
-      const record = getEmployeePlanRecords(employeeName).find(t => t.course === course);
-
-      if (!record) {
-        showToast("No se encontró la capacitación del trabajador.");
-        return;
-      }
-
-      const state = trainingState(record);
-      showToast(`📧 Mail simulado para ${record.employee}: "${record.course}" figura como ${state.toLowerCase()} según el plan anual de capacitación.`);
     }
 
     function simulateEmail(index) {
@@ -3615,12 +3520,11 @@
     }
 
     function updateTrainingDashboard() {
-      const allRecords = getAllPlanRecords();
-      const states = allRecords.map(t => trainingState(t));
+      const states = trainings.map(t => trainingState(t));
       const vigentes = states.filter(s => s === "Realizada vigente" || s === "Realizada por vencer").length;
       const pendientes = states.filter(s => s === "Pendiente").length;
       const vencidas = states.filter(s => s === "Realizada vencida").length;
-      const compliance = allRecords.length ? Math.round((vigentes / allRecords.length) * 100) : 0;
+      const compliance = trainings.length ? Math.round((vigentes / trainings.length) * 100) : 0;
 
       const peopleEl = document.getElementById("trainingTotalPeople");
       const complianceEl = document.getElementById("trainingGlobalCompliance");
@@ -3853,6 +3757,27 @@
       renderInspectionHistory();
 
       showToast("🗑️ Historial de inspecciones eliminado.");
+    }
+
+
+    function renderAnnualTrainingPlan() {
+      const container = document.getElementById("annualTrainingCalendar");
+      if (!container) return;
+
+      container.innerHTML = annualTrainingPlan.map(item => `
+        <div class="calendar-month-card">
+          <div class="calendar-month-title">
+            <strong>${item.month}</strong>
+            <span>${formatDate(item.date)}</span>
+          </div>
+
+          <div class="calendar-course">
+            <strong>${item.course}</strong>
+            <small>${item.short}</small>
+            <span class="pill programado">Curso planificado</span>
+          </div>
+        </div>
+      `).join("");
     }
 
     function refreshAll() {
