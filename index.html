@@ -2013,6 +2013,28 @@
       filter: brightness(0.98);
     }
 
+
+    @media (max-width: 650px) {
+      .modal {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: 14px;
+      }
+
+      .modal-content {
+        margin-top: 18px;
+        width: 100%;
+        max-height: calc(100vh - 36px);
+        overflow-y: auto;
+      }
+
+      .training-action-row button,
+      .institutional-actions button,
+      .training-controls button {
+        min-height: 46px;
+      }
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -2189,7 +2211,7 @@
 
         <div style="display:flex; flex-wrap:wrap; gap:10px;">
           <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
-          <button class="primary" onclick="openModal('trainingModal')">+ Asignar capacitación</button>
+          <button class="primary" id="assignTrainingBtn" type="button" onclick="openModal('trainingModal')">+ Asignar capacitación</button>
         </div>
       </div>
     </div>
@@ -3044,7 +3066,7 @@
         return `
           <div class="training-action-row">
             <button class="secondary" onclick="simulateEmail(${idx})">Enviar mail</button>
-            ${needsUpdate ? `<button class="secondary training-update-btn" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
+            ${needsUpdate ? `<button class="secondary training-update-btn" type="button" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
           </div>
         `;
       };
@@ -3312,8 +3334,24 @@
       showToast("Reporte recibido. Se generó registro para seguimiento preventivo.");
     }
 
-    function openModal(id) { document.getElementById(id).classList.add("active"); }
-    function closeModal(id) { document.getElementById(id).classList.remove("active"); }
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (!modal) {
+        showToast("No se encontró la ventana solicitada.");
+        return;
+      }
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
 
     function showToast(message) {
       const toast = document.getElementById("toast");
@@ -3327,23 +3365,29 @@
 
     function markTrainingCompleted(index) {
       const training = trainings[index];
-      if (!training) return;
+      if (!training) {
+        showToast("No se encontró la capacitación a actualizar.");
+        return;
+      }
 
-      const todayISO = today.toISOString().slice(0, 10);
-      const nextYear = new Date(today);
-      nextYear.setFullYear(nextYear.getFullYear() + 1);
-      const nextYearISO = nextYear.toISOString().slice(0, 10);
+      const completedDate = today.toISOString().slice(0, 10);
+      const nextDueDate = new Date(today);
+      nextDueDate.setFullYear(nextDueDate.getFullYear() + 1);
+      const nextDueISO = nextDueDate.toISOString().slice(0, 10);
 
       training.done = true;
-      training.completed = todayISO;
-      training.due = nextYearISO;
+      training.completed = completedDate;
+      training.due = nextDueISO;
 
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
 
       refreshAll();
-      showEmployeeTrainingDetail(training.employee);
 
-      showToast(`✅ Capacitación "${training.course}" actualizada como realizada y vigente para ${training.employee}.`);
+      setTimeout(() => {
+        showEmployeeTrainingDetail(training.employee);
+      }, 0);
+
+      showToast(`✅ ${training.employee}: "${training.course}" pasó a realizada vigente.`);
     }
 
     function updateTrainingDashboard() {
@@ -3623,6 +3667,23 @@
     document.getElementById("statusFilter").addEventListener("change", renderEmployeeProfiles);
 
     normalizeTrainings();
+
+    const assignTrainingBtn = document.getElementById("assignTrainingBtn");
+    if (assignTrainingBtn) {
+      assignTrainingBtn.addEventListener("click", () => openModal("trainingModal"));
+      assignTrainingBtn.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        openModal("trainingModal");
+      }, { passive: false });
+    }
+
+    document.addEventListener("click", (event) => {
+      const modal = event.target.classList && event.target.classList.contains("modal") ? event.target : null;
+      if (modal && modal.id) {
+        closeModal(modal.id);
+      }
+    });
+
     populateSelectors();
     refreshAll();
   </script>
