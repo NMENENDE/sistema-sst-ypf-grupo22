@@ -1608,6 +1608,375 @@
       }
     }
 
+
+    /* ===== Capacitación SST - Legajo individual premium ===== */
+
+    .training-module {
+      display: grid;
+      gap: 18px;
+    }
+
+    .training-hero {
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.22), transparent 34%),
+        radial-gradient(circle at bottom left, rgba(0,163,224,0.18), transparent 38%),
+        linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
+      color: white;
+      border-radius: 26px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .training-hero::after {
+      content: "SST";
+      position: absolute;
+      right: 24px;
+      bottom: -26px;
+      font-size: 96px;
+      font-weight: 900;
+      opacity: 0.08;
+      letter-spacing: -0.06em;
+    }
+
+    .training-hero h3 {
+      color: white;
+      margin: 0 0 8px;
+      font-size: clamp(22px, 3vw, 32px);
+      line-height: 1.12;
+    }
+
+    .training-hero p {
+      margin: 0;
+      color: rgba(255,255,255,0.92);
+      font-weight: 700;
+      max-width: 850px;
+      line-height: 1.45;
+    }
+
+    .training-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .training-controls input,
+    .training-controls select {
+      background: rgba(255,255,255,0.96);
+      min-width: 240px;
+    }
+
+    .training-dashboard-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+    }
+
+    .training-mini-stat {
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(203,213,225,0.85);
+      box-shadow: 0 12px 28px rgba(15,23,42,0.08);
+      display: grid;
+      gap: 6px;
+      border-left: 6px solid var(--ypf-blue);
+    }
+
+    .training-mini-stat span {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: var(--gray-500);
+    }
+
+    .training-mini-stat strong {
+      font-size: 28px;
+      color: var(--ypf-blue-dark);
+    }
+
+    .training-layout {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.85fr) minmax(460px, 1.15fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .employee-list-card,
+    .employee-detail-panel {
+      min-height: 520px;
+    }
+
+    .employee-training-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 16px;
+      max-height: 720px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .employee-profile-card {
+      border: 1px solid rgba(203,213,225,0.85);
+      border-radius: 22px;
+      padding: 16px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.95));
+      display: grid;
+      gap: 12px;
+      transition: 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .employee-profile-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--ypf-blue), var(--ypf-sky));
+    }
+
+    .employee-profile-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(15,23,42,0.10);
+    }
+
+    .employee-profile-top {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .employee-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--ypf-blue-light), white);
+      color: var(--ypf-blue-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      border: 1px solid #cfe7ff;
+      flex: 0 0 auto;
+      box-shadow: inset 0 -4px 0 rgba(0,86,166,0.08);
+    }
+
+    .employee-profile-card strong {
+      color: var(--ypf-blue-dark);
+      font-size: 15px;
+    }
+
+    .employee-profile-card small {
+      color: var(--gray-500);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .employee-kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .employee-kpi {
+      border-radius: 15px;
+      padding: 10px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      text-align: center;
+    }
+
+    .employee-kpi b {
+      display: block;
+      color: var(--ypf-blue-dark);
+      font-size: 21px;
+    }
+
+    .employee-kpi small {
+      color: var(--gray-500);
+      font-weight: 900;
+      font-size: 10.5px;
+      text-transform: uppercase;
+    }
+
+    .employee-detail-panel {
+      position: sticky;
+      top: 22px;
+    }
+
+    .employee-detail-header {
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.22), transparent 35%),
+        linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
+      color: white;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .employee-detail-header::after {
+      content: "CAP";
+      position: absolute;
+      right: 18px;
+      bottom: -18px;
+      font-size: 76px;
+      font-weight: 900;
+      opacity: 0.08;
+      letter-spacing: -0.05em;
+    }
+
+    .employee-detail-header h3 {
+      color: white;
+      margin: 0 0 6px;
+      font-size: 25px;
+      line-height: 1.15;
+    }
+
+    .employee-detail-header p {
+      margin: 0;
+      color: rgba(255,255,255,0.9);
+      font-weight: 700;
+    }
+
+    .training-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .training-summary-card {
+      border-radius: 18px;
+      padding: 13px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 8px 18px rgba(15,23,42,0.06);
+    }
+
+    .training-summary-card strong {
+      display: block;
+      font-size: 24px;
+      color: var(--ypf-blue-dark);
+    }
+
+    .training-summary-card span {
+      color: var(--gray-500);
+      font-weight: 900;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .training-groups-wrap {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .training-group {
+      display: grid;
+      gap: 10px;
+    }
+
+    .training-group h4 {
+      margin: 0;
+      color: var(--ypf-blue-dark);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .training-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      padding: 14px;
+      background: white;
+      display: grid;
+      gap: 7px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.04);
+      border-left: 5px solid var(--ypf-blue);
+    }
+
+    .training-item.pending {
+      border-left-color: var(--orange);
+      background: linear-gradient(135deg, #fff7ed, #ffffff);
+    }
+
+    .training-item.expired {
+      border-left-color: var(--ypf-red);
+      background: linear-gradient(135deg, #fee2e2, #ffffff);
+    }
+
+    .training-item strong {
+      color: var(--ypf-blue-dark);
+    }
+
+    .training-item small {
+      color: var(--gray-500);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .training-empty {
+      border: 1px dashed var(--gray-300);
+      border-radius: 16px;
+      padding: 14px;
+      background: var(--gray-50);
+      color: var(--gray-500);
+      font-weight: 800;
+    }
+
+    .training-note {
+      background: linear-gradient(135deg, var(--ypf-blue-light), #ffffff);
+      border: 1px solid #cfe7ff;
+      color: var(--ypf-blue-dark);
+      border-radius: 18px;
+      padding: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    #newEmail {
+      background: var(--gray-50);
+      color: var(--gray-700);
+      font-weight: 700;
+    }
+
+    @media (max-width: 1180px) {
+      .training-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .employee-detail-panel {
+        position: relative;
+        top: auto;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .training-controls {
+        display: grid;
+      }
+
+      .training-controls input,
+      .training-controls select {
+        min-width: 0;
+      }
+
+      .employee-kpis {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -1758,73 +2127,80 @@
 
       
 
+
 <section class="section" id="capacitaciones">
-  <div class="training-hero">
-    <h3>Gestión de competencias y capacitación SST</h3>
-    <p>Seguimiento individual del personal, trazabilidad de cursos realizados, pendientes, vencimientos y alertas preventivas.</p>
+  <div class="training-module">
 
-    <div class="training-controls">
-      <div style="display:flex; flex-wrap:wrap; gap:10px;">
-        <input class="search" id="employeeSearch" placeholder="Buscar trabajador, rol o curso..." />
-        <select id="statusFilter">
-          <option value="todos">Todos los estados</option>
-          <option value="Realizada vigente">Realizada vigente</option>
-          <option value="Realizada por vencer">Realizada por vencer</option>
-          <option value="Realizada vencida">Realizada vencida</option>
-          <option value="Pendiente">Pendiente</option>
-        </select>
-      </div>
+    <div class="training-hero">
+      <h3>Gestión digital de competencias SST</h3>
+      <p>
+        Legajo individual de capacitación por trabajador, con cursos realizados,
+        pendientes, vencidos y alertas preventivas. Pensado como una herramienta
+        de trazabilidad para auditoría, control operativo y mejora continua.
+      </p>
 
-      <div style="display:flex; flex-wrap:wrap; gap:10px;">
-        <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
-        <button class="primary" onclick="openModal('trainingModal')">+ Nueva capacitación</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="training-layout">
-    <div class="card">
-      <h3>Personal registrado</h3>
-      <p>Seleccioná una persona para visualizar su legajo de capacitación SST.</p>
-      <div class="employee-training-grid" id="employeeProfiles"></div>
-    </div>
-
-    <div class="card employee-detail-panel">
-      <div id="employeeTrainingDetail">
-        <div class="employee-detail-header">
-          <h3>Seleccioná un trabajador</h3>
-          <p>El sistema mostrará el historial completo de capacitación y el cumplimiento individual.</p>
+      <div class="training-controls">
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <input class="search" id="employeeSearch" placeholder="Buscar trabajador, rol o curso..." />
+          <select id="statusFilter">
+            <option value="todos">Todos los estados</option>
+            <option value="Realizada vigente">Realizada vigente</option>
+            <option value="Realizada por vencer">Realizada por vencer</option>
+            <option value="Realizada vencida">Realizada vencida</option>
+            <option value="Pendiente">Pendiente</option>
+          </select>
         </div>
 
-        <div class="footer-note">
-          Esta vista permite gestionar competencias por trabajador, diferenciando capacitaciones realizadas, pendientes, vigentes, por vencer y vencidas.
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
+          <button class="primary" onclick="openModal('trainingModal')">+ Asignar capacitación</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="card training-table-card">
-    <h3>Registro general de capacitaciones</h3>
-    <p>Vista completa de cursos cargados, realización, vencimientos y alertas simuladas.</p>
-
-    <div class="training-table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Empleado</th>
-            <th>Puesto / rol</th>
-            <th>Curso asignado</th>
-            <th>Realización</th>
-            <th>Vencimiento</th>
-            <th>Estado</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody id="trainingTable"></tbody>
-      </table>
+    <div class="training-dashboard-strip">
+      <div class="training-mini-stat">
+        <span>Personal</span>
+        <strong id="trainingTotalPeople">0</strong>
+      </div>
+      <div class="training-mini-stat">
+        <span>Cumplimiento global</span>
+        <strong id="trainingGlobalCompliance">0%</strong>
+      </div>
+      <div class="training-mini-stat">
+        <span>Pendientes</span>
+        <strong id="trainingPendingTotal">0</strong>
+      </div>
+      <div class="training-mini-stat">
+        <span>Vencidas</span>
+        <strong id="trainingExpiredTotal">0</strong>
+      </div>
     </div>
+
+    <div class="training-layout">
+      <div class="card employee-list-card">
+        <h3>Personal registrado</h3>
+        <p>Seleccioná una persona para visualizar su situación de capacitación SST.</p>
+        <div class="employee-training-grid" id="employeeProfiles"></div>
+      </div>
+
+      <div class="card employee-detail-panel">
+        <div id="employeeTrainingDetail">
+          <div class="employee-detail-header">
+            <h3>Seleccioná un trabajador</h3>
+            <p>El sistema mostrará el legajo individual de capacitación y su indicador de cumplimiento.</p>
+          </div>
+
+          <div class="training-note">
+            La gestión se realiza por trabajador para evitar listados extensos y permitir una lectura clara de la situación individual: realizadas, pendientes, vencidas y próximas a vencer.
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
+
 
 
 
@@ -2248,13 +2624,28 @@
 
   <div class="modal" id="trainingModal">
     <div class="modal-content">
-      <h3>Cargar nueva capacitación</h3>
+      <h3>Asignar capacitación</h3>
+      <p>El email se completa automáticamente según el trabajador seleccionado.</p>
+
       <div class="form-grid">
         <select id="newEmployee"></select>
         <select id="newCourse"></select>
-        <input id="newDate" type="date" />
-        <input id="newEmail" placeholder="Email del trabajador" />
+
+        <select id="newTrainingDone">
+          <option value="true">Realizada</option>
+          <option value="false">Pendiente / programada</option>
+        </select>
+
+        <input id="newCompletedDate" type="date" title="Fecha de realización" />
+        <input id="newDate" type="date" title="Fecha de vencimiento o programación" />
+        <input id="newEmail" placeholder="Email del trabajador" readonly />
       </div>
+
+      <div class="footer-note">
+        Para una capacitación realizada, la fecha de vencimiento permite controlar su vigencia.
+        Para una capacitación pendiente, funciona como fecha programada.
+      </div>
+
       <br>
       <button class="primary" onclick="addTraining()">Guardar</button>
       <button class="secondary" onclick="closeModal('trainingModal')">Cancelar</button>
@@ -2560,33 +2951,44 @@
       if (!container) return;
 
       const query = document.getElementById("employeeSearch")?.value.toLowerCase() || "";
+      const filter = document.getElementById("statusFilter")?.value || "todos";
 
       const filteredEmployees = employees.filter(emp => {
         const stats = getEmployeeTrainingStats(emp.name);
         const text = `${emp.name} ${emp.role} ${stats.assigned.map(t => t.course).join(" ")}`.toLowerCase();
-        return text.includes(query);
+        const matchesText = text.includes(query);
+        const matchesFilter = filter === "todos" || stats.assigned.some(t => trainingState(t) === filter);
+        return matchesText && matchesFilter;
       });
 
       container.innerHTML = filteredEmployees.map(emp => {
         const stats = getEmployeeTrainingStats(emp.name);
+        const initials = emp.name.split(" ").map(p => p[0]).slice(0,2).join("").toUpperCase();
 
         return `
           <div class="employee-profile-card">
-            <strong>${emp.name}</strong>
-            <small>${emp.role}</small>
+            <div class="employee-profile-top">
+              <div class="employee-avatar">${initials}</div>
+              <div>
+                <strong>${emp.name}</strong><br>
+                <small>${emp.role}</small>
+              </div>
+            </div>
 
             <div class="employee-kpis">
               <div class="employee-kpi"><b>${stats.compliance}%</b><small>Cumpl.</small></div>
-              <div class="employee-kpi"><b>${stats.vencidas}</b><small>Venc.</small></div>
               <div class="employee-kpi"><b>${stats.pendientes}</b><small>Pend.</small></div>
+              <div class="employee-kpi"><b>${stats.vencidas}</b><small>Venc.</small></div>
             </div>
 
             <button class="secondary" onclick="showEmployeeTrainingDetail('${escapeJsText(emp.name)}')">
-              Ver historial
+              Ver legajo
             </button>
           </div>
         `;
       }).join("");
+
+      updateTrainingDashboard();
     }
 
     function showEmployeeTrainingDetail(employeeName) {
@@ -2596,18 +2998,18 @@
 
       const stats = getEmployeeTrainingStats(employee.name);
 
-      const buildGroup = (title, icon, list) => `
+      const buildGroup = (title, icon, list, extraClass = "") => `
         <div class="training-group">
           <h4>${icon} ${title}</h4>
           ${list.length ? list.map(t => `
-            <div class="training-item">
+            <div class="training-item ${extraClass}">
               <strong>${t.course}</strong>
               <small><b>Realización:</b> ${t.done && t.completed ? formatDate(t.completed) : "Pendiente"}</small>
               <small><b>Vencimiento / programación:</b> ${formatDate(t.due)}</small>
               <span class="pill ${trainingStateClass(trainingState(t))}">● ${trainingStateLabel(t)}</span>
               <button class="secondary" onclick="simulateEmail(${trainings.indexOf(t)})">Enviar mail</button>
             </div>
-          `).join("") : `<div class="training-item"><small>No hay registros en esta categoría.</small></div>`}
+          `).join("") : `<div class="training-empty">No hay registros en esta categoría.</div>`}
         </div>
       `;
 
@@ -2629,9 +3031,11 @@
           <div class="training-summary-card"><strong>${stats.vencidas}</strong><span>Vencidas</span></div>
         </div>
 
-        ${buildGroup("Capacitaciones realizadas vigentes / por vencer", "✅", realizadas)}
-        ${buildGroup("Capacitaciones pendientes o programadas", "⚠️", pendientes)}
-        ${buildGroup("Capacitaciones realizadas vencidas", "❌", vencidas)}
+        <div class="training-groups-wrap">
+          ${buildGroup("Capacitaciones realizadas vigentes / por vencer", "✅", realizadas)}
+          ${buildGroup("Capacitaciones pendientes o programadas", "⚠️", pendientes, "pending")}
+          ${buildGroup("Capacitaciones realizadas vencidas", "❌", vencidas, "expired")}
+        </div>
 
         <div class="footer-note">
           Indicador individual = capacitaciones realizadas y vigentes / capacitaciones requeridas × 100.
@@ -2640,35 +3044,7 @@
     }
 
     function renderTrainingTable() {
-      const query = document.getElementById("employeeSearch")?.value.toLowerCase() || "";
-      const filter = document.getElementById("statusFilter")?.value || "todos";
-      const tbody = document.getElementById("trainingTable");
-      if (!tbody) return;
-
-      tbody.innerHTML = "";
-
-      const filtered = trainings.filter(t => {
-        const state = trainingState(t);
-        const matchesText = `${t.employee} ${t.course} ${t.role}`.toLowerCase().includes(query);
-        const matchesStatus = filter === "todos" || filter === state;
-        return matchesText && matchesStatus;
-      });
-
-      filtered.forEach((t, index) => {
-        const state = trainingState(t);
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><strong>${t.employee}</strong><br><small>${t.email}</small></td>
-          <td>${t.role}</td>
-          <td>${t.course}</td>
-          <td>${t.done && t.completed ? formatDate(t.completed) : "Pendiente"}</td>
-          <td>${formatDate(t.due)}</td>
-          <td><span class="pill ${trainingStateClass(state)}">● ${trainingStateLabel(t)}</span></td>
-          <td><button class="secondary" onclick="simulateEmail(${index})">Enviar mail</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
+      return;
     }
 
     function renderDashboard() {
@@ -2775,11 +3151,18 @@
       const employeeName = document.getElementById("newEmployee").value;
       const employee = employees.find(e => e.name === employeeName);
       const course = document.getElementById("newCourse").value;
+      const done = document.getElementById("newTrainingDone").value === "true";
+      const completed = document.getElementById("newCompletedDate").value;
       const due = document.getElementById("newDate").value;
-      const email = document.getElementById("newEmail").value || employee.email;
+      const email = employee?.email || "";
 
       if (!employee || !course || !due) {
-        showToast("Completá empleado, curso y fecha de vencimiento.");
+        showToast("Completá trabajador, curso y fecha de vencimiento/programación.");
+        return;
+      }
+
+      if (done && !completed) {
+        showToast("Para una capacitación realizada, cargá la fecha de realización.");
         return;
       }
 
@@ -2788,15 +3171,17 @@
         role: employee.role,
         email,
         course,
-        done: true,
-        completed: today.toISOString().slice(0,10),
+        done,
+        completed: done ? completed : "",
         due
       });
 
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
       closeModal("trainingModal");
       refreshAll();
-      showToast("Capacitación registrada como realizada correctamente.");
+      showEmployeeTrainingDetail(employee.name);
+
+      showToast(done ? "Capacitación realizada registrada correctamente." : "Capacitación pendiente/programada registrada correctamente.");
     }
 
     function addDrill() {
@@ -2841,11 +3226,77 @@
       window.toastTimer = setTimeout(() => toast.style.display = "none", 4200);
     }
 
+
+    function updateTrainingDashboard() {
+      const states = trainings.map(t => trainingState(t));
+      const vigentes = states.filter(s => s === "Realizada vigente" || s === "Realizada por vencer").length;
+      const pendientes = states.filter(s => s === "Pendiente").length;
+      const vencidas = states.filter(s => s === "Realizada vencida").length;
+      const compliance = trainings.length ? Math.round((vigentes / trainings.length) * 100) : 0;
+
+      const peopleEl = document.getElementById("trainingTotalPeople");
+      const complianceEl = document.getElementById("trainingGlobalCompliance");
+      const pendingEl = document.getElementById("trainingPendingTotal");
+      const expiredEl = document.getElementById("trainingExpiredTotal");
+
+      if (peopleEl) peopleEl.textContent = employees.length;
+      if (complianceEl) complianceEl.textContent = compliance + "%";
+      if (pendingEl) pendingEl.textContent = pendientes;
+      if (expiredEl) expiredEl.textContent = vencidas;
+    }
+
+    function updateEmployeeEmailField() {
+      const employeeName = document.getElementById("newEmployee")?.value;
+      const employee = employees.find(e => e.name === employeeName);
+      const emailInput = document.getElementById("newEmail");
+
+      if (employee && emailInput) {
+        emailInput.value = employee.email;
+      }
+    }
+
+    function updateCompletedDateVisibility() {
+      const done = document.getElementById("newTrainingDone")?.value === "true";
+      const completed = document.getElementById("newCompletedDate");
+
+      if (!completed) return;
+
+      completed.disabled = !done;
+      completed.style.opacity = done ? "1" : "0.55";
+
+      if (!done) {
+        completed.value = "";
+      }
+    }
+
     function populateSelectors() {
-      document.getElementById("newEmployee").innerHTML = employees.map(e => `<option>${e.name}</option>`).join("");
-      document.getElementById("newCourse").innerHTML = courses.map(c => `<option>${c}</option>`).join("");
-      document.getElementById("newDate").value = "2026-09-30";
-      document.getElementById("drillDate").value = "2026-06-10";
+      const employeeSelect = document.getElementById("newEmployee");
+      const courseSelect = document.getElementById("newCourse");
+      const dueDate = document.getElementById("newDate");
+      const completedDate = document.getElementById("newCompletedDate");
+      const doneSelect = document.getElementById("newTrainingDone");
+
+      if (employeeSelect) {
+        employeeSelect.innerHTML = employees.map(e => `<option>${e.name}</option>`).join("");
+        employeeSelect.addEventListener("change", updateEmployeeEmailField);
+      }
+
+      if (courseSelect) {
+        courseSelect.innerHTML = courses.map(c => `<option>${c}</option>`).join("");
+      }
+
+      if (dueDate) dueDate.value = "2026-09-30";
+      if (completedDate) completedDate.value = today.toISOString().slice(0,10);
+
+      if (doneSelect) {
+        doneSelect.addEventListener("change", updateCompletedDateVisibility);
+      }
+
+      const drillDate = document.getElementById("drillDate");
+      if (drillDate) drillDate.value = "2026-06-10";
+
+      updateEmployeeEmailField();
+      updateCompletedDateVisibility();
     }
 
     function renderAcademic() {
@@ -3019,6 +3470,7 @@
     function refreshAll() {
       renderTrainingTable();
       renderEmployeeProfiles();
+      updateTrainingDashboard();
       renderDashboard();
       renderDrills();
       renderDocuments();
@@ -3048,11 +3500,8 @@
       });
     });
 
-    document.getElementById("employeeSearch").addEventListener("input", () => {
-      renderTrainingTable();
-      renderEmployeeProfiles();
-    });
-    document.getElementById("statusFilter").addEventListener("change", renderTrainingTable);
+    document.getElementById("employeeSearch").addEventListener("input", renderEmployeeProfiles);
+    document.getElementById("statusFilter").addEventListener("change", renderEmployeeProfiles);
 
     normalizeTrainings();
     populateSelectors();
