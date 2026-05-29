@@ -2013,6 +2013,317 @@
       filter: brightness(0.98);
     }
 
+
+    /* ===== Gestión de Personal SST ===== */
+    .personnel-hero {
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.20), transparent 34%),
+        radial-gradient(circle at bottom left, rgba(0,163,224,0.17), transparent 38%),
+        linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
+      color: white;
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .personnel-hero::after {
+      content: "RRHH";
+      position: absolute;
+      right: 20px;
+      bottom: -24px;
+      font-size: 86px;
+      font-weight: 900;
+      opacity: 0.08;
+      letter-spacing: -0.06em;
+    }
+
+    .personnel-hero h3 {
+      color: white;
+      margin: 0 0 8px;
+      font-size: clamp(22px, 3vw, 32px);
+    }
+
+    .personnel-hero p {
+      margin: 0;
+      color: rgba(255,255,255,0.92);
+      font-weight: 700;
+      max-width: 860px;
+      line-height: 1.45;
+    }
+
+    .personnel-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .personnel-controls input,
+    .personnel-controls select {
+      background: rgba(255,255,255,0.96);
+      min-width: 240px;
+    }
+
+    .personnel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .person-card {
+      background: white;
+      border: 1px solid rgba(203,213,225,0.9);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 12px 28px rgba(15,23,42,0.07);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      gap: 12px;
+      border-left: 6px solid var(--ypf-blue);
+    }
+
+    .person-card.status-yellow { border-left-color: var(--orange); }
+    .person-card.status-red { border-left-color: var(--ypf-red); }
+
+    .person-head {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .person-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .person-meta span {
+      border-radius: 14px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      padding: 8px 10px;
+      color: var(--gray-700);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .person-meta b {
+      display: block;
+      color: var(--ypf-blue-dark);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .person-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .person-kpi {
+      border-radius: 14px;
+      padding: 9px;
+      text-align: center;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+    }
+
+    .person-kpi strong {
+      display: block;
+      color: var(--ypf-blue-dark);
+      font-size: 20px;
+    }
+
+    .person-kpi small {
+      color: var(--gray-500);
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .person-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dashboard-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .dashboard-detail-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      padding: 14px;
+      border-left: 5px solid var(--ypf-blue);
+    }
+
+    .dashboard-detail-card.warning { border-left-color: var(--orange); }
+    .dashboard-detail-card.danger { border-left-color: var(--ypf-red); }
+    .dashboard-detail-card.ok { border-left-color: var(--green); }
+
+    .dashboard-detail-card strong {
+      display: block;
+      color: var(--ypf-blue-dark);
+      margin-bottom: 5px;
+    }
+
+    .dashboard-detail-card small {
+      color: var(--gray-500);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 650px) {
+      .personnel-controls { display: grid; }
+      .personnel-controls input, .personnel-controls select { min-width: 0; }
+      .person-meta, .person-kpi-row { grid-template-columns: 1fr; }
+    }
+
+
+
+    /* ===== Estética YPF + calendario anual de capacitación ===== */
+    body {
+      background:
+        radial-gradient(circle at 18% 8%, rgba(0,86,166,0.10), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(255,204,0,0.12), transparent 24%),
+        linear-gradient(135deg, #f6fbff 0%, #eef6ff 42%, #ffffff 100%);
+    }
+
+    aside {
+      background:
+        linear-gradient(180deg, rgba(0,63,125,0.98), rgba(0,86,166,0.98)),
+        linear-gradient(90deg, var(--ypf-yellow) 0 8px, transparent 8px);
+      border-right: 6px solid var(--ypf-yellow);
+    }
+
+    .topbar {
+      border-top: 5px solid var(--ypf-yellow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 170px;
+      height: 7px;
+      background: linear-gradient(90deg, var(--ypf-blue), var(--ypf-red), var(--ypf-yellow));
+      border-radius: 999px 0 0 0;
+    }
+
+    .stat {
+      border-top: 5px solid var(--ypf-blue);
+    }
+
+    .stat:nth-child(2) { border-top-color: var(--green); }
+    .stat:nth-child(3) { border-top-color: var(--ypf-yellow); }
+    .stat:nth-child(4) { border-top-color: var(--ypf-red); }
+
+    .training-calendar-card {
+      border-top: 6px solid var(--ypf-yellow);
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.14), transparent 30%),
+        rgba(255,255,255,0.94);
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .calendar-header h3 { margin-bottom: 6px; }
+    .calendar-header p { margin: 0; color: var(--gray-500); font-weight: 700; line-height: 1.45; }
+    .calendar-badge { background: #fff7cc; border-color: #fde68a; color: #7c5a00; }
+
+    .training-calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+      gap: 14px;
+    }
+
+    .month-card {
+      background: white;
+      border: 1px solid rgba(203,213,225,0.9);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.06);
+    }
+
+    .month-card-header {
+      padding: 13px 15px;
+      background: linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 4px solid var(--ypf-yellow);
+    }
+
+    .month-card-header strong { font-size: 15px; }
+    .month-card-header span { font-size: 12px; font-weight: 900; opacity: 0.9; }
+
+    .month-course-list { display: grid; gap: 10px; padding: 13px; }
+
+    .month-course {
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 12px;
+      background: linear-gradient(135deg, #ffffff, #f8fafc);
+      display: grid;
+      gap: 8px;
+    }
+
+    .month-course strong { color: var(--ypf-blue-dark); line-height: 1.25; }
+    .month-course small { color: var(--gray-500); font-weight: 700; line-height: 1.35; }
+
+    .calendar-action-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+
+    .multi-assign-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+      max-height: 310px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .multi-assign-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: start;
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 12px;
+      background: var(--gray-50);
+      cursor: pointer;
+    }
+
+    .multi-assign-item input { width: auto; margin-top: 3px; }
+    .multi-assign-item strong { color: var(--ypf-blue-dark); }
+    .multi-assign-item small { color: var(--gray-500); font-weight: 700; }
+
+    .calendar-modal-content { width: min(760px, 100%); }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -2094,6 +2405,7 @@
       <nav>
         <button class="nav-btn active" data-section="dashboard">📊 Panel general</button>
         <button class="nav-btn" data-section="capacitaciones">🎓 Capacitaciones</button>
+        <button class="nav-btn" data-section="personal">👥 Personal</button>
         <button class="nav-btn" data-section="emergencias">🚨 Emergencias</button>
         <button class="nav-btn" data-section="simulacros">🧯 Simulacros</button>
         <button class="nav-btn" data-section="documentos">📁 Documentación</button>
@@ -2140,6 +2452,12 @@
             <strong id="expiredCount">0</strong>
             <small>Requieren acción</small>
           </div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <h3>Lectura rápida de gestión SST</h3>
+          <p>Resumen integrado del personal, capacitaciones, vencimientos y acciones críticas para tener una visión ejecutiva a simple vista.</p>
+          <div class="dashboard-detail-grid" id="dashboardDetailCards"></div>
         </div>
 
         <div class="grid two" style="margin-top:18px;">
@@ -2189,7 +2507,7 @@
 
         <div style="display:flex; flex-wrap:wrap; gap:10px;">
           <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
-          <button class="primary" onclick="openModal('trainingModal')">+ Asignar capacitación</button>
+          <button class="primary" onclick="openTrainingModal()">+ Asignar capacitación</button>
         </div>
       </div>
     </div>
@@ -2211,6 +2529,17 @@
         <span>Vencidas</span>
         <strong id="trainingExpiredTotal">0</strong>
       </div>
+    </div>
+
+    <div class="card training-calendar-card">
+      <div class="calendar-header">
+        <div>
+          <h3>📅 Calendario anual de capacitaciones SST</h3>
+          <p>Plan mensual de cursos preventivos. Desde cada tarjeta se puede asignar la capacitación a uno o más operadores y queda vinculada automáticamente al legajo individual.</p>
+        </div>
+        <span class="badge calendar-badge">Plan 2026</span>
+      </div>
+      <div class="training-calendar-grid" id="trainingCalendar"></div>
     </div>
 
     <div class="training-layout">
@@ -2239,6 +2568,45 @@
 
 
 
+
+      
+
+<section class="section" id="personal">
+  <div class="personnel-hero">
+    <h3>Gestión digital de Personal SST</h3>
+    <p>Base de trabajadores del Grupo 22 integrada con el módulo de capacitaciones. Cada ficha permite visualizar datos personales básicos, cargo, rol de emergencia, estado de habilitación y cumplimiento preventivo.</p>
+
+    <div class="personnel-controls">
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <input class="search" id="personSearch" placeholder="Buscar por nombre, DNI, legajo, cargo o sector..." />
+        <select id="personStatusFilter">
+          <option value="todos">Todos los estados</option>
+          <option value="Apto operativo">Apto operativo</option>
+          <option value="Requiere capacitación">Requiere capacitación</option>
+          <option value="Capacitación vencida">Capacitación vencida</option>
+        </select>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <button class="secondary" onclick="resetPersonnelData()">Restaurar base Grupo 22</button>
+        <button class="primary" onclick="openPersonModal()">+ Agregar personal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="training-dashboard-strip" style="margin-top:18px;">
+    <div class="training-mini-stat"><span>Personal activo</span><strong id="personTotalActive">0</strong></div>
+    <div class="training-mini-stat"><span>Aptos operativos</span><strong id="personTotalOk">0</strong></div>
+    <div class="training-mini-stat"><span>Requieren capacitación</span><strong id="personTotalWarning">0</strong></div>
+    <div class="training-mini-stat"><span>Con vencidas</span><strong id="personTotalRed">0</strong></div>
+  </div>
+
+  <div class="personnel-grid" id="personnelGrid"></div>
+
+  <div class="footer-note">
+    La solapa Personal funciona como base maestra del sistema. Los cambios impactan en Capacitaciones y en los KPI del Panel General, permitiendo una lectura integrada del desempeño SST.
+  </div>
+</section>
 
       <section class="section" id="emergencias">
         <div class="card emergency-hero">
@@ -2688,6 +3056,34 @@
     </div>
   </div>
 
+  <div class="modal" id="calendarAssignmentModal">
+    <div class="modal-content calendar-modal-content">
+      <h3 id="calendarAssignmentTitle">Asignar capacitación del calendario</h3>
+      <p id="calendarAssignmentSubtitle">Seleccioná uno o más operadores para asignar el curso.</p>
+
+      <div class="form-grid">
+        <input id="calendarAssignmentDue" type="date" title="Fecha programada / vencimiento" />
+        <select id="calendarAssignmentDone">
+          <option value="false">Pendiente / programada</option>
+          <option value="true">Realizada</option>
+        </select>
+        <input id="calendarAssignmentCompleted" type="date" title="Fecha de realización" />
+      </div>
+
+      <div class="footer-note">
+        Si queda como pendiente, la fecha se interpreta como fecha programada. Si se marca como realizada, también se registra fecha de realización y vencimiento.
+      </div>
+
+      <div class="multi-assign-list" id="calendarPeopleList"></div>
+
+      <br>
+      <button class="primary" onclick="assignCalendarCourse()">Asignar a seleccionados</button>
+      <button class="secondary" onclick="toggleCalendarPeople(true)">Seleccionar todos</button>
+      <button class="secondary" onclick="toggleCalendarPeople(false)">Limpiar</button>
+      <button class="secondary" onclick="closeModal('calendarAssignmentModal')">Cancelar</button>
+    </div>
+  </div>
+
   <div class="modal" id="drillModal">
     <div class="modal-content">
       <h3>Registrar simulacro</h3>
@@ -2758,18 +3154,45 @@
     </div>
   </div>
 
+
+
+  <div class="modal" id="personModal">
+    <div class="modal-content">
+      <h3 id="personModalTitle">Agregar personal</h3>
+      <input type="hidden" id="personEditIndex" value="" />
+      <div class="form-grid">
+        <input id="personName" placeholder="Nombre y apellido" />
+        <input id="personDni" placeholder="DNI" />
+        <input id="personAge" type="number" min="18" placeholder="Edad" />
+        <input id="personLegajo" placeholder="Legajo" />
+        <input id="personRole" placeholder="Cargo / función SST" />
+        <input id="personSector" placeholder="Sector" />
+        <input id="personEmergencyRole" placeholder="Rol ante emergencia" />
+        <input id="personEmail" placeholder="Email" />
+      </div>
+      <div class="footer-note">
+        Estos datos alimentan la base de personal, las asignaciones de capacitación y los indicadores del panel general.
+      </div>
+      <br>
+      <button class="primary" onclick="savePerson()">Guardar</button>
+      <button class="secondary" onclick="closeModal('personModal')">Cancelar</button>
+    </div>
+  </div>
+
 <div class="toast" id="toast"></div>
 
 
   <script>
-    const employees = [
-      { name: "Carina Valeria Lamboglia", role: "Encargada de evacuación", email: "carina.lamboglia@ypf-utn.com" },
-      { name: "Marianela Soledad Lobo", role: "Brigadista de primeros auxilios", email: "marianela.lobo@ypf-utn.com" },
-      { name: "Nicolás Menéndez", role: "Coordinador SST Grupo 22", email: "nicolas.menendez@ypf-utn.com" },
-      { name: "Priscila Pazos", role: "Brigadista de incendio", email: "priscila.pazos@ypf-utn.com" },
-      { name: "Iara Micaela Roldán", role: "Control documental SST", email: "iara.roldan@ypf-utn.com" },
-      { name: "Tamara Yamila González", role: "Comunicación y capacitación", email: "tamara.gonzalez@ypf-utn.com" }
+    const defaultEmployees = [
+      { name: "Carina Valeria Lamboglia", dni: "", age: "", legajo: "SST-001", role: "Encargada de evacuación", sector: "Playa / Emergencias", emergencyRole: "Líder de evacuación", email: "carina.lamboglia@ypf-utn.com", active: true },
+      { name: "Marianela Soledad Lobo", dni: "", age: "", legajo: "SST-002", role: "Brigadista de primeros auxilios", sector: "Tienda / Emergencias", emergencyRole: "Primeros auxilios", email: "marianela.lobo@ypf-utn.com", active: true },
+      { name: "Nicolás Menéndez", dni: "", age: "", legajo: "SST-003", role: "Coordinador SST Grupo 22", sector: "Seguridad e Higiene", emergencyRole: "Coordinación general SST", email: "nicolas.menendez@ypf-utn.com", active: true },
+      { name: "Priscila Pazos", dni: "", age: "", legajo: "SST-004", role: "Brigadista de incendio", sector: "Playa / Combustibles", emergencyRole: "Ataque inicial con extintor", email: "priscila.pazos@ypf-utn.com", active: true },
+      { name: "Iara Micaela Roldán", dni: "", age: "", legajo: "SST-005", role: "Control documental SST", sector: "Administración", emergencyRole: "Registro y control documental", email: "iara.roldan@ypf-utn.com", active: true },
+      { name: "Tamara Yamila González", dni: "", age: "", legajo: "SST-006", role: "Comunicación y capacitación", sector: "Capacitación SST", emergencyRole: "Comunicación interna", email: "tamara.gonzalez@ypf-utn.com", active: true }
     ];
+
+    let employees = JSON.parse(localStorage.getItem("ypfEmployees")) || defaultEmployees;
 
     const courses = [
       "Seguridad Laboral Básica",
@@ -2786,6 +3209,48 @@
       "Manejo seguro de combustibles",
       "Prevención psicosocial"
     ];
+
+    const trainingPlan = [
+      { month: "Enero", short: "ENE", courses: [
+        { course: "Seguridad Laboral Básica", focus: "Inducción SST, normas internas y responsabilidades preventivas.", due: "2026-01-31" }
+      ]},
+      { month: "Febrero", short: "FEB", courses: [
+        { course: "Uso de EPP y Señalización", focus: "Uso obligatorio de EPP, cartelería y comunicación visual preventiva.", due: "2026-02-28" }
+      ]},
+      { month: "Marzo", short: "MAR", courses: [
+        { course: "Plan de evacuación y simulacros", focus: "Roles de emergencia, rutas de evacuación y punto de encuentro.", due: "2026-03-31" }
+      ]},
+      { month: "Abril", short: "ABR", courses: [
+        { course: "Riesgo de incendio y uso de extintores", focus: "Clases de fuego, extintores disponibles y ataque inicial seguro.", due: "2026-04-30" }
+      ]},
+      { month: "Mayo", short: "MAY", courses: [
+        { course: "Control y contención de derrames", focus: "Kit antiderrame, absorbentes, aislamiento y disposición segura.", due: "2026-05-31" }
+      ]},
+      { month: "Junio", short: "JUN", courses: [
+        { course: "Riesgo químico: vapores inflamables/tóxicos", focus: "Exposición a combustibles, vapores, ventilación y medidas de control.", due: "2026-06-30" }
+      ]},
+      { month: "Julio", short: "JUL", courses: [
+        { course: "Riesgo eléctrico y electricidad estática", focus: "Fuentes de ignición, puesta a tierra y prevención en zona operativa.", due: "2026-07-31" }
+      ]},
+      { month: "Agosto", short: "AGO", courses: [
+        { course: "RCP y Primeros Auxilios", focus: "Respuesta inicial ante emergencias médicas y activación de ayuda externa.", due: "2026-08-31" }
+      ]},
+      { month: "Septiembre", short: "SEP", courses: [
+        { course: "Manejo seguro de combustibles", focus: "Buenas prácticas operativas en playa, tienda y sector GNC.", due: "2026-09-30" }
+      ]},
+      { month: "Octubre", short: "OCT", courses: [
+        { course: "Ergonomía", focus: "Posturas, manipulación manual, pausas y prevención de TME.", due: "2026-10-31" }
+      ]},
+      { month: "Noviembre", short: "NOV", courses: [
+        { course: "Actos y Condiciones Inseguras", focus: "Detección temprana, comunicación y reporte preventivo.", due: "2026-11-30" }
+      ]},
+      { month: "Diciembre", short: "DIC", courses: [
+        { course: "Autocontrol preventivo", focus: "Cierre anual, lecciones aprendidas y mejora continua PHVA.", due: "2026-12-31" },
+        { course: "Prevención psicosocial", focus: "Comunicación, organización del trabajo y prevención de factores psicosociales.", due: "2026-12-31" }
+      ]}
+    ];
+
+    let selectedCalendarCourse = null;
 
     let trainings = JSON.parse(localStorage.getItem("ypfTrainings")) || [
       { employee: employees[0].name, role: employees[0].role, email: employees[0].email, course: "Plan de evacuación y simulacros", done: true, completed: "2026-03-15", due: "2026-06-15" },
@@ -2896,6 +3361,221 @@
       "Botiquín disponible y accesible",
       "Punto de encuentro identificado en plano de evacuación"
     ];
+
+
+    function saveEmployees() {
+      localStorage.setItem("ypfEmployees", JSON.stringify(employees));
+    }
+
+    function normalizeEmployees() {
+      employees = employees.map((e, i) => ({
+        ...defaultEmployees[i],
+        ...e,
+        dni: e.dni || "",
+        age: e.age || "",
+        legajo: e.legajo || `SST-${String(i + 1).padStart(3, "0")}`,
+        sector: e.sector || "Operaciones SST",
+        emergencyRole: e.emergencyRole || e.role || "Apoyo operativo",
+        active: e.active !== false
+      }));
+      saveEmployees();
+    }
+
+    function employeeOperationalStatus(employeeName) {
+      const stats = getEmployeeTrainingStats(employeeName);
+      if (stats.vencidas > 0) return "Capacitación vencida";
+      if (stats.pendientes > 0 || stats.porVencer > 0 || stats.compliance < 90) return "Requiere capacitación";
+      return "Apto operativo";
+    }
+
+    function employeeStatusClass(status) {
+      if (status === "Apto operativo") return "status-green";
+      if (status === "Requiere capacitación") return "status-yellow";
+      return "status-red";
+    }
+
+    function employeeStatusPillClass(status) {
+      if (status === "Apto operativo") return "vigente";
+      if (status === "Requiere capacitación") return "por-vencer";
+      return "vencido";
+    }
+
+    function renderPersonnel() {
+      const grid = document.getElementById("personnelGrid");
+      if (!grid) return;
+
+      const query = document.getElementById("personSearch")?.value.toLowerCase() || "";
+      const filter = document.getElementById("personStatusFilter")?.value || "todos";
+
+      const filtered = employees.filter(emp => {
+        const status = employeeOperationalStatus(emp.name);
+        const text = `${emp.name} ${emp.dni} ${emp.legajo} ${emp.role} ${emp.sector} ${emp.emergencyRole} ${emp.email}`.toLowerCase();
+        return text.includes(query) && (filter === "todos" || status === filter);
+      });
+
+      grid.innerHTML = filtered.map(emp => {
+        const index = employees.indexOf(emp);
+        const stats = getEmployeeTrainingStats(emp.name);
+        const status = employeeOperationalStatus(emp.name);
+        const initials = emp.name.split(" ").map(p => p[0]).slice(0,2).join("").toUpperCase();
+        const ageText = emp.age ? `${emp.age} años` : "Editable";
+        const dniText = emp.dni || "Editable";
+
+        return `
+          <div class="person-card ${employeeStatusClass(status)}">
+            <div class="person-head">
+              <div class="employee-avatar">${initials}</div>
+              <div>
+                <strong style="color:var(--ypf-blue-dark); font-size:16px;">${emp.name}</strong><br>
+                <small style="color:var(--gray-500); font-weight:800;">${emp.role}</small><br>
+                <span class="pill ${employeeStatusPillClass(status)}" style="margin-top:8px;">● ${status}</span>
+              </div>
+            </div>
+
+            <div class="person-meta">
+              <span><b>DNI</b>${dniText}</span>
+              <span><b>Legajo</b>${emp.legajo}</span>
+              <span><b>Edad</b>${ageText}</span>
+              <span><b>Sector</b>${emp.sector}</span>
+              <span><b>Rol emergencia</b>${emp.emergencyRole}</span>
+              <span><b>Email</b>${emp.email}</span>
+            </div>
+
+            <div class="person-kpi-row">
+              <div class="person-kpi"><strong>${stats.compliance}%</strong><small>Cumpl.</small></div>
+              <div class="person-kpi"><strong>${stats.required}</strong><small>Cursos</small></div>
+              <div class="person-kpi"><strong>${stats.pendientes}</strong><small>Pend.</small></div>
+              <div class="person-kpi"><strong>${stats.vencidas}</strong><small>Venc.</small></div>
+            </div>
+
+            <div class="person-actions">
+              <button class="secondary" onclick="editPerson(${index})">✏️ Editar</button>
+              <button class="secondary" onclick="goToEmployeeTraining('${escapeJsText(emp.name)}')">🎓 Ver capacitaciones</button>
+              <button class="danger" onclick="deletePerson(${index})">Eliminar</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="card"><h3>Sin resultados</h3><p>No se encontraron personas con los filtros seleccionados.</p></div>`;
+      }
+
+      updatePersonnelDashboard();
+    }
+
+    function updatePersonnelDashboard() {
+      const statuses = employees.map(e => employeeOperationalStatus(e.name));
+      const active = employees.filter(e => e.active !== false).length;
+      const ok = statuses.filter(s => s === "Apto operativo").length;
+      const warning = statuses.filter(s => s === "Requiere capacitación").length;
+      const red = statuses.filter(s => s === "Capacitación vencida").length;
+
+      const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+      set("personTotalActive", active);
+      set("personTotalOk", ok);
+      set("personTotalWarning", warning);
+      set("personTotalRed", red);
+    }
+
+    function openPersonModal() {
+      document.getElementById("personModalTitle").textContent = "Agregar personal";
+      document.getElementById("personEditIndex").value = "";
+      ["personName","personDni","personAge","personLegajo","personRole","personSector","personEmergencyRole","personEmail"].forEach(id => document.getElementById(id).value = "");
+      openModal("personModal");
+    }
+
+    function editPerson(index) {
+      const emp = employees[index];
+      if (!emp) return;
+      document.getElementById("personModalTitle").textContent = "Editar personal";
+      document.getElementById("personEditIndex").value = index;
+      document.getElementById("personName").value = emp.name || "";
+      document.getElementById("personDni").value = emp.dni || "";
+      document.getElementById("personAge").value = emp.age || "";
+      document.getElementById("personLegajo").value = emp.legajo || "";
+      document.getElementById("personRole").value = emp.role || "";
+      document.getElementById("personSector").value = emp.sector || "";
+      document.getElementById("personEmergencyRole").value = emp.emergencyRole || "";
+      document.getElementById("personEmail").value = emp.email || "";
+      openModal("personModal");
+    }
+
+    function savePerson() {
+      const indexValue = document.getElementById("personEditIndex").value;
+      const originalName = indexValue !== "" ? employees[Number(indexValue)]?.name : null;
+      const person = {
+        name: document.getElementById("personName").value.trim(),
+        dni: document.getElementById("personDni").value.trim(),
+        age: document.getElementById("personAge").value.trim(),
+        legajo: document.getElementById("personLegajo").value.trim(),
+        role: document.getElementById("personRole").value.trim(),
+        sector: document.getElementById("personSector").value.trim(),
+        emergencyRole: document.getElementById("personEmergencyRole").value.trim(),
+        email: document.getElementById("personEmail").value.trim(),
+        active: true
+      };
+
+      if (!person.name || !person.role || !person.email) {
+        showToast("Completá nombre, cargo y email para guardar el personal.");
+        return;
+      }
+
+      if (!person.legajo) person.legajo = `SST-${String(employees.length + 1).padStart(3, "0")}`;
+      if (!person.sector) person.sector = "Operaciones SST";
+      if (!person.emergencyRole) person.emergencyRole = person.role;
+
+      if (indexValue !== "") {
+        employees[Number(indexValue)] = person;
+        if (originalName && originalName !== person.name) {
+          trainings = trainings.map(t => t.employee === originalName ? { ...t, employee: person.name, role: person.role, email: person.email } : t);
+          localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+        } else {
+          trainings = trainings.map(t => t.employee === person.name ? { ...t, role: person.role, email: person.email } : t);
+          localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+        }
+      } else {
+        employees.push(person);
+      }
+
+      saveEmployees();
+      closeModal("personModal");
+      populateSelectors();
+      refreshAll();
+      showToast("Personal actualizado correctamente y vinculado con los indicadores SST.");
+    }
+
+    function deletePerson(index) {
+      const emp = employees[index];
+      if (!emp) return;
+      const assigned = getEmployeeTrainings(emp.name).length;
+      const msg = assigned ? `Esta persona tiene ${assigned} capacitaciones asignadas. Si la eliminás, también se eliminarán esos registros. ¿Continuar?` : "¿Seguro que querés eliminar esta persona?";
+      if (!confirm(msg)) return;
+      trainings = trainings.filter(t => t.employee !== emp.name);
+      employees.splice(index, 1);
+      saveEmployees();
+      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+      populateSelectors();
+      refreshAll();
+      showToast("Personal eliminado y capacitaciones asociadas actualizadas.");
+    }
+
+    function resetPersonnelData() {
+      if (!confirm("¿Restaurar la base inicial del Grupo 22? Se conservarán las capacitaciones existentes que coincidan por nombre.")) return;
+      employees = JSON.parse(JSON.stringify(defaultEmployees));
+      saveEmployees();
+      populateSelectors();
+      refreshAll();
+      showToast("Base de personal Grupo 22 restaurada correctamente.");
+    }
+
+    function goToEmployeeTraining(employeeName) {
+      document.querySelector('[data-section="capacitaciones"]').click();
+      const search = document.getElementById("employeeSearch");
+      if (search) search.value = employeeName;
+      renderEmployeeProfiles();
+      showEmployeeTrainingDetail(employeeName);
+    }
 
 
     function normalizeTrainings() {
@@ -3045,6 +3725,7 @@
           <div class="training-action-row">
             <button class="secondary" onclick="simulateEmail(${idx})">Enviar mail</button>
             ${needsUpdate ? `<button class="secondary training-update-btn" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
+            <button class="danger" onclick="deleteTraining(${idx})">Eliminar</button>
           </div>
         `;
       };
@@ -3112,6 +3793,21 @@
       document.getElementById("nearExpire").textContent = porVencer + pendientes;
       document.getElementById("expiredCount").textContent = vencidas;
       document.getElementById("globalProgress").style.width = compliance + "%";
+
+      const personStatuses = employees.map(e => employeeOperationalStatus(e.name));
+      const aptos = personStatuses.filter(s => s === "Apto operativo").length;
+      const requieren = personStatuses.filter(s => s === "Requiere capacitación").length;
+      const conVencidas = personStatuses.filter(s => s === "Capacitación vencida").length;
+      const pendientesCriticas = trainings.filter(t => trainingState(t) === "Pendiente" || trainingState(t) === "Realizada vencida").length;
+      const detailCards = document.getElementById("dashboardDetailCards");
+      if (detailCards) {
+        detailCards.innerHTML = `
+          <div class="dashboard-detail-card ok"><strong>${aptos} aptos operativos</strong><small>Personal con capacitaciones vigentes y sin bloqueos críticos.</small></div>
+          <div class="dashboard-detail-card warning"><strong>${requieren} requieren seguimiento</strong><small>Incluye pendientes o cursos próximos a vencer dentro del período de control.</small></div>
+          <div class="dashboard-detail-card danger"><strong>${conVencidas} con capacitación vencida</strong><small>Debe priorizarse la regularización antes de tareas críticas.</small></div>
+          <div class="dashboard-detail-card"><strong>${pendientesCriticas} acciones críticas</strong><small>Suma de capacitaciones pendientes y vencidas en todo el sistema.</small></div>
+        `;
+      }
 
       const courseCounts = courses.slice(0, 7).map(course => {
         const records = trainings.filter(t => t.course === course);
@@ -3207,8 +3903,10 @@
       `).join("");
 
       const qr = document.getElementById("fakeQr");
-      const pattern = [1,1,1,0,1,0,1,1,0,1,0,0,1,0,1,1,1,0,1,1,1,0,0,1,1,0,0,1,1,0,1,0,1,1,0,0,1,0,1,0,1,1,1,0,1,1,1,1,0];
-      qr.innerHTML = pattern.map(v => `<span class="${v ? 'dark' : ''}"></span>`).join("");
+      if (qr) {
+        const pattern = [1,1,1,0,1,0,1,1,0,1,0,0,1,0,1,1,1,0,1,1,1,0,0,1,1,0,0,1,1,0,1,0,1,1,0,0,1,0,1,0,1,1,1,0,1,1,1,1,0];
+        qr.innerHTML = pattern.map(v => `<span class="${v ? 'dark' : ''}"></span>`).join("");
+      }
     }
 
     function renderReports() {
@@ -3220,6 +3918,154 @@
           <small>Reportado por ${r.name} · ${formatDate(r.date)}</small>
         </div>
       `).join("");
+    }
+
+    function openTrainingModal() {
+      populateSelectors();
+      openModal("trainingModal");
+    }
+
+    function renderTrainingCalendar() {
+      const container = document.getElementById("trainingCalendar");
+      if (!container) return;
+
+      container.innerHTML = trainingPlan.map(month => `
+        <div class="month-card">
+          <div class="month-card-header">
+            <strong>${month.month}</strong>
+            <span>${month.short}</span>
+          </div>
+          <div class="month-course-list">
+            ${month.courses.map(item => {
+              const assigned = trainings.filter(t => t.course === item.course).length;
+              const pending = trainings.filter(t => t.course === item.course && trainingState(t) === "Pendiente").length;
+              const expired = trainings.filter(t => t.course === item.course && trainingState(t) === "Realizada vencida").length;
+              return `
+                <div class="month-course">
+                  <strong>${item.course}</strong>
+                  <small>${item.focus}</small>
+                  <small><b>Fecha objetivo:</b> ${formatDate(item.due)} · <b>Asignados:</b> ${assigned}</small>
+                  <div>
+                    <span class="pill programado">Pendientes ${pending}</span>
+                    <span class="pill ${expired ? 'vencido' : 'vigente'}">Vencidas ${expired}</span>
+                  </div>
+                  <div class="calendar-action-row">
+                    <button class="secondary" onclick="openCalendarAssignment('${escapeJsText(item.course)}','${escapeJsText(month.month)}','${item.due}')">Asignar operadores</button>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function openCalendarAssignment(course, month, due) {
+      selectedCalendarCourse = { course, month, due };
+      document.getElementById("calendarAssignmentTitle").textContent = `Asignar: ${course}`;
+      document.getElementById("calendarAssignmentSubtitle").textContent = `Mes del plan: ${month}. Seleccioná uno o más operadores.`;
+      document.getElementById("calendarAssignmentDue").value = due;
+      document.getElementById("calendarAssignmentDone").value = "false";
+      document.getElementById("calendarAssignmentCompleted").value = today.toISOString().slice(0,10);
+      updateCalendarCompletedVisibility();
+      renderCalendarPeopleList();
+      openModal("calendarAssignmentModal");
+    }
+
+    function updateCalendarCompletedVisibility() {
+      const done = document.getElementById("calendarAssignmentDone")?.value === "true";
+      const completed = document.getElementById("calendarAssignmentCompleted");
+      if (!completed) return;
+      completed.disabled = !done;
+      completed.style.opacity = done ? "1" : "0.55";
+    }
+
+    function renderCalendarPeopleList() {
+      const container = document.getElementById("calendarPeopleList");
+      if (!container || !selectedCalendarCourse) return;
+
+      const activePeople = employees.filter(e => e.active !== false);
+      container.innerHTML = activePeople.map((emp, index) => {
+        const existing = trainings.find(t => t.employee === emp.name && t.course === selectedCalendarCourse.course);
+        const state = existing ? trainingState(existing) : "Sin asignar";
+        const stateClass = existing ? trainingStateClass(state) : "programado";
+        return `
+          <label class="multi-assign-item">
+            <input type="checkbox" class="calendar-person-check" value="${emp.name}" ${existing ? "checked" : ""}>
+            <span>
+              <strong>${emp.name}</strong><br>
+              <small>${emp.role} · ${emp.legajo || `SST-${String(index+1).padStart(3,"0")}`}</small><br>
+              <span class="pill ${stateClass}">${state}</span>
+            </span>
+          </label>
+        `;
+      }).join("");
+    }
+
+    function toggleCalendarPeople(checked) {
+      document.querySelectorAll(".calendar-person-check").forEach(input => input.checked = checked);
+    }
+
+    function assignCalendarCourse() {
+      if (!selectedCalendarCourse) return;
+
+      const selected = Array.from(document.querySelectorAll(".calendar-person-check:checked")).map(input => input.value);
+      const due = document.getElementById("calendarAssignmentDue").value;
+      const done = document.getElementById("calendarAssignmentDone").value === "true";
+      const completed = document.getElementById("calendarAssignmentCompleted").value;
+
+      if (!selected.length) {
+        showToast("Seleccioná al menos un operador para asignar la capacitación.");
+        return;
+      }
+
+      if (!due) {
+        showToast("Indicá la fecha programada o de vencimiento.");
+        return;
+      }
+
+      if (done && !completed) {
+        showToast("Para registrar como realizada, cargá la fecha de realización.");
+        return;
+      }
+
+      selected.forEach(employeeName => {
+        const employee = employees.find(e => e.name === employeeName);
+        if (!employee) return;
+
+        const existingIndex = trainings.findIndex(t => t.employee === employee.name && t.course === selectedCalendarCourse.course);
+        const record = {
+          employee: employee.name,
+          role: employee.role,
+          email: employee.email,
+          course: selectedCalendarCourse.course,
+          done,
+          completed: done ? completed : "",
+          due
+        };
+
+        if (existingIndex >= 0) {
+          trainings[existingIndex] = { ...trainings[existingIndex], ...record };
+        } else {
+          trainings.push(record);
+        }
+      });
+
+      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+      closeModal("calendarAssignmentModal");
+      refreshAll();
+      showToast(`✅ Capacitación "${selectedCalendarCourse.course}" asignada a ${selected.length} operador/es.`);
+    }
+
+    function deleteTraining(index) {
+      const training = trainings[index];
+      if (!training) return;
+      if (!confirm(`¿Eliminar la capacitación "${training.course}" asignada a ${training.employee}?`)) return;
+      trainings.splice(index, 1);
+      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+      refreshAll();
+      if (window.selectedTrainingEmployee) showEmployeeTrainingDetail(window.selectedTrainingEmployee);
+      showToast("🗑️ Capacitación eliminada del legajo.");
     }
 
     function simulateEmail(index) {
@@ -3589,6 +4435,8 @@
     function refreshAll() {
       renderTrainingTable();
       renderEmployeeProfiles();
+      renderTrainingCalendar();
+      renderPersonnel();
       updateTrainingDashboard();
       renderDashboard();
       renderDrills();
@@ -3608,6 +4456,7 @@
         const titles = {
           dashboard: "Panel general SST",
           capacitaciones: "Gestión de capacitaciones",
+          personal: "Gestión de Personal SST",
           emergencias: "Preparación y respuesta ante emergencias",
           simulacros: "Simulacros y verificación",
           documentos: "Control documental SST",
@@ -3621,7 +4470,10 @@
 
     document.getElementById("employeeSearch").addEventListener("input", renderEmployeeProfiles);
     document.getElementById("statusFilter").addEventListener("change", renderEmployeeProfiles);
+    document.getElementById("personSearch")?.addEventListener("input", renderPersonnel);
+    document.getElementById("personStatusFilter")?.addEventListener("change", renderPersonnel);
 
+    normalizeEmployees();
     normalizeTrainings();
     populateSelectors();
     refreshAll();
