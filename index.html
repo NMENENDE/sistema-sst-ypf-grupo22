@@ -2324,6 +2324,41 @@
 
     .calendar-modal-content { width: min(760px, 100%); }
 
+
+
+    .training-quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .training-control-note {
+      border-radius: 20px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #ffffff, var(--ypf-blue-light));
+      border: 1px solid #cfe7ff;
+      color: var(--ypf-blue-dark);
+      font-weight: 800;
+      line-height: 1.45;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.06);
+    }
+
+    .training-control-note strong {
+      color: var(--ypf-blue-dark);
+    }
+
+    @media (max-width: 650px) {
+      .training-quick-actions {
+        justify-content: stretch;
+      }
+
+      .training-quick-actions button {
+        width: 100%;
+      }
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -2501,15 +2536,22 @@
             <option value="Realizada vigente">Realizada vigente</option>
             <option value="Realizada por vencer">Realizada por vencer</option>
             <option value="Realizada vencida">Realizada vencida</option>
-            <option value="Pendiente">Pendiente</option>
+            <option value="Pendiente">Pendiente exigible</option>
+            <option value="Programada">Programada futura</option>
           </select>
         </div>
 
-        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <div class="training-quick-actions">
+          <button class="secondary" onclick="goToTrainingCalendar()">📅 Calendario SST</button>
+          <button class="secondary" onclick="setTrainingQuickFilter('Pendiente')">⚠️ Pendientes exigibles</button>
+          <button class="secondary" onclick="setTrainingQuickFilter('Realizada vencida')">❌ Vencidas</button>
           <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
-          <button class="primary" onclick="openTrainingModal()">+ Asignar capacitación</button>
         </div>
       </div>
+    </div>
+
+    <div class="training-control-note">
+      <strong>Enfoque del módulo:</strong> el calendario anual es el único punto de planificación y asignación. Esta pantalla funciona como tablero de control: legajos, vencimientos, pendientes exigibles, programadas futuras y alertas.
     </div>
 
     <div class="training-dashboard-strip">
@@ -3577,6 +3619,31 @@
       showEmployeeTrainingDetail(employeeName);
     }
 
+    function goToTrainingCalendar() {
+      const filter = document.getElementById("statusFilter");
+      const search = document.getElementById("employeeSearch");
+      if (filter) filter.value = "todos";
+      if (search) search.value = "";
+      renderEmployeeProfiles();
+      document.querySelector(".training-calendar-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      showToast("📅 Desde el calendario anual se planifican y asignan los cursos a uno o más operadores.");
+    }
+
+    function setTrainingQuickFilter(state) {
+      const filter = document.getElementById("statusFilter");
+      const search = document.getElementById("employeeSearch");
+      if (filter) filter.value = state;
+      if (search) search.value = "";
+      renderEmployeeProfiles();
+      document.querySelector(".employee-list-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const labels = {
+        "Pendiente": "pendientes exigibles",
+        "Realizada vencida": "capacitaciones vencidas",
+        "Programada": "capacitaciones programadas futuras"
+      };
+      showToast(`Filtro aplicado: ${labels[state] || state}.`);
+    }
+
 
     function normalizeTrainings() {
       trainings = trainings.map(t => ({
@@ -3613,8 +3680,20 @@
     }
 
 
+    function isFutureScheduled(t) {
+      return !t.done && daysTo(t.due) > 0;
+    }
+
+    function isTrainingDueToDate(t) {
+      // Cursos realizados siempre forman parte del historial exigible.
+      // Cursos no realizados solo son exigibles cuando su fecha programada ya llegó.
+      return t.done || daysTo(t.due) <= 0;
+    }
+
     function trainingState(t) {
-      if (!t.done) return "Pendiente";
+      if (!t.done) {
+        return isFutureScheduled(t) ? "Programada" : "Pendiente";
+      }
 
       const dueStatus = statusFor(t.due);
 
@@ -3633,7 +3712,8 @@
     function trainingStateLabel(t) {
       const state = trainingState(t);
 
-      if (state === "Pendiente") return "Pendiente / programada";
+      if (state === "Programada") return `Programada · vence en ${daysTo(t.due)} días`;
+      if (state === "Pendiente") return `Pendiente · atrasada ${Math.abs(daysTo(t.due))} días`;
 
       const days = daysTo(t.due);
       if (state === "Realizada vigente") return `Realizada · vigente ${days} días`;
@@ -3647,15 +3727,17 @@
 
     function getEmployeeTrainingStats(employeeName) {
       const assigned = getEmployeeTrainings(employeeName);
-      const required = assigned.length;
+      const exigibles = assigned.filter(isTrainingDueToDate);
+      const required = exigibles.length;
       const realizadas = assigned.filter(t => t.done).length;
-      const vigentes = assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer").length;
+      const vigentes = exigibles.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer").length;
       const porVencer = assigned.filter(t => trainingState(t) === "Realizada por vencer").length;
       const vencidas = assigned.filter(t => trainingState(t) === "Realizada vencida").length;
       const pendientes = assigned.filter(t => trainingState(t) === "Pendiente").length;
-      const compliance = required ? Math.round((vigentes / required) * 100) : 0;
+      const programadas = assigned.filter(t => trainingState(t) === "Programada").length;
+      const compliance = required ? Math.round((vigentes / required) * 100) : 100;
 
-      return { assigned, required, realizadas, vigentes, porVencer, vencidas, pendientes, compliance };
+      return { assigned, exigibles, required, realizadas, vigentes, porVencer, vencidas, pendientes, programadas, compliance };
     }
 
     function escapeJsText(text) {
@@ -3747,6 +3829,7 @@
 
       const realizadas = stats.assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer");
       const pendientes = stats.assigned.filter(t => trainingState(t) === "Pendiente");
+      const programadas = stats.assigned.filter(t => trainingState(t) === "Programada");
       const vencidas = stats.assigned.filter(t => trainingState(t) === "Realizada vencida");
 
       detail.innerHTML = `
@@ -3757,20 +3840,22 @@
 
         <div class="training-summary">
           <div class="training-summary-card"><strong>${stats.compliance}%</strong><span>Cumplimiento</span></div>
-          <div class="training-summary-card"><strong>${stats.required}</strong><span>Requeridas</span></div>
+          <div class="training-summary-card"><strong>${stats.required}</strong><span>Exigibles</span></div>
           <div class="training-summary-card"><strong>${stats.realizadas}</strong><span>Realizadas</span></div>
           <div class="training-summary-card"><strong>${stats.pendientes}</strong><span>Pendientes</span></div>
+          <div class="training-summary-card"><strong>${stats.programadas}</strong><span>Programadas</span></div>
           <div class="training-summary-card"><strong>${stats.vencidas}</strong><span>Vencidas</span></div>
         </div>
 
         <div class="training-groups-wrap">
           ${buildGroup("Capacitaciones realizadas vigentes / por vencer", "✅", realizadas)}
-          ${buildGroup("Capacitaciones pendientes o programadas", "⚠️", pendientes, "pending")}
+          ${buildGroup("Capacitaciones pendientes exigibles", "⚠️", pendientes, "pending")}
+          ${buildGroup("Capacitaciones programadas futuras", "📅", programadas, "pending")}
           ${buildGroup("Capacitaciones realizadas vencidas", "❌", vencidas, "expired")}
         </div>
 
         <div class="footer-note">
-          Indicador individual = capacitaciones realizadas y vigentes / capacitaciones requeridas asignadas al trabajador × 100.
+          Indicador individual = capacitaciones realizadas y vigentes / capacitaciones exigibles a la fecha × 100. Las programadas futuras no penalizan el cumplimiento.
         </div>
       `;
     }
@@ -3781,12 +3866,14 @@
 
     function renderDashboard() {
       const total = employees.length;
+      const exigiblesGlobales = trainings.filter(isTrainingDueToDate);
       const states = trainings.map(t => trainingState(t));
-      const vigentes = states.filter(s => s === "Realizada vigente" || s === "Realizada por vencer").length;
-      const porVencer = states.filter(s => s === "Realizada por vencer").length;
-      const vencidas = states.filter(s => s === "Realizada vencida").length;
-      const pendientes = states.filter(s => s === "Pendiente").length;
-      const compliance = trainings.length ? Math.round((vigentes / trainings.length) * 100) : 0;
+      const vigentes = exigiblesGlobales.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer").length;
+      const porVencer = trainings.filter(t => trainingState(t) === "Realizada por vencer").length;
+      const vencidas = trainings.filter(t => trainingState(t) === "Realizada vencida").length;
+      const pendientes = trainings.filter(t => trainingState(t) === "Pendiente").length;
+      const programadas = trainings.filter(t => trainingState(t) === "Programada").length;
+      const compliance = exigiblesGlobales.length ? Math.round((vigentes / exigiblesGlobales.length) * 100) : 100;
 
       document.getElementById("totalEmployees").textContent = total;
       document.getElementById("compliance").textContent = compliance + "%";
@@ -3805,7 +3892,7 @@
           <div class="dashboard-detail-card ok"><strong>${aptos} aptos operativos</strong><small>Personal con capacitaciones vigentes y sin bloqueos críticos.</small></div>
           <div class="dashboard-detail-card warning"><strong>${requieren} requieren seguimiento</strong><small>Incluye pendientes o cursos próximos a vencer dentro del período de control.</small></div>
           <div class="dashboard-detail-card danger"><strong>${conVencidas} con capacitación vencida</strong><small>Debe priorizarse la regularización antes de tareas críticas.</small></div>
-          <div class="dashboard-detail-card"><strong>${pendientesCriticas} acciones críticas</strong><small>Suma de capacitaciones pendientes y vencidas en todo el sistema.</small></div>
+          <div class="dashboard-detail-card"><strong>${pendientesCriticas} acciones críticas</strong><small>Pendientes exigibles y vencidas. Programadas futuras: ${programadas}.</small></div>
         `;
       }
 
@@ -3829,7 +3916,11 @@
 
         const pendientesCurso = c.records
           .filter(t => trainingState(t) === "Pendiente")
-          .map(t => `${t.employee} (pendiente)`);
+          .map(t => `${t.employee} (pendiente exigible)`);
+
+        const programadasCurso = c.records
+          .filter(t => trainingState(t) === "Programada")
+          .map(t => `${t.employee} (programada)`);
 
         const vencidasCurso = c.records
           .filter(t => trainingState(t) === "Realizada vencida")
@@ -3837,7 +3928,8 @@
 
         const peopleList = `
           ${realizadas.length ? `<b>Realizadas:</b><ul>${realizadas.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
-          ${pendientesCurso.length ? `<b>Pendientes:</b><ul>${pendientesCurso.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+          ${pendientesCurso.length ? `<b>Pendientes exigibles:</b><ul>${pendientesCurso.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+          ${programadasCurso.length ? `<b>Programadas futuras:</b><ul>${programadasCurso.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
           ${vencidasCurso.length ? `<b>Vencidas:</b><ul>${vencidasCurso.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
           ${!c.records.length ? "Sin trabajadores asignados actualmente." : ""}
         `;
@@ -3860,7 +3952,7 @@
 
       const actions = trainings
         .map(t => ({ ...t, state: trainingState(t), days: daysTo(t.due) }))
-        .filter(t => t.state !== "Realizada vigente")
+        .filter(t => t.state !== "Realizada vigente" && t.state !== "Programada")
         .sort((a,b) => a.days - b.days)
         .slice(0, 4);
 
@@ -3939,6 +4031,7 @@
             ${month.courses.map(item => {
               const assigned = trainings.filter(t => t.course === item.course).length;
               const pending = trainings.filter(t => t.course === item.course && trainingState(t) === "Pendiente").length;
+              const scheduled = trainings.filter(t => t.course === item.course && trainingState(t) === "Programada").length;
               const expired = trainings.filter(t => t.course === item.course && trainingState(t) === "Realizada vencida").length;
               return `
                 <div class="month-course">
@@ -3946,7 +4039,8 @@
                   <small>${item.focus}</small>
                   <small><b>Fecha objetivo:</b> ${formatDate(item.due)} · <b>Asignados:</b> ${assigned}</small>
                   <div>
-                    <span class="pill programado">Pendientes ${pending}</span>
+                    <span class="pill programado">Programadas ${scheduled}</span>
+                    <span class="pill ${pending ? 'por-vencer' : 'vigente'}">Pendientes ${pending}</span>
                     <span class="pill ${expired ? 'vencido' : 'vigente'}">Vencidas ${expired}</span>
                   </div>
                   <div class="calendar-action-row">
@@ -4193,11 +4287,11 @@
     }
 
     function updateTrainingDashboard() {
-      const states = trainings.map(t => trainingState(t));
-      const vigentes = states.filter(s => s === "Realizada vigente" || s === "Realizada por vencer").length;
-      const pendientes = states.filter(s => s === "Pendiente").length;
-      const vencidas = states.filter(s => s === "Realizada vencida").length;
-      const compliance = trainings.length ? Math.round((vigentes / trainings.length) * 100) : 0;
+      const exigiblesGlobales = trainings.filter(isTrainingDueToDate);
+      const vigentes = exigiblesGlobales.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer").length;
+      const pendientes = trainings.filter(t => trainingState(t) === "Pendiente").length;
+      const vencidas = trainings.filter(t => trainingState(t) === "Realizada vencida").length;
+      const compliance = exigiblesGlobales.length ? Math.round((vigentes / exigiblesGlobales.length) * 100) : 100;
 
       const peopleEl = document.getElementById("trainingTotalPeople");
       const complianceEl = document.getElementById("trainingGlobalCompliance");
