@@ -2014,6 +2014,18 @@
     }
 
 
+    .certificate-btn {
+      background: linear-gradient(135deg, var(--ypf-yellow), #fff3a3) !important;
+      color: var(--ypf-blue-dark) !important;
+      border: 1px solid #facc15 !important;
+      box-shadow: 0 8px 16px rgba(255,204,0,0.20);
+    }
+
+    .certificate-btn:hover {
+      filter: brightness(0.98);
+    }
+
+
     /* ===== Gestión de Personal SST ===== */
     .personnel-hero {
       background:
@@ -3806,6 +3818,7 @@
         return `
           <div class="training-action-row">
             <button class="secondary" onclick="simulateEmail(${idx})">Enviar mail</button>
+            ${t.done ? `<button class="secondary certificate-btn" onclick="generateTrainingCertificate(${idx})">Descargar certificado</button>` : ""}
             ${needsUpdate ? `<button class="secondary training-update-btn" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
             <button class="danger" onclick="deleteTraining(${idx})">Eliminar</button>
           </div>
@@ -4149,6 +4162,280 @@
       closeModal("calendarAssignmentModal");
       refreshAll();
       showToast(`✅ Capacitación "${selectedCalendarCourse.course}" asignada a ${selected.length} operador/es.`);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function generateTrainingCertificate(index) {
+      const t = trainings[index];
+      if (!t) return;
+
+      if (!t.done) {
+        showToast("El certificado solo se puede emitir para capacitaciones realizadas.");
+        return;
+      }
+
+      const employee = employees.find(e => e.name === t.employee) || {};
+      const issueDate = today.toISOString().slice(0,10);
+      const certificateId = `SST-G22-${String(index + 1).padStart(3, "0")}-${Date.now().toString().slice(-5)}`;
+      const status = trainingState(t);
+
+      const certificateHtml = `
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>Certificado SST - ${escapeHtml(t.employee)}</title>
+          <style>
+            * { box-sizing: border-box; }
+            body {
+              margin: 0;
+              padding: 28px;
+              font-family: Arial, Helvetica, sans-serif;
+              background: #f1f5f9;
+              color: #0f172a;
+            }
+            .certificate {
+              width: 100%;
+              max-width: 1050px;
+              min-height: 720px;
+              margin: 0 auto;
+              background: white;
+              border: 8px solid #0056a6;
+              border-radius: 28px;
+              padding: 42px;
+              position: relative;
+              overflow: hidden;
+              box-shadow: 0 18px 45px rgba(15,23,42,0.16);
+            }
+            .certificate::before {
+              content: "";
+              position: absolute;
+              inset: 18px;
+              border: 3px solid #ffcc00;
+              border-radius: 18px;
+              pointer-events: none;
+            }
+            .watermark {
+              position: absolute;
+              right: -18px;
+              bottom: -38px;
+              font-size: 150px;
+              font-weight: 900;
+              color: rgba(0,86,166,0.06);
+              letter-spacing: -8px;
+            }
+            .header {
+              display: flex;
+              justify-content: space-between;
+              gap: 20px;
+              align-items: flex-start;
+              position: relative;
+              z-index: 2;
+            }
+            .logo {
+              width: 120px;
+              height: 74px;
+              border-radius: 14px;
+              background: #0056a6;
+              color: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 42px;
+              font-weight: 900;
+              letter-spacing: -3px;
+              border-bottom: 8px solid #00a3e0;
+            }
+            .meta {
+              text-align: right;
+              font-size: 13px;
+              color: #475569;
+              font-weight: 700;
+              line-height: 1.5;
+            }
+            h1 {
+              margin: 58px 0 8px;
+              text-align: center;
+              color: #003f7d;
+              font-size: 42px;
+              letter-spacing: -1px;
+              position: relative;
+              z-index: 2;
+            }
+            .subtitle {
+              text-align: center;
+              color: #64748b;
+              font-weight: 800;
+              text-transform: uppercase;
+              letter-spacing: 2px;
+              font-size: 13px;
+              position: relative;
+              z-index: 2;
+            }
+            .body {
+              margin: 52px auto 34px;
+              max-width: 820px;
+              text-align: center;
+              font-size: 22px;
+              line-height: 1.55;
+              position: relative;
+              z-index: 2;
+            }
+            .person {
+              display: block;
+              margin: 16px 0;
+              color: #0056a6;
+              font-size: 34px;
+              font-weight: 900;
+            }
+            .course {
+              display: block;
+              margin: 16px auto;
+              padding: 16px 22px;
+              border-radius: 18px;
+              background: #e7f2ff;
+              color: #003f7d;
+              font-size: 25px;
+              font-weight: 900;
+              border: 1px solid #cfe7ff;
+            }
+            .details {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 12px;
+              margin: 30px 0;
+              position: relative;
+              z-index: 2;
+            }
+            .detail {
+              border-radius: 16px;
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              padding: 14px;
+            }
+            .detail strong {
+              display: block;
+              color: #003f7d;
+              font-size: 17px;
+              margin-bottom: 4px;
+            }
+            .detail span {
+              color: #475569;
+              font-weight: 700;
+              font-size: 13px;
+            }
+            .signatures {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 70px;
+              margin-top: 54px;
+              position: relative;
+              z-index: 2;
+            }
+            .sig {
+              text-align: center;
+              border-top: 2px solid #334155;
+              padding-top: 10px;
+              color: #334155;
+              font-weight: 800;
+            }
+            .footer {
+              margin-top: 24px;
+              text-align: center;
+              color: #64748b;
+              font-size: 12px;
+              font-weight: 700;
+              position: relative;
+              z-index: 2;
+            }
+            .actions {
+              max-width: 1050px;
+              margin: 18px auto 0;
+              display: flex;
+              justify-content: center;
+              gap: 10px;
+            }
+            button {
+              border: 0;
+              border-radius: 12px;
+              padding: 12px 16px;
+              font-weight: 900;
+              cursor: pointer;
+              background: #0056a6;
+              color: white;
+            }
+            button.secondary { background: #e7f2ff; color: #003f7d; }
+            @media print {
+              body { background: white; padding: 0; }
+              .certificate { box-shadow: none; border-radius: 0; max-width: none; min-height: 100vh; }
+              .actions { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="certificate">
+            <div class="watermark">SST</div>
+            <div class="header">
+              <div class="logo">YPF</div>
+              <div class="meta">
+                <div><b>Certificado:</b> ${certificateId}</div>
+                <div><b>Emisión:</b> ${formatDate(issueDate)}</div>
+                <div><b>Sistema Digital SST · Grupo 22 UTN BA</b></div>
+              </div>
+            </div>
+
+            <h1>Certificado de Capacitación</h1>
+            <div class="subtitle">Seguridad y Salud en el Trabajo</div>
+
+            <div class="body">
+              Se deja constancia de que
+              <span class="person">${escapeHtml(t.employee)}</span>
+              perteneciente al rol/cargo <b>${escapeHtml(t.role || employee.role || "Personal SST")}</b>, ha realizado satisfactoriamente la capacitación:
+              <span class="course">${escapeHtml(t.course)}</span>
+            </div>
+
+            <div class="details">
+              <div class="detail"><strong>${formatDate(t.completed || issueDate)}</strong><span>Fecha de realización</span></div>
+              <div class="detail"><strong>${formatDate(t.due)}</strong><span>Vencimiento / vigencia</span></div>
+              <div class="detail"><strong>${escapeHtml(status)}</strong><span>Estado en sistema</span></div>
+            </div>
+
+            <div class="signatures">
+              <div class="sig">Responsable SST<br><span style="font-size:12px; color:#64748b;">Grupo 22 UTN BA</span></div>
+              <div class="sig">Trabajador capacitado<br><span style="font-size:12px; color:#64748b;">Firma y aclaración</span></div>
+            </div>
+
+            <div class="footer">
+              Documento generado por el Sistema Digital SST YPF - Grupo 22. En una implementación real se integraría a un registro documental auditable.
+            </div>
+          </div>
+
+          <div class="actions">
+            <button onclick="window.print()">Descargar / guardar como PDF</button>
+            <button class="secondary" onclick="window.close()">Cerrar</button>
+          </div>
+        </body>
+        </html>
+      `;
+
+      const win = window.open("", "_blank");
+      if (!win) {
+        showToast("El navegador bloqueó la ventana emergente. Permití pop-ups para emitir el certificado.");
+        return;
+      }
+
+      win.document.open();
+      win.document.write(certificateHtml);
+      win.document.close();
+      win.focus();
     }
 
     function deleteTraining(index) {
