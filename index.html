@@ -2542,7 +2542,7 @@
 
       <div class="training-controls">
         <div style="display:flex; flex-wrap:wrap; gap:10px;">
-          <input class="search" id="employeeSearch" placeholder="Buscar trabajador, rol o curso..." />
+          <input class="search" id="employeeSearch" placeholder="Buscar trabajador por nombre o apellido..." />
           <select id="statusFilter">
             <option value="todos">Todos los estados</option>
             <option value="Realizada vigente">Realizada vigente</option>
@@ -2632,7 +2632,7 @@
 
     <div class="personnel-controls">
       <div style="display:flex; flex-wrap:wrap; gap:10px;">
-        <input class="search" id="personSearch" placeholder="Buscar por nombre, DNI, legajo, cargo o sector..." />
+        <input class="search" id="personSearch" placeholder="Buscar por nombre o apellido..." />
         <select id="personStatusFilter">
           <option value="todos">Todos los estados</option>
           <option value="Apto operativo">Apto operativo</option>
@@ -3100,8 +3100,8 @@
       </div>
 
       <div class="footer-note">
-        Para una capacitación realizada, la fecha de vencimiento permite controlar su vigencia.
-        Para una capacitación pendiente, funciona como fecha programada.
+        Para una capacitación realizada, el sistema calcula automáticamente una vigencia de 12 meses desde la fecha de realización.
+        Para una capacitación pendiente, la fecha funciona como fecha programada.
       </div>
 
       <br>
@@ -3125,7 +3125,7 @@
       </div>
 
       <div class="footer-note">
-        Si queda como pendiente, la fecha se interpreta como fecha programada. Si se marca como realizada, también se registra fecha de realización y vencimiento.
+        Si queda como pendiente, la fecha se interpreta como fecha programada. Si se marca como realizada, el sistema calcula automáticamente 12 meses de vigencia desde la fecha de realización.
       </div>
 
       <div class="multi-assign-list" id="calendarPeopleList"></div>
@@ -3260,8 +3260,7 @@
       "Plan de evacuación y simulacros",
       "Ergonomía",
       "Autocontrol preventivo",
-      "Manejo seguro de combustibles",
-      "Prevención psicosocial"
+      "Manejo seguro de combustibles"
     ];
 
     const trainingPlan = [
@@ -3299,8 +3298,7 @@
         { course: "Actos y Condiciones Inseguras", focus: "Detección temprana, comunicación y reporte preventivo.", due: "2026-11-30" }
       ]},
       { month: "Diciembre", short: "DIC", courses: [
-        { course: "Autocontrol preventivo", focus: "Cierre anual, lecciones aprendidas y mejora continua PHVA.", due: "2026-12-31" },
-        { course: "Prevención psicosocial", focus: "Comunicación, organización del trabajo y prevención de factores psicosociales.", due: "2026-12-31" }
+        { course: "Autocontrol preventivo", focus: "Cierre anual, lecciones aprendidas y mejora continua PHVA.", due: "2026-12-31" }
       ]}
     ];
 
@@ -3318,7 +3316,7 @@
       { employee: employees[4].name, role: employees[4].role, email: employees[4].email, course: "Control y contención de derrames", done: true, completed: "2026-05-12", due: "2026-08-12" },
       { employee: employees[4].name, role: employees[4].role, email: employees[4].email, course: "Autocontrol preventivo", done: true, completed: "2026-04-01", due: "2027-04-01" },
       { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Uso de EPP y Señalización", done: true, completed: "2026-03-22", due: "2026-06-22" },
-      { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Prevención psicosocial", done: false, completed: "", due: "2026-07-10" }
+      { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Autocontrol preventivo", done: false, completed: "", due: "2026-12-31" }
     ];
 
     let drills = JSON.parse(localStorage.getItem("ypfDrills")) || [
@@ -3458,12 +3456,12 @@
       const grid = document.getElementById("personnelGrid");
       if (!grid) return;
 
-      const query = document.getElementById("personSearch")?.value.toLowerCase() || "";
+      const query = normalizeText(document.getElementById("personSearch")?.value || "");
       const filter = document.getElementById("personStatusFilter")?.value || "todos";
 
       const filtered = employees.filter(emp => {
         const status = employeeOperationalStatus(emp.name);
-        const text = `${emp.name} ${emp.dni} ${emp.legajo} ${emp.role} ${emp.sector} ${emp.emergencyRole} ${emp.email}`.toLowerCase();
+        const text = normalizeText(emp.name);
         return text.includes(query) && (filter === "todos" || status === filter);
       });
 
@@ -3658,11 +3656,19 @@
 
 
     function normalizeTrainings() {
-      trainings = trainings.map(t => ({
-        ...t,
-        done: typeof t.done === "boolean" ? t.done : true,
-        completed: t.completed || (typeof t.done === "boolean" && !t.done ? "" : t.due)
-      }));
+      trainings = trainings
+        .filter(t => courses.includes(t.course))
+        .map(t => {
+          const done = typeof t.done === "boolean" ? t.done : true;
+          const completed = t.completed || (done ? t.due : "");
+          const due = done && completed ? addOneYearISO(completed) : t.due;
+          return {
+            ...t,
+            done,
+            completed,
+            due
+          };
+        });
 
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
     }
@@ -3689,6 +3695,19 @@
 
     function formatDate(dateString) {
       return new Date(dateString + "T12:00:00").toLocaleDateString("es-AR");
+    }
+
+    function addOneYearISO(dateString) {
+      const base = new Date(dateString + "T12:00:00");
+      base.setFullYear(base.getFullYear() + 1);
+      return base.toISOString().slice(0, 10);
+    }
+
+    function normalizeText(value) {
+      return String(value || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
     }
 
 
@@ -3760,12 +3779,12 @@
       const container = document.getElementById("employeeProfiles");
       if (!container) return;
 
-      const query = document.getElementById("employeeSearch")?.value.toLowerCase() || "";
+      const query = normalizeText(document.getElementById("employeeSearch")?.value || "");
       const filter = document.getElementById("statusFilter")?.value || "todos";
 
       const filteredEmployees = employees.filter(emp => {
         const stats = getEmployeeTrainingStats(emp.name);
-        const text = `${emp.name} ${emp.role} ${stats.assigned.map(t => t.course).join(" ")}`.toLowerCase();
+        const text = normalizeText(emp.name);
         const matchesText = text.includes(query);
         const matchesFilter = filter === "todos" || stats.assigned.some(t => trainingState(t) === filter);
         return matchesText && matchesFilter;
@@ -4148,7 +4167,7 @@
           course: selectedCalendarCourse.course,
           done,
           completed: done ? completed : "",
-          due
+          due: done ? addOneYearISO(completed) : due
         };
 
         if (existingIndex >= 0) {
@@ -4335,8 +4354,8 @@
             .signatures {
               display: grid;
               grid-template-columns: 1fr 1fr;
-              gap: 70px;
-              margin-top: 54px;
+              gap: 34px 48px;
+              margin-top: 48px;
               position: relative;
               z-index: 2;
             }
@@ -4404,17 +4423,19 @@
 
             <div class="details">
               <div class="detail"><strong>${formatDate(t.completed || issueDate)}</strong><span>Fecha de realización</span></div>
-              <div class="detail"><strong>${formatDate(t.due)}</strong><span>Vencimiento / vigencia</span></div>
+              <div class="detail"><strong>${formatDate(t.due)}</strong><span>Vigencia 12 meses</span></div>
               <div class="detail"><strong>${escapeHtml(status)}</strong><span>Estado en sistema</span></div>
             </div>
 
             <div class="signatures">
-              <div class="sig">Responsable SST<br><span style="font-size:12px; color:#64748b;">Grupo 22 UTN BA</span></div>
-              <div class="sig">Trabajador capacitado<br><span style="font-size:12px; color:#64748b;">Firma y aclaración</span></div>
+              <div class="sig">Martín Bruno<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
+              <div class="sig">José Navío<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
+              <div class="sig">Víctor Morera<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
+              <div class="sig">Sebastián Ezpeleta<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
             </div>
 
             <div class="footer">
-              Documento generado por el Sistema Digital SST YPF - Grupo 22. En una implementación real se integraría a un registro documental auditable.
+              Documento generado por el Sistema Digital SST YPF - Grupo 22. Vigencia de la capacitación: 12 meses desde la fecha de realización.
             </div>
           </div>
 
@@ -4488,7 +4509,7 @@
         course,
         done,
         completed: done ? completed : "",
-        due
+        due: done ? addOneYearISO(completed) : due
       };
 
       if (existingIndex >= 0) {
@@ -4557,13 +4578,10 @@
       if (!training) return;
 
       const todayISO = today.toISOString().slice(0, 10);
-      const nextYear = new Date(today);
-      nextYear.setFullYear(nextYear.getFullYear() + 1);
-      const nextYearISO = nextYear.toISOString().slice(0, 10);
 
       training.done = true;
       training.completed = todayISO;
-      training.due = nextYearISO;
+      training.due = addOneYearISO(todayISO);
 
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
 
