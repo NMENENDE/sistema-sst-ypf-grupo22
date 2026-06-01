@@ -2682,20 +2682,6 @@
           <div class="dashboard-detail-grid" id="dashboardDetailCards"></div>
         </div>
 
-        <div class="grid two" style="margin-top:18px;">
-          <div class="card">
-            <h3>Estado global del plan de capacitación</h3>
-            <p>Seguimiento de competencia, toma de conciencia y comunicación interna SST.</p>
-            <div class="progress-wrap"><div class="progress-bar" id="globalProgress"></div></div>
-            <div class="chart-row" id="courseChart"></div>
-          </div>
-
-          <div class="card">
-            <h3>Próximas acciones automáticas globales</h3><p>Alertas generadas sobre todas las capacitaciones cargadas en el sistema.</p>
-            <div class="step-list" id="autoActions"></div>
-          </div>
-        </div>
-
         <div class="card quarter-matrix-card">
           <div class="quarter-matrix-header">
             <div>
@@ -4031,19 +4017,71 @@
       return trainings.filter(t => t.employee === employeeName);
     }
 
+    function getPlanItemsDueToDate() {
+      // Base real del KPI: cursos del cronograma cuya fecha objetivo ya llegó.
+      // Si enero, febrero y marzo no fueron realizados, deben pesar como pendientes aunque no estén asignados manualmente.
+      return getAllTrainingPlanItems().filter(item => daysTo(item.due) <= 0);
+    }
+
+    function getPlanItemsFuture() {
+      return getAllTrainingPlanItems().filter(item => daysTo(item.due) > 0);
+    }
+
+    function getEmployeeRecordForPlanItem(employeeName, item) {
+      return trainings.find(t => {
+        if (t.employee !== employeeName) return false;
+        if (t.courseId && t.courseId === item.id) return true;
+        if (getTrainingRecordKey(t) === item.id) return true;
+        return !t.courseId && t.course === item.course && (t.courseMonth === item.month || t.due === item.due);
+      });
+    }
+
+    function isCompletedValid(record) {
+      if (!record || !record.done) return false;
+      const state = trainingState(record);
+      return state === "Realizada vigente" || state === "Realizada por vencer";
+    }
+
     function getEmployeeTrainingStats(employeeName) {
       const assigned = getEmployeeTrainings(employeeName);
-      const exigibles = assigned.filter(isTrainingDueToDate);
-      const required = exigibles.length;
-      const realizadas = assigned.filter(t => t.done).length;
-      const vigentes = exigibles.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer").length;
-      const porVencer = assigned.filter(t => trainingState(t) === "Realizada por vencer").length;
-      const vencidas = assigned.filter(t => trainingState(t) === "Realizada vencida").length;
-      const pendientes = assigned.filter(t => trainingState(t) === "Pendiente").length;
-      const programadas = assigned.filter(t => trainingState(t) === "Programada").length;
-      const compliance = required ? Math.round((vigentes / required) * 100) : 100;
+      const expected = getPlanItemsDueToDate();
+      const futurePlanItems = getPlanItemsFuture();
+      const expectedRecords = expected.map(item => ({ item, record: getEmployeeRecordForPlanItem(employeeName, item) }));
+      const futureRecords = futurePlanItems.map(item => ({ item, record: getEmployeeRecordForPlanItem(employeeName, item) })).filter(x => x.record);
 
-      return { assigned, exigibles, required, realizadas, vigentes, porVencer, vencidas, pendientes, programadas, compliance };
+      const required = expected.length;
+      const realizadas = expectedRecords.filter(x => isCompletedValid(x.record)).length;
+      const vigentes = realizadas;
+      const porVencer = expectedRecords.filter(x => x.record && trainingState(x.record) === "Realizada por vencer").length;
+      const vencidas = expectedRecords.filter(x => x.record && trainingState(x.record) === "Realizada vencida").length;
+      const pendientes = expectedRecords.filter(x => !isCompletedValid(x.record)).length;
+      const programadas = futureRecords.filter(x => trainingState(x.record) === "Programada").length;
+      const compliance = required ? Math.round((vigentes / required) * 100) : 0;
+
+      return { assigned, exigibles: expectedRecords.map(x => x.record).filter(Boolean), required, realizadas, vigentes, porVencer, vencidas, pendientes, programadas, compliance, expectedRecords };
+    }
+
+    function getGlobalTrainingStats() {
+      const activeEmployees = employees.filter(e => e.active !== false);
+      const expected = getPlanItemsDueToDate();
+      const totalRequired = activeEmployees.length * expected.length;
+      let realizadas = 0;
+      let vencidas = 0;
+      let porVencer = 0;
+
+      activeEmployees.forEach(emp => {
+        expected.forEach(item => {
+          const record = getEmployeeRecordForPlanItem(emp.name, item);
+          if (isCompletedValid(record)) realizadas += 1;
+          if (record && trainingState(record) === "Realizada vencida") vencidas += 1;
+          if (record && trainingState(record) === "Realizada por vencer") porVencer += 1;
+        });
+      });
+
+      const pendientes = Math.max(totalRequired - realizadas, 0);
+      const programadas = trainings.filter(t => trainingState(t) === "Programada").length;
+      const compliance = totalRequired ? Math.round((realizadas / totalRequired) * 100) : 0;
+      return { totalRequired, realizadas, pendientes, vencidas, porVencer, programadas, compliance };
     }
 
     function escapeJsText(text) {
@@ -4163,7 +4201,7 @@
         </div>
 
         <div class="footer-note">
-          Indicador individual = capacitaciones realizadas y vigentes / capacitaciones exigibles a la fecha × 100. Las programadas futuras no penalizan el cumplimiento.
+          Indicador individual = cursos del cronograma ya exigibles y realizados / cursos del cronograma ya exigibles × 100. Si enero, febrero o marzo no se realizaron, cuentan como pendientes aunque no se hayan asignado manualmente.
         </div>
       `;
     }
@@ -4198,29 +4236,47 @@
     function getMonthRecordsForEmployee(employeeName, monthName) {
       const planMonth = trainingPlan.find(m => m.month === monthName);
       if (!planMonth) return [];
-      const monthIds = planMonth.courses.map(c => c.id);
-      const monthNames = planMonth.courses.map(c => c.course);
-      return trainings.filter(t => {
-        const key = getTrainingRecordKey(t);
-        return t.employee === employeeName && (monthIds.includes(key) || monthIds.includes(t.courseId) || (monthNames.includes(t.course) && (t.courseMonth === monthName || !t.courseMonth)));
-      });
+      return planMonth.courses
+        .map(item => ({ item, record: getEmployeeRecordForPlanItem(employeeName, { ...item, month: planMonth.month, short: planMonth.short }) }))
+        .filter(x => x.record);
     }
+
     function getQuarterCellStatus(employeeName, monthName) {
-      const records = getMonthRecordsForEmployee(employeeName, monthName);
-      if (!records.length) return { icon: "—", cls: "empty", title: "Sin asignar" };
-      const states = records.map(trainingState);
-      if (states.includes("Realizada vencida")) return { icon: "❌", cls: "bad", title: records.map(r => `${r.course}: ${trainingState(r)}`).join(" | ") };
-      if (states.includes("Pendiente") || states.includes("Realizada por vencer")) return { icon: "⚠️", cls: "warn", title: records.map(r => `${r.course}: ${trainingState(r)}`).join(" | ") };
-      if (states.includes("Programada")) return { icon: "📅", cls: "future", title: records.map(r => `${r.course}: ${trainingState(r)}`).join(" | ") };
-      return { icon: "✅", cls: "ok", title: records.map(r => `${r.course}: realizada vigente`).join(" | ") };
+      const planMonth = trainingPlan.find(m => m.month === monthName);
+      if (!planMonth) return { icon: "—", cls: "empty", title: "Sin planificación" };
+
+      const checks = planMonth.courses.map(item => {
+        const planItem = { ...item, month: planMonth.month, short: planMonth.short };
+        const record = getEmployeeRecordForPlanItem(employeeName, planItem);
+        return { item: planItem, record, state: record ? trainingState(record) : null, dueNow: daysTo(planItem.due) <= 0 };
+      });
+
+      if (checks.some(x => x.record && x.state === "Realizada vencida")) {
+        return { icon: "❌", cls: "bad", title: checks.map(x => `${x.item.course}: ${x.state || (x.dueNow ? "Pendiente sin registrar" : "Sin asignar")}`).join(" | ") };
+      }
+
+      if (checks.some(x => x.dueNow && !isCompletedValid(x.record)) || checks.some(x => x.state === "Pendiente" || x.state === "Realizada por vencer")) {
+        return { icon: "⚠️", cls: "warn", title: checks.map(x => `${x.item.course}: ${x.state || (x.dueNow ? "Pendiente sin registrar" : "Sin asignar")}`).join(" | ") };
+      }
+
+      if (checks.every(x => !x.dueNow)) {
+        return { icon: "📅", cls: "future", title: checks.map(x => `${x.item.course}: programada por cronograma`).join(" | ") };
+      }
+
+      return { icon: "✅", cls: "ok", title: checks.map(x => `${x.item.course}: realizada vigente`).join(" | ") };
     }
+
     function getQuarterCompliance(employeeName, months) {
-      const records = months.flatMap(month => getMonthRecordsForEmployee(employeeName, month));
-      const exigibles = records.filter(isTrainingDueToDate);
-      if (!exigibles.length) return "100%";
-      const ok = exigibles.filter(t => ["Realizada vigente", "Realizada por vencer"].includes(trainingState(t))).length;
-      return Math.round((ok / exigibles.length) * 100) + "%";
+      const planned = months.flatMap(month => {
+        const planMonth = trainingPlan.find(m => m.month === month);
+        return planMonth ? planMonth.courses.map(item => ({ ...item, month: planMonth.month, short: planMonth.short })) : [];
+      }).filter(item => daysTo(item.due) <= 0);
+
+      if (!planned.length) return "0%";
+      const ok = planned.filter(item => isCompletedValid(getEmployeeRecordForPlanItem(employeeName, item))).length;
+      return Math.round((ok / planned.length) * 100) + "%";
     }
+
     function renderQuarterTrainingMatrix() {
       const container = document.getElementById("quarterTrainingMatrix");
       if (!container) return;
@@ -4238,20 +4294,19 @@
 
     function renderDashboard() {
       const total = employees.length;
-      const exigiblesGlobales = trainings.filter(isTrainingDueToDate);
-      const states = trainings.map(t => trainingState(t));
-      const vigentes = exigiblesGlobales.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer").length;
-      const porVencer = trainings.filter(t => trainingState(t) === "Realizada por vencer").length;
-      const vencidas = trainings.filter(t => trainingState(t) === "Realizada vencida").length;
-      const pendientes = trainings.filter(t => trainingState(t) === "Pendiente").length;
-      const programadas = trainings.filter(t => trainingState(t) === "Programada").length;
-      const compliance = exigiblesGlobales.length ? Math.round((vigentes / exigiblesGlobales.length) * 100) : 100;
+      const globalStats = getGlobalTrainingStats();
+      const porVencer = globalStats.porVencer;
+      const vencidas = globalStats.vencidas;
+      const pendientes = globalStats.pendientes;
+      const programadas = globalStats.programadas;
+      const compliance = globalStats.compliance;
 
       document.getElementById("totalEmployees").textContent = total;
       document.getElementById("compliance").textContent = compliance + "%";
       document.getElementById("nearExpire").textContent = porVencer + pendientes;
       document.getElementById("expiredCount").textContent = vencidas;
-      document.getElementById("globalProgress").style.width = compliance + "%";
+      const globalProgressEl = document.getElementById("globalProgress");
+      if (globalProgressEl) globalProgressEl.style.width = compliance + "%";
 
       const personStatuses = employees.map(e => employeeOperationalStatus(e.name));
       const aptos = personStatuses.filter(s => s === "Apto operativo").length;
@@ -4279,7 +4334,9 @@
 
       const max = Math.max(...courseCounts.map(c => c.count), 1);
 
-      document.getElementById("courseChart").innerHTML = courseCounts.map(c => {
+      const courseChartEl = document.getElementById("courseChart");
+      if (courseChartEl) {
+        courseChartEl.innerHTML = courseCounts.map(c => {
         const percentage = Math.round((c.count / max) * 100);
 
         const realizadas = c.records
@@ -4321,6 +4378,7 @@
           </div>
         `;
       }).join("");
+      }
 
       const actions = trainings
         .map(t => ({ ...t, state: trainingState(t), days: daysTo(t.due) }))
@@ -4328,7 +4386,8 @@
         .sort((a,b) => a.days - b.days)
         .slice(0, 4);
 
-      document.getElementById("autoActions").innerHTML = actions.length ? actions.map(a => `
+      const autoActionsEl = document.getElementById("autoActions");
+      if (autoActionsEl) autoActionsEl.innerHTML = actions.length ? actions.map(a => `
         <div class="step">
           <div>
             <strong>${a.employee}</strong><br>
@@ -5070,11 +5129,10 @@
     }
 
     function updateTrainingDashboard() {
-      const exigiblesGlobales = trainings.filter(isTrainingDueToDate);
-      const vigentes = exigiblesGlobales.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer").length;
-      const pendientes = trainings.filter(t => trainingState(t) === "Pendiente").length;
-      const vencidas = trainings.filter(t => trainingState(t) === "Realizada vencida").length;
-      const compliance = exigiblesGlobales.length ? Math.round((vigentes / exigiblesGlobales.length) * 100) : 100;
+      const globalStats = getGlobalTrainingStats();
+      const pendientes = globalStats.pendientes;
+      const vencidas = globalStats.vencidas;
+      const compliance = globalStats.compliance;
 
       const peopleEl = document.getElementById("trainingTotalPeople");
       const complianceEl = document.getElementById("trainingGlobalCompliance");
