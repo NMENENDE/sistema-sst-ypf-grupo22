@@ -2373,153 +2373,6 @@
 
     .print-only { display: none; }
 
-
-    /* ===== Bloques alineados al Plan y Cronograma de Capacitación Word ===== */
-    .plan-word-overview {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-    }
-
-    .plan-word-card {
-      background: white;
-      border: 1px solid var(--gray-200);
-      border-radius: 20px;
-      padding: 16px;
-      box-shadow: 0 10px 22px rgba(15,23,42,0.06);
-      border-left: 6px solid var(--ypf-blue);
-    }
-
-    .plan-word-card:nth-child(2) { border-left-color: var(--ypf-yellow); }
-    .plan-word-card:nth-child(3) { border-left-color: var(--green); }
-    .plan-word-card:nth-child(4) { border-left-color: var(--ypf-red); }
-
-    .plan-word-card strong {
-      display: block;
-      color: var(--ypf-blue-dark);
-      margin-bottom: 6px;
-    }
-
-    .plan-word-card small,
-    .plan-word-card li {
-      color: var(--gray-700);
-      font-weight: 700;
-      line-height: 1.45;
-    }
-
-    .plan-word-card ul {
-      margin: 6px 0 0;
-      padding-left: 18px;
-    }
-
-    .course-detail-box {
-      border: 1px solid var(--gray-200);
-      border-radius: 16px;
-      padding: 12px;
-      background: var(--gray-50);
-      display: grid;
-      gap: 6px;
-      margin-top: 6px;
-    }
-
-    .course-detail-box b { color: var(--ypf-blue-dark); }
-
-
-    .month-toggle-btn {
-      width: auto;
-      min-width: 132px;
-      padding: 9px 12px !important;
-      border-radius: 999px !important;
-      background: rgba(255,255,255,0.18) !important;
-      color: white !important;
-      border: 1px solid rgba(255,255,255,0.26) !important;
-      box-shadow: none !important;
-      font-size: 12px;
-    }
-
-    .month-card.collapsed .month-course-list {
-      display: none;
-    }
-
-    .month-card.collapsed .month-card-header {
-      border-bottom-color: rgba(255,204,0,0.55);
-    }
-
-    .month-card-summary {
-      padding: 12px 15px;
-      background: linear-gradient(135deg, #ffffff, var(--gray-50));
-      display: grid;
-      gap: 8px;
-      border-bottom: 1px solid var(--gray-200);
-    }
-
-    .month-card-summary small {
-      color: var(--gray-500);
-      font-weight: 800;
-      line-height: 1.35;
-    }
-
-    .course-detail-collapse {
-      border: 1px solid var(--gray-200);
-      border-radius: 14px;
-      background: var(--gray-50);
-      overflow: hidden;
-    }
-
-    .course-detail-collapse summary {
-      cursor: pointer;
-      padding: 10px 12px;
-      font-weight: 900;
-      color: var(--ypf-blue-dark);
-      list-style: none;
-      user-select: none;
-    }
-
-    .course-detail-collapse summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .course-detail-collapse summary::after {
-      content: "+";
-      float: right;
-      font-size: 18px;
-      line-height: 1;
-      color: var(--ypf-blue);
-    }
-
-    .course-detail-collapse[open] summary::after {
-      content: "−";
-    }
-
-    .course-detail-collapse .course-detail-box {
-      margin-top: 0;
-      border: 0;
-      border-top: 1px solid var(--gray-200);
-      border-radius: 0;
-      background: white;
-    }
-
-    .calendar-month-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: flex-end;
-    }
-
-    @media (max-width: 650px) {
-      .month-card-header {
-        align-items: flex-start;
-      }
-      .calendar-month-actions {
-        width: 100%;
-        justify-content: stretch;
-      }
-      .month-toggle-btn {
-        width: 100%;
-      }
-    }
-
     @media (max-width: 1050px) {
       .app { grid-template-columns: 1fr; }
       aside {
@@ -2576,189 +2429,211 @@
 
 
 
-    /* ===== Corrección final Capacitación: meses en filas horizontales y ficha ancha ===== */
-    .training-calendar-grid {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
-      gap: 12px !important;
+    /* ===== Panel General: matriz trimestral compacta de capacitación ===== */
+    .quarter-matrix-card {
+      margin-top: 18px;
+      border-top: 6px solid var(--ypf-yellow);
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.12), transparent 30%),
+        rgba(255,255,255,0.94);
     }
 
-    .month-card {
-      border-radius: 18px !important;
-      overflow: hidden;
-      background: rgba(255,255,255,0.98);
-      border: 1px solid rgba(203,213,225,0.95);
-    }
-
-    .month-card-header {
-      padding: 12px 16px !important;
-      display: grid !important;
-      grid-template-columns: minmax(140px, 0.22fr) minmax(280px, 1fr) auto !important;
-      align-items: center !important;
-      gap: 14px !important;
-    }
-
-    .month-title-block strong {
-      font-size: 17px !important;
-      letter-spacing: -0.01em;
-    }
-
-    .month-inline-summary {
-      color: rgba(255,255,255,0.92);
-      font-size: 12.5px;
-      font-weight: 800;
-      line-height: 1.35;
-    }
-
-    .month-inline-summary b {
-      color: #fff7cc;
-    }
-
-    .month-card-summary {
-      padding: 10px 16px !important;
-      display: flex !important;
-      flex-wrap: wrap;
-      align-items: center;
+    .quarter-matrix-header {
+      display: flex;
       justify-content: space-between;
-      gap: 10px !important;
-    }
-
-    .month-card-summary small {
-      flex: 1 1 420px;
-    }
-
-    .month-course-list {
-      display: grid !important;
-      gap: 12px !important;
-      padding: 14px 16px 16px !important;
-    }
-
-    .month-card.collapsed .month-course-list {
-      display: none !important;
-    }
-
-    .month-course {
-      padding: 0 !important;
-      overflow: hidden;
-      border-radius: 18px !important;
-      border-left: 6px solid var(--ypf-blue) !important;
-      background: white !important;
-    }
-
-    .course-compact-row {
-      display: grid;
-      grid-template-columns: minmax(280px, 1.1fr) minmax(260px, 0.9fr) auto;
+      align-items: flex-start;
       gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .quarter-matrix-header h3 { margin-bottom: 6px; }
+    .quarter-matrix-header p {
+      margin: 0;
+      color: var(--gray-500);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .quarter-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .quarter-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .quarter-block {
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      background: white;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+    }
+
+    .quarter-title {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      padding: 14px;
+      gap: 10px;
+      padding: 11px 14px;
+      background: linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
+      color: white;
+      border-bottom: 4px solid var(--ypf-yellow);
     }
 
-    .course-compact-row strong {
+    .quarter-title strong { font-size: 14px; }
+    .quarter-title small { font-weight: 900; opacity: 0.92; }
+
+    .quarter-table-wrap { overflow-x: auto; }
+
+    .quarter-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+
+    .quarter-table th,
+    .quarter-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--gray-200);
+      text-align: center;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    .quarter-table th:first-child,
+    .quarter-table td:first-child {
+      text-align: left;
+      width: 260px;
+      font-weight: 900;
       color: var(--ypf-blue-dark);
-      font-size: 15px;
-      line-height: 1.25;
     }
 
-    .course-compact-row small {
+    .quarter-table th {
+      background: var(--gray-50);
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 11px;
+    }
+
+    .status-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 900;
+      border: 1px solid var(--gray-200);
+      background: var(--gray-50);
+    }
+
+    .status-dot.ok { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+    .status-dot.warn { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .status-dot.bad { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    .status-dot.scheduled { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
+    .status-dot.empty { background: #f8fafc; color: #64748b; }
+
+    .quarter-compliance {
+      font-weight: 900;
+      color: var(--ypf-blue-dark);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 650px) {
+      .quarter-matrix-header { display: grid; }
+      .quarter-title { display: grid; }
+    }
+
+
+
+    /* ===== Portada y submódulos de Capacitación ===== */
+    .training-access-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .training-access-card {
+      border: 1px solid rgba(203,213,225,0.9);
+      border-radius: 22px;
+      background: linear-gradient(135deg, #ffffff, var(--gray-50));
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+      border-left: 7px solid var(--ypf-blue);
+      box-shadow: 0 12px 28px rgba(15,23,42,0.08);
+    }
+
+    .training-access-card:nth-child(2) {
+      border-left-color: var(--green);
+    }
+
+    .training-access-card strong {
+      color: var(--ypf-blue-dark);
+      font-size: 18px;
+    }
+
+    .training-access-card p {
+      margin: 0;
+      color: var(--gray-700);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .training-subview {
+      display: none;
+    }
+
+    .training-subview.active {
+      display: block;
+      animation: fade 0.22s ease both;
+    }
+
+    .training-backbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--ypf-blue-light), #ffffff);
+      border: 1px solid #cfe7ff;
+    }
+
+    .training-backbar strong {
+      color: var(--ypf-blue-dark);
+      font-size: 16px;
+    }
+
+    .training-backbar small {
       display: block;
       color: var(--gray-500);
       font-weight: 800;
-      line-height: 1.35;
-      margin-top: 4px;
+      margin-top: 2px;
     }
 
-    .course-chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      justify-content: flex-start;
-    }
-
-    .course-detail-collapse {
-      border: 0 !important;
-      border-top: 1px solid var(--gray-200) !important;
-      border-radius: 0 !important;
-      background: linear-gradient(135deg, #ffffff, var(--gray-50)) !important;
-    }
-
-    .course-detail-collapse summary {
-      padding: 12px 14px !important;
-      background: var(--ypf-blue-light);
-      border-bottom: 1px solid #cfe7ff;
-    }
-
-    .course-detail-box {
-      margin: 0 !important;
-      padding: 14px !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-      background: white !important;
-      display: grid !important;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px !important;
-    }
-
-    .course-detail-field {
-      border: 1px solid var(--gray-200);
-      border-radius: 14px;
-      background: var(--gray-50);
-      padding: 11px 12px;
-      min-height: 74px;
-    }
-
-    .course-detail-field.wide {
-      grid-column: span 2;
-    }
-
-    .course-detail-field.full {
+    .training-general-full {
       grid-column: 1 / -1;
     }
 
-    .course-detail-field b {
-      display: block;
-      color: var(--ypf-blue-dark);
-      margin-bottom: 5px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.035em;
+    .training-general-full ul {
+      columns: 2;
+      column-gap: 28px;
     }
 
-    .course-detail-field small,
-    .course-detail-field span {
-      color: var(--gray-700);
-      font-weight: 700;
-      line-height: 1.42;
-    }
-
-    .calendar-action-row {
-      justify-content: flex-end;
-    }
-
-    @media (max-width: 1050px) {
-      .month-card-header,
-      .course-compact-row {
-        grid-template-columns: 1fr !important;
-        align-items: stretch !important;
-      }
-
-      .calendar-month-actions,
-      .calendar-action-row {
-        justify-content: stretch !important;
-      }
-
-      .calendar-month-actions button,
-      .calendar-action-row button {
-        width: 100%;
-      }
-
-      .course-detail-box {
-        grid-template-columns: 1fr !important;
-      }
-
-      .course-detail-field.wide,
-      .course-detail-field.full {
-        grid-column: 1 / -1;
-      }
+    @media (max-width: 750px) {
+      .training-general-full ul { columns: 1; }
     }
 
     @media print {
@@ -2855,6 +2730,24 @@
           </div>
         </div>
 
+        <div class="card quarter-matrix-card">
+          <div class="quarter-matrix-header">
+            <div>
+              <h3>📋 Matriz trimestral compacta de capacitación</h3>
+              <p>Seguimiento visual por trabajador y por mes. No reemplaza el Estado Global: muestra quién tiene cada capacitación realizada, pendiente, vencida, programada o sin asignar.</p>
+              <div class="quarter-legend">
+                <span class="pill vigente">✅ Realizada</span>
+                <span class="pill por-vencer">⚠️ Pendiente / por vencer</span>
+                <span class="pill vencido">❌ Vencida</span>
+                <span class="pill programado">📅 Programada</span>
+                <span class="pill programado">— Sin asignar</span>
+              </div>
+            </div>
+            <span class="badge calendar-badge">Vista auditoría</span>
+          </div>
+          <div class="quarter-grid" id="quarterTrainingMatrix"></div>
+        </div>
+
         <div class="footer-note">
           Propuesta de valor: el sistema permite trazabilidad de capacitaciones, control de vencimientos, alertas por correo, registros de simulacros, documentación crítica y reportes preventivos. En una implementación real puede conectarse a Google Sheets, Apps Script, Firebase o un servidor corporativo.
         </div>
@@ -2867,113 +2760,121 @@
   <div class="training-module">
 
     <div class="training-hero">
-      <h3>Plan y Cronograma de Capacitación SST</h3>
+      <h3>Gestión digital de competencias SST</h3>
       <p>
-        Empresa: Estación 20 de Julio S.A. · Puesto: atención y carga de combustible en playa.
-        El módulo digitaliza el plan anual, los contenidos por curso, la asignación al personal,
-        los vencimientos, la asistencia y la trazabilidad del legajo individual.
+        Portada operativa del módulo de capacitaciones. Desde acá se accede al calendario anual completo
+        y al seguimiento del personal registrado, manteniendo la trazabilidad del Plan de Capacitación.
       </p>
+    </div>
 
-      <div class="training-controls">
-        <div style="display:flex; flex-wrap:wrap; gap:10px;">
-          <input class="search" id="employeeSearch" placeholder="Buscar trabajador por nombre o apellido..." />
-          <select id="statusFilter">
-            <option value="todos">Todos los estados</option>
-            <option value="Realizada vigente">Realizada vigente</option>
-            <option value="Realizada por vencer">Realizada por vencer</option>
-            <option value="Realizada vencida">Realizada vencida</option>
-            <option value="Pendiente">Pendiente exigible</option>
-            <option value="Programada">Programada futura</option>
-          </select>
+    <div id="trainingHome" class="training-home">
+      <div class="training-control-note">
+        <strong>Enfoque del módulo:</strong> el calendario anual concentra la planificación y asignación de cursos. El seguimiento del personal funciona como legajo individual para revisar vencimientos, pendientes, programadas futuras y alertas.
+      </div>
+
+      <div class="training-dashboard-strip">
+        <div class="training-mini-stat">
+          <span>Personal</span>
+          <strong id="trainingTotalPeople">0</strong>
+        </div>
+        <div class="training-mini-stat">
+          <span>Cumplimiento global</span>
+          <strong id="trainingGlobalCompliance">0%</strong>
+        </div>
+        <div class="training-mini-stat">
+          <span>Pendientes</span>
+          <strong id="trainingPendingTotal">0</strong>
+        </div>
+        <div class="training-mini-stat">
+          <span>Vencidas</span>
+          <strong id="trainingExpiredTotal">0</strong>
+        </div>
+      </div>
+
+      <div class="training-access-grid">
+        <div class="training-access-card">
+          <strong>📅 Calendario anual de capacitaciones</strong>
+          <p>Acceso al cronograma completo por mes, con cursos repetidos por edición, ficha completa alineada al Word y asignación múltiple de operadores.</p>
+          <button class="primary" onclick="showTrainingSubmodule('calendar')">Ingresar al calendario</button>
         </div>
 
-        <div class="training-quick-actions">
-          <button class="secondary" onclick="goToTrainingCalendar()">📅 Calendario SST</button>
-          <button class="secondary" onclick="setTrainingQuickFilter('Pendiente')">⚠️ Pendientes exigibles</button>
-          <button class="secondary" onclick="setTrainingQuickFilter('Realizada vencida')">❌ Vencidas</button>
-          <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
+        <div class="training-access-card">
+          <strong>👥 Personal registrado y legajos</strong>
+          <p>Acceso al listado de trabajadores, estado individual de capacitación, cursos realizados, pendientes, vencidos, certificados y alertas.</p>
+          <button class="primary" onclick="showTrainingSubmodule('people')">Ingresar a personal registrado</button>
         </div>
       </div>
     </div>
 
-    <div class="training-control-note">
-      <strong>Objetivo del plan:</strong> instruir al personal sobre los riesgos asociados a su puesto de trabajo, promoviendo la prevención de accidentes laborales y optimizando las medidas de seguridad. El plan se desarrolla durante el año y puede ajustarse según las necesidades operativas.
-    </div>
-
-    <div class="card">
-      <h3>Resumen documental del plan</h3>
-      <p>Información base tomada del documento Word del Plan y Cronograma de Capacitación.</p>
-      <div class="plan-word-overview">
-        <div class="plan-word-card">
-          <strong>📌 Metodología</strong>
-          <small>Modalidad grupal, presencial y virtual, con enfoque teórico-práctico y participativo.</small>
-        </div>
-        <div class="plan-word-card">
-          <strong>💻 Recursos tecnológicos</strong>
-          <small>Presentaciones en PowerPoint, videos, folletería y material informativo.</small>
-        </div>
-        <div class="plan-word-card">
-          <strong>👥 Recursos humanos</strong>
-          <small>Personal de Higiene y Seguridad, Bomberos y Medicina del Trabajo.</small>
-        </div>
-        <div class="plan-word-card">
-          <strong>✅ Consideraciones generales</strong>
-          <ul>
-            <li>Cursos en sectores donde el personal desempeña sus tareas.</li>
-            <li>Dictado durante el horario laboral.</li>
-            <li>Análisis de eventos reales de la empresa y organizaciones afines.</li>
-            <li>Difusión de procedimientos, instructivos y métodos seguros de trabajo.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="training-dashboard-strip">
-      <div class="training-mini-stat">
-        <span>Personal</span>
-        <strong id="trainingTotalPeople">0</strong>
-      </div>
-      <div class="training-mini-stat">
-        <span>Cumplimiento global</span>
-        <strong id="trainingGlobalCompliance">0%</strong>
-      </div>
-      <div class="training-mini-stat">
-        <span>Pendientes</span>
-        <strong id="trainingPendingTotal">0</strong>
-      </div>
-      <div class="training-mini-stat">
-        <span>Vencidas</span>
-        <strong id="trainingExpiredTotal">0</strong>
-      </div>
-    </div>
-
-    <div class="card training-calendar-card">
-      <div class="calendar-header">
+    <div id="trainingCalendarSubview" class="training-subview">
+      <div class="training-backbar">
         <div>
-          <h3>📅 Calendario anual de capacitaciones SST</h3>
-          <p>Plan mensual de cursos preventivos. Algunos cursos se repiten como refuerzo semestral/anual; cada edición tiene un identificador propio para no pisar asignaciones anteriores.</p>
+          <strong>📅 Calendario anual de capacitaciones SST</strong>
+          <small>Plan mensual completo, asignaciones y ficha documental de cada curso.</small>
         </div>
-        <span class="badge calendar-badge">Plan 2026</span>
+        <button class="secondary" onclick="showTrainingSubmodule('home')">← Volver a Capacitaciones</button>
       </div>
-      <div class="training-calendar-grid" id="trainingCalendar"></div>
+
+      <div class="card training-calendar-card">
+        <div class="calendar-header">
+          <div>
+            <h3>📅 Calendario anual de capacitaciones SST</h3>
+            <p>Plan mensual de cursos preventivos. Desde cada tarjeta se puede asignar la capacitación a uno o más operadores y queda vinculada automáticamente al legajo individual.</p>
+          </div>
+          <span class="badge calendar-badge">Plan 2026</span>
+        </div>
+        <div class="training-calendar-grid" id="trainingCalendar"></div>
+      </div>
     </div>
 
-    <div class="training-layout">
-      <div class="card employee-list-card">
-        <h3>Personal registrado</h3>
-        <p>Seleccioná una persona para visualizar su situación de capacitación SST.</p>
-        <div class="employee-training-grid" id="employeeProfiles"></div>
+    <div id="trainingPeopleSubview" class="training-subview">
+      <div class="training-backbar">
+        <div>
+          <strong>👥 Personal registrado y legajos de capacitación</strong>
+          <small>Seguimiento por trabajador, vencimientos, pendientes, certificados y alertas.</small>
+        </div>
+        <button class="secondary" onclick="showTrainingSubmodule('home')">← Volver a Capacitaciones</button>
       </div>
 
-      <div class="card employee-detail-panel">
-        <div id="employeeTrainingDetail">
-          <div class="employee-detail-header">
-            <h3>Seleccioná un trabajador</h3>
-            <p>El sistema mostrará el legajo individual de capacitación y su indicador de cumplimiento.</p>
+      <div class="card">
+        <div class="training-controls" style="margin-top:0;">
+          <div style="display:flex; flex-wrap:wrap; gap:10px;">
+            <input class="search" id="employeeSearch" placeholder="Buscar trabajador por nombre o apellido..." />
+            <select id="statusFilter">
+              <option value="todos">Todos los estados</option>
+              <option value="Realizada vigente">Realizada vigente</option>
+              <option value="Realizada por vencer">Realizada por vencer</option>
+              <option value="Realizada vencida">Realizada vencida</option>
+              <option value="Pendiente">Pendiente exigible</option>
+              <option value="Programada">Programada futura</option>
+            </select>
           </div>
 
-          <div class="training-note">
-            La gestión se realiza por trabajador. Si una capacitación pendiente o vencida se realiza, el sistema actualiza el legajo, recalcula el cumplimiento y la mueve automáticamente al grupo de capacitaciones realizadas vigentes.
+          <div class="training-quick-actions">
+            <button class="secondary" onclick="setTrainingQuickFilter('Pendiente')">⚠️ Pendientes exigibles</button>
+            <button class="secondary" onclick="setTrainingQuickFilter('Realizada vencida')">❌ Vencidas</button>
+            <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="training-layout">
+        <div class="card employee-list-card">
+          <h3>Personal registrado</h3>
+          <p>Seleccioná una persona para visualizar su situación de capacitación SST.</p>
+          <div class="employee-training-grid" id="employeeProfiles"></div>
+        </div>
+
+        <div class="card employee-detail-panel">
+          <div id="employeeTrainingDetail">
+            <div class="employee-detail-header">
+              <h3>Seleccioná un trabajador</h3>
+              <p>El sistema mostrará el legajo individual de capacitación y su indicador de cumplimiento.</p>
+            </div>
+
+            <div class="training-note">
+              La gestión se realiza por trabajador. Si una capacitación pendiente o vencida se realiza, el sistema actualiza el legajo, recalcula el cumplimiento y la mueve automáticamente al grupo de capacitaciones realizadas vigentes.
+            </div>
           </div>
         </div>
       </div>
@@ -3611,108 +3512,73 @@
     let employees = JSON.parse(localStorage.getItem("ypfEmployees")) || defaultEmployees;
 
     const courses = [
-      "Seguridad Laboral Básica: Orden, Limpieza y Prevención de enfermedades profesionales",
-      "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad",
-      "Prevención de Riesgos: Actos y Condiciones Inseguras, Accidentes e Incidentes (ART)",
+      "Seguridad Laboral Básica",
+      "Uso de EPP y Señalización",
+      "Actos y Condiciones Inseguras",
       "Riesgo de incendio y uso de extintores",
-      "Exposición a vapores inflamables/tóxicos e irritantes. Riesgo químico",
+      "Riesgo químico: vapores inflamables/tóxicos",
       "Control y contención de derrames",
       "Riesgo eléctrico y electricidad estática",
-      "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios",
-      "Plan de evacuación ante emergencias y simulacros",
+      "RCP y Primeros Auxilios",
+      "Plan de evacuación y simulacros",
       "Ergonomía",
       "Autocontrol preventivo",
-      "Manejo seguro y responsable de combustibles",
-      "Prevención Psicosocial: Estrés, Burnout y Cultura de Bienestar"
+      "Manejo seguro de combustibles"
     ];
 
     const trainingPlan = [
       { month: "Enero", short: "ENE", courses: [
-        { id: "seg-basica-ene", course: "Seguridad Laboral Básica: Orden, Limpieza y Prevención de enfermedades profesionales", focus: "Definiciones, orden y limpieza, enfermedades profesionales, causales y medidas preventivas.", due: "2026-01-31" }
+        { course: "Seguridad Laboral Básica", focus: "Inducción SST, normas internas y responsabilidades preventivas.", due: "2026-01-31" }
       ]},
       { month: "Febrero", short: "FEB", courses: [
-        { id: "epp-feb", course: "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad", focus: "Aspectos legales, protección de manos, uso/cuidado de EPP, tipos de señales e interpretación en la estación.", due: "2026-02-28" }
+        { course: "Uso de EPP y Señalización", focus: "Uso obligatorio de EPP, cartelería y comunicación visual preventiva.", due: "2026-02-28" }
       ]},
       { month: "Marzo", short: "MAR", courses: [
-        { id: "prev-riesgos-mar", course: "Prevención de Riesgos: Actos y Condiciones Inseguras, Accidentes e Incidentes (ART)", focus: "Definiciones, actos inseguros, condiciones inseguras, accidentes, incidentes, causas y notificación.", due: "2026-03-31" }
+        { course: "Plan de evacuación y simulacros", focus: "Roles de emergencia, rutas de evacuación y punto de encuentro.", due: "2026-03-31" }
       ]},
       { month: "Abril", short: "ABR", courses: [
-        { id: "incendio-abr", course: "Riesgo de incendio y uso de extintores", focus: "Triángulo/tetraedro del fuego, clases de fuego, agentes extintores y uso correcto con práctica controlada.", due: "2026-04-30" }
+        { course: "Riesgo de incendio y uso de extintores", focus: "Clases de fuego, extintores disponibles y ataque inicial seguro.", due: "2026-04-30" }
       ]},
       { month: "Mayo", short: "MAY", courses: [
-        { id: "riesgo-quimico-may", course: "Exposición a vapores inflamables/tóxicos e irritantes. Riesgo químico", focus: "Riesgo químico, vapores peligrosos, vías de ingreso, efectos sobre la salud y medidas preventivas.", due: "2026-05-31" }
+        { course: "Control y contención de derrames", focus: "Kit antiderrame, absorbentes, aislamiento y disposición segura.", due: "2026-05-31" }
       ]},
       { month: "Junio", short: "JUN", courses: [
-        { id: "derrames-jun", course: "Control y contención de derrames", focus: "Tipos de derrames, elementos de contención, actuación inmediata, recolección, disposición y prevención.", due: "2026-06-30" },
-        { id: "epp-jun-refuerzo", course: "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad", focus: "Refuerzo semestral: uso correcto, conservación, recambio de EPP y lectura de señalización en la estación.", due: "2026-06-30" }
+        { course: "Riesgo químico: vapores inflamables/tóxicos", focus: "Exposición a combustibles, vapores, ventilación y medidas de control.", due: "2026-06-30" }
       ]},
       { month: "Julio", short: "JUL", courses: [
-        { id: "riesgo-electrico-jul", course: "Riesgo eléctrico y electricidad estática", focus: "Distancias de seguridad, EPP, bloqueo y consignación, electricidad estática y efectos en el cuerpo humano.", due: "2026-07-31" }
+        { course: "Riesgo eléctrico y electricidad estática", focus: "Fuentes de ignición, puesta a tierra y prevención en zona operativa.", due: "2026-07-31" }
       ]},
       { month: "Agosto", short: "AGO", courses: [
-        { id: "rcp-ago", course: "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios", focus: "RCP, primeros auxilios, quemaduras, lesiones oculares, heridas, hemorragias y traumatismos.", due: "2026-08-31" }
+        { course: "RCP y Primeros Auxilios", focus: "Respuesta inicial ante emergencias médicas y activación de ayuda externa.", due: "2026-08-31" }
       ]},
       { month: "Septiembre", short: "SEP", courses: [
-        { id: "evacuacion-sep", course: "Plan de evacuación ante emergencias y simulacros", focus: "Clasificación de emergencias, roles, vías de evacuación, procedimiento y simulacro con evaluación.", due: "2026-09-30" },
-        { id: "incendio-sep-refuerzo", course: "Riesgo de incendio y uso de extintores", focus: "Refuerzo operativo: prevención de incendios, reconocimiento de extintores y práctica de ataque inicial seguro.", due: "2026-09-30" }
+        { course: "Manejo seguro de combustibles", focus: "Buenas prácticas operativas en playa, tienda y sector GNC.", due: "2026-09-30" }
       ]},
       { month: "Octubre", short: "OCT", courses: [
-        { id: "ergonomia-oct", course: "Ergonomía", focus: "Definiciones, beneficios, levantamiento manual de cargas, Res. SRT 886/15, posturas y recomendaciones.", due: "2026-10-31" }
+        { course: "Ergonomía", focus: "Posturas, manipulación manual, pausas y prevención de TME.", due: "2026-10-31" }
       ]},
       { month: "Noviembre", short: "NOV", courses: [
-        { id: "autocontrol-nov", course: "Autocontrol preventivo", focus: "Identificación de riesgos, verificación de condiciones seguras, comunicación de riesgos y medidas preventivas.", due: "2026-11-30" },
-        { id: "derrames-nov-refuerzo", course: "Control y contención de derrames", focus: "Refuerzo operativo: uso de kit antiderrame, aislamiento de zona y disposición segura de residuos contaminados.", due: "2026-11-30" }
+        { course: "Actos y Condiciones Inseguras", focus: "Detección temprana, comunicación y reporte preventivo.", due: "2026-11-30" }
       ]},
       { month: "Diciembre", short: "DIC", courses: [
-        { id: "combustibles-dic", course: "Manejo seguro y responsable de combustibles", focus: "Características y riesgos, manipulación segura, carga/descarga, derrames, fuentes de ignición y emergencias.", due: "2026-12-15" },
-        { id: "evacuacion-dic-refuerzo", course: "Plan de evacuación ante emergencias y simulacros", focus: "Refuerzo anual: roles, rutas, punto de encuentro, control de personal y lecciones aprendidas del simulacro.", due: "2026-12-20" },
-        { id: "psicosocial-dic", course: "Prevención Psicosocial: Estrés, Burnout y Cultura de Bienestar", focus: "Riesgos psicosociales, estrés laboral, burnout, factores de riesgo, hábitos saludables y bienestar.", due: "2026-12-31" }
+        { course: "Autocontrol preventivo", focus: "Cierre anual, lecciones aprendidas y mejora continua PHVA.", due: "2026-12-31" }
       ]}
     ];
 
-    const courseDetails = {
-      "Seguridad Laboral Básica: Orden, Limpieza y Prevención de enfermedades profesionales": { contenidos: "Definiciones; orden y limpieza; enfermedades profesionales; causales; medidas preventivas.", actividades: "Dinámicas grupales; observación de riesgos; simulaciones; role-playing.", evaluacion: "Participación activa y resolución de casos prácticos con propuestas de prevención." },
-      "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad": { contenidos: "Aspectos legales; protección de manos; uso, cuidado y mantenimiento de EPP; tipos de señales; interpretación en la estación.", actividades: "Demostración de EPP; inspección de desgaste; recorrido por estación; simulación de riesgos.", evaluacion: "Participación, resolución de casos y breve cuestionario escrito." },
-      "Prevención de Riesgos: Actos y Condiciones Inseguras, Accidentes e Incidentes (ART)": { contenidos: "Definiciones; actos inseguros; condiciones inseguras; accidentes e incidentes; causas; medidas preventivas; notificación.", actividades: "Análisis de casos reales; observación del área; simulaciones de incidentes; taller de notificación.", evaluacion: "Participación activa y resolución de casos prácticos." },
-      "Riesgo de incendio y uso de extintores": { contenidos: "Elementos del fuego; prevención; clases de fuego; agentes extintores; clases de extintores; uso correcto.", actividades: "Demostración, identificación de riesgos, práctica de clases de fuego y uso real con técnica PASS.", evaluacion: "Simulacros, casos, cuestionario y observación del uso práctico." },
-      "Exposición a vapores inflamables/tóxicos e irritantes. Riesgo químico": { contenidos: "Definiciones; riesgo químico; vapores peligrosos; vías de ingreso; efectos sobre la salud; medidas preventivas.", actividades: "Observación de fuentes de vapores; simulación de incidentes; taller de EPP; interpretación de fichas de seguridad.", evaluacion: "Participación en actividades prácticas, simulaciones y resolución de casos." },
-      "Control y contención de derrames": { contenidos: "Definiciones; tipos de derrames; elementos de contención; actuación inmediata; recolección y disposición; prevención.", actividades: "Simulación de derrame; uso de kits; clasificación de residuos; análisis de casos reales.", evaluacion: "Participación en simulaciones/talleres y resolución de casos prácticos." },
-      "Riesgo eléctrico y electricidad estática": { contenidos: "Definiciones; distancia de seguridad; EPP; bloqueo y consignaciones; electricidad estática; efectos en el cuerpo humano.", actividades: "Demostración de distancias; taller de EPP dieléctrico; ejercicios de bloqueo; simulación de electricidad estática.", evaluacion: "Participación, casos prácticos y cuestionario escrito." },
-      "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios": { contenidos: "Definiciones; conceptos básicos; maniobras; quemaduras; lesiones oculares; heridas y hemorragias; traumatismos.", actividades: "Práctica con maniquíes; simulación de quemaduras/heridas; vendajes; taller de lesiones oculares y traumatismos.", evaluacion: "Participación activa y resolución de casos de emergencias médicas." },
-      "Plan de evacuación ante emergencias y simulacros": { contenidos: "Clasificación de emergencias; roles y responsabilidades; vías de evacuación; procedimiento; simulacro.", actividades: "Recorrido de instalaciones; taller de roles; simulación con cronometraje; análisis de resultados.", evaluacion: "Participación en simulacros y resolución de casos prácticos." },
-      "Ergonomía": { contenidos: "Definiciones; beneficios; levantamiento manual de carga; Res. SRT 886/15; posturas forzadas; recomendaciones.", actividades: "Taller de levantamiento seguro; corrección de posturas; análisis de lesiones; debate normativo.", evaluacion: "Participación, casos prácticos y observación de recomendaciones ergonómicas." },
-      "Autocontrol preventivo": { contenidos: "Definiciones; identificación de riesgos; verificación de condiciones seguras; comunicación de riesgos; medidas preventivas.", actividades: "Observación en área; verificación previa de tareas; role-playing de comunicación; taller de medidas preventivas.", evaluacion: "Participación activa y resolución de casos de autocontrol." },
-      "Manejo seguro y responsable de combustibles": { contenidos: "Características y riesgos; manipulación segura; carga y descarga; prevención de derrames; fuentes de ignición; emergencias.", actividades: "Taller operativo; simulación de carga/descarga; identificación de fuentes de ignición; simulacro por derrame o incendio.", evaluacion: "Participación y resolución de casos prácticos sobre manejo de combustibles." },
-      "Prevención Psicosocial: Estrés, Burnout y Cultura de Bienestar": { contenidos: "Riesgos psicosociales; estrés laboral; burnout; factores de riesgo; hábitos saludables; medidas preventivas.", actividades: "Dinámica de factores de estrés; técnicas de relajación; role-playing de comunicación; debate de hábitos saludables.", evaluacion: "Participación en dinámicas/talleres y resolución de casos sobre estrés y burnout." }
-    };
-
     let selectedCalendarCourse = null;
 
-    function getAllTrainingPlanItems() {
-      return trainingPlan.flatMap(month => month.courses.map(item => ({ ...item, month: month.month, short: month.short })));
-    }
-
-    function getPlanItemById(courseId) {
-      return getAllTrainingPlanItems().find(item => item.id === courseId);
-    }
-
-    function getTrainingRecordKey(t) {
-      return t.courseId || `${normalizeText(t.course)}-${t.due || ""}`;
-    }
-
-
     let trainings = JSON.parse(localStorage.getItem("ypfTrainings")) || [
-      { employee: employees[0].name, role: employees[0].role, email: employees[0].email, course: "Plan de evacuación ante emergencias y simulacros", done: true, completed: "2026-03-15", due: "2026-06-15" },
-      { employee: employees[0].name, role: employees[0].role, email: employees[0].email, course: "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad", done: true, completed: "2026-02-20", due: "2027-02-20" },
-      { employee: employees[1].name, role: employees[1].role, email: employees[1].email, course: "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios", done: true, completed: "2026-04-12", due: "2026-07-30" },
-      { employee: employees[1].name, role: employees[1].role, email: employees[1].email, course: "Prevención de Riesgos: Actos y Condiciones Inseguras, Accidentes e Incidentes (ART)", done: false, completed: "", due: "2026-06-20" },
-      { employee: employees[2].name, role: employees[2].role, email: employees[2].email, course: "Exposición a vapores inflamables/tóxicos e irritantes. Riesgo químico", done: true, completed: "2025-06-05", due: "2026-06-05" },
-      { employee: employees[2].name, role: employees[2].role, email: employees[2].email, course: "Manejo seguro y responsable de combustibles", done: true, completed: "2026-03-18", due: "2027-03-18" },
+      { employee: employees[0].name, role: employees[0].role, email: employees[0].email, course: "Plan de evacuación y simulacros", done: true, completed: "2026-03-15", due: "2026-06-15" },
+      { employee: employees[0].name, role: employees[0].role, email: employees[0].email, course: "Uso de EPP y Señalización", done: true, completed: "2026-02-20", due: "2027-02-20" },
+      { employee: employees[1].name, role: employees[1].role, email: employees[1].email, course: "RCP y Primeros Auxilios", done: true, completed: "2026-04-12", due: "2026-07-30" },
+      { employee: employees[1].name, role: employees[1].role, email: employees[1].email, course: "Actos y Condiciones Inseguras", done: false, completed: "", due: "2026-06-20" },
+      { employee: employees[2].name, role: employees[2].role, email: employees[2].email, course: "Riesgo químico: vapores inflamables/tóxicos", done: true, completed: "2025-06-05", due: "2026-06-05" },
+      { employee: employees[2].name, role: employees[2].role, email: employees[2].email, course: "Manejo seguro de combustibles", done: true, completed: "2026-03-18", due: "2027-03-18" },
       { employee: employees[3].name, role: employees[3].role, email: employees[3].email, course: "Riesgo de incendio y uso de extintores", done: true, completed: "2025-05-20", due: "2026-05-20" },
-      { employee: employees[3].name, role: employees[3].role, email: employees[3].email, course: "Plan de evacuación ante emergencias y simulacros", done: false, completed: "", due: "2026-06-25" },
+      { employee: employees[3].name, role: employees[3].role, email: employees[3].email, course: "Plan de evacuación y simulacros", done: false, completed: "", due: "2026-06-25" },
       { employee: employees[4].name, role: employees[4].role, email: employees[4].email, course: "Control y contención de derrames", done: true, completed: "2026-05-12", due: "2026-08-12" },
       { employee: employees[4].name, role: employees[4].role, email: employees[4].email, course: "Autocontrol preventivo", done: true, completed: "2026-04-01", due: "2027-04-01" },
-      { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad", done: true, completed: "2026-03-22", due: "2026-06-22" },
+      { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Uso de EPP y Señalización", done: true, completed: "2026-03-22", due: "2026-06-22" },
       { employee: employees[5].name, role: employees[5].role, email: employees[5].email, course: "Autocontrol preventivo", done: false, completed: "", due: "2026-12-31" }
     ];
 
@@ -3755,7 +3621,7 @@
       },
       {
         title: "Plan Anual de Capacitación",
-        desc: "Cursos, contenidos, actividades prácticas, criterios de evaluación, asistencia y seguimiento anual.",
+        desc: "Cursos, frecuencia, responsables, evaluación y registros de asistencia.",
         version: "Rev. 01",
         fecha: "2026",
         responsable: "Grupo 22 - UTN BA",
@@ -4020,10 +3886,34 @@
 
     function goToEmployeeTraining(employeeName) {
       document.querySelector('[data-section="capacitaciones"]').click();
+      showTrainingSubmodule("people");
       const search = document.getElementById("employeeSearch");
       if (search) search.value = employeeName;
       renderEmployeeProfiles();
       showEmployeeTrainingDetail(employeeName);
+    }
+
+    function showTrainingSubmodule(target) {
+      const home = document.getElementById("trainingHome");
+      const calendar = document.getElementById("trainingCalendarSubview");
+      const people = document.getElementById("trainingPeopleSubview");
+
+      [home, calendar, people].forEach(el => {
+        if (!el) return;
+        el.classList.remove("active");
+        if (el.id === "trainingHome") el.style.display = "none";
+      });
+
+      if (target === "calendar") {
+        calendar?.classList.add("active");
+        calendar?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (target === "people") {
+        people?.classList.add("active");
+        people?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        if (home) home.style.display = "block";
+        home?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     function goToTrainingCalendar() {
@@ -4032,7 +3922,7 @@
       if (filter) filter.value = "todos";
       if (search) search.value = "";
       renderEmployeeProfiles();
-      document.querySelector(".training-calendar-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      showTrainingSubmodule("calendar");
       showToast("📅 Desde el calendario anual se planifican y asignan los cursos a uno o más operadores.");
     }
 
@@ -4042,6 +3932,7 @@
       if (filter) filter.value = state;
       if (search) search.value = "";
       renderEmployeeProfiles();
+      showTrainingSubmodule("people");
       document.querySelector(".employee-list-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
       const labels = {
         "Pendiente": "pendientes exigibles",
@@ -4052,40 +3943,15 @@
     }
 
 
-    function normalizeCourseName(course) {
-      const aliases = {
-        "Seguridad Laboral Básica": "Seguridad Laboral Básica: Orden, Limpieza y Prevención de enfermedades profesionales",
-        "Uso de EPP y Señalización": "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad",
-        "Actos y Condiciones Inseguras": "Prevención de Riesgos: Actos y Condiciones Inseguras, Accidentes e Incidentes (ART)",
-        "Riesgo químico: vapores inflamables/tóxicos": "Exposición a vapores inflamables/tóxicos e irritantes. Riesgo químico",
-        "RCP y Primeros Auxilios": "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios",
-        "Plan de evacuación y simulacros": "Plan de evacuación ante emergencias y simulacros",
-        "Manejo seguro de combustibles": "Manejo seguro y responsable de combustibles"
-      };
-      return aliases[course] || course;
-    }
-
     function normalizeTrainings() {
-      const planItems = getAllTrainingPlanItems();
-
       trainings = trainings
-        .map(t => ({ ...t, course: normalizeCourseName(t.course) }))
         .filter(t => courses.includes(t.course))
         .map(t => {
           const done = typeof t.done === "boolean" ? t.done : true;
           const completed = t.completed || (done ? t.due : "");
           const due = done && completed ? addOneYearISO(completed) : t.due;
-          const planItem = t.courseId
-            ? getPlanItemById(t.courseId)
-            : (
-                planItems.find(item => item.course === t.course && item.due === t.due) ||
-                planItems.find(item => item.course === t.course)
-              );
-
           return {
             ...t,
-            courseId: t.courseId || planItem?.id || `${normalizeText(t.course)}-${due}`,
-            courseMonth: t.courseMonth || planItem?.month || "",
             done,
             completed,
             due
@@ -4260,6 +4126,7 @@
           <div class="training-action-row">
             <button class="secondary" onclick="simulateEmail(${idx})">Enviar mail</button>
             ${t.done ? `<button class="secondary certificate-btn" onclick="generateTrainingCertificate(${idx})">Descargar certificado</button>` : ""}
+            ${t.done ? `<button class="secondary" onclick="generateAttendanceSheet(${idx})">Planilla asistencia</button>` : ""}
             ${needsUpdate ? `<button class="secondary training-update-btn" onclick="markTrainingCompleted(${idx})">Registrar realización</button>` : ""}
             <button class="danger" onclick="deleteTraining(${idx})">Eliminar</button>
           </div>
@@ -4272,7 +4139,6 @@
           ${list.length ? list.map(t => `
             <div class="training-item ${extraClass}">
               <strong>${t.course}</strong>
-              <small><b>Edición del plan:</b> ${t.courseMonth || getPlanItemById(t.courseId)?.month || "Registro manual"}</small>
               <small><b>Realización:</b> ${t.done && t.completed ? formatDate(t.completed) : "Pendiente"}</small>
               <small><b>Vencimiento / programación:</b> ${formatDate(t.due)}</small>
               <span class="pill ${trainingStateClass(trainingState(t))}">● ${trainingStateLabel(t)}</span>
@@ -4317,6 +4183,100 @@
 
     function renderTrainingTable() {
       return;
+    }
+
+
+
+    function getQuarterDefinitions() {
+      return [
+        { title: "1° Trimestre", months: ["Enero", "Febrero", "Marzo", "Abril"], labels: ["Ene", "Feb", "Mar", "Abr"] },
+        { title: "2° Trimestre", months: ["Mayo", "Junio", "Julio", "Agosto"], labels: ["May", "Jun", "Jul", "Ago"] },
+        { title: "3° Trimestre", months: ["Septiembre", "Octubre", "Noviembre", "Diciembre"], labels: ["Sep", "Oct", "Nov", "Dic"] }
+      ];
+    }
+
+    function getMonthPlanItems(monthName) {
+      const month = trainingPlan.find(m => m.month === monthName);
+      return month ? month.courses : [];
+    }
+
+    function getEmployeeMonthTrainingStatus(employeeName, monthName) {
+      const planItems = getMonthPlanItems(monthName);
+      if (!planItems.length) {
+        return { icon: "—", cls: "empty", label: "Sin capacitación planificada" };
+      }
+
+      const records = planItems.flatMap(item =>
+        trainings.filter(t => t.employee === employeeName && getTrainingRecordKey(t) === item.id)
+      );
+
+      if (!records.length) {
+        return { icon: "—", cls: "empty", label: "Sin asignar" };
+      }
+
+      const states = records.map(trainingState);
+      if (states.includes("Realizada vencida")) {
+        return { icon: "❌", cls: "bad", label: "Capacitación vencida" };
+      }
+      if (states.includes("Pendiente")) {
+        return { icon: "⚠️", cls: "warn", label: "Pendiente exigible" };
+      }
+      if (states.includes("Realizada por vencer")) {
+        return { icon: "⚠️", cls: "warn", label: "Realizada por vencer" };
+      }
+      if (states.includes("Programada")) {
+        return { icon: "📅", cls: "scheduled", label: "Programada futura" };
+      }
+      if (states.every(s => s === "Realizada vigente")) {
+        return { icon: "✅", cls: "ok", label: "Realizada vigente" };
+      }
+
+      return { icon: "⚠️", cls: "warn", label: "Requiere revisión" };
+    }
+
+    function getQuarterCompliance(employeeName, months) {
+      const statuses = months.map(m => getEmployeeMonthTrainingStatus(employeeName, m));
+      const applicable = statuses.filter(s => s.icon !== "—");
+      if (!applicable.length) return "—";
+      const ok = applicable.filter(s => s.icon === "✅" || s.icon === "⚠️" && s.label === "Realizada por vencer").length;
+      return Math.round((ok / applicable.length) * 100) + "%";
+    }
+
+    function renderQuarterTrainingMatrix() {
+      const container = document.getElementById("quarterTrainingMatrix");
+      if (!container) return;
+
+      container.innerHTML = getQuarterDefinitions().map(q => `
+        <div class="quarter-block">
+          <div class="quarter-title">
+            <strong>${q.title}</strong>
+            <small>${q.labels.join(" · ")}</small>
+          </div>
+          <div class="quarter-table-wrap">
+            <table class="quarter-table">
+              <thead>
+                <tr>
+                  <th>Personal</th>
+                  ${q.labels.map(label => `<th>${label}</th>`).join("")}
+                  <th>Cumpl.</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${employees.map(emp => `
+                  <tr>
+                    <td>${emp.name}</td>
+                    ${q.months.map(monthName => {
+                      const status = getEmployeeMonthTrainingStatus(emp.name, monthName);
+                      return `<td><span class="status-dot ${status.cls}" title="${monthName}: ${status.label}">${status.icon}</span></td>`;
+                    }).join("")}
+                    <td class="quarter-compliance">${getQuarterCompliance(emp.name, q.months)}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `).join("");
     }
 
     function renderDashboard() {
@@ -4476,141 +4436,41 @@
       const container = document.getElementById("trainingCalendar");
       if (!container) return;
 
-      const recursosTecnologicos = "Presentaciones en PowerPoint, videos, folletería y material informativo.";
-      const responsablesBase = "Personal de Higiene y Seguridad, Bomberos y Medicina del Trabajo.";
-      const modalidadBase = "Modalidad grupal, presencial y virtual, con enfoque teórico-práctico y participativo.";
-      const registrosBase = "Registro de asistencia del personal y evaluación de comprensión mediante observaciones en el puesto, intercambio grupal o evaluaciones breves según corresponda.";
-      const duracionBase = "A completar según programación interna. El documento maestro no especifica una duración única por curso.";
-
-      container.innerHTML = trainingPlan.map((month, monthIndex) => {
-        const monthRecords = month.courses.flatMap(item => trainings.filter(t => getTrainingRecordKey(t) === item.id));
-        const monthAssigned = monthRecords.length;
-        const monthPending = monthRecords.filter(t => trainingState(t) === "Pendiente").length;
-        const monthScheduled = monthRecords.filter(t => trainingState(t) === "Programada").length;
-        const monthExpired = monthRecords.filter(t => trainingState(t) === "Realizada vencida").length;
-        const monthCourseNames = month.courses.map(item => item.course).join(" · ");
-        const collapsedClass = "collapsed";
-        const toggleText = "Ver cursos";
-
-        return `
-          <div class="month-card ${collapsedClass}" id="monthCard-${month.short}">
-            <div class="month-card-header">
-              <div class="month-title-block">
-                <strong>${month.month}</strong><br>
-                <span>${month.short} · ${month.courses.length} curso/s</span>
-              </div>
-
-              <div class="month-inline-summary">
-                <b>Capacitaciones:</b> ${monthCourseNames}
-              </div>
-
-              <div class="calendar-month-actions">
-                <button class="month-toggle-btn" onclick="toggleTrainingMonth('monthCard-${month.short}', this)">${toggleText}</button>
-              </div>
-            </div>
-
-            <div class="month-card-summary">
-              <small><b>Resumen del mes:</b> ${month.courses.length} capacitación/es planificada/s · ${monthAssigned} asignación/es cargada/s.</small>
-              <div class="course-chip-row">
-                <span class="pill programado">Programadas ${monthScheduled}</span>
-                <span class="pill ${monthPending ? 'por-vencer' : 'vigente'}">Pendientes ${monthPending}</span>
-                <span class="pill ${monthExpired ? 'vencido' : 'vigente'}">Vencidas ${monthExpired}</span>
-                <span class="pill vigente">Asignados ${monthAssigned}</span>
-              </div>
-            </div>
-
-            <div class="month-course-list">
-              ${month.courses.map(item => {
-                const itemRecords = trainings.filter(t => getTrainingRecordKey(t) === item.id);
-                const assigned = itemRecords.length;
-                const pending = itemRecords.filter(t => trainingState(t) === "Pendiente").length;
-                const scheduled = itemRecords.filter(t => trainingState(t) === "Programada").length;
-                const expired = itemRecords.filter(t => trainingState(t) === "Realizada vencida").length;
-                const details = courseDetails[item.course] || {};
-                return `
-                  <div class="month-course">
-                    <div class="course-compact-row">
-                      <div>
-                        <strong>${item.course}</strong>
-                        <small>${item.focus}</small>
-                      </div>
-
-                      <div class="course-chip-row">
-                        <span class="pill programado">Fecha objetivo ${formatDate(item.due)}</span>
-                        <span class="pill vigente">Asignados ${assigned}</span>
-                        <span class="pill programado">Programadas ${scheduled}</span>
-                        <span class="pill ${pending ? 'por-vencer' : 'vigente'}">Pendientes ${pending}</span>
-                        <span class="pill ${expired ? 'vencido' : 'vigente'}">Vencidas ${expired}</span>
-                      </div>
-
-                      <div class="calendar-action-row">
-                        <button class="secondary" onclick="openCalendarAssignment('${item.id}','${escapeJsText(item.course)}','${escapeJsText(month.month)}','${item.due}')">Asignar operadores</button>
-                      </div>
-                    </div>
-
-                    <details class="course-detail-collapse">
-                      <summary>Ver ficha completa</summary>
-                      <div class="course-detail-box">
-                        <div class="course-detail-field">
-                          <b>Mes / edición</b>
-                          <span>${month.month} · ${item.short || month.short}</span>
-                        </div>
-                        <div class="course-detail-field">
-                          <b>Duración</b>
-                          <span>${details.duracion || duracionBase}</span>
-                        </div>
-                        <div class="course-detail-field">
-                          <b>Modalidad</b>
-                          <span>${details.modalidad || modalidadBase}</span>
-                        </div>
-                        <div class="course-detail-field">
-                          <b>Responsable / quién brinda</b>
-                          <span>${details.responsable || responsablesBase}</span>
-                        </div>
-                        <div class="course-detail-field wide">
-                          <b>Destinatarios</b>
-                          <span>Personal vinculado al puesto de atención y carga de combustible en playa.</span>
-                        </div>
-                        <div class="course-detail-field wide">
-                          <b>Recursos</b>
-                          <span>${details.recursos || recursosTecnologicos}</span>
-                        </div>
-                        <div class="course-detail-field full">
-                          <b>Contenidos</b>
-                          <small>${details.contenidos || item.focus}</small>
-                        </div>
-                        <div class="course-detail-field wide">
-                          <b>Actividades prácticas</b>
-                          <small>${details.actividades || "Actividades teórico-prácticas y participativas."}</small>
-                        </div>
-                        <div class="course-detail-field wide">
-                          <b>Evaluación</b>
-                          <small>${details.evaluacion || "Participación y evaluación breve según corresponda."}</small>
-                        </div>
-                        <div class="course-detail-field full">
-                          <b>Registros y seguimiento</b>
-                          <small>${details.registros || registrosBase}</small>
-                        </div>
-                      </div>
-                    </details>
-                  </div>
-                `;
-              }).join("")}
-            </div>
+      container.innerHTML = trainingPlan.map(month => `
+        <div class="month-card">
+          <div class="month-card-header">
+            <strong>${month.month}</strong>
+            <span>${month.short}</span>
           </div>
-        `;
-      }).join("");
+          <div class="month-course-list">
+            ${month.courses.map(item => {
+              const assigned = trainings.filter(t => t.course === item.course).length;
+              const pending = trainings.filter(t => t.course === item.course && trainingState(t) === "Pendiente").length;
+              const scheduled = trainings.filter(t => t.course === item.course && trainingState(t) === "Programada").length;
+              const expired = trainings.filter(t => t.course === item.course && trainingState(t) === "Realizada vencida").length;
+              return `
+                <div class="month-course">
+                  <strong>${item.course}</strong>
+                  <small>${item.focus}</small>
+                  <small><b>Fecha objetivo:</b> ${formatDate(item.due)} · <b>Asignados:</b> ${assigned}</small>
+                  <div>
+                    <span class="pill programado">Programadas ${scheduled}</span>
+                    <span class="pill ${pending ? 'por-vencer' : 'vigente'}">Pendientes ${pending}</span>
+                    <span class="pill ${expired ? 'vencido' : 'vigente'}">Vencidas ${expired}</span>
+                  </div>
+                  <div class="calendar-action-row">
+                    <button class="secondary" onclick="openCalendarAssignment('${escapeJsText(item.course)}','${escapeJsText(month.month)}','${item.due}')">Asignar operadores</button>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `).join("");
     }
 
-    function toggleTrainingMonth(cardId, button) {
-      const card = document.getElementById(cardId);
-      if (!card) return;
-      const isCollapsed = card.classList.toggle("collapsed");
-      if (button) button.textContent = isCollapsed ? "Expandir" : "Contraer";
-    }
-
-    function openCalendarAssignment(courseId, course, month, due) {
-      selectedCalendarCourse = { id: courseId, course, month, due };
+    function openCalendarAssignment(course, month, due) {
+      selectedCalendarCourse = { course, month, due };
       document.getElementById("calendarAssignmentTitle").textContent = `Asignar: ${course}`;
       document.getElementById("calendarAssignmentSubtitle").textContent = `Mes del plan: ${month}. Seleccioná uno o más operadores.`;
       document.getElementById("calendarAssignmentDue").value = due;
@@ -4635,7 +4495,7 @@
 
       const activePeople = employees.filter(e => e.active !== false);
       container.innerHTML = activePeople.map((emp, index) => {
-        const existing = trainings.find(t => t.employee === emp.name && getTrainingRecordKey(t) === selectedCalendarCourse.id);
+        const existing = trainings.find(t => t.employee === emp.name && t.course === selectedCalendarCourse.course);
         const state = existing ? trainingState(existing) : "Sin asignar";
         const stateClass = existing ? trainingStateClass(state) : "programado";
         return `
@@ -4682,13 +4542,11 @@
         const employee = employees.find(e => e.name === employeeName);
         if (!employee) return;
 
-        const existingIndex = trainings.findIndex(t => t.employee === employee.name && getTrainingRecordKey(t) === selectedCalendarCourse.id);
+        const existingIndex = trainings.findIndex(t => t.employee === employee.name && t.course === selectedCalendarCourse.course);
         const record = {
           employee: employee.name,
           role: employee.role,
           email: employee.email,
-          courseId: selectedCalendarCourse.id,
-          courseMonth: selectedCalendarCourse.month,
           course: selectedCalendarCourse.course,
           done,
           completed: done ? completed : "",
@@ -4917,194 +4775,7 @@
               color: white;
             }
             button.secondary { background: #e7f2ff; color: #003f7d; }
-        
-
-    /* ===== Corrección final Capacitación: meses en filas horizontales y ficha ancha ===== */
-    .training-calendar-grid {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
-      gap: 12px !important;
-    }
-
-    .month-card {
-      border-radius: 18px !important;
-      overflow: hidden;
-      background: rgba(255,255,255,0.98);
-      border: 1px solid rgba(203,213,225,0.95);
-    }
-
-    .month-card-header {
-      padding: 12px 16px !important;
-      display: grid !important;
-      grid-template-columns: minmax(140px, 0.22fr) minmax(280px, 1fr) auto !important;
-      align-items: center !important;
-      gap: 14px !important;
-    }
-
-    .month-title-block strong {
-      font-size: 17px !important;
-      letter-spacing: -0.01em;
-    }
-
-    .month-inline-summary {
-      color: rgba(255,255,255,0.92);
-      font-size: 12.5px;
-      font-weight: 800;
-      line-height: 1.35;
-    }
-
-    .month-inline-summary b {
-      color: #fff7cc;
-    }
-
-    .month-card-summary {
-      padding: 10px 16px !important;
-      display: flex !important;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px !important;
-    }
-
-    .month-card-summary small {
-      flex: 1 1 420px;
-    }
-
-    .month-course-list {
-      display: grid !important;
-      gap: 12px !important;
-      padding: 14px 16px 16px !important;
-    }
-
-    .month-card.collapsed .month-course-list {
-      display: none !important;
-    }
-
-    .month-course {
-      padding: 0 !important;
-      overflow: hidden;
-      border-radius: 18px !important;
-      border-left: 6px solid var(--ypf-blue) !important;
-      background: white !important;
-    }
-
-    .course-compact-row {
-      display: grid;
-      grid-template-columns: minmax(280px, 1.1fr) minmax(260px, 0.9fr) auto;
-      gap: 14px;
-      align-items: center;
-      padding: 14px;
-    }
-
-    .course-compact-row strong {
-      color: var(--ypf-blue-dark);
-      font-size: 15px;
-      line-height: 1.25;
-    }
-
-    .course-compact-row small {
-      display: block;
-      color: var(--gray-500);
-      font-weight: 800;
-      line-height: 1.35;
-      margin-top: 4px;
-    }
-
-    .course-chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      justify-content: flex-start;
-    }
-
-    .course-detail-collapse {
-      border: 0 !important;
-      border-top: 1px solid var(--gray-200) !important;
-      border-radius: 0 !important;
-      background: linear-gradient(135deg, #ffffff, var(--gray-50)) !important;
-    }
-
-    .course-detail-collapse summary {
-      padding: 12px 14px !important;
-      background: var(--ypf-blue-light);
-      border-bottom: 1px solid #cfe7ff;
-    }
-
-    .course-detail-box {
-      margin: 0 !important;
-      padding: 14px !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-      background: white !important;
-      display: grid !important;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px !important;
-    }
-
-    .course-detail-field {
-      border: 1px solid var(--gray-200);
-      border-radius: 14px;
-      background: var(--gray-50);
-      padding: 11px 12px;
-      min-height: 74px;
-    }
-
-    .course-detail-field.wide {
-      grid-column: span 2;
-    }
-
-    .course-detail-field.full {
-      grid-column: 1 / -1;
-    }
-
-    .course-detail-field b {
-      display: block;
-      color: var(--ypf-blue-dark);
-      margin-bottom: 5px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.035em;
-    }
-
-    .course-detail-field small,
-    .course-detail-field span {
-      color: var(--gray-700);
-      font-weight: 700;
-      line-height: 1.42;
-    }
-
-    .calendar-action-row {
-      justify-content: flex-end;
-    }
-
-    @media (max-width: 1050px) {
-      .month-card-header,
-      .course-compact-row {
-        grid-template-columns: 1fr !important;
-        align-items: stretch !important;
-      }
-
-      .calendar-month-actions,
-      .calendar-action-row {
-        justify-content: stretch !important;
-      }
-
-      .calendar-month-actions button,
-      .calendar-action-row button {
-        width: 100%;
-      }
-
-      .course-detail-box {
-        grid-template-columns: 1fr !important;
-      }
-
-      .course-detail-field.wide,
-      .course-detail-field.full {
-        grid-column: 1 / -1;
-      }
-    }
-
-    @media print {
+            @media print {
               body { background: white; padding: 0; }
               .certificate { box-shadow: none; border-radius: 0; max-width: none; min-height: 100vh; }
               .actions { display: none; }
@@ -5171,6 +4842,322 @@
       win.focus();
     }
 
+
+    function getCourseSheetMeta(course) {
+      const base = {
+        duracion: "2 horas",
+        material: "Presentación PowerPoint, videos, folletería, material informativo y registro de asistencia.",
+        responsable: "Personal de Higiene y Seguridad",
+        modalidad: "Grupal, teórico-práctica y participativa"
+      };
+
+      const overrides = {
+        "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios": {
+          duracion: "3 horas",
+          material: "Maniquí de RCP, botiquín, videos demostrativos, folletería y material de primeros auxilios.",
+          responsable: "Medicina del Trabajo / Instructor de Primeros Auxilios"
+        },
+        "Riesgo de incendio y uso de extintores": {
+          duracion: "2 horas",
+          material: "Presentación, videos, extintores, señalización y práctica controlada de uso de matafuegos.",
+          responsable: "Personal de Higiene y Seguridad / Bomberos"
+        },
+        "Plan de evacuación ante emergencias y simulacros": {
+          duracion: "2 horas",
+          material: "Plano de evacuación, flujograma de emergencia, señalización, videos y registro de simulacro.",
+          responsable: "Personal de Higiene y Seguridad / Responsable de Emergencias"
+        },
+        "Control y contención de derrames": {
+          duracion: "2 horas",
+          material: "Kit antiderrame, material absorbente, señalización, instructivos y folletería operativa.",
+          responsable: "Personal de Higiene y Seguridad"
+        },
+        "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad": {
+          duracion: "1,5 horas",
+          material: "EPP de uso habitual, cartelería de seguridad, presentación, videos y folletería.",
+          responsable: "Personal de Higiene y Seguridad"
+        },
+        "Manejo seguro y responsable de combustibles": {
+          duracion: "2 horas",
+          material: "Procedimientos operativos, fichas de seguridad, videos, señalización y material informativo.",
+          responsable: "Personal de Higiene y Seguridad / Supervisión Operativa"
+        }
+      };
+
+      return { ...base, ...(overrides[course] || {}) };
+    }
+
+    function getAttendanceSheetRecords(training) {
+      const key = getTrainingRecordKey(training);
+      const related = trainings.filter(t =>
+        t.done &&
+        getTrainingRecordKey(t) === key &&
+        (t.completed || "") === (training.completed || "")
+      );
+
+      return related.length ? related : [training];
+    }
+
+    function generateAttendanceSheet(index) {
+      const training = trainings[index];
+      if (!training) return;
+
+      const meta = getCourseSheetMeta(training.course);
+      const planItem = training.courseId ? getPlanItemById(training.courseId) : null;
+      const courseDetailsInfo = courseDetails[training.course] || {};
+      const records = getAttendanceSheetRecords(training);
+      const dateValue = training.completed || training.due || today.toISOString().slice(0,10);
+      const sheetId = `REG-CAP-${String(index + 1).padStart(3, "0")}-${Date.now().toString().slice(-5)}`;
+
+      const rows = [...records];
+      while (rows.length < 10) rows.push(null);
+
+      const tableRows = rows.map((record, i) => {
+        const employee = record ? (employees.find(e => e.name === record.employee) || {}) : {};
+        const name = record?.employee || "";
+        const dni = employee.dni || "";
+        const role = record?.role || employee.role || "";
+        return `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${escapeHtml(name)}</td>
+            <td>${escapeHtml(dni)}</td>
+            <td></td>
+            <td>${escapeHtml(role)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const asistenciaHtml = `
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>Planilla de asistencia - ${escapeHtml(training.course)}</title>
+          <style>
+            * { box-sizing: border-box; }
+            body {
+              margin: 0;
+              padding: 24px;
+              font-family: Arial, Helvetica, sans-serif;
+              background: #f1f5f9;
+              color: #0f172a;
+            }
+            .sheet {
+              max-width: 1120px;
+              margin: 0 auto;
+              background: white;
+              border: 2px solid #1f2937;
+              box-shadow: 0 16px 36px rgba(15,23,42,0.14);
+            }
+            .sheet-header {
+              display: grid;
+              grid-template-columns: 150px 1fr 190px;
+              border-bottom: 2px solid #1f2937;
+              min-height: 92px;
+            }
+            .logo-box {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-right: 2px solid #1f2937;
+              background: #0056a6;
+              color: white;
+              font-weight: 900;
+              font-size: 38px;
+              letter-spacing: -3px;
+              border-bottom: 8px solid #ffcc00;
+            }
+            .title-box {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+              padding: 12px;
+            }
+            .title-box h1 {
+              margin: 0;
+              font-size: 24px;
+              color: #003f7d;
+              text-transform: uppercase;
+              letter-spacing: 0.03em;
+            }
+            .title-box span {
+              margin-top: 6px;
+              color: #475569;
+              font-weight: 700;
+              font-size: 13px;
+            }
+            .code-box {
+              border-left: 2px solid #1f2937;
+              display: grid;
+              grid-template-rows: repeat(3, 1fr);
+              font-size: 12px;
+              font-weight: 700;
+            }
+            .code-box div {
+              padding: 8px;
+              border-bottom: 1px solid #1f2937;
+            }
+            .code-box div:last-child { border-bottom: 0; }
+            .info-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              border-bottom: 2px solid #1f2937;
+            }
+            .info-item {
+              padding: 9px 12px;
+              border-bottom: 1px solid #cbd5e1;
+              min-height: 38px;
+              font-size: 13px;
+              font-weight: 700;
+            }
+            .info-item:nth-child(odd) { border-right: 1px solid #cbd5e1; }
+            .info-item.full {
+              grid-column: 1 / -1;
+              border-right: 0;
+            }
+            .info-item b {
+              color: #003f7d;
+              text-transform: uppercase;
+              font-size: 11px;
+              letter-spacing: 0.04em;
+              margin-right: 6px;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            th {
+              background: #3b3b3b;
+              color: white;
+              font-size: 12px;
+              letter-spacing: 0.04em;
+              text-transform: uppercase;
+              padding: 8px;
+              border: 1px solid #111827;
+            }
+            td {
+              height: 42px;
+              border: 1px solid #111827;
+              padding: 7px 8px;
+              font-size: 13px;
+              font-weight: 700;
+            }
+            td:nth-child(1) { width: 54px; text-align: center; }
+            td:nth-child(3) { width: 150px; }
+            td:nth-child(4) { width: 210px; }
+            td:nth-child(5) { width: 240px; }
+            .footer {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 20px;
+              padding: 18px 22px 26px;
+              font-size: 12px;
+              color: #334155;
+              font-weight: 700;
+            }
+            .sign-line {
+              margin-top: 34px;
+              border-top: 1px solid #111827;
+              padding-top: 7px;
+              text-align: center;
+            }
+            .actions {
+              max-width: 1120px;
+              margin: 16px auto 0;
+              display: flex;
+              justify-content: center;
+              gap: 10px;
+            }
+            button {
+              border: 0;
+              border-radius: 12px;
+              padding: 12px 16px;
+              font-weight: 900;
+              cursor: pointer;
+              background: #0056a6;
+              color: white;
+            }
+            button.secondary { background: #e7f2ff; color: #003f7d; }
+            @media print {
+              body { background: white; padding: 0; }
+              .sheet { box-shadow: none; border: 1px solid #111827; max-width: none; min-height: 100vh; }
+              .actions { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="sheet">
+            <div class="sheet-header">
+              <div class="logo-box">YPF</div>
+              <div class="title-box">
+                <h1>Planilla de asistencia a capacitación</h1>
+                <span>Sistema Digital SST · Grupo 22 UTN BA</span>
+              </div>
+              <div class="code-box">
+                <div><b>Código:</b> ${sheetId}</div>
+                <div><b>Rev.:</b> 01</div>
+                <div><b>Fecha:</b> ${formatDate(dateValue)}</div>
+              </div>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-item full"><b>Curso:</b> ${escapeHtml(training.course)}</div>
+              <div class="info-item"><b>Fecha:</b> ${formatDate(dateValue)}</div>
+              <div class="info-item"><b>Mes del plan:</b> ${escapeHtml(training.courseMonth || planItem?.month || "Registro manual")}</div>
+              <div class="info-item"><b>Duración:</b> ${escapeHtml(courseDetailsInfo.duracion || meta.duracion)}</div>
+              <div class="info-item"><b>Modalidad:</b> ${escapeHtml(courseDetailsInfo.modalidad || meta.modalidad)}</div>
+              <div class="info-item"><b>Responsable / Instructor:</b> ${escapeHtml(courseDetailsInfo.responsable || meta.responsable)}</div>
+              <div class="info-item"><b>Material didáctico:</b> ${escapeHtml(courseDetailsInfo.recursos || meta.material)}</div>
+              <div class="info-item full"><b>Contenidos principales:</b> ${escapeHtml(courseDetailsInfo.contenidos || training.course)}</div>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Nombre</th>
+                  <th>DNI</th>
+                  <th>Firma</th>
+                  <th>Área/Puesto</th>
+                </tr>
+              </thead>
+              <tbody>${tableRows}</tbody>
+            </table>
+
+            <div class="footer">
+              <div>
+                <b>Observaciones:</b><br>
+                La presente planilla acredita la participación del personal en la capacitación indicada y se conserva como registro documental del Sistema SST.
+              </div>
+              <div>
+                <div class="sign-line">Firma y aclaración del responsable de capacitación</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button onclick="window.print()">Descargar / guardar como PDF</button>
+            <button class="secondary" onclick="window.close()">Cerrar</button>
+          </div>
+        </body>
+        </html>
+      `;
+
+      const win = window.open("", "_blank");
+      if (!win) {
+        showToast("El navegador bloqueó la ventana emergente. Permití pop-ups para emitir la planilla de asistencia.");
+        return;
+      }
+
+      win.document.open();
+      win.document.write(asistenciaHtml);
+      win.document.close();
+      win.focus();
+    }
+
     function deleteTraining(index) {
       const training = trainings[index];
       if (!training) return;
@@ -5212,16 +5199,12 @@
         return;
       }
 
-      const existingIndex = trainings.findIndex(t => t.employee === employee.name && t.course === course && t.due === due);
-
-      const manualCourseId = `manual-${normalizeText(course)}-${due}`;
+      const existingIndex = trainings.findIndex(t => t.employee === employee.name && t.course === course);
 
       const updatedRecord = {
         employee: employee.name,
         role: employee.role,
         email,
-        courseId: manualCourseId,
-        courseMonth: "Registro manual",
         course,
         done,
         completed: done ? completed : "",
@@ -5554,6 +5537,7 @@
       renderPersonnel();
       updateTrainingDashboard();
       renderDashboard();
+      renderQuarterTrainingMatrix();
       renderDrills();
       renderDocuments();
       renderReports();
@@ -5568,6 +5552,7 @@
         document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
         btn.classList.add("active");
         document.getElementById(btn.dataset.section).classList.add("active");
+        if (btn.dataset.section === "capacitaciones") showTrainingSubmodule("home");
         const titles = {
           dashboard: "Panel general SST",
           capacitaciones: "Gestión de capacitaciones",
