@@ -3418,7 +3418,11 @@
       { name: "Tamara Yamila González", dni: "", age: "", legajo: "SST-006", role: "Comunicación y capacitación", sector: "Capacitación SST", emergencyRole: "Comunicación interna", email: "tamara.gonzalez@ypf-utn.com", active: true }
     ];
 
-    let employees = JSON.parse(localStorage.getItem("ypfEmployees")) || defaultEmployees;
+    let employees = JSON.parse(localStorage.getItem("ypfEmployees") || "null") || JSON.parse(JSON.stringify(defaultEmployees));
+    if (!Array.isArray(employees) || employees.length === 0) {
+      employees = JSON.parse(JSON.stringify(defaultEmployees));
+      localStorage.setItem("ypfEmployees", JSON.stringify(employees));
+    }
 
     const courses = [
       "Seguridad Laboral Básica: Orden, Limpieza y Prevención de enfermedades profesionales",
@@ -3626,6 +3630,9 @@
     }
 
     function normalizeEmployees() {
+      if (!Array.isArray(employees) || employees.length === 0) {
+        employees = JSON.parse(JSON.stringify(defaultEmployees));
+      }
       employees = employees.map((e, i) => ({
         ...defaultEmployees[i],
         ...e,
@@ -5363,8 +5370,8 @@
       });
     });
 
-    document.getElementById("employeeSearch").addEventListener("input", renderEmployeeProfiles);
-    document.getElementById("statusFilter").addEventListener("change", renderEmployeeProfiles);
+    document.getElementById("employeeSearch")?.addEventListener("input", renderEmployeeProfiles);
+    document.getElementById("statusFilter")?.addEventListener("change", renderEmployeeProfiles);
     document.getElementById("personSearch")?.addEventListener("input", renderPersonnel);
     document.getElementById("personStatusFilter")?.addEventListener("change", renderPersonnel);
 
