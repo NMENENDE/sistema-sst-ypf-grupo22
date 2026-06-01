@@ -2713,58 +2713,17 @@
     <div class="training-hero">
       <h3>Gestión digital de competencias SST</h3>
       <p>
-        Legajo individual de capacitación por trabajador, con cursos realizados,
-        pendientes, vencidos y alertas preventivas. Pensado como una herramienta
-        de trazabilidad para auditoría, control operativo y mejora continua.
+        Planificación anual, asignación de cursos y trazabilidad documental del programa de capacitación SST.
+        La consulta individual de trabajadores se mantiene dentro del módulo de Personal registrado.
       </p>
-
-      <div class="training-controls">
-        <div style="display:flex; flex-wrap:wrap; gap:10px;">
-          <input class="search" id="employeeSearch" placeholder="Buscar trabajador por nombre o apellido..." />
-          <select id="statusFilter">
-            <option value="todos">Todos los estados</option>
-            <option value="Realizada vigente">Realizada vigente</option>
-            <option value="Realizada por vencer">Realizada por vencer</option>
-            <option value="Realizada vencida">Realizada vencida</option>
-            <option value="Pendiente">Pendiente exigible</option>
-            <option value="Programada">Programada futura</option>
-          </select>
-        </div>
-
-        <div class="training-quick-actions">
-          <button class="secondary" onclick="goToTrainingCalendar()">📅 Calendario SST</button>
-          <button class="secondary" onclick="setTrainingQuickFilter('Pendiente')">⚠️ Pendientes exigibles</button>
-          <button class="secondary" onclick="setTrainingQuickFilter('Realizada vencida')">❌ Vencidas</button>
-          <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
-        </div>
-      </div>
     </div>
 
     <div class="training-control-note">
-      <strong>Enfoque del módulo:</strong> el calendario anual es el único punto de planificación y asignación. Esta pantalla funciona como tablero de control: legajos, vencimientos, pendientes exigibles, programadas futuras y alertas.
+      <strong>Enfoque del módulo:</strong> el calendario anual concentra la planificación y asignación de cursos. El seguimiento por trabajador se consulta desde Personal registrado, evitando duplicar búsquedas y tableros.
     </div>
 
 
     <div class="card"><h3>Resumen documental del plan</h3><p>Información base tomada del documento Word del Plan y Cronograma de Capacitación.</p><div class="plan-word-overview"><div class="plan-word-card"><strong>📌 Metodología</strong><small>Modalidad grupal, presencial y virtual, con enfoque teórico-práctico y participativo.</small></div><div class="plan-word-card"><strong>💻 Recursos tecnológicos</strong><small>Presentaciones en PowerPoint, videos, folletería y material informativo.</small></div><div class="plan-word-card"><strong>👥 Recursos humanos</strong><small>Personal de Higiene y Seguridad, Bomberos y Medicina del Trabajo.</small></div><div class="plan-word-card consideraciones-full"><strong>✅ Consideraciones generales</strong><ul><li>Los cursos se dictarán en los sectores donde el personal desempeña sus tareas, durante el horario laboral.</li><li>Se incluirán análisis de eventos transcurridos en la empresa y en organizaciones afines.</li><li>Se difundirán procedimientos, instructivos y métodos seguros de trabajo elaborados durante el año.</li></ul></div></div></div>
-
-    <div class="training-dashboard-strip">
-      <div class="training-mini-stat">
-        <span>Personal</span>
-        <strong id="trainingTotalPeople">0</strong>
-      </div>
-      <div class="training-mini-stat">
-        <span>Cumplimiento global</span>
-        <strong id="trainingGlobalCompliance">0%</strong>
-      </div>
-      <div class="training-mini-stat">
-        <span>Pendientes</span>
-        <strong id="trainingPendingTotal">0</strong>
-      </div>
-      <div class="training-mini-stat">
-        <span>Vencidas</span>
-        <strong id="trainingExpiredTotal">0</strong>
-      </div>
-    </div>
 
     <div class="card" id="trainingModuleHome">
       <h3>Centro de gestión de capacitaciones</h3>
