@@ -4194,7 +4194,7 @@
     }
 
     function escapeJsText(text) {
-      return String(text).replace(/\\/g, "\\\").replace(/'/g, "\\'");
+      return String(text).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
     }
 
     function renderEmployeeProfiles() {
@@ -4549,7 +4549,7 @@
                     </div>
 
                     <details class="course-detail-collapse">
-                      <summary>Ver ficha completa alineada al Word</summary>
+                      <summary>Ver ficha completa</summary>
                       <div class="course-detail-box">
                         <div class="course-detail-field">
                           <b>Mes / edición</b>
