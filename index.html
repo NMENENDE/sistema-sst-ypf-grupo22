@@ -4838,8 +4838,15 @@
       if (!training) return;
       const employee = employees.find(e => e.name === training.employee) || {};
       const meta = getCourseMetaForAttendance(training);
+      const details = courseDetails[training.course] || {};
       const fecha = training.completed || today.toISOString().slice(0, 10);
       const sheetId = `SST-ASIST-${String(index + 1).padStart(3, "0")}-${Date.now().toString().slice(-5)}`;
+      const horario = training.horario || "Horario laboral / a completar por instructor";
+      const marcoLegal = "Ley 19.587/72 · Decreto 351/79 · Res. SRT 905/15 · Ley 24.557 · ISO 45001:2018";
+      const empresa = "Estación 20 de Julio S.A. · Estación de Servicio YPF";
+      const direccion = "Av. Pte. Perón · San Nicolás de los Arroyos";
+      const objetivo = details.objetivo || meta.contents || "Instruir al personal sobre los riesgos asociados a su puesto de trabajo, promoviendo la prevención de accidentes laborales y optimizando las medidas de seguridad.";
+      const expectativas = details.evaluacion || "Que el personal comprenda los contenidos, participe activamente y aplique medidas preventivas en su puesto de trabajo.";
 
       const asistenciaHtml = `
         <!DOCTYPE html>
@@ -4849,9 +4856,9 @@
           <title>Planilla de asistencia - ${escapeHtml(training.course)}</title>
           <style>
             * { box-sizing: border-box; }
-            body { margin: 0; padding: 24px; font-family: Arial, Helvetica, sans-serif; background: #f1f5f9; color: #0f172a; }
-            .sheet { max-width: 1120px; margin: 0 auto; background: white; border: 3px solid #0056a6; border-radius: 18px; overflow: hidden; box-shadow: 0 18px 45px rgba(15,23,42,.14); }
-            .top { display: grid; grid-template-columns: 150px 1fr 220px; align-items: stretch; border-bottom: 5px solid #ffcc00; }
+            body { margin: 0; padding: 22px; font-family: Arial, Helvetica, sans-serif; background: #f1f5f9; color: #0f172a; }
+            .sheet { max-width: 1180px; margin: 0 auto; background: white; border: 3px solid #0056a6; border-radius: 18px; overflow: hidden; box-shadow: 0 18px 45px rgba(15,23,42,.14); }
+            .top { display: grid; grid-template-columns: 150px 1fr 245px; align-items: stretch; border-bottom: 5px solid #ffcc00; }
             .logo { background: #0056a6; color: white; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 900; letter-spacing: -3px; }
             .title { padding: 16px 18px; text-align: center; }
             .title h1 { margin: 0; color: #003f7d; font-size: 24px; text-transform: uppercase; }
@@ -4860,27 +4867,28 @@
             .meta div { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; font-size: 12px; font-weight: 700; }
             .meta div:last-child { border-bottom: 0; }
             .section { padding: 16px; }
+            .block-title { background:#003f7d; color:white; padding:8px 12px; border-radius:10px; font-weight:900; text-transform:uppercase; font-size:12px; letter-spacing:.04em; margin: 4px 0 10px; }
             .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-            .field { border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; background: #f8fafc; min-height: 64px; }
+            .field { border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; background: #f8fafc; min-height: 62px; }
             .field.wide { grid-column: span 2; }
             .field.full { grid-column: 1 / -1; }
             .field b { display: block; color: #003f7d; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; letter-spacing: .04em; }
             .field span { font-size: 13px; color: #334155; font-weight: 700; line-height: 1.4; }
-            table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 12px; }
             th { background: #334155; color: white; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
-            th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; height: 42px; }
+            th, td { border: 1px solid #cbd5e1; padding: 9px; text-align: left; height: 42px; }
             td { font-size: 13px; font-weight: 700; color: #0f172a; }
-            .signature { height: 58px; }
+            .signature { height: 54px; }
+            .instructor-grid { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 12px; }
+            .line-box { min-height: 72px; border: 1px solid #cbd5e1; border-radius: 12px; padding: 10px; background: white; }
+            .line-box b { display:block; color:#003f7d; font-size: 11px; text-transform: uppercase; margin-bottom: 28px; }
+            .line { border-top: 1.5px solid #334155; padding-top: 7px; color:#334155; font-size:12px; font-weight:700; }
             .foot { padding: 12px 16px; background: #e7f2ff; color: #003f7d; font-size: 12px; font-weight: 700; border-top: 1px solid #cfe7ff; }
-            .actions { max-width: 1120px; margin: 16px auto 0; display: flex; justify-content: center; gap: 10px; }
+            .actions { max-width: 1180px; margin: 16px auto 0; display: flex; justify-content: center; gap: 10px; }
             button { border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 900; cursor: pointer; background: #0056a6; color: white; }
             button.secondary { background: #e7f2ff; color: #003f7d; }
-        
-    /* ===== Plan Word y calendario ancho ===== */
-    .plan-word-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.plan-word-card{background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:16px;box-shadow:0 10px 22px rgba(15,23,42,.06);border-left:6px solid var(--ypf-blue)}.plan-word-card:nth-child(2){border-left-color:var(--ypf-yellow)}.plan-word-card:nth-child(3){border-left-color:var(--green)}.plan-word-card:nth-child(4){border-left-color:var(--ypf-red)}.plan-word-card strong{display:block;color:var(--ypf-blue-dark);margin-bottom:6px}.plan-word-card small,.plan-word-card li{color:var(--gray-700);font-weight:700;line-height:1.45}.plan-word-card ul{margin:6px 0 0;padding-left:18px}.plan-word-card.consideraciones-full{grid-column:1/-1}.plan-word-card.consideraciones-full ul{columns:2;column-gap:34px}.month-toggle-btn{width:auto;min-width:132px;padding:9px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.18)!important;color:white!important;border:1px solid rgba(255,255,255,.26)!important;box-shadow:none!important;font-size:12px}.month-card.collapsed .month-course-list{display:none!important}.month-card-summary{padding:10px 16px!important;display:flex!important;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px!important;background:linear-gradient(135deg,#fff,var(--gray-50));border-bottom:1px solid var(--gray-200)}.month-card-summary small{flex:1 1 420px;color:var(--gray-500);font-weight:800;line-height:1.35}.training-calendar-grid{display:grid!important;grid-template-columns:1fr!important;gap:12px!important}.month-card-header{padding:12px 16px!important;display:grid!important;grid-template-columns:minmax(140px,.22fr) minmax(280px,1fr) auto!important;align-items:center!important;gap:14px!important}.month-title-block strong{font-size:17px!important}.month-inline-summary{color:rgba(255,255,255,.92);font-size:12.5px;font-weight:800;line-height:1.35}.month-inline-summary b{color:#fff7cc}.month-course-list{display:grid!important;gap:12px!important;padding:14px 16px 16px!important}.month-course{padding:0!important;overflow:hidden;border-radius:18px!important;border-left:6px solid var(--ypf-blue)!important;background:white!important}.course-compact-row{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(260px,.9fr) auto;gap:14px;align-items:center;padding:14px}.course-compact-row strong{color:var(--ypf-blue-dark);font-size:15px;line-height:1.25}.course-compact-row small{display:block;color:var(--gray-500);font-weight:800;line-height:1.35;margin-top:4px}.course-chip-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start}.course-detail-collapse{border:0!important;border-top:1px solid var(--gray-200)!important;border-radius:0!important;background:linear-gradient(135deg,#fff,var(--gray-50))!important}.course-detail-collapse summary{cursor:pointer;padding:12px 14px!important;background:var(--ypf-blue-light);border-bottom:1px solid #cfe7ff;font-weight:900;color:var(--ypf-blue-dark);list-style:none;user-select:none}.course-detail-collapse summary::-webkit-details-marker{display:none}.course-detail-collapse summary::after{content:"+";float:right;font-size:18px;line-height:1;color:var(--ypf-blue)}.course-detail-collapse[open] summary::after{content:"−"}.course-detail-box{margin:0!important;padding:14px!important;border:0!important;border-radius:0!important;background:white!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px!important}.course-detail-field{border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50);padding:11px 12px;min-height:74px}.course-detail-field.wide{grid-column:span 2}.course-detail-field.full{grid-column:1/-1}.course-detail-field b{display:block;color:var(--ypf-blue-dark);margin-bottom:5px;font-size:12px;text-transform:uppercase;letter-spacing:.035em}.course-detail-field small,.course-detail-field span{color:var(--gray-700);font-weight:700;line-height:1.42}@media(max-width:1050px){.month-card-header,.course-compact-row{grid-template-columns:1fr!important;align-items:stretch!important}.course-detail-box{grid-template-columns:1fr!important}.course-detail-field.wide,.course-detail-field.full{grid-column:1/-1}}@media(max-width:760px){.plan-word-card.consideraciones-full ul{columns:1}}
-
-    @media print { body { background: white; padding: 0; } .sheet { box-shadow: none; border-radius: 0; max-width: none; } .actions { display: none; } }
-            @media (max-width: 850px) { .top, .info-grid { grid-template-columns: 1fr; } .field.wide, .field.full { grid-column: 1; } }
+            @media print { body { background: white; padding: 0; } .sheet { box-shadow: none; border-radius: 0; max-width: none; } .actions { display: none; } }
+            @media (max-width: 850px) { .top, .info-grid, .instructor-grid { grid-template-columns: 1fr; } .field.wide, .field.full { grid-column: 1; } }
           </style>
         </head>
         <body>
@@ -4888,7 +4896,7 @@
             <div class="top">
               <div class="logo">YPF</div>
               <div class="title">
-                <h1>Planilla de asistencia a capacitación</h1>
+                <h1>Planilla de registro de capacitación</h1>
                 <p>Sistema Digital SST · Grupo 22 UTN BA</p>
               </div>
               <div class="meta">
@@ -4899,25 +4907,33 @@
             </div>
 
             <div class="section">
+              <div class="block-title">Datos generales de la capacitación</div>
               <div class="info-grid">
-                <div class="field wide"><b>Curso</b><span>${escapeHtml(training.course)}</span></div>
-                <div class="field"><b>Fecha de realización</b><span>${formatDate(fecha)}</span></div>
-                <div class="field"><b>Mes / edición</b><span>${escapeHtml(meta.month)}</span></div>
+                <div class="field wide"><b>Empresa</b><span>${escapeHtml(empresa)}</span></div>
+                <div class="field wide"><b>Dirección del establecimiento</b><span>${escapeHtml(direccion)}</span></div>
+                <div class="field full"><b>Marco legal aplicable</b><span>${escapeHtml(marcoLegal)}</span></div>
+                <div class="field wide"><b>Tema / curso</b><span>${escapeHtml(training.course)}</span></div>
+                <div class="field"><b>Fecha</b><span>${formatDate(fecha)}</span></div>
+                <div class="field"><b>Horario</b><span>${escapeHtml(horario)}</span></div>
                 <div class="field"><b>Duración</b><span>${escapeHtml(meta.duration)}</span></div>
                 <div class="field"><b>Modalidad</b><span>${escapeHtml(meta.modality)}</span></div>
-                <div class="field wide"><b>Responsable / instructor</b><span>${escapeHtml(meta.responsible)}</span></div>
+                <div class="field wide"><b>Instructor / responsable</b><span>${escapeHtml(meta.responsible)}</span></div>
+                <div class="field wide"><b>Mes / edición del plan</b><span>${escapeHtml(meta.month)}</span></div>
                 <div class="field full"><b>Material didáctico utilizado</b><span>${escapeHtml(meta.material)}</span></div>
+                <div class="field full"><b>Objetivos / expectativas de aprendizaje</b><span>${escapeHtml(objetivo)} ${escapeHtml(expectativas)}</span></div>
                 <div class="field full"><b>Contenidos principales</b><span>${escapeHtml(meta.contents)}</span></div>
               </div>
 
+              <div class="block-title" style="margin-top:16px;">Datos del personal capacitado</div>
               <table>
                 <thead>
                   <tr>
-                    <th style="width:55px; text-align:center;">N°</th>
-                    <th>Nombre</th>
-                    <th style="width:150px;">DNI</th>
-                    <th style="width:220px;">Firma</th>
-                    <th style="width:230px;">Área / Puesto</th>
+                    <th style="width:50px; text-align:center;">N°</th>
+                    <th>Nombre y apellido</th>
+                    <th style="width:135px;">DNI</th>
+                    <th style="width:120px;">Legajo</th>
+                    <th style="width:240px;">Tarea / área / puesto</th>
+                    <th style="width:210px;">Firma del personal</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -4925,17 +4941,25 @@
                     <td style="text-align:center;">1</td>
                     <td>${escapeHtml(training.employee)}</td>
                     <td>${escapeHtml(employee.dni || "")}</td>
-                    <td class="signature"></td>
+                    <td>${escapeHtml(employee.legajo || "")}</td>
                     <td>${escapeHtml(employee.role || training.role || "")}</td>
+                    <td class="signature"></td>
                   </tr>
                   ${Array.from({ length: 9 }).map((_, i) => `
                     <tr>
                       <td style="text-align:center;">${i + 2}</td>
-                      <td></td><td></td><td class="signature"></td><td></td>
+                      <td></td><td></td><td></td><td></td><td class="signature"></td>
                     </tr>
                   `).join("")}
                 </tbody>
               </table>
+
+              <div class="block-title" style="margin-top:16px;">Firma y matrícula del instructor</div>
+              <div class="instructor-grid">
+                <div class="line-box"><b>Firma del instructor</b><div class="line">Firma</div></div>
+                <div class="line-box"><b>Aclaración</b><div class="line">Nombre y apellido</div></div>
+                <div class="line-box"><b>Matrícula / registro</b><div class="line">Matrícula</div></div>
+              </div>
             </div>
 
             <div class="foot">
