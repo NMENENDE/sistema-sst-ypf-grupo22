@@ -2428,37 +2428,30 @@
     }
 
 
-
     /* ===== Panel General: matriz trimestral compacta de capacitación ===== */
     .quarter-matrix-card {
       margin-top: 18px;
-      border-top: 6px solid var(--ypf-yellow);
-      background:
-        radial-gradient(circle at top right, rgba(255,204,0,0.12), transparent 30%),
-        rgba(255,255,255,0.94);
+      border-top: 6px solid var(--ypf-blue);
+      background: radial-gradient(circle at top right, rgba(0,86,166,0.08), transparent 34%), rgba(255,255,255,0.94);
     }
 
     .quarter-matrix-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
       gap: 14px;
+      align-items: flex-start;
       margin-bottom: 14px;
     }
 
-    .quarter-matrix-header h3 { margin-bottom: 6px; }
-    .quarter-matrix-header p {
-      margin: 0;
-      color: var(--gray-500);
-      font-weight: 700;
-      line-height: 1.45;
-    }
+    .quarter-matrix-header h3 { margin: 0 0 6px; }
+    .quarter-matrix-header p { margin: 0; color: var(--gray-500); font-weight: 700; line-height: 1.4; }
 
     .quarter-legend {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 10px;
+      justify-content: flex-end;
+      align-items: center;
     }
 
     .quarter-grid {
@@ -2470,17 +2463,17 @@
     .quarter-block {
       border: 1px solid var(--gray-200);
       border-radius: 18px;
-      background: white;
       overflow: hidden;
+      background: white;
       box-shadow: 0 8px 18px rgba(15,23,42,0.05);
     }
 
     .quarter-title {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       gap: 10px;
-      padding: 11px 14px;
+      align-items: center;
+      padding: 10px 13px;
       background: linear-gradient(135deg, var(--ypf-blue), var(--ypf-blue-dark));
       color: white;
       border-bottom: 4px solid var(--ypf-yellow);
@@ -2499,47 +2492,51 @@
 
     .quarter-table th,
     .quarter-table td {
-      padding: 9px 10px;
+      padding: 8px 9px;
       border-bottom: 1px solid var(--gray-200);
       text-align: center;
-      font-size: 13px;
+      font-size: 12px;
       vertical-align: middle;
     }
 
     .quarter-table th:first-child,
     .quarter-table td:first-child {
       text-align: left;
-      width: 260px;
+      min-width: 190px;
       font-weight: 900;
       color: var(--ypf-blue-dark);
+      background: #fbfdff;
+      position: sticky;
+      left: 0;
+      z-index: 1;
     }
 
     .quarter-table th {
       background: var(--gray-50);
       color: var(--gray-500);
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      font-size: 11px;
+      letter-spacing: .04em;
+      font-weight: 900;
     }
 
-    .status-dot {
+    .quarter-status {
       display: inline-flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       width: 30px;
       height: 30px;
-      border-radius: 999px;
-      font-size: 15px;
+      border-radius: 12px;
+      font-size: 16px;
       font-weight: 900;
       border: 1px solid var(--gray-200);
       background: var(--gray-50);
     }
 
-    .status-dot.ok { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
-    .status-dot.warn { background: #fef3c7; color: #92400e; border-color: #fde68a; }
-    .status-dot.bad { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
-    .status-dot.scheduled { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
-    .status-dot.empty { background: #f8fafc; color: #64748b; }
+    .quarter-status.ok { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+    .quarter-status.warn { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .quarter-status.bad { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    .quarter-status.future { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
+    .quarter-status.empty { background: #f8fafc; color: #94a3b8; }
 
     .quarter-compliance {
       font-weight: 900;
@@ -2547,93 +2544,58 @@
       white-space: nowrap;
     }
 
-    @media (max-width: 650px) {
-      .quarter-matrix-header { display: grid; }
-      .quarter-title { display: grid; }
-    }
-
-
-
-    /* ===== Portada y submódulos de Capacitación ===== */
-    .training-access-grid {
+    /* ===== Capacitaciones: submódulos internos ===== */
+    .training-entry-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      margin-top: 18px;
+      gap: 14px;
     }
 
-    .training-access-card {
-      border: 1px solid rgba(203,213,225,0.9);
+    .training-entry-card {
       border-radius: 22px;
-      background: linear-gradient(135deg, #ffffff, var(--gray-50));
       padding: 18px;
+      background: linear-gradient(135deg, #ffffff, var(--ypf-blue-light));
+      border: 1px solid #cfe7ff;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.06);
       display: grid;
       gap: 10px;
-      border-left: 7px solid var(--ypf-blue);
-      box-shadow: 0 12px 28px rgba(15,23,42,0.08);
+      border-left: 6px solid var(--ypf-blue);
     }
 
-    .training-access-card:nth-child(2) {
-      border-left-color: var(--green);
-    }
+    .training-entry-card strong { color: var(--ypf-blue-dark); font-size: 17px; }
+    .training-entry-card small { color: var(--gray-700); font-weight: 700; line-height: 1.4; }
 
-    .training-access-card strong {
-      color: var(--ypf-blue-dark);
-      font-size: 18px;
-    }
+    .training-submodule { display: none; }
+    .training-submodule.active { display: block; }
 
-    .training-access-card p {
-      margin: 0;
-      color: var(--gray-700);
-      font-weight: 700;
-      line-height: 1.45;
-    }
-
-    .training-subview {
-      display: none;
-    }
-
-    .training-subview.active {
-      display: block;
-      animation: fade 0.22s ease both;
-    }
-
-    .training-backbar {
+    .training-back-row {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 14px;
-      padding: 14px 16px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, var(--ypf-blue-light), #ffffff);
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ffffff, var(--ypf-blue-light));
       border: 1px solid #cfe7ff;
-    }
-
-    .training-backbar strong {
       color: var(--ypf-blue-dark);
-      font-size: 16px;
+      font-weight: 900;
     }
 
-    .training-backbar small {
-      display: block;
-      color: var(--gray-500);
-      font-weight: 800;
-      margin-top: 2px;
-    }
-
-    .training-general-full {
+    .plan-word-card.consideraciones-full {
       grid-column: 1 / -1;
     }
 
-    .training-general-full ul {
+    .plan-word-card.consideraciones-full ul {
       columns: 2;
-      column-gap: 28px;
+      column-gap: 34px;
     }
 
-    @media (max-width: 750px) {
-      .training-general-full ul { columns: 1; }
+    @media (max-width: 760px) {
+      .quarter-matrix-header { display: grid; }
+      .quarter-legend { justify-content: flex-start; }
+      .plan-word-card.consideraciones-full ul { columns: 1; }
+      .training-back-row { display: grid; }
     }
 
     @media print {
@@ -2734,16 +2696,15 @@
           <div class="quarter-matrix-header">
             <div>
               <h3>📋 Matriz trimestral compacta de capacitación</h3>
-              <p>Seguimiento visual por trabajador y por mes. No reemplaza el Estado Global: muestra quién tiene cada capacitación realizada, pendiente, vencida, programada o sin asignar.</p>
-              <div class="quarter-legend">
-                <span class="pill vigente">✅ Realizada</span>
-                <span class="pill por-vencer">⚠️ Pendiente / por vencer</span>
-                <span class="pill vencido">❌ Vencida</span>
-                <span class="pill programado">📅 Programada</span>
-                <span class="pill programado">— Sin asignar</span>
-              </div>
+              <p>Lectura rápida por operador y por mes. El estado global del plan queda separado arriba; esta matriz muestra quién tiene cada capacitación asignada, realizada, pendiente o vencida.</p>
             </div>
-            <span class="badge calendar-badge">Vista auditoría</span>
+            <div class="quarter-legend">
+              <span class="pill vigente">✅ Realizada</span>
+              <span class="pill por-vencer">⚠️ Pendiente / por vencer</span>
+              <span class="pill vencido">❌ Vencida</span>
+              <span class="pill programado">📅 Programada</span>
+              <span class="pill programado">— Sin asignar</span>
+            </div>
           </div>
           <div class="quarter-grid" id="quarterTrainingMatrix"></div>
         </div>
@@ -2762,122 +2723,118 @@
     <div class="training-hero">
       <h3>Gestión digital de competencias SST</h3>
       <p>
-        Portada operativa del módulo de capacitaciones. Desde acá se accede al calendario anual completo
-        y al seguimiento del personal registrado, manteniendo la trazabilidad del Plan de Capacitación.
+        Legajo individual de capacitación por trabajador, con cursos realizados,
+        pendientes, vencidos y alertas preventivas. Pensado como una herramienta
+        de trazabilidad para auditoría, control operativo y mejora continua.
       </p>
+
+      <div class="training-controls">
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <input class="search" id="employeeSearch" placeholder="Buscar trabajador por nombre o apellido..." />
+          <select id="statusFilter">
+            <option value="todos">Todos los estados</option>
+            <option value="Realizada vigente">Realizada vigente</option>
+            <option value="Realizada por vencer">Realizada por vencer</option>
+            <option value="Realizada vencida">Realizada vencida</option>
+            <option value="Pendiente">Pendiente exigible</option>
+            <option value="Programada">Programada futura</option>
+          </select>
+        </div>
+
+        <div class="training-quick-actions">
+          <button class="secondary" onclick="goToTrainingCalendar()">📅 Calendario SST</button>
+          <button class="secondary" onclick="setTrainingQuickFilter('Pendiente')">⚠️ Pendientes exigibles</button>
+          <button class="secondary" onclick="setTrainingQuickFilter('Realizada vencida')">❌ Vencidas</button>
+          <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
+        </div>
+      </div>
     </div>
 
-    <div id="trainingHome" class="training-home">
-      <div class="training-control-note">
-        <strong>Enfoque del módulo:</strong> el calendario anual concentra la planificación y asignación de cursos. El seguimiento del personal funciona como legajo individual para revisar vencimientos, pendientes, programadas futuras y alertas.
-      </div>
+    <div class="training-control-note">
+      <strong>Enfoque del módulo:</strong> el calendario anual es el único punto de planificación y asignación. Esta pantalla funciona como tablero de control: legajos, vencimientos, pendientes exigibles, programadas futuras y alertas.
+    </div>
 
-      <div class="training-dashboard-strip">
-        <div class="training-mini-stat">
-          <span>Personal</span>
-          <strong id="trainingTotalPeople">0</strong>
-        </div>
-        <div class="training-mini-stat">
-          <span>Cumplimiento global</span>
-          <strong id="trainingGlobalCompliance">0%</strong>
-        </div>
-        <div class="training-mini-stat">
-          <span>Pendientes</span>
-          <strong id="trainingPendingTotal">0</strong>
-        </div>
-        <div class="training-mini-stat">
-          <span>Vencidas</span>
-          <strong id="trainingExpiredTotal">0</strong>
-        </div>
+    <div class="training-dashboard-strip">
+      <div class="training-mini-stat">
+        <span>Personal</span>
+        <strong id="trainingTotalPeople">0</strong>
       </div>
+      <div class="training-mini-stat">
+        <span>Cumplimiento global</span>
+        <strong id="trainingGlobalCompliance">0%</strong>
+      </div>
+      <div class="training-mini-stat">
+        <span>Pendientes</span>
+        <strong id="trainingPendingTotal">0</strong>
+      </div>
+      <div class="training-mini-stat">
+        <span>Vencidas</span>
+        <strong id="trainingExpiredTotal">0</strong>
+      </div>
+    </div>
 
-      <div class="training-access-grid">
-        <div class="training-access-card">
-          <strong>📅 Calendario anual de capacitaciones</strong>
-          <p>Acceso al cronograma completo por mes, con cursos repetidos por edición, ficha completa alineada al Word y asignación múltiple de operadores.</p>
+    <div class="card" id="trainingModuleHome">
+      <h3>Centro de gestión de capacitaciones</h3>
+      <p>Ingresá al calendario anual o al módulo de personal registrado. Ambos submódulos conservan los datos del plan y permiten volver a esta portada.</p>
+      <div class="training-entry-grid">
+        <div class="training-entry-card">
+          <strong>📅 Calendario anual SST</strong>
+          <small>Planificación mensual, ficha completa del curso, asignación múltiple de operadores y seguimiento por edición.</small>
           <button class="primary" onclick="showTrainingSubmodule('calendar')">Ingresar al calendario</button>
         </div>
-
-        <div class="training-access-card">
-          <strong>👥 Personal registrado y legajos</strong>
-          <p>Acceso al listado de trabajadores, estado individual de capacitación, cursos realizados, pendientes, vencidos, certificados y alertas.</p>
+        <div class="training-entry-card">
+          <strong>👥 Personal registrado</strong>
+          <small>Legajo individual, capacitaciones realizadas, pendientes, vencidas, certificados y planillas de asistencia.</small>
           <button class="primary" onclick="showTrainingSubmodule('people')">Ingresar a personal registrado</button>
         </div>
       </div>
     </div>
 
-    <div id="trainingCalendarSubview" class="training-subview">
-      <div class="training-backbar">
-        <div>
-          <strong>📅 Calendario anual de capacitaciones SST</strong>
-          <small>Plan mensual completo, asignaciones y ficha documental de cada curso.</small>
-        </div>
-        <button class="secondary" onclick="showTrainingSubmodule('home')">← Volver a Capacitaciones</button>
+    <div class="training-submodule" id="trainingCalendarSubmodule">
+      <div class="training-back-row">
+        <span>📅 Calendario anual de capacitación SST</span>
+        <button class="secondary" onclick="backToTrainingHome()">← Volver a Capacitaciones</button>
       </div>
 
-      <div class="card training-calendar-card">
-        <div class="calendar-header">
-          <div>
-            <h3>📅 Calendario anual de capacitaciones SST</h3>
-            <p>Plan mensual de cursos preventivos. Desde cada tarjeta se puede asignar la capacitación a uno o más operadores y queda vinculada automáticamente al legajo individual.</p>
-          </div>
-          <span class="badge calendar-badge">Plan 2026</span>
+    <div class="card training-calendar-card">
+      <div class="calendar-header">
+        <div>
+          <h3>📅 Calendario anual de capacitaciones SST</h3>
+          <p>Plan mensual de cursos preventivos. Desde cada tarjeta se puede asignar la capacitación a uno o más operadores y queda vinculada automáticamente al legajo individual.</p>
         </div>
-        <div class="training-calendar-grid" id="trainingCalendar"></div>
+        <span class="badge calendar-badge">Plan 2026</span>
       </div>
+      <div class="training-calendar-grid" id="trainingCalendar"></div>
     </div>
 
-    <div id="trainingPeopleSubview" class="training-subview">
-      <div class="training-backbar">
-        <div>
-          <strong>👥 Personal registrado y legajos de capacitación</strong>
-          <small>Seguimiento por trabajador, vencimientos, pendientes, certificados y alertas.</small>
-        </div>
-        <button class="secondary" onclick="showTrainingSubmodule('home')">← Volver a Capacitaciones</button>
+    </div>
+
+    <div class="training-submodule" id="trainingPeopleSubmodule">
+      <div class="training-back-row">
+        <span>👥 Personal registrado y legajos de capacitación</span>
+        <button class="secondary" onclick="backToTrainingHome()">← Volver a Capacitaciones</button>
       </div>
 
-      <div class="card">
-        <div class="training-controls" style="margin-top:0;">
-          <div style="display:flex; flex-wrap:wrap; gap:10px;">
-            <input class="search" id="employeeSearch" placeholder="Buscar trabajador por nombre o apellido..." />
-            <select id="statusFilter">
-              <option value="todos">Todos los estados</option>
-              <option value="Realizada vigente">Realizada vigente</option>
-              <option value="Realizada por vencer">Realizada por vencer</option>
-              <option value="Realizada vencida">Realizada vencida</option>
-              <option value="Pendiente">Pendiente exigible</option>
-              <option value="Programada">Programada futura</option>
-            </select>
+    <div class="training-layout">
+      <div class="card employee-list-card">
+        <h3>Personal registrado</h3>
+        <p>Seleccioná una persona para visualizar su situación de capacitación SST.</p>
+        <div class="employee-training-grid" id="employeeProfiles"></div>
+      </div>
+
+      <div class="card employee-detail-panel">
+        <div id="employeeTrainingDetail">
+          <div class="employee-detail-header">
+            <h3>Seleccioná un trabajador</h3>
+            <p>El sistema mostrará el legajo individual de capacitación y su indicador de cumplimiento.</p>
           </div>
 
-          <div class="training-quick-actions">
-            <button class="secondary" onclick="setTrainingQuickFilter('Pendiente')">⚠️ Pendientes exigibles</button>
-            <button class="secondary" onclick="setTrainingQuickFilter('Realizada vencida')">❌ Vencidas</button>
-            <button class="secondary" onclick="simulateAllEmails()">📧 Simular alertas</button>
+          <div class="training-note">
+            La gestión se realiza por trabajador. Si una capacitación pendiente o vencida se realiza, el sistema actualiza el legajo, recalcula el cumplimiento y la mueve automáticamente al grupo de capacitaciones realizadas vigentes.
           </div>
         </div>
       </div>
-
-      <div class="training-layout">
-        <div class="card employee-list-card">
-          <h3>Personal registrado</h3>
-          <p>Seleccioná una persona para visualizar su situación de capacitación SST.</p>
-          <div class="employee-training-grid" id="employeeProfiles"></div>
-        </div>
-
-        <div class="card employee-detail-panel">
-          <div id="employeeTrainingDetail">
-            <div class="employee-detail-header">
-              <h3>Seleccioná un trabajador</h3>
-              <p>El sistema mostrará el legajo individual de capacitación y su indicador de cumplimiento.</p>
-            </div>
-
-            <div class="training-note">
-              La gestión se realiza por trabajador. Si una capacitación pendiente o vencida se realiza, el sistema actualiza el legajo, recalcula el cumplimiento y la mueve automáticamente al grupo de capacitaciones realizadas vigentes.
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
     </div>
 
   </div>
@@ -3893,36 +3850,14 @@
       showEmployeeTrainingDetail(employeeName);
     }
 
-    function showTrainingSubmodule(target) {
-      const home = document.getElementById("trainingHome");
-      const calendar = document.getElementById("trainingCalendarSubview");
-      const people = document.getElementById("trainingPeopleSubview");
-
-      [home, calendar, people].forEach(el => {
-        if (!el) return;
-        el.classList.remove("active");
-        if (el.id === "trainingHome") el.style.display = "none";
-      });
-
-      if (target === "calendar") {
-        calendar?.classList.add("active");
-        calendar?.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else if (target === "people") {
-        people?.classList.add("active");
-        people?.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        if (home) home.style.display = "block";
-        home?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-
     function goToTrainingCalendar() {
+      showTrainingSubmodule("calendar");
       const filter = document.getElementById("statusFilter");
       const search = document.getElementById("employeeSearch");
       if (filter) filter.value = "todos";
       if (search) search.value = "";
       renderEmployeeProfiles();
-      showTrainingSubmodule("calendar");
+      document.querySelector(".training-calendar-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
       showToast("📅 Desde el calendario anual se planifican y asignan los cursos a uno o más operadores.");
     }
 
@@ -3932,7 +3867,6 @@
       if (filter) filter.value = state;
       if (search) search.value = "";
       renderEmployeeProfiles();
-      showTrainingSubmodule("people");
       document.querySelector(".employee-list-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
       const labels = {
         "Pendiente": "pendientes exigibles",
@@ -4181,83 +4115,85 @@
       `;
     }
 
-    function renderTrainingTable() {
-      return;
+
+
+    function showTrainingSubmodule(type) {
+      const home = document.getElementById("trainingModuleHome");
+      const calendar = document.getElementById("trainingCalendarSubmodule");
+      const people = document.getElementById("trainingPeopleSubmodule");
+      if (home) home.style.display = "none";
+      if (calendar) calendar.classList.remove("active");
+      if (people) people.classList.remove("active");
+      if (type === "calendar" && calendar) calendar.classList.add("active");
+      if (type === "people" && people) people.classList.add("active");
+      if (type === "calendar") renderTrainingCalendar();
+      if (type === "people") renderEmployeeProfiles();
+      const target = type === "calendar" ? calendar : people;
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-
-
-    function getQuarterDefinitions() {
-      return [
-        { title: "1° Trimestre", months: ["Enero", "Febrero", "Marzo", "Abril"], labels: ["Ene", "Feb", "Mar", "Abr"] },
-        { title: "2° Trimestre", months: ["Mayo", "Junio", "Julio", "Agosto"], labels: ["May", "Jun", "Jul", "Ago"] },
-        { title: "3° Trimestre", months: ["Septiembre", "Octubre", "Noviembre", "Diciembre"], labels: ["Sep", "Oct", "Nov", "Dic"] }
-      ];
+    function backToTrainingHome() {
+      const home = document.getElementById("trainingModuleHome");
+      const calendar = document.getElementById("trainingCalendarSubmodule");
+      const people = document.getElementById("trainingPeopleSubmodule");
+      if (calendar) calendar.classList.remove("active");
+      if (people) people.classList.remove("active");
+      if (home) home.style.display = "block";
+      home?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function getMonthPlanItems(monthName) {
-      const month = trainingPlan.find(m => m.month === monthName);
-      return month ? month.courses : [];
+    function getMonthRecordForEmployee(employeeName, monthName) {
+      const planMonth = trainingPlan.find(m => m.month === monthName);
+      if (!planMonth) return null;
+      const monthIds = planMonth.courses.map(c => c.id);
+      const monthNames = planMonth.courses.map(c => c.course);
+      return trainings.find(t => t.employee === employeeName && monthIds.includes(getTrainingRecordKey(t))) ||
+             trainings.find(t => t.employee === employeeName && monthNames.includes(t.course) && (t.courseMonth === monthName || !t.courseMonth));
     }
 
-    function getEmployeeMonthTrainingStatus(employeeName, monthName) {
-      const planItems = getMonthPlanItems(monthName);
-      if (!planItems.length) {
-        return { icon: "—", cls: "empty", label: "Sin capacitación planificada" };
-      }
-
-      const records = planItems.flatMap(item =>
-        trainings.filter(t => t.employee === employeeName && getTrainingRecordKey(t) === item.id)
-      );
-
-      if (!records.length) {
-        return { icon: "—", cls: "empty", label: "Sin asignar" };
-      }
-
-      const states = records.map(trainingState);
-      if (states.includes("Realizada vencida")) {
-        return { icon: "❌", cls: "bad", label: "Capacitación vencida" };
-      }
-      if (states.includes("Pendiente")) {
-        return { icon: "⚠️", cls: "warn", label: "Pendiente exigible" };
-      }
-      if (states.includes("Realizada por vencer")) {
-        return { icon: "⚠️", cls: "warn", label: "Realizada por vencer" };
-      }
-      if (states.includes("Programada")) {
-        return { icon: "📅", cls: "scheduled", label: "Programada futura" };
-      }
-      if (states.every(s => s === "Realizada vigente")) {
-        return { icon: "✅", cls: "ok", label: "Realizada vigente" };
-      }
-
-      return { icon: "⚠️", cls: "warn", label: "Requiere revisión" };
+    function getQuarterCellStatus(employeeName, monthName) {
+      const record = getMonthRecordForEmployee(employeeName, monthName);
+      if (!record) return { icon: "—", cls: "empty", title: "Sin asignar" };
+      const state = trainingState(record);
+      if (state === "Realizada vigente") return { icon: "✅", cls: "ok", title: `${record.course} · realizada vigente` };
+      if (state === "Realizada por vencer") return { icon: "⚠️", cls: "warn", title: `${record.course} · realizada por vencer` };
+      if (state === "Realizada vencida") return { icon: "❌", cls: "bad", title: `${record.course} · vencida` };
+      if (state === "Programada") return { icon: "📅", cls: "future", title: `${record.course} · programada` };
+      return { icon: "⚠️", cls: "warn", title: `${record.course} · pendiente exigible` };
     }
 
     function getQuarterCompliance(employeeName, months) {
-      const statuses = months.map(m => getEmployeeMonthTrainingStatus(employeeName, m));
-      const applicable = statuses.filter(s => s.icon !== "—");
-      if (!applicable.length) return "—";
-      const ok = applicable.filter(s => s.icon === "✅" || s.icon === "⚠️" && s.label === "Realizada por vencer").length;
-      return Math.round((ok / applicable.length) * 100) + "%";
+      const records = months.map(month => getMonthRecordForEmployee(employeeName, month)).filter(Boolean);
+      const exigibles = records.filter(isTrainingDueToDate);
+      if (!exigibles.length) return "100%";
+      const ok = exigibles.filter(t => {
+        const state = trainingState(t);
+        return state === "Realizada vigente" || state === "Realizada por vencer";
+      }).length;
+      return Math.round((ok / exigibles.length) * 100) + "%";
     }
 
     function renderQuarterTrainingMatrix() {
       const container = document.getElementById("quarterTrainingMatrix");
       if (!container) return;
+      const quarters = [
+        { title: "1° Trimestre", months: ["Enero", "Febrero", "Marzo", "Abril"], short: ["ENE", "FEB", "MAR", "ABR"] },
+        { title: "2° Trimestre", months: ["Mayo", "Junio", "Julio", "Agosto"], short: ["MAY", "JUN", "JUL", "AGO"] },
+        { title: "3° Trimestre", months: ["Septiembre", "Octubre", "Noviembre", "Diciembre"], short: ["SEP", "OCT", "NOV", "DIC"] }
+      ];
 
-      container.innerHTML = getQuarterDefinitions().map(q => `
+      container.innerHTML = quarters.map(q => `
         <div class="quarter-block">
           <div class="quarter-title">
             <strong>${q.title}</strong>
-            <small>${q.labels.join(" · ")}</small>
+            <small>${q.short.join(" · ")}</small>
           </div>
           <div class="quarter-table-wrap">
             <table class="quarter-table">
               <thead>
                 <tr>
                   <th>Personal</th>
-                  ${q.labels.map(label => `<th>${label}</th>`).join("")}
+                  ${q.short.map(m => `<th>${m}</th>`).join("")}
                   <th>Cumpl.</th>
                 </tr>
               </thead>
@@ -4265,9 +4201,9 @@
                 ${employees.map(emp => `
                   <tr>
                     <td>${emp.name}</td>
-                    ${q.months.map(monthName => {
-                      const status = getEmployeeMonthTrainingStatus(emp.name, monthName);
-                      return `<td><span class="status-dot ${status.cls}" title="${monthName}: ${status.label}">${status.icon}</span></td>`;
+                    ${q.months.map(month => {
+                      const status = getQuarterCellStatus(emp.name, month);
+                      return `<td><span class="quarter-status ${status.cls}" title="${escapeHtml(status.title)}">${status.icon}</span></td>`;
                     }).join("")}
                     <td class="quarter-compliance">${getQuarterCompliance(emp.name, q.months)}</td>
                   </tr>
@@ -4277,6 +4213,10 @@
           </div>
         </div>
       `).join("");
+    }
+
+    function renderTrainingTable() {
+      return;
     }
 
     function renderDashboard() {
@@ -4397,7 +4337,9 @@
     }
 
     function renderDocuments() {
-      document.getElementById("docList").innerHTML = documents.map(doc => `
+      const docContainer = document.getElementById("docList");
+      if (!docContainer) return;
+      docContainer.innerHTML = documents.map(doc => `
         <div class="doc-card">
           <strong>📄 ${doc.title}</strong>
           <span>${doc.desc}</span>
@@ -4843,90 +4785,28 @@
     }
 
 
-    function getCourseSheetMeta(course) {
-      const base = {
-        duracion: "2 horas",
-        material: "Presentación PowerPoint, videos, folletería, material informativo y registro de asistencia.",
-        responsable: "Personal de Higiene y Seguridad",
-        modalidad: "Grupal, teórico-práctica y participativa"
+
+    function getCourseMetaForAttendance(training) {
+      const planItem = getPlanItemById(training.courseId) || getAllTrainingPlanItems().find(item => item.course === training.course) || {};
+      const details = courseDetails[training.course] || {};
+      return {
+        month: training.courseMonth || planItem.month || "Registro manual",
+        due: planItem.due || training.due,
+        duration: details.duracion || "A completar según programación interna",
+        modality: details.modalidad || "Grupal, presencial y/o virtual, con enfoque teórico-práctico y participativo",
+        responsible: details.responsable || "Personal de Higiene y Seguridad / Bomberos / Medicina del Trabajo",
+        material: details.recursos || "Presentación PowerPoint, videos, folletería y material informativo",
+        contents: details.contenidos || planItem.focus || "Contenidos definidos en el Plan Anual de Capacitación SST"
       };
-
-      const overrides = {
-        "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios": {
-          duracion: "3 horas",
-          material: "Maniquí de RCP, botiquín, videos demostrativos, folletería y material de primeros auxilios.",
-          responsable: "Medicina del Trabajo / Instructor de Primeros Auxilios"
-        },
-        "Riesgo de incendio y uso de extintores": {
-          duracion: "2 horas",
-          material: "Presentación, videos, extintores, señalización y práctica controlada de uso de matafuegos.",
-          responsable: "Personal de Higiene y Seguridad / Bomberos"
-        },
-        "Plan de evacuación ante emergencias y simulacros": {
-          duracion: "2 horas",
-          material: "Plano de evacuación, flujograma de emergencia, señalización, videos y registro de simulacro.",
-          responsable: "Personal de Higiene y Seguridad / Responsable de Emergencias"
-        },
-        "Control y contención de derrames": {
-          duracion: "2 horas",
-          material: "Kit antiderrame, material absorbente, señalización, instructivos y folletería operativa.",
-          responsable: "Personal de Higiene y Seguridad"
-        },
-        "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad": {
-          duracion: "1,5 horas",
-          material: "EPP de uso habitual, cartelería de seguridad, presentación, videos y folletería.",
-          responsable: "Personal de Higiene y Seguridad"
-        },
-        "Manejo seguro y responsable de combustibles": {
-          duracion: "2 horas",
-          material: "Procedimientos operativos, fichas de seguridad, videos, señalización y material informativo.",
-          responsable: "Personal de Higiene y Seguridad / Supervisión Operativa"
-        }
-      };
-
-      return { ...base, ...(overrides[course] || {}) };
-    }
-
-    function getAttendanceSheetRecords(training) {
-      const key = getTrainingRecordKey(training);
-      const related = trainings.filter(t =>
-        t.done &&
-        getTrainingRecordKey(t) === key &&
-        (t.completed || "") === (training.completed || "")
-      );
-
-      return related.length ? related : [training];
     }
 
     function generateAttendanceSheet(index) {
       const training = trainings[index];
       if (!training) return;
-
-      const meta = getCourseSheetMeta(training.course);
-      const planItem = training.courseId ? getPlanItemById(training.courseId) : null;
-      const courseDetailsInfo = courseDetails[training.course] || {};
-      const records = getAttendanceSheetRecords(training);
-      const dateValue = training.completed || training.due || today.toISOString().slice(0,10);
-      const sheetId = `REG-CAP-${String(index + 1).padStart(3, "0")}-${Date.now().toString().slice(-5)}`;
-
-      const rows = [...records];
-      while (rows.length < 10) rows.push(null);
-
-      const tableRows = rows.map((record, i) => {
-        const employee = record ? (employees.find(e => e.name === record.employee) || {}) : {};
-        const name = record?.employee || "";
-        const dni = employee.dni || "";
-        const role = record?.role || employee.role || "";
-        return `
-          <tr>
-            <td>${i + 1}</td>
-            <td>${escapeHtml(name)}</td>
-            <td>${escapeHtml(dni)}</td>
-            <td></td>
-            <td>${escapeHtml(role)}</td>
-          </tr>
-        `;
-      }).join("");
+      const employee = employees.find(e => e.name === training.employee) || {};
+      const meta = getCourseMetaForAttendance(training);
+      const fecha = training.completed || today.toISOString().slice(0, 10);
+      const sheetId = `SST-ASIST-${String(index + 1).padStart(3, "0")}-${Date.now().toString().slice(-5)}`;
 
       const asistenciaHtml = `
         <!DOCTYPE html>
@@ -4936,205 +4816,93 @@
           <title>Planilla de asistencia - ${escapeHtml(training.course)}</title>
           <style>
             * { box-sizing: border-box; }
-            body {
-              margin: 0;
-              padding: 24px;
-              font-family: Arial, Helvetica, sans-serif;
-              background: #f1f5f9;
-              color: #0f172a;
-            }
-            .sheet {
-              max-width: 1120px;
-              margin: 0 auto;
-              background: white;
-              border: 2px solid #1f2937;
-              box-shadow: 0 16px 36px rgba(15,23,42,0.14);
-            }
-            .sheet-header {
-              display: grid;
-              grid-template-columns: 150px 1fr 190px;
-              border-bottom: 2px solid #1f2937;
-              min-height: 92px;
-            }
-            .logo-box {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-right: 2px solid #1f2937;
-              background: #0056a6;
-              color: white;
-              font-weight: 900;
-              font-size: 38px;
-              letter-spacing: -3px;
-              border-bottom: 8px solid #ffcc00;
-            }
-            .title-box {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              text-align: center;
-              padding: 12px;
-            }
-            .title-box h1 {
-              margin: 0;
-              font-size: 24px;
-              color: #003f7d;
-              text-transform: uppercase;
-              letter-spacing: 0.03em;
-            }
-            .title-box span {
-              margin-top: 6px;
-              color: #475569;
-              font-weight: 700;
-              font-size: 13px;
-            }
-            .code-box {
-              border-left: 2px solid #1f2937;
-              display: grid;
-              grid-template-rows: repeat(3, 1fr);
-              font-size: 12px;
-              font-weight: 700;
-            }
-            .code-box div {
-              padding: 8px;
-              border-bottom: 1px solid #1f2937;
-            }
-            .code-box div:last-child { border-bottom: 0; }
-            .info-grid {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              border-bottom: 2px solid #1f2937;
-            }
-            .info-item {
-              padding: 9px 12px;
-              border-bottom: 1px solid #cbd5e1;
-              min-height: 38px;
-              font-size: 13px;
-              font-weight: 700;
-            }
-            .info-item:nth-child(odd) { border-right: 1px solid #cbd5e1; }
-            .info-item.full {
-              grid-column: 1 / -1;
-              border-right: 0;
-            }
-            .info-item b {
-              color: #003f7d;
-              text-transform: uppercase;
-              font-size: 11px;
-              letter-spacing: 0.04em;
-              margin-right: 6px;
-            }
-            table {
-              width: 100%;
-              border-collapse: collapse;
-            }
-            th {
-              background: #3b3b3b;
-              color: white;
-              font-size: 12px;
-              letter-spacing: 0.04em;
-              text-transform: uppercase;
-              padding: 8px;
-              border: 1px solid #111827;
-            }
-            td {
-              height: 42px;
-              border: 1px solid #111827;
-              padding: 7px 8px;
-              font-size: 13px;
-              font-weight: 700;
-            }
-            td:nth-child(1) { width: 54px; text-align: center; }
-            td:nth-child(3) { width: 150px; }
-            td:nth-child(4) { width: 210px; }
-            td:nth-child(5) { width: 240px; }
-            .footer {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              gap: 20px;
-              padding: 18px 22px 26px;
-              font-size: 12px;
-              color: #334155;
-              font-weight: 700;
-            }
-            .sign-line {
-              margin-top: 34px;
-              border-top: 1px solid #111827;
-              padding-top: 7px;
-              text-align: center;
-            }
-            .actions {
-              max-width: 1120px;
-              margin: 16px auto 0;
-              display: flex;
-              justify-content: center;
-              gap: 10px;
-            }
-            button {
-              border: 0;
-              border-radius: 12px;
-              padding: 12px 16px;
-              font-weight: 900;
-              cursor: pointer;
-              background: #0056a6;
-              color: white;
-            }
+            body { margin: 0; padding: 24px; font-family: Arial, Helvetica, sans-serif; background: #f1f5f9; color: #0f172a; }
+            .sheet { max-width: 1120px; margin: 0 auto; background: white; border: 3px solid #0056a6; border-radius: 18px; overflow: hidden; box-shadow: 0 18px 45px rgba(15,23,42,.14); }
+            .top { display: grid; grid-template-columns: 150px 1fr 220px; align-items: stretch; border-bottom: 5px solid #ffcc00; }
+            .logo { background: #0056a6; color: white; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 900; letter-spacing: -3px; }
+            .title { padding: 16px 18px; text-align: center; }
+            .title h1 { margin: 0; color: #003f7d; font-size: 24px; text-transform: uppercase; }
+            .title p { margin: 6px 0 0; color: #475569; font-weight: 700; }
+            .meta { border-left: 1px solid #cbd5e1; display: grid; }
+            .meta div { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; font-size: 12px; font-weight: 700; }
+            .meta div:last-child { border-bottom: 0; }
+            .section { padding: 16px; }
+            .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+            .field { border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; background: #f8fafc; min-height: 64px; }
+            .field.wide { grid-column: span 2; }
+            .field.full { grid-column: 1 / -1; }
+            .field b { display: block; color: #003f7d; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; letter-spacing: .04em; }
+            .field span { font-size: 13px; color: #334155; font-weight: 700; line-height: 1.4; }
+            table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+            th { background: #334155; color: white; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+            th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; height: 42px; }
+            td { font-size: 13px; font-weight: 700; color: #0f172a; }
+            .signature { height: 58px; }
+            .foot { padding: 12px 16px; background: #e7f2ff; color: #003f7d; font-size: 12px; font-weight: 700; border-top: 1px solid #cfe7ff; }
+            .actions { max-width: 1120px; margin: 16px auto 0; display: flex; justify-content: center; gap: 10px; }
+            button { border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 900; cursor: pointer; background: #0056a6; color: white; }
             button.secondary { background: #e7f2ff; color: #003f7d; }
-            @media print {
-              body { background: white; padding: 0; }
-              .sheet { box-shadow: none; border: 1px solid #111827; max-width: none; min-height: 100vh; }
-              .actions { display: none; }
-            }
+            @media print { body { background: white; padding: 0; } .sheet { box-shadow: none; border-radius: 0; max-width: none; } .actions { display: none; } }
+            @media (max-width: 850px) { .top, .info-grid { grid-template-columns: 1fr; } .field.wide, .field.full { grid-column: 1; } }
           </style>
         </head>
         <body>
           <div class="sheet">
-            <div class="sheet-header">
-              <div class="logo-box">YPF</div>
-              <div class="title-box">
+            <div class="top">
+              <div class="logo">YPF</div>
+              <div class="title">
                 <h1>Planilla de asistencia a capacitación</h1>
-                <span>Sistema Digital SST · Grupo 22 UTN BA</span>
+                <p>Sistema Digital SST · Grupo 22 UTN BA</p>
               </div>
-              <div class="code-box">
+              <div class="meta">
                 <div><b>Código:</b> ${sheetId}</div>
+                <div><b>Fecha:</b> ${formatDate(fecha)}</div>
                 <div><b>Rev.:</b> 01</div>
-                <div><b>Fecha:</b> ${formatDate(dateValue)}</div>
               </div>
             </div>
 
-            <div class="info-grid">
-              <div class="info-item full"><b>Curso:</b> ${escapeHtml(training.course)}</div>
-              <div class="info-item"><b>Fecha:</b> ${formatDate(dateValue)}</div>
-              <div class="info-item"><b>Mes del plan:</b> ${escapeHtml(training.courseMonth || planItem?.month || "Registro manual")}</div>
-              <div class="info-item"><b>Duración:</b> ${escapeHtml(courseDetailsInfo.duracion || meta.duracion)}</div>
-              <div class="info-item"><b>Modalidad:</b> ${escapeHtml(courseDetailsInfo.modalidad || meta.modalidad)}</div>
-              <div class="info-item"><b>Responsable / Instructor:</b> ${escapeHtml(courseDetailsInfo.responsable || meta.responsable)}</div>
-              <div class="info-item"><b>Material didáctico:</b> ${escapeHtml(courseDetailsInfo.recursos || meta.material)}</div>
-              <div class="info-item full"><b>Contenidos principales:</b> ${escapeHtml(courseDetailsInfo.contenidos || training.course)}</div>
+            <div class="section">
+              <div class="info-grid">
+                <div class="field wide"><b>Curso</b><span>${escapeHtml(training.course)}</span></div>
+                <div class="field"><b>Fecha de realización</b><span>${formatDate(fecha)}</span></div>
+                <div class="field"><b>Mes / edición</b><span>${escapeHtml(meta.month)}</span></div>
+                <div class="field"><b>Duración</b><span>${escapeHtml(meta.duration)}</span></div>
+                <div class="field"><b>Modalidad</b><span>${escapeHtml(meta.modality)}</span></div>
+                <div class="field wide"><b>Responsable / instructor</b><span>${escapeHtml(meta.responsible)}</span></div>
+                <div class="field full"><b>Material didáctico utilizado</b><span>${escapeHtml(meta.material)}</span></div>
+                <div class="field full"><b>Contenidos principales</b><span>${escapeHtml(meta.contents)}</span></div>
+              </div>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:55px; text-align:center;">N°</th>
+                    <th>Nombre</th>
+                    <th style="width:150px;">DNI</th>
+                    <th style="width:220px;">Firma</th>
+                    <th style="width:230px;">Área / Puesto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="text-align:center;">1</td>
+                    <td>${escapeHtml(training.employee)}</td>
+                    <td>${escapeHtml(employee.dni || "")}</td>
+                    <td class="signature"></td>
+                    <td>${escapeHtml(employee.role || training.role || "")}</td>
+                  </tr>
+                  ${Array.from({ length: 9 }).map((_, i) => `
+                    <tr>
+                      <td style="text-align:center;">${i + 2}</td>
+                      <td></td><td></td><td class="signature"></td><td></td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
             </div>
 
-            <table>
-              <thead>
-                <tr>
-                  <th>N°</th>
-                  <th>Nombre</th>
-                  <th>DNI</th>
-                  <th>Firma</th>
-                  <th>Área/Puesto</th>
-                </tr>
-              </thead>
-              <tbody>${tableRows}</tbody>
-            </table>
-
-            <div class="footer">
-              <div>
-                <b>Observaciones:</b><br>
-                La presente planilla acredita la participación del personal en la capacitación indicada y se conserva como registro documental del Sistema SST.
-              </div>
-              <div>
-                <div class="sign-line">Firma y aclaración del responsable de capacitación</div>
-              </div>
+            <div class="foot">
+              SST-IPER-2026-001 | Rev.01 | Documento Controlado · Registro asociado al Plan Anual de Capacitación SST.
             </div>
           </div>
 
@@ -5151,7 +4919,6 @@
         showToast("El navegador bloqueó la ventana emergente. Permití pop-ups para emitir la planilla de asistencia.");
         return;
       }
-
       win.document.open();
       win.document.write(asistenciaHtml);
       win.document.close();
@@ -5552,7 +5319,6 @@
         document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
         btn.classList.add("active");
         document.getElementById(btn.dataset.section).classList.add("active");
-        if (btn.dataset.section === "capacitaciones") showTrainingSubmodule("home");
         const titles = {
           dashboard: "Panel general SST",
           capacitaciones: "Gestión de capacitaciones",
