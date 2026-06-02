@@ -2602,6 +2602,14 @@
     /* ===== Plan Word y calendario ancho ===== */
     .plan-word-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.plan-word-card{background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:16px;box-shadow:0 10px 22px rgba(15,23,42,.06);border-left:6px solid var(--ypf-blue)}.plan-word-card:nth-child(2){border-left-color:var(--ypf-yellow)}.plan-word-card:nth-child(3){border-left-color:var(--green)}.plan-word-card:nth-child(4){border-left-color:var(--ypf-red)}.plan-word-card strong{display:block;color:var(--ypf-blue-dark);margin-bottom:6px}.plan-word-card small,.plan-word-card li{color:var(--gray-700);font-weight:700;line-height:1.45}.plan-word-card ul{margin:6px 0 0;padding-left:18px}.plan-word-card.consideraciones-full{grid-column:1/-1}.plan-word-card.consideraciones-full ul{columns:2;column-gap:34px}.month-toggle-btn{width:auto;min-width:132px;padding:9px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.18)!important;color:white!important;border:1px solid rgba(255,255,255,.26)!important;box-shadow:none!important;font-size:12px}.month-card.collapsed .month-course-list{display:none!important}.month-card-summary{padding:10px 16px!important;display:flex!important;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px!important;background:linear-gradient(135deg,#fff,var(--gray-50));border-bottom:1px solid var(--gray-200)}.month-card-summary small{flex:1 1 420px;color:var(--gray-500);font-weight:800;line-height:1.35}.training-calendar-grid{display:grid!important;grid-template-columns:1fr!important;gap:12px!important}.month-card-header{padding:12px 16px!important;display:grid!important;grid-template-columns:minmax(140px,.22fr) minmax(280px,1fr) auto!important;align-items:center!important;gap:14px!important}.month-title-block strong{font-size:17px!important}.month-inline-summary{color:rgba(255,255,255,.92);font-size:12.5px;font-weight:800;line-height:1.35}.month-inline-summary b{color:#fff7cc}.month-course-list{display:grid!important;gap:12px!important;padding:14px 16px 16px!important}.month-course{padding:0!important;overflow:hidden;border-radius:18px!important;border-left:6px solid var(--ypf-blue)!important;background:white!important}.course-compact-row{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(260px,.9fr) auto;gap:14px;align-items:center;padding:14px}.course-compact-row strong{color:var(--ypf-blue-dark);font-size:15px;line-height:1.25}.course-compact-row small{display:block;color:var(--gray-500);font-weight:800;line-height:1.35;margin-top:4px}.course-chip-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start}.course-detail-collapse{border:0!important;border-top:1px solid var(--gray-200)!important;border-radius:0!important;background:linear-gradient(135deg,#fff,var(--gray-50))!important}.course-detail-collapse summary{cursor:pointer;padding:12px 14px!important;background:var(--ypf-blue-light);border-bottom:1px solid #cfe7ff;font-weight:900;color:var(--ypf-blue-dark);list-style:none;user-select:none}.course-detail-collapse summary::-webkit-details-marker{display:none}.course-detail-collapse summary::after{content:"+";float:right;font-size:18px;line-height:1;color:var(--ypf-blue)}.course-detail-collapse[open] summary::after{content:"−"}.course-detail-box{margin:0!important;padding:14px!important;border:0!important;border-radius:0!important;background:white!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px!important}.course-detail-field{border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50);padding:11px 12px;min-height:74px}.course-detail-field.wide{grid-column:span 2}.course-detail-field.full{grid-column:1/-1}.course-detail-field b{display:block;color:var(--ypf-blue-dark);margin-bottom:5px;font-size:12px;text-transform:uppercase;letter-spacing:.035em}.course-detail-field small,.course-detail-field span{color:var(--gray-700);font-weight:700;line-height:1.42}@media(max-width:1050px){.month-card-header,.course-compact-row{grid-template-columns:1fr!important;align-items:stretch!important}.course-detail-box{grid-template-columns:1fr!important}.course-detail-field.wide,.course-detail-field.full{grid-column:1/-1}}@media(max-width:760px){.plan-word-card.consideraciones-full ul{columns:1}}
 
+    
+    .course-detail-field small,
+    .course-detail-field span { white-space: pre-line; }
+    .course-detail-field.legal {
+      border-left: 5px solid var(--ypf-yellow);
+      background: linear-gradient(135deg, #fffbea, #ffffff);
+    }
+
     @media print {
       aside, .topbar .badge, nav, button, input, select, .toolbar { display: none !important; }
       .app { display: block; }
@@ -3485,20 +3493,271 @@
     ];
 
     const courseDetails = {
-      "Seguridad Laboral Básica: Orden, Limpieza y Prevención de enfermedades profesionales": { duracion: "1 hora", modalidad: "Virtual sincrónica", responsable: "Personal de Higiene y Seguridad", recursos: "Presentaciones en PowerPoint, videos, folletería y material informativo.", contenidos: "Definiciones; orden y limpieza; enfermedades profesionales; causales; medidas preventivas.", actividades: "Dinámicas grupales; observación de riesgos; simulaciones; role-playing.", evaluacion: "Participación activa en actividades grupales y resolución de casos prácticos con propuestas de prevención." },
-      "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad": { duracion: "1 hora", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad", recursos: "Presentaciones en PowerPoint, videos, folletería y material informativo.", contenidos: "Aspectos legales; protección de manos; uso, cuidado y mantenimiento de EPP; tipos de señales; interpretación en la estación.", actividades: "Demostración de EPP; inspección de desgaste; recorrido por estación; simulación de riesgos.", evaluacion: "Participación en actividades prácticas, resolución de casos y breve cuestionario escrito." },
-      "Prevención de Riesgos: Actos y Condiciones Inseguras, Accidentes e Incidentes (ART)": { duracion: "1 hora", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad / ART", recursos: "Presentaciones en PowerPoint, videos, folletería y material informativo.", contenidos: "Definiciones; actos inseguros; condiciones inseguras; accidentes e incidentes; causas; medidas preventivas; notificación.", actividades: "Análisis de casos reales; observación del área; simulaciones de incidentes; taller de notificación.", evaluacion: "Participación activa en actividades grupales y resolución de casos prácticos con propuestas de prevención." },
-      "Riesgo de incendio y uso de extintores": { duracion: "2 horas", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad / Bomberos", recursos: "Presentaciones, ejemplos visuales, extintores y práctica controlada.", contenidos: "Elementos del fuego; prevención de incendios; clases de fuego; agentes extintores; clases de extintores; uso correcto.", actividades: "Demostración del triángulo del fuego, identificación de riesgos, reconocimiento de clases de fuego y uso real de extintores con técnica PASS.", evaluacion: "Participación en simulacros y prácticas, resolución de casos, cuestionario escrito y observación del uso práctico de extintores." },
-      "Exposición a vapores inflamables/tóxicos e irritantes. Riesgo químico": { duracion: "1 hora", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad", recursos: "Presentaciones, fichas de seguridad, folletería y material informativo.", contenidos: "Definiciones; riesgo químico; vapores peligrosos; vías de ingreso; efectos sobre la salud; medidas preventivas.", actividades: "Observación de fuentes de vapores, simulación de incidentes, taller de EPP e interpretación de fichas de seguridad.", evaluacion: "Participación en actividades prácticas y simulaciones, y resolución de casos sobre exposición y prevención." },
-      "Control y contención de derrames": { duracion: "1 hora y 30 minutos", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad", recursos: "Presentaciones, kit antiderrame, absorbentes, neutralizantes y material informativo.", contenidos: "Definiciones; tipos de derrames; elementos de contención; actuación inmediata; recolección y disposición; medidas preventivas.", actividades: "Simulación de derrame controlado, uso de kits de contención, clasificación/disposición de residuos y análisis de casos reales.", evaluacion: "Participación activa en simulaciones y talleres, y resolución de casos prácticos con propuestas de mejora." },
-      "Riesgo eléctrico y electricidad estática": { duracion: "1 hora", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad", recursos: "Presentaciones, videos, folletería y material informativo.", contenidos: "Definiciones; distancia de seguridad; EPP; bloqueo y consignaciones; electricidad estática; efectos en el cuerpo humano.", actividades: "Demostración de distancias, taller de EPP dieléctrico, ejercicios de bloqueo y simulación de electricidad estática.", evaluacion: "Participación en talleres y simulaciones, resolución de casos prácticos y cuestionario escrito." },
-      "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios": { duracion: "1 hora y 30 minutos", modalidad: "Presencial", responsable: "Medicina del Trabajo / Bomberos / Personal capacitado", recursos: "Presentaciones, videos, maniquíes, vendajes y material informativo.", contenidos: "Definiciones; conceptos básicos; maniobras; quemaduras; lesiones oculares; heridas y hemorragias; traumatismos.", actividades: "Práctica de RCP con maniquíes, simulación de quemaduras/heridas, control de hemorragias con vendajes y taller de lesiones oculares/traumatismos.", evaluacion: "Participación activa en prácticas y simulaciones, y resolución de casos prácticos sobre emergencias médicas." },
-      "Plan de evacuación ante emergencias y simulacros": { duracion: "2 horas", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad / Brigada de emergencia", recursos: "Plano de evacuación, procedimientos, señalización, cronómetro y material informativo.", contenidos: "Clasificación de emergencias; roles y responsabilidades; vías de evacuación; procedimiento de evacuación; simulacro.", actividades: "Recorrido por instalaciones, taller de roles, simulación de evacuación con cronometraje y análisis de resultados.", evaluacion: "Participación activa en simulacros y talleres, y resolución de casos prácticos sobre emergencias." },
-      "Ergonomía": { duracion: "1 hora", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad / Medicina del Trabajo", recursos: "Presentaciones, material informativo y ejemplos del puesto de trabajo.", contenidos: "Definiciones; beneficios; levantamiento manual de carga; Res. SRT 886/15; posturas forzadas; recomendaciones.", actividades: "Taller de levantamiento seguro, corrección de posturas, análisis de lesiones y debate sobre la normativa SRT 886/15.", evaluacion: "Participación activa en talleres y ejercicios, resolución de casos prácticos y observación de recomendaciones ergonómicas." },
-      "Autocontrol preventivo": { duracion: "45 minutos", modalidad: "Virtual asincrónica", responsable: "Personal de Higiene y Seguridad", recursos: "Lectura guiada de material teórico, análisis de imágenes/situaciones reales y cuestionario final.", contenidos: "Definiciones; identificación de riesgos; verificación de condiciones seguras; comunicación de riesgos; medidas preventivas.", actividades: "Lectura guiada, análisis de imágenes y situaciones reales, observación en área, verificación previa de tareas y role-playing de comunicación.", evaluacion: "Cuestionario final de verificación de conocimientos, participación activa y resolución de casos prácticos." },
-      "Manejo seguro y responsable de combustibles": { duracion: "2 horas por ser tarea crítica", modalidad: "Presencial", responsable: "Personal de Higiene y Seguridad", recursos: "Presentaciones, procedimientos operativos, videos, folletería y material informativo.", contenidos: "Características y riesgos; manipulación segura; carga y descarga; prevención de derrames; fuentes de ignición; emergencias.", actividades: "Taller operativo, simulación de carga/descarga, identificación de fuentes de ignición y simulacro por derrame o incendio.", evaluacion: "Participación activa en talleres y simulaciones, y resolución de casos prácticos." },
-      "Prevención Psicosocial: Estrés, Burnout y Cultura de Bienestar": { duracion: "1 hora y 30 minutos", modalidad: "Virtual sincrónica", responsable: "Personal de Higiene y Seguridad / Medicina del Trabajo", recursos: "Presentaciones en PowerPoint, videos, folletería y material informativo.", contenidos: "Riesgos psicosociales; estrés laboral; burnout; factores de riesgo; hábitos saludables; medidas preventivas.", actividades: "Dinámica grupal, taller de técnicas de relajación y respiración, role-playing de comunicación y debate sobre hábitos saludables.", evaluacion: "Participación activa en dinámicas y talleres, y resolución de casos prácticos." }
-    };
+      "Seguridad Laboral Básica: Orden, Limpieza y Prevención de enfermedades profesionales": {
+            "duracion": "1 hora",
+            "modalidad": "Virtual sincrónica",
+            "responsable": "Personal de Higiene y Seguridad",
+            "recursos": "Presentaciones en PowerPoint, videos, folletería y material informativo.",
+            "objetivo": "Comprender los conceptos básicos de seguridad laboral, orden y limpieza, enfermedades profesionales y medidas preventivas aplicables al puesto de despacho de combustible líquido.",
+            "contenidos": "• Definiciones: conceptos básicos de seguridad laboral y salud ocupacional.
+• Orden y limpieza: importancia de mantener espacios organizados y limpios para prevenir accidentes.
+• Enfermedades profesionales: principales afecciones relacionadas con la actividad laboral.
+• Causales: factores de riesgo que favorecen la aparición de enfermedades profesionales.
+• Medidas preventivas: prácticas seguras para reducir riesgos y proteger la salud.",
+            "actividades": "• Dinámicas grupales con casos reales ocurridos en la empresa o en el sector.
+• Ejercicios de observación e identificación de riesgos en el área de trabajo.
+• Simulaciones de aplicación de medidas preventivas.
+• Role-playing ante condiciones inseguras y propuestas de mejora.",
+            "evaluacion": "• Participación activa en actividades grupales.
+• Resolución de casos prácticos con propuestas de prevención.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Riesgos IPER asociados: condiciones inseguras, orden/limpieza deficiente, enfermedades profesionales y fallas de autocontrol preventivo."
+      },
+      "Uso de Elementos de Protección Personal (EPP) y Señalización de Seguridad": {
+            "duracion": "1 hora",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad",
+            "recursos": "Presentaciones en PowerPoint, videos, folletería, señalética, EPP de uso habitual y material informativo.",
+            "objetivo": "Reconocer la obligación, selección, uso, cuidado y mantenimiento de los EPP y aplicar correctamente la señalización preventiva en la estación de servicio.",
+            "contenidos": "• Aspectos legales: normativa vigente sobre seguridad laboral y uso obligatorio de EPP.
+• Protección de manos: riesgos frecuentes y medidas de protección.
+• Uso, cuidado y mantenimiento de EPP.
+• Criterios de reemplazo por desgaste o falla.
+• Tipos de señales: prohibición, obligación, advertencia y emergencia.
+• Interpretación de la señalización en el contexto de la estación de servicio.",
+            "actividades": "• Demostración del uso correcto de guantes, cascos y otros EPP.
+• Inspección de EPP para detectar desgaste o fallas.
+• Recorrido por la estación para identificar y explicar señalización existente.
+• Simulación de situaciones de riesgo donde se aplican EPP y señales.",
+            "evaluacion": "• Participación en actividades prácticas.
+• Resolución de casos sobre uso de EPP y señalización.
+• Breve cuestionario escrito.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Decreto 351/79: uso de elementos de protección personal y señalización; normativa IRAM aplicable a comunicación visual preventiva. Riesgos IPER asociados: contacto con combustibles, vapores, circulación vehicular, derrames e incendio."
+      },
+      "Prevención de Riesgos: Actos y Condiciones Inseguras, Accidentes e Incidentes (ART)": {
+            "duracion": "1 hora",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad / ART",
+            "recursos": "Presentaciones en PowerPoint, videos, folletería, material informativo, ejemplos de incidentes y registros preventivos.",
+            "objetivo": "Identificar actos y condiciones inseguras, diferenciar accidentes e incidentes y fortalecer la notificación preventiva en el puesto de playero/operador de despacho.",
+            "contenidos": "• Definiciones de seguridad laboral y prevención de riesgos.
+• Actos inseguros: conductas que aumentan la probabilidad de accidentes.
+• Condiciones inseguras: situaciones y factores ambientales que generan riesgos.
+• Accidentes e incidentes: diferencias e impacto.
+• Causas de accidentes laborales.
+• Medidas preventivas.
+• Notificación de incidentes para prevenir recurrencias.",
+            "actividades": "• Análisis de casos reales de actos y condiciones inseguras.
+• Observación en el área de trabajo para identificar riesgos.
+• Simulaciones de incidentes y aplicación de medidas preventivas.
+• Taller participativo sobre notificación de incidentes.",
+            "evaluacion": "• Participación activa en actividades grupales.
+• Resolución de casos prácticos con propuestas de prevención.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Ley 24.557: prevención de riesgos del trabajo y ART. Riesgos IPER asociados: interacción con vehículos, exposición a combustibles, derrames, fuego/explosión y condiciones de trabajo a la intemperie."
+      },
+      "Riesgo de incendio y uso de extintores": {
+            "duracion": "2 horas",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad / Bomberos",
+            "recursos": "Presentaciones, ejemplos visuales, extintores, señalización y práctica controlada.",
+            "objetivo": "Prevenir incendios en la estación de servicio, reconocer clases de fuego y aplicar el uso seguro de extintores ante un principio de incendio controlable.",
+            "contenidos": "• Elementos del fuego: triángulo y tetraedro del fuego.
+• Prevención de incendios en estación de servicio.
+• Clases de fuego según material combustible.
+• Agentes extintores aplicables.
+• Clases de extintores y aplicación específica.
+• Uso correcto y seguro de extintores.",
+            "actividades": "• Demostración del triángulo del fuego con ejemplos visuales.
+• Identificación de riesgos de incendio en la estación.
+• Reconocimiento de clases de fuego con casos simulados.
+• Uso real de extintores en espacio controlado aplicando técnica PASS.",
+            "evaluacion": "• Participación en simulacros y prácticas.
+• Resolución de casos sobre prevención y control de incendios.
+• Cuestionario escrito sobre fuego y extintores.
+• Observación del desempeño en el uso práctico del extintor.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Decreto 351/79: protección contra incendios, medios de escape y prevención; normativa IRAM aplicable a extintores y señalización. Riesgos IPER asociados: sustancias inflamables, fuentes de ignición, vapores de hidrocarburos, derrames e incendio/explosión."
+      },
+      "Exposición a vapores inflamables/tóxicos e irritantes. Riesgo químico": {
+            "duracion": "1 hora",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad",
+            "recursos": "Presentaciones, fichas de seguridad, folletería, EPP y material informativo.",
+            "objetivo": "Reconocer los riesgos químicos por exposición a vapores de hidrocarburos y aplicar medidas preventivas para reducir el ingreso de contaminantes al organismo.",
+            "contenidos": "• Definiciones de riesgo químico y exposición laboral.
+• Sustancias inflamables, tóxicas e irritantes.
+• Vapores peligrosos en estación de servicio.
+• Vías de ingreso: inhalación, absorción e ingestión.
+• Efectos inmediatos y a largo plazo sobre la salud.
+• Medidas preventivas y de control.",
+            "actividades": "• Observación de áreas de trabajo para identificar fuentes potenciales de vapores.
+• Simulación de incidentes con exposición a vapores y medidas de control.
+• Taller de uso correcto de EPP frente a riesgos químicos.
+• Interpretación de fichas de seguridad de productos químicos.",
+            "evaluacion": "• Participación en actividades prácticas y simulaciones.
+• Resolución de casos sobre exposición y prevención.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Decreto 351/79: contaminantes químicos, ventilación, higiene laboral y EPP; uso de fichas de datos de seguridad. Riesgos IPER asociados: exposición a vapores de combustibles, contacto con hidrocarburos y presencia de sustancias inflamables."
+      },
+      "Control y contención de derrames": {
+            "duracion": "1 hora y 30 minutos",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad",
+            "recursos": "Presentaciones, kit antiderrame, barreras, absorbentes, neutralizantes y material informativo.",
+            "objetivo": "Actuar de manera rápida y segura ante derrames de combustibles, controlando la zona, evitando fuentes de ignición y disponiendo residuos contaminados de forma segura.",
+            "contenidos": "• Definiciones relacionadas con derrames e impacto en seguridad y ambiente.
+• Tipos de derrames en estación de servicio.
+• Elementos de contención disponibles.
+• Actuación inmediata y respuesta rápida.
+• Recolección y disposición de residuos contaminados.
+• Medidas preventivas para reducir la probabilidad de ocurrencia.",
+            "actividades": "• Simulación de derrame controlado y aplicación de protocolos.
+• Uso de kits de contención: barreras, absorbentes y neutralizantes.
+• Taller sobre clasificación y disposición de residuos contaminados.
+• Análisis de casos reales de derrames y discusión de medidas preventivas.",
+            "evaluacion": "• Participación activa en simulaciones y talleres.
+• Resolución de casos prácticos con propuestas de mejora.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Decreto 351/79: condiciones de seguridad, prevención de incendios y orden/limpieza; criterios ambientales y de gestión de residuos peligrosos según corresponda. Riesgos IPER asociados: derrames, contacto con combustibles, incendio por fuente de ignición y contaminación del área de trabajo."
+      },
+      "Riesgo eléctrico y electricidad estática": {
+            "duracion": "1 hora",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad",
+            "recursos": "Presentaciones, videos, folletería, ejemplos de bloqueo/consignación y material informativo.",
+            "objetivo": "Reconocer riesgos eléctricos y de electricidad estática en la estación, aplicando distancias de seguridad, EPP y controles preventivos.",
+            "contenidos": "• Definiciones de riesgo eléctrico y electricidad estática.
+• Distancias mínimas de seguridad.
+• EPP frente a riesgos eléctricos.
+• Bloqueo y consignación para tareas de mantenimiento.
+• Riesgos por acumulación de cargas electrostáticas.
+• Efectos de la descarga eléctrica sobre el cuerpo humano.",
+            "actividades": "• Demostración de distancias de seguridad en áreas de trabajo.
+• Taller de uso de guantes dieléctricos, casco y calzado aislante.
+• Ejercicios de bloqueo y consignación.
+• Simulación de acumulación de electricidad estática y medidas de control.",
+            "evaluacion": "• Participación en talleres y simulaciones.
+• Resolución de casos prácticos sobre riesgos eléctricos y estáticos.
+• Cuestionario escrito sobre conceptos clave.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Decreto 351/79: instalaciones eléctricas y seguridad; Resolución SRT 900/15: puesta a tierra y continuidad de masas. Riesgos IPER asociados: electricidad estática en atmósferas inflamables, instalaciones eléctricas y fuentes de ignición."
+      },
+      "RCP (Reanimación Cardiopulmonar) y Primeros Auxilios": {
+            "duracion": "1 hora y 30 minutos",
+            "modalidad": "Presencial",
+            "responsable": "Medicina del Trabajo / Bomberos / Personal capacitado",
+            "recursos": "Presentaciones, videos, maniquíes, vendajes, botiquín y material informativo.",
+            "objetivo": "Brindar una respuesta inicial adecuada ante emergencias médicas, lesiones, hemorragias, quemaduras o traumatismos hasta la llegada de asistencia especializada.",
+            "contenidos": "• Definiciones de RCP y primeros auxilios.
+• Importancia de la atención inmediata.
+• Maniobras de RCP y primeros auxilios.
+• Quemaduras.
+• Lesiones oculares.
+• Heridas y hemorragias.
+• Traumatismos.",
+            "actividades": "• Práctica de RCP con maniquíes.
+• Simulación de atención de quemaduras y heridas.
+• Control de hemorragias con vendajes.
+• Taller de atención inicial de lesiones oculares y traumatismos.",
+            "evaluacion": "• Participación activa en prácticas y simulaciones.
+• Resolución de casos prácticos sobre emergencias médicas.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Resolución SRT 905/15: Medicina del Trabajo y acciones preventivas; Decreto 351/79: botiquín, primeros auxilios y condiciones de asistencia. Riesgos IPER asociados: lesiones por incidentes vehiculares, quemaduras, contacto con combustibles, caídas y emergencias operativas."
+      },
+      "Plan de evacuación ante emergencias y simulacros": {
+            "duracion": "2 horas",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad / Brigada de emergencia",
+            "recursos": "Plano de evacuación, procedimientos, señalización, cronómetro, flujogramas y material informativo.",
+            "objetivo": "Asegurar que el personal conozca los roles, rutas, punto de encuentro y procedimiento de evacuación ante emergencias en la estación de servicio.",
+            "contenidos": "• Clasificación de emergencias.
+• Roles y responsabilidades durante una evacuación.
+• Vías de evacuación y puntos de encuentro.
+• Procedimiento paso a paso de evacuación.
+• Simulacro para evaluar preparación y respuesta.",
+            "actividades": "• Recorrido por instalaciones para identificar vías de evacuación y punto de encuentro.
+• Taller sobre asignación de roles y responsabilidades.
+• Simulación de evacuación con cronometraje.
+• Análisis de resultados y propuestas de mejora.",
+            "evaluacion": "• Participación activa en simulacros y talleres.
+• Resolución de casos prácticos sobre emergencias.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Decreto 351/79: medios de escape, señalización y protección contra incendios; normativa IRAM aplicable a señalización y evacuación; ISO 45001: preparación y respuesta ante emergencias. Riesgos IPER asociados: incendio, explosión, fuga, derrame, atropellamiento e incidentes con clientes/vehículos."
+      },
+      "Ergonomía": {
+            "duracion": "1 hora",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad / Medicina del Trabajo",
+            "recursos": "Presentaciones, material informativo, ejemplos del puesto de trabajo y ejercicios prácticos.",
+            "objetivo": "Identificar riesgos ergonómicos del puesto de despacho, corregir posturas forzadas y aplicar técnicas seguras de levantamiento manual de cargas.",
+            "contenidos": "• Definiciones de ergonomía.
+• Beneficios de aplicar principios ergonómicos.
+• Levantamiento manual de carga.
+• Resolución SRT 886/15.
+• Posturas forzadas y efectos en la salud.
+• Recomendaciones prácticas para reducir riesgos.",
+            "actividades": "• Taller de levantamiento seguro de cargas con ejemplos reales.
+• Ejercicios de corrección de posturas en tareas habituales.
+• Análisis de casos de lesiones musculoesqueléticas.
+• Debate grupal sobre aplicación de Res. SRT 886/15.",
+            "evaluacion": "• Participación activa en talleres y ejercicios.
+• Resolución de casos prácticos sobre ergonomía.
+• Observación del cumplimiento de recomendaciones ergonómicas en el puesto.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Resolución SRT 886/15: protocolo de ergonomía; Decreto 351/79: condiciones de trabajo. Riesgos IPER asociados: manipulación de mangueras/picos, posturas mantenidas, movimientos repetitivos, trabajo de pie y levantamiento de cargas."
+      },
+      "Autocontrol preventivo": {
+            "duracion": "45 minutos",
+            "modalidad": "Virtual asincrónica",
+            "responsable": "Personal de Higiene y Seguridad",
+            "recursos": "Lectura guiada de material teórico, análisis de imágenes/situaciones reales y cuestionario final.",
+            "objetivo": "Fortalecer la capacidad del trabajador para verificar condiciones seguras, identificar riesgos y comunicar desvíos antes y durante la tarea.",
+            "contenidos": "• Concepto de autocontrol preventivo.
+• Identificación de riesgos.
+• Verificación de condiciones seguras antes y durante la tarea.
+• Comunicación de riesgos.
+• Medidas preventivas para fomentar cultura preventiva.",
+            "actividades": "• Observación en área de trabajo para identificar riesgos.
+• Simulación de verificación de condiciones seguras antes de iniciar tareas.
+• Role-playing sobre comunicación de situaciones de riesgo.
+• Taller de propuestas preventivas aplicables a la estación.",
+            "evaluacion": "• Cuestionario final de verificación de conocimientos.
+• Participación activa y resolución de casos prácticos.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. ISO 45001: participación, consulta, toma de conciencia y control operacional; Ley 19.587/72 y Decreto 351/79: prevención de riesgos. Riesgos IPER asociados: detección temprana de condiciones inseguras, derrames, circulación vehicular, fuentes de ignición y exposición a combustibles."
+      },
+      "Manejo seguro y responsable de combustibles": {
+            "duracion": "2 horas por ser tarea crítica",
+            "modalidad": "Presencial",
+            "responsable": "Personal de Higiene y Seguridad",
+            "recursos": "Presentaciones, procedimientos operativos, videos, folletería, simulaciones y material informativo.",
+            "objetivo": "Aplicar prácticas seguras durante la manipulación, carga, descarga y despacho de combustibles, reduciendo derrames, incendios y exposición a sustancias peligrosas.",
+            "contenidos": "• Características y riesgos de los combustibles.
+• Manipulación segura.
+• Carga y descarga de combustibles.
+• Prevención de derrames.
+• Fuentes de ignición.
+• Actuación ante emergencias relacionadas con combustibles.",
+            "actividades": "• Taller operativo de manipulación segura en estación.
+• Simulación de carga y descarga con medidas preventivas.
+• Identificación de fuentes de ignición y control de riesgos.
+• Simulacro de emergencia por derrame o incendio en áreas de almacenamiento.",
+            "evaluacion": "• Participación activa en talleres y simulaciones.
+• Resolución de casos prácticos sobre manejo de combustibles.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. Decreto 351/79: prevención de incendios, sustancias inflamables, orden y limpieza y condiciones de seguridad; procedimientos internos de carga/descarga. Riesgos IPER asociados: manipulación de nafta/gasoil, vapores inflamables, derrames, incendio/explosión, circulación vehicular y contacto con hidrocarburos."
+      },
+      "Prevención Psicosocial: Estrés, Burnout y Cultura de Bienestar": {
+            "duracion": "1 hora y 30 minutos",
+            "modalidad": "Virtual sincrónica",
+            "responsable": "Personal de Higiene y Seguridad / Medicina del Trabajo",
+            "recursos": "Presentaciones en PowerPoint, videos, folletería y material informativo.",
+            "objetivo": "Reconocer factores de riesgo psicosocial asociados al trabajo, estrés y burnout, promoviendo hábitos saludables y comunicación preventiva.",
+            "contenidos": "• Riesgos psicosociales en el trabajo.
+• Estrés laboral: causas y consecuencias.
+• Síndrome de burnout: síntomas e impacto.
+• Factores de riesgo organizacionales y personales.
+• Hábitos saludables.
+• Medidas preventivas y cultura de bienestar.",
+            "actividades": "• Dinámica grupal de identificación de factores de estrés.
+• Taller de técnicas de relajación y respiración.
+• Role-playing sobre comunicación efectiva y manejo de conflictos.
+• Debate sobre hábitos saludables y propuestas de mejora.",
+            "evaluacion": "• Participación activa en dinámicas y talleres.
+• Resolución de casos prácticos sobre estrés y burnout.",
+            "marcoLegal": "Ley 19.587/72 de Higiene y Seguridad en el Trabajo; Decreto 351/79; Ley 24.557 de Riesgos del Trabajo; Resolución SRT 905/15; ISO 45001:2018. ISO 45001: bienestar, participación y toma de conciencia; Resolución SRT 905/15: Medicina del Trabajo y prevención; Ley 19.587/72: protección integral de la salud del trabajador. Riesgos IPER asociados: presión operativa, turnos rotativos, atención al cliente, carga mental y fatiga."
+      }
+};
 
     let selectedCalendarCourse = null;
 
@@ -4461,9 +4720,11 @@
                         <div class="course-detail-field"><b>Responsable / quién brinda</b><span>${details.responsable || "Personal de Higiene y Seguridad"}</span></div>
                         <div class="course-detail-field wide"><b>Destinatarios</b><span>Personal vinculado al puesto de atención y carga de combustible en playa.</span></div>
                         <div class="course-detail-field wide"><b>Recursos / material didáctico</b><span>${details.recursos || "Presentaciones, videos, folletería y material informativo."}</span></div>
+                        <div class="course-detail-field full"><b>Objetivo / expectativa de aprendizaje</b><small>${details.objetivo || "Instruir al personal sobre los riesgos asociados a su puesto de trabajo, promoviendo la prevención de accidentes laborales y optimizando las medidas de seguridad."}</small></div>
                         <div class="course-detail-field full"><b>Contenidos</b><small>${details.contenidos || item.focus}</small></div>
                         <div class="course-detail-field wide"><b>Actividades prácticas</b><small>${details.actividades || "Actividades teórico-prácticas y participativas."}</small></div>
                         <div class="course-detail-field wide"><b>Evaluación</b><small>${details.evaluacion || "Participación y evaluación breve según corresponda."}</small></div>
+                        <div class="course-detail-field full legal"><b>Marco legal / IPER asociado</b><small>${details.marcoLegal || "Ley 19.587/72; Decreto 351/79; Resolución SRT 905/15; Ley 24.557; ISO 45001:2018."}</small></div>
                         <div class="course-detail-field full"><b>Registros y seguimiento</b><small>${details.registros || registrosBase}</small></div>
                       </div>
                     </details>
@@ -4750,6 +5011,14 @@
     /* ===== Plan Word y calendario ancho ===== */
     .plan-word-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.plan-word-card{background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:16px;box-shadow:0 10px 22px rgba(15,23,42,.06);border-left:6px solid var(--ypf-blue)}.plan-word-card:nth-child(2){border-left-color:var(--ypf-yellow)}.plan-word-card:nth-child(3){border-left-color:var(--green)}.plan-word-card:nth-child(4){border-left-color:var(--ypf-red)}.plan-word-card strong{display:block;color:var(--ypf-blue-dark);margin-bottom:6px}.plan-word-card small,.plan-word-card li{color:var(--gray-700);font-weight:700;line-height:1.45}.plan-word-card ul{margin:6px 0 0;padding-left:18px}.plan-word-card.consideraciones-full{grid-column:1/-1}.plan-word-card.consideraciones-full ul{columns:2;column-gap:34px}.month-toggle-btn{width:auto;min-width:132px;padding:9px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.18)!important;color:white!important;border:1px solid rgba(255,255,255,.26)!important;box-shadow:none!important;font-size:12px}.month-card.collapsed .month-course-list{display:none!important}.month-card-summary{padding:10px 16px!important;display:flex!important;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px!important;background:linear-gradient(135deg,#fff,var(--gray-50));border-bottom:1px solid var(--gray-200)}.month-card-summary small{flex:1 1 420px;color:var(--gray-500);font-weight:800;line-height:1.35}.training-calendar-grid{display:grid!important;grid-template-columns:1fr!important;gap:12px!important}.month-card-header{padding:12px 16px!important;display:grid!important;grid-template-columns:minmax(140px,.22fr) minmax(280px,1fr) auto!important;align-items:center!important;gap:14px!important}.month-title-block strong{font-size:17px!important}.month-inline-summary{color:rgba(255,255,255,.92);font-size:12.5px;font-weight:800;line-height:1.35}.month-inline-summary b{color:#fff7cc}.month-course-list{display:grid!important;gap:12px!important;padding:14px 16px 16px!important}.month-course{padding:0!important;overflow:hidden;border-radius:18px!important;border-left:6px solid var(--ypf-blue)!important;background:white!important}.course-compact-row{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(260px,.9fr) auto;gap:14px;align-items:center;padding:14px}.course-compact-row strong{color:var(--ypf-blue-dark);font-size:15px;line-height:1.25}.course-compact-row small{display:block;color:var(--gray-500);font-weight:800;line-height:1.35;margin-top:4px}.course-chip-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start}.course-detail-collapse{border:0!important;border-top:1px solid var(--gray-200)!important;border-radius:0!important;background:linear-gradient(135deg,#fff,var(--gray-50))!important}.course-detail-collapse summary{cursor:pointer;padding:12px 14px!important;background:var(--ypf-blue-light);border-bottom:1px solid #cfe7ff;font-weight:900;color:var(--ypf-blue-dark);list-style:none;user-select:none}.course-detail-collapse summary::-webkit-details-marker{display:none}.course-detail-collapse summary::after{content:"+";float:right;font-size:18px;line-height:1;color:var(--ypf-blue)}.course-detail-collapse[open] summary::after{content:"−"}.course-detail-box{margin:0!important;padding:14px!important;border:0!important;border-radius:0!important;background:white!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px!important}.course-detail-field{border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50);padding:11px 12px;min-height:74px}.course-detail-field.wide{grid-column:span 2}.course-detail-field.full{grid-column:1/-1}.course-detail-field b{display:block;color:var(--ypf-blue-dark);margin-bottom:5px;font-size:12px;text-transform:uppercase;letter-spacing:.035em}.course-detail-field small,.course-detail-field span{color:var(--gray-700);font-weight:700;line-height:1.42}@media(max-width:1050px){.month-card-header,.course-compact-row{grid-template-columns:1fr!important;align-items:stretch!important}.course-detail-box{grid-template-columns:1fr!important}.course-detail-field.wide,.course-detail-field.full{grid-column:1/-1}}@media(max-width:760px){.plan-word-card.consideraciones-full ul{columns:1}}
 
+    
+    .course-detail-field small,
+    .course-detail-field span { white-space: pre-line; }
+    .course-detail-field.legal {
+      border-left: 5px solid var(--ypf-yellow);
+      background: linear-gradient(135deg, #fffbea, #ffffff);
+    }
+
     @media print {
               body { background: white; padding: 0; }
               .certificate { box-shadow: none; border-radius: 0; max-width: none; min-height: 100vh; }
@@ -4829,7 +5098,9 @@
         modality: details.modalidad || "Grupal, presencial y/o virtual, con enfoque teórico-práctico y participativo",
         responsible: details.responsable || "Personal de Higiene y Seguridad / Bomberos / Medicina del Trabajo",
         material: details.recursos || "Presentación PowerPoint, videos, folletería y material informativo",
-        contents: details.contenidos || planItem.focus || "Contenidos definidos en el Plan Anual de Capacitación SST"
+        contents: details.contenidos || planItem.focus || "Contenidos definidos en el Plan Anual de Capacitación SST",
+        objective: details.objetivo || "Instruir al personal sobre los riesgos asociados a su puesto de trabajo, promoviendo la prevención de accidentes laborales y optimizando las medidas de seguridad.",
+        legal: details.marcoLegal || "Ley 19.587/72 · Decreto 351/79 · Res. SRT 905/15 · Ley 24.557 · ISO 45001:2018"
       };
     }
 
@@ -4842,10 +5113,10 @@
       const fecha = training.completed || today.toISOString().slice(0, 10);
       const sheetId = `SST-ASIST-${String(index + 1).padStart(3, "0")}-${Date.now().toString().slice(-5)}`;
       const horario = training.horario || "Horario laboral / a completar por instructor";
-      const marcoLegal = "Ley 19.587/72 · Decreto 351/79 · Res. SRT 905/15 · Ley 24.557 · ISO 45001:2018";
+      const marcoLegal = meta.legal || "Ley 19.587/72 · Decreto 351/79 · Res. SRT 905/15 · Ley 24.557 · ISO 45001:2018";
       const empresa = "Estación 20 de Julio S.A. · Estación de Servicio YPF";
       const direccion = "Av. Pte. Perón · San Nicolás de los Arroyos";
-      const objetivo = details.objetivo || meta.contents || "Instruir al personal sobre los riesgos asociados a su puesto de trabajo, promoviendo la prevención de accidentes laborales y optimizando las medidas de seguridad.";
+      const objetivo = meta.objective || details.objetivo || "Instruir al personal sobre los riesgos asociados a su puesto de trabajo, promoviendo la prevención de accidentes laborales y optimizando las medidas de seguridad.";
       const expectativas = details.evaluacion || "Que el personal comprenda los contenidos, participe activamente y aplique medidas preventivas en su puesto de trabajo.";
 
       const asistenciaHtml = `
@@ -4887,7 +5158,15 @@
             .actions { max-width: 1180px; margin: 16px auto 0; display: flex; justify-content: center; gap: 10px; }
             button { border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 900; cursor: pointer; background: #0056a6; color: white; }
             button.secondary { background: #e7f2ff; color: #003f7d; }
-            @media print { body { background: white; padding: 0; } .sheet { box-shadow: none; border-radius: 0; max-width: none; } .actions { display: none; } }
+            
+    .course-detail-field small,
+    .course-detail-field span { white-space: pre-line; }
+    .course-detail-field.legal {
+      border-left: 5px solid var(--ypf-yellow);
+      background: linear-gradient(135deg, #fffbea, #ffffff);
+    }
+
+    @media print { body { background: white; padding: 0; } .sheet { box-shadow: none; border-radius: 0; max-width: none; } .actions { display: none; } }
             @media (max-width: 850px) { .top, .info-grid, .instructor-grid { grid-template-columns: 1fr; } .field.wide, .field.full { grid-column: 1; } }
           </style>
         </head>
