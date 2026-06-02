@@ -3297,7 +3297,7 @@
       </div>
 
       <div class="footer-note">
-        Si queda como pendiente, la fecha se interpreta como fecha programada. Si se marca como realizada, el sistema calcula automáticamente 12 meses de vigencia desde la fecha de realización.
+        Si queda como pendiente y la fecha objetivo del cronograma ya pasó, el sistema lo mostrará como VENCIDA. Si se marca como realizada, el certificado toma la fecha real de realización y calcula automáticamente 12 meses de vigencia desde esa fecha.
       </div>
 
       <div class="multi-assign-list" id="calendarPeopleList"></div>
@@ -4011,7 +4011,7 @@
       localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
     }
 
-    const today = new Date("2026-05-27T12:00:00");
+    const today = new Date("2026-06-15T12:00:00");
 
     function daysTo(dateString) {
       const target = new Date(dateString + "T12:00:00");
@@ -4061,7 +4061,10 @@
 
     function trainingState(t) {
       if (!t.done) {
-        return isFutureScheduled(t) ? "Programada" : "Pendiente";
+        const days = daysTo(t.due);
+        if (days < 0) return "Vencida";
+        if (days <= 30) return "Pendiente";
+        return "Programada";
       }
 
       const dueStatus = statusFor(t.due);
@@ -4073,8 +4076,8 @@
 
     function trainingStateClass(state) {
       if (state === "Realizada vigente") return "vigente";
-      if (state === "Realizada por vencer") return "por-vencer";
-      if (state === "Realizada vencida") return "vencido";
+      if (state === "Realizada por vencer" || state === "Pendiente") return "por-vencer";
+      if (state === "Realizada vencida" || state === "Vencida") return "vencido";
       return "programado";
     }
 
@@ -4082,7 +4085,8 @@
       const state = trainingState(t);
 
       if (state === "Programada") return `Programada · vence en ${daysTo(t.due)} días`;
-      if (state === "Pendiente") return `Pendiente · atrasada ${Math.abs(daysTo(t.due))} días`;
+      if (state === "Pendiente") return `Pendiente · vence en ${daysTo(t.due)} días`;
+      if (state === "Vencida") return `Vencida · no realizada hace ${Math.abs(daysTo(t.due))} días`;
 
       const days = daysTo(t.due);
       if (state === "Realizada vigente") return `Realizada · vigente ${days} días`;
@@ -4129,9 +4133,9 @@
       const required = expected.length;
       const realizadas = expectedRecords.filter(x => isCompletedValid(x.record)).length;
       const vigentes = realizadas;
-      const porVencer = expectedRecords.filter(x => x.record && trainingState(x.record) === "Realizada por vencer").length;
-      const vencidas = expectedRecords.filter(x => x.record && trainingState(x.record) === "Realizada vencida").length;
-      const pendientes = expectedRecords.filter(x => !isCompletedValid(x.record)).length;
+      const porVencer = expectedRecords.filter(x => x.record && (trainingState(x.record) === "Realizada por vencer" || trainingState(x.record) === "Pendiente")).length;
+      const vencidas = expectedRecords.filter(x => !isCompletedValid(x.record) && daysTo(x.item.due) < 0).length;
+      const pendientes = expectedRecords.filter(x => !isCompletedValid(x.record) && daysTo(x.item.due) >= 0).length;
       const programadas = futureRecords.filter(x => trainingState(x.record) === "Programada").length;
       const compliance = required ? Math.round((vigentes / required) * 100) : 0;
 
@@ -4150,8 +4154,8 @@
         expected.forEach(item => {
           const record = getEmployeeRecordForPlanItem(emp.name, item);
           if (isCompletedValid(record)) realizadas += 1;
-          if (record && trainingState(record) === "Realizada vencida") vencidas += 1;
-          if (record && trainingState(record) === "Realizada por vencer") porVencer += 1;
+          if (!isCompletedValid(record) && daysTo(item.due) < 0) vencidas += 1;
+          if (record && (trainingState(record) === "Realizada por vencer" || trainingState(record) === "Pendiente")) porVencer += 1;
         });
       });
 
@@ -4222,7 +4226,7 @@
       const buildActionButtons = (t) => {
         const idx = trainings.indexOf(t);
         const state = trainingState(t);
-        const needsUpdate = state === "Pendiente" || state === "Realizada vencida";
+        const needsUpdate = state === "Pendiente" || state === "Vencida" || state === "Realizada vencida";
 
         return `
           <div class="training-action-row">
@@ -4253,7 +4257,7 @@
       const realizadas = stats.assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer");
       const pendientes = stats.assigned.filter(t => trainingState(t) === "Pendiente");
       const programadas = stats.assigned.filter(t => trainingState(t) === "Programada");
-      const vencidas = stats.assigned.filter(t => trainingState(t) === "Realizada vencida");
+      const vencidas = stats.assigned.filter(t => trainingState(t) === "Realizada vencida" || trainingState(t) === "Vencida");
 
       detail.innerHTML = `
         <div class="employee-detail-header">
@@ -4328,8 +4332,8 @@
         return { item: planItem, record, state: record ? trainingState(record) : null, dueNow: daysTo(planItem.due) <= 0 };
       });
 
-      if (checks.some(x => x.record && x.state === "Realizada vencida")) {
-        return { icon: "❌", cls: "bad", title: checks.map(x => `${x.item.course}: ${x.state || (x.dueNow ? "Pendiente sin registrar" : "Sin asignar")}`).join(" | ") };
+      if (checks.some(x => (x.record && (x.state === "Realizada vencida" || x.state === "Vencida")) || (!isCompletedValid(x.record) && daysTo(x.item.due) < 0))) {
+        return { icon: "❌", cls: "bad", title: checks.map(x => `${x.item.course}: ${x.state || (daysTo(x.item.due) < 0 ? "Vencida sin registrar" : (x.dueNow ? "Pendiente sin registrar" : "Sin asignar"))}`).join(" | ") };
       }
 
       if (checks.some(x => x.dueNow && !isCompletedValid(x.record)) || checks.some(x => x.state === "Pendiente" || x.state === "Realizada por vencer")) {
@@ -4389,7 +4393,7 @@
       const aptos = personStatuses.filter(s => s === "Apto operativo").length;
       const requieren = personStatuses.filter(s => s === "Requiere capacitación").length;
       const conVencidas = personStatuses.filter(s => s === "Capacitación vencida").length;
-      const pendientesCriticas = trainings.filter(t => trainingState(t) === "Pendiente" || trainingState(t) === "Realizada vencida").length;
+      const pendientesCriticas = trainings.filter(t => trainingState(t) === "Pendiente" || trainingState(t) === "Vencida" || trainingState(t) === "Realizada vencida").length;
       const detailCards = document.getElementById("dashboardDetailCards");
       if (detailCards) {
         detailCards.innerHTML = `
@@ -4536,7 +4540,7 @@
         const monthAssigned = monthRecords.length;
         const monthPending = monthRecords.filter(t => trainingState(t) === "Pendiente").length;
         const monthScheduled = monthRecords.filter(t => trainingState(t) === "Programada").length;
-        const monthExpired = monthRecords.filter(t => trainingState(t) === "Realizada vencida").length;
+        const monthExpired = monthRecords.filter(t => trainingState(t) === "Realizada vencida" || trainingState(t) === "Vencida").length;
         const monthCourseNames = month.courses.map(item => item.course).join(" · ");
         return `
           <div class="month-card collapsed" id="monthCard-${month.short}">
@@ -4555,7 +4559,7 @@
                 const assigned = itemRecords.length;
                 const pending = itemRecords.filter(t => trainingState(t) === "Pendiente").length;
                 const scheduled = itemRecords.filter(t => trainingState(t) === "Programada").length;
-                const expired = itemRecords.filter(t => trainingState(t) === "Realizada vencida").length;
+                const expired = itemRecords.filter(t => trainingState(t) === "Realizada vencida" || trainingState(t) === "Vencida").length;
                 const details = courseDetails[item.course] || {};
                 return `
                   <div class="month-course">
@@ -4671,6 +4675,7 @@
       }
 
       const employee = employees.find(e => e.name === t.employee) || {};
+      const planItem = getPlanItemById(t.courseId) || getAllTrainingPlanItems().find(item => item.course === t.course) || {};
       const issueDate = today.toISOString().slice(0,10);
       const certificateId = `SST-G22-${String(index + 1).padStart(3, "0")}-${Date.now().toString().slice(-5)}`;
       const status = trainingState(t);
@@ -4797,7 +4802,7 @@
             }
             .details {
               display: grid;
-              grid-template-columns: repeat(3, 1fr);
+              grid-template-columns: repeat(4, 1fr);
               gap: 12px;
               margin: 30px 0;
               position: relative;
@@ -4895,8 +4900,9 @@
             </div>
 
             <div class="details">
-              <div class="detail"><strong>${formatDate(t.completed || issueDate)}</strong><span>Fecha de realización</span></div>
-              <div class="detail"><strong>${formatDate(t.due)}</strong><span>Vigencia 12 meses</span></div>
+              <div class="detail"><strong>${formatDate(t.completed || issueDate)}</strong><span>Fecha real de realización</span></div>
+              <div class="detail"><strong>${formatDate(t.due)}</strong><span>Vigencia calculada 12 meses desde realización</span></div>
+              <div class="detail"><strong>${escapeHtml(planItem.month || t.courseMonth || "Registro manual")}</strong><span>Mes / edición del cronograma</span></div>
               <div class="detail"><strong>${escapeHtml(status)}</strong><span>Estado en sistema</span></div>
             </div>
 
