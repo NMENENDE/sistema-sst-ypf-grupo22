@@ -3828,17 +3828,14 @@ async function guardarRealizacionSupabase(training) {
   const details = courseDetails[training.course] || {};
   const planItem = getPlanItemById(training.courseId) || getAllTrainingPlanItems().find(item => item.course === training.course) || {};
 
+  // Payload mínimo y compatible con la tabla realizaciones actual.
+  // Evita errores por columnas que no existan en Supabase.
   const payload = {
     persona_id: String(employee.supabaseId),
     curso_id: training.courseId || planItem.id || normalizeText(training.course),
     curso_nombre: training.course,
-    "fecha_realizacion": completedDate,
-    fecha_vencimiento: dueDate,
-    instructor: details.responsable || "Personal de Higiene y Seguridad",
-    duracion: getCourseDurationText(training.course),
-    material_didactico: details.recursos || "Presentaciones, videos, folletería y material informativo.",
-    resultado: "Aprobado",
-    observaciones: `Realización registrada desde la App SST YPF para ${training.employee}.`
+    fecha_realizacion: completedDate,
+    fecha_vencimiento: dueDate
   };
 
   const { data, error } = await supabaseClient
@@ -5211,6 +5208,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
         localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
         closeModal("calendarAssignmentModal");
         await cargarAsignacionesSupabase(true);
+        await cargarDashboardKpisSupabase(true);
         refreshAll();
         showToast(`✅ Capacitación "${selectedCalendarCourse.course}" asignada en Supabase a ${selected.length} operador/es.`);
       } catch (error) {
@@ -5913,6 +5911,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
         localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
         await cargarAsignacionesSupabase(true);
+        await cargarDashboardKpisSupabase(true);
         refreshAll();
         showEmployeeTrainingDetail(training.employee);
 
