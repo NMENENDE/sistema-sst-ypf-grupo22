@@ -3433,7 +3433,8 @@ async function probarSupabase() {
   }
 
   const { data: cursosData } = await supabaseClient.from('cursos_sst').select('id');
-  alert("Conectado. Personal: " + data.length + " | Cursos SST: " + (cursosData?.length || 0));
+  const { data: asignacionesData } = await supabaseClient.from('asignaciones_capacitacion').select('id');
+  alert("Conectado. Personal: " + data.length + " | Cursos SST: " + (cursosData?.length || 0) + " | Asignaciones: " + (asignacionesData?.length || 0));
 }
 
 
@@ -3607,29 +3608,30 @@ function findTrainingPlanItemByCourseAndMonth(courseName, monthName) {
     || getAllTrainingPlanItems().find(item => item.course === courseName);
 }
 
-function asignacionSupabaseToTraining(row, personalRows, capacitacionRows) {
-  const person = personalRows.find(p => String(p.id) === String(row.personal_id));
-  const cap = capacitacionRows.find(c => String(c.id) === String(row.capacitacion_id));
-  if (!person || !cap) return null;
+function asignacionSupabaseToTraining(row, personalRows) {
+  const person = personalRows.find(p => String(p.id) === String(row.persona_id || row.personal_id));
+  if (!person) return null;
 
   const employee = supabaseRowToEmployee(person);
-  const planItem = findTrainingPlanItemByCourseAndMonth(cap.curso, cap.mes);
-  const done = String(row.estado || "").toLowerCase() === "realizado";
+  const courseName = row.curso_nombre || row.curso || "";
+  if (!courseName) return null;
+
+  const planItem = getPlanItemById(row.curso_id) || findTrainingPlanItemByCourseAndMonth(courseName, row.mes || row.courseMonth);
+  const done = String(row.estado || "").toLowerCase() === "realizado" || !!row.fecha_realizacion;
   const completed = row.fecha_realizacion || "";
   const due = done
-    ? (row.fecha_vencimiento || (completed ? addOneYearISO(completed) : row.fecha_programada || planItem?.due || ""))
+    ? (row.fecha_vencimiento || (completed ? calculateTrainingDueISO(completed, courseName) : row.fecha_programada || planItem?.due || ""))
     : (row.fecha_programada || row.fecha_vencimiento || planItem?.due || "");
 
   return {
     supabaseId: row.id,
-    supabasePersonalId: row.personal_id,
-    supabaseCapacitacionId: row.capacitacion_id,
+    supabasePersonalId: row.persona_id || row.personal_id,
     employee: employee.name,
     role: employee.role,
     email: employee.email,
-    courseId: planItem?.id || `${normalizeText(cap.curso)}-${due}`,
-    courseMonth: cap.mes || planItem?.month || "",
-    course: cap.curso,
+    courseId: row.curso_id || planItem?.id || `${normalizeText(courseName)}-${due}`,
+    courseMonth: row.mes || planItem?.month || "",
+    course: courseName,
     done,
     completed,
     due
@@ -3637,24 +3639,22 @@ function asignacionSupabaseToTraining(row, personalRows, capacitacionRows) {
 }
 
 async function cargarAsignacionesSupabase(silent = false) {
-  const [capRes, asigRes, personalRes] = await Promise.all([
-    supabaseClient.from("capacitaciones").select("*"),
-    supabaseClient.from("asignaciones").select("*"),
+  const [asigRes, personalRes] = await Promise.all([
+    supabaseClient.from("asignaciones_capacitacion").select("*"),
     supabaseClient.from("personal").select("*")
   ]);
 
-  if (capRes.error || asigRes.error || personalRes.error) {
-    console.error("Error al leer capacitaciones/asignaciones:", capRes.error || asigRes.error || personalRes.error);
+  if (asigRes.error || personalRes.error) {
+    console.error("Error al leer asignaciones_capacitacion:", asigRes.error || personalRes.error);
     if (!silent) showToast("No se pudieron leer las asignaciones desde Supabase. Se mantiene la base local.");
     return false;
   }
 
-  supabaseCapacitaciones = capRes.data || [];
   supabaseAsignaciones = asigRes.data || [];
 
   if (supabaseAsignaciones.length > 0) {
     const mapped = supabaseAsignaciones
-      .map(row => asignacionSupabaseToTraining(row, personalRes.data || [], supabaseCapacitaciones))
+      .map(row => asignacionSupabaseToTraining(row, personalRes.data || []))
       .filter(Boolean);
 
     if (mapped.length > 0) {
@@ -3697,80 +3697,85 @@ async function cargarDashboardKpisSupabase(silent = false) {
 }
 
 async function asegurarCapacitacionSupabase(courseName, monthName) {
-  let cap = supabaseCapacitaciones.find(c => c.curso === courseName && c.mes === monthName)
-    || supabaseCapacitaciones.find(c => c.curso === courseName && !c.mes);
-  if (cap) return cap;
-
-  const details = getCourseDetailsForSupabase(courseName);
-  const { data, error } = await supabaseClient
-    .from("capacitaciones")
-    .insert({
-      curso: courseName,
-      mes: monthName,
-      instructor: details.instructor,
-      duracion: details.duracion,
-      modalidad: details.modalidad,
-      marco_legal: details.marco_legal
-    })
-    .select()
-    .single();
-
-  if (error) throw error;
-  supabaseCapacitaciones.push(data);
-  return data;
+  // Compatibilidad: ya no se usa la tabla intermedia "capacitaciones".
+  // La asignación se graba directamente en "asignaciones_capacitacion".
+  const planItem = findTrainingPlanItemByCourseAndMonth(courseName, monthName) || {};
+  return {
+    id: planItem.id || normalizeText(courseName),
+    curso: courseName,
+    mes: monthName || planItem.month || ""
+  };
 }
 
 async function guardarAsignacionSupabase(employee, selectedCourse, done, completed, due) {
   if (!employee.supabaseId) {
     const payload = employeeToSupabaseRow(employee);
-    const { data, error } = await supabaseClient.from("personal").insert(payload).select().single();
+    const { data, error } = await supabaseClient
+      .from("personal")
+      .insert(payload)
+      .select()
+      .single();
+
     if (error) throw error;
     employee.supabaseId = data.id;
     saveEmployees();
   }
 
-  const cap = await asegurarCapacitacionSupabase(selectedCourse.course, selectedCourse.month);
-  const existing = trainings.find(t => t.employee === employee.name && getTrainingRecordKey(t) === selectedCourse.id);
+  const courseName = selectedCourse.course || selectedCourse.curso || "";
+  const courseId = selectedCourse.id || selectedCourse.curso_id || normalizeText(courseName);
+  const completedDate = done ? completed : null;
+  const dueDate = done ? calculateTrainingDueISO(completed, courseName) : due;
+
   const payload = {
-    personal_id: employee.supabaseId,
-    capacitacion_id: cap.id,
-    estado: done ? "Realizado" : "Pendiente",
+    persona_id: String(employee.supabaseId),
+    curso_id: courseId,
+    curso_nombre: courseName,
     fecha_programada: due,
-    fecha_realizacion: done ? completed : null,
-    fecha_vencimiento: done ? calculateTrainingDueISO(completed, selectedCourse.course) : due,
+    fecha_realizacion: completedDate,
+    fecha_vencimiento: dueDate,
+    estado: done ? "Realizado" : "Pendiente",
     certificado_emitido: !!done
   };
 
+  const existing = trainings.find(t =>
+    t.employee === employee.name &&
+    (String(t.supabaseId || "") || getTrainingRecordKey(t)) === String(t.supabaseId || selectedCourse.id || courseId)
+  );
+
   if (existing?.supabaseId) {
     const { error } = await supabaseClient
-      .from("asignaciones")
+      .from("asignaciones_capacitacion")
       .update(payload)
       .eq("id", existing.supabaseId);
+
     if (error) throw error;
     return existing.supabaseId;
   }
 
   const sameSupabaseRecord = supabaseAsignaciones.find(a =>
-    String(a.personal_id) === String(employee.supabaseId) &&
-    String(a.capacitacion_id) === String(cap.id)
+    String(a.persona_id || a.personal_id) === String(employee.supabaseId) &&
+    String(a.curso_id) === String(courseId)
   );
 
   if (sameSupabaseRecord) {
     const { error } = await supabaseClient
-      .from("asignaciones")
+      .from("asignaciones_capacitacion")
       .update(payload)
       .eq("id", sameSupabaseRecord.id);
+
     if (error) throw error;
     return sameSupabaseRecord.id;
   }
 
   const { data, error } = await supabaseClient
-    .from("asignaciones")
+    .from("asignaciones_capacitacion")
     .insert(payload)
     .select()
     .single();
 
   if (error) throw error;
+
+  supabaseAsignaciones.push(data);
   return data.id;
 }
 
@@ -5124,7 +5129,7 @@ async function guardarRealizacionSupabase(training) {
             course: selectedCalendarCourse.course,
             done,
             completed: done ? completed : "",
-            due: done ? calculateTrainingDueISO(completed, course) : due
+            due: done ? calculateTrainingDueISO(completed, selectedCalendarCourse.course) : due
           };
           if (existingIndex >= 0) trainings[existingIndex] = { ...trainings[existingIndex], ...record };
           else trainings.push(record);
@@ -5741,7 +5746,7 @@ async function guardarRealizacionSupabase(training) {
 
       try {
         const planItem = getAllTrainingPlanItems().find(item => item.course === course) || { id: `${normalizeText(course)}-${due}`, course, month: "Registro manual", due };
-        const supabaseAssignmentId = await guardarAsignacionSupabase(employee, planItem, done, completed, done ? calculateTrainingDueISO(completed, course) : due);
+        const supabaseAssignmentId = await guardarAsignacionSupabase(employee, planItem, done, completed, due);
         updatedRecord.supabaseId = supabaseAssignmentId;
         updatedRecord.supabasePersonalId = employee.supabaseId;
         if (done) await guardarRealizacionSupabase(updatedRecord);
@@ -5832,7 +5837,7 @@ async function guardarRealizacionSupabase(training) {
             month: training.courseMonth || "Registro manual",
             due: training.due
           };
-          const supabaseAssignmentId = await guardarAsignacionSupabase(employee, selectedCourse, true, todayISO, training.due);
+          const supabaseAssignmentId = await guardarAsignacionSupabase(employee, selectedCourse, true, todayISO, todayISO);
           training.supabaseId = supabaseAssignmentId;
           training.supabasePersonalId = employee.supabaseId;
         }
