@@ -2815,6 +2815,7 @@
 
       <div style="display:flex; flex-wrap:wrap; gap:10px;">
         <button class="secondary" onclick="resetPersonnelData()">Restaurar base Grupo 22</button>
+<button class="secondary" onclick="probarSupabase()">Probar Supabase</button>
         <button class="primary" onclick="openPersonModal()">+ Agregar personal</button>
       </div>
     </div>
@@ -3407,8 +3408,35 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
+<script>
+  const SUPABASE_URL = "https://qbnblrwgvxnfmnbtkswp.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_lkHRv3c2k2D1WV8AHh344w_ImbZzPhF2";
+
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  async function probarSupabase() {
+    if (!SUPABASE_KEY || SUPABASE_KEY.includes("PEGÁ_ACÁ")) {
+      showToast("⚠️ Pegá tu Publishable Key de Supabase antes de probar la conexión.");
+      console.warn("Falta configurar SUPABASE_KEY con la Publishable Key de Supabase.");
+      return;
+    }
+
+    const { data, error } = await supabaseClient
+      .from("personal")
+      .select("*");
+
+    if (error) {
+      console.error(error);
+      showToast("Error Supabase: " + error.message);
+      return;
+    }
+
+    console.log("Personal Supabase:", data);
+    showToast("✅ Supabase conectado. Personal encontrado: " + data.length);
+  }
+
     const defaultEmployees = [
       { name: "Carina Valeria Lamboglia", dni: "", age: "", legajo: "SST-001", role: "Encargada de evacuación", sector: "Playa / Emergencias", emergencyRole: "Líder de evacuación", email: "carina.lamboglia@ypf-utn.com", active: true },
       { name: "Marianela Soledad Lobo", dni: "", age: "", legajo: "SST-002", role: "Brigadista de primeros auxilios", sector: "Tienda / Emergencias", emergencyRole: "Primeros auxilios", email: "marianela.lobo@ypf-utn.com", active: true },
