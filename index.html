@@ -3673,27 +3673,61 @@ async function cargarAsignacionesSupabase(silent = false) {
 
 
 async function cargarDashboardKpisSupabase(silent = false) {
+  // KPI principal conectado a la tabla nueva de asignaciones reales.
+  // Fuente: asignaciones_capacitacion.
   const { data, error } = await supabaseClient
-    .from("vista_capacitaciones_estado")
+    .from("asignaciones_capacitacion")
     .select("*");
 
   if (error) {
-    console.error("Error al leer KPI desde Supabase:", error);
+    console.error("Error al leer KPI de asignaciones_capacitacion desde Supabase:", error);
     supabaseDashboardKpis = null;
-    if (!silent) showToast("No se pudieron leer los KPI desde Supabase. Se usan KPI locales.");
+    if (!silent) showToast("No se pudieron leer los KPI desde asignaciones_capacitacion. Se usan KPI locales.");
     return false;
   }
 
   const rows = Array.isArray(data) ? data : [];
-  const vigentes = rows.filter(r => r.estado === "Vigente").length;
-  const porVencer = rows.filter(r => r.estado === "Por vencer").length;
-  const vencidas = rows.filter(r => r.estado === "Vencido").length;
-  const total = rows.length;
-  const validas = vigentes + porVencer;
-  const compliance = total ? Math.round((validas / total) * 100) : 0;
+  const hoy = new Date(today.toISOString().slice(0, 10) + "T12:00:00");
+  const limite30 = new Date(hoy);
+  limite30.setDate(limite30.getDate() + 30);
 
-  supabaseDashboardKpis = { rows, total, vigentes, porVencer, vencidas, validas, compliance };
-  if (!silent) showToast(`✅ KPI cargados desde Supabase: ${total} realización/es.`);
+  const esRealizada = row => String(row.estado || "").toLowerCase().startsWith("realiz");
+  const fechaProgramada = row => row.fecha_programada ? new Date(row.fecha_programada + "T12:00:00") : null;
+
+  const total = rows.length;
+  const realizadas = rows.filter(esRealizada).length;
+  const pendientesTotales = rows.filter(row => !esRealizada(row)).length;
+  const vencidas = rows.filter(row => {
+    const f = fechaProgramada(row);
+    return !esRealizada(row) && f && f < hoy;
+  }).length;
+  const porVencer = rows.filter(row => {
+    const f = fechaProgramada(row);
+    return !esRealizada(row) && f && f >= hoy && f <= limite30;
+  }).length;
+  const programadas = rows.filter(row => {
+    const f = fechaProgramada(row);
+    return !esRealizada(row) && f && f > limite30;
+  }).length;
+  const pendientes = Math.max(pendientesTotales - vencidas, 0);
+  const compliance = total ? Math.round((realizadas / total) * 100) : 0;
+
+  supabaseDashboardKpis = {
+    source: "asignaciones_capacitacion",
+    rows,
+    total,
+    asignadas: total,
+    realizadas,
+    pendientes,
+    pendientesTotales,
+    porVencer,
+    programadas,
+    vencidas,
+    validas: realizadas,
+    compliance
+  };
+
+  if (!silent) showToast(`✅ KPI cargados desde asignaciones_capacitacion: ${total} asignación/es.`);
   return true;
 }
 
@@ -4836,17 +4870,19 @@ async function guardarRealizacionSupabase(training) {
       const total = employees.length;
       const globalStats = getGlobalTrainingStats();
       const usarKpiSupabase = typeof supabaseDashboardKpis !== "undefined" && supabaseDashboardKpis && Array.isArray(supabaseDashboardKpis.rows);
+      const kpiAsignaciones = usarKpiSupabase && supabaseDashboardKpis.source === "asignaciones_capacitacion";
       const porVencer = usarKpiSupabase ? supabaseDashboardKpis.porVencer : globalStats.porVencer;
       const vencidas = usarKpiSupabase ? supabaseDashboardKpis.vencidas : globalStats.vencidas;
-      const pendientes = usarKpiSupabase ? 0 : globalStats.pendientes;
-      const programadas = globalStats.programadas;
+      const pendientes = usarKpiSupabase ? (supabaseDashboardKpis.pendientesTotales ?? supabaseDashboardKpis.pendientes ?? 0) : globalStats.pendientes;
+      const programadas = usarKpiSupabase ? (supabaseDashboardKpis.programadas ?? 0) : globalStats.programadas;
       const compliance = usarKpiSupabase ? supabaseDashboardKpis.compliance : globalStats.compliance;
-      const vigentesSupabase = usarKpiSupabase ? supabaseDashboardKpis.validas : globalStats.realizadas;
+      const realizadasSupabase = usarKpiSupabase ? (supabaseDashboardKpis.realizadas ?? supabaseDashboardKpis.validas ?? 0) : globalStats.realizadas;
       const totalSupabase = usarKpiSupabase ? supabaseDashboardKpis.total : globalStats.totalRequired;
 
       document.getElementById("totalEmployees").textContent = total;
       document.getElementById("compliance").textContent = compliance + "%";
-      document.getElementById("nearExpire").textContent = usarKpiSupabase ? porVencer : (porVencer + pendientes);
+      // En la tarjeta "Por vencer" mostramos pendientes totales cuando la fuente es asignaciones_capacitacion.
+      document.getElementById("nearExpire").textContent = kpiAsignaciones ? pendientes : (usarKpiSupabase ? porVencer : (porVencer + pendientes));
       document.getElementById("expiredCount").textContent = vencidas;
       const globalProgressEl = document.getElementById("globalProgress");
       if (globalProgressEl) globalProgressEl.style.width = compliance + "%";
@@ -4854,19 +4890,24 @@ async function guardarRealizacionSupabase(training) {
       const personStatuses = employees.map(e => employeeOperationalStatus(e.name));
       const aptos = personStatuses.filter(s => s === "Apto operativo").length;
       const requieren = personStatuses.filter(s => s === "Requiere capacitación").length;
-      const conVencidas = personStatuses.filter(s => s === "Capacitación vencida").length;
       const pendientesCriticas = trainings.filter(t => trainingState(t) === "Pendiente" || trainingState(t) === "Vencida" || trainingState(t) === "Realizada vencida").length;
       const detailCards = document.getElementById("dashboardDetailCards");
       if (detailCards) {
-        detailCards.innerHTML = `
-          <div class="dashboard-detail-card ok"><strong>${usarKpiSupabase ? vigentesSupabase : aptos} vigentes / aptos</strong><small>${usarKpiSupabase ? "Dato leído desde Supabase: realizaciones vigentes o por vencer según vista_capacitaciones_estado." : "Personal con capacitaciones vigentes y sin bloqueos críticos."}</small></div>
+        detailCards.innerHTML = kpiAsignaciones ? `
+          <div class="dashboard-detail-card"><strong>${totalSupabase} asignadas</strong><small>Fuente: asignaciones_capacitacion de Supabase. Registros reales creados desde el calendario anual SST.</small></div>
+          <div class="dashboard-detail-card warning"><strong>${pendientes} pendientes</strong><small>Asignaciones todavía no marcadas como realizadas. Incluye programadas y próximas a vencer.</small></div>
+          <div class="dashboard-detail-card ok"><strong>${realizadasSupabase} realizadas</strong><small>Asignaciones completadas. El cumplimiento global se calcula como realizadas / asignadas × 100.</small></div>
+          <div class="dashboard-detail-card danger"><strong>${vencidas} vencidas</strong><small>Pendientes cuya fecha programada ya fue superada. Requieren regularización.</small></div>
+        ` : `
+          <div class="dashboard-detail-card ok"><strong>${usarKpiSupabase ? realizadasSupabase : aptos} vigentes / aptos</strong><small>${usarKpiSupabase ? "Dato leído desde Supabase." : "Personal con capacitaciones vigentes y sin bloqueos críticos."}</small></div>
           <div class="dashboard-detail-card warning"><strong>${usarKpiSupabase ? porVencer : requieren} por vencer / seguimiento</strong><small>${usarKpiSupabase ? "Realizaciones con vencimiento dentro de los próximos 30 días." : "Incluye pendientes o cursos próximos a vencer dentro del período de control."}</small></div>
           <div class="dashboard-detail-card danger"><strong>${vencidas} vencidas</strong><small>Debe priorizarse la regularización antes de tareas críticas.</small></div>
-          <div class="dashboard-detail-card"><strong>${usarKpiSupabase ? totalSupabase : pendientesCriticas} registros controlados</strong><small>${usarKpiSupabase ? "Fuente: vista_capacitaciones_estado de Supabase." : `Pendientes exigibles y vencidas. Programadas futuras: ${programadas}.`}</small></div>
+          <div class="dashboard-detail-card"><strong>${usarKpiSupabase ? totalSupabase : pendientesCriticas} registros controlados</strong><small>${usarKpiSupabase ? "Fuente: Supabase." : `Pendientes exigibles y vencidas. Programadas futuras: ${programadas}.`}</small></div>
         `;
       }
 
-      const courseCounts = courses.slice(0, 7).map(course => {
+      
+const courseCounts = courses.slice(0, 7).map(course => {
         const records = trainings.filter(t => t.course === course);
         return {
           course,
