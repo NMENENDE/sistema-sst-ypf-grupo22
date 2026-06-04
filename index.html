@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -4715,6 +4716,24 @@ async function guardarRealizacionSupabase(training) {
       window.selectedTrainingEmployee = employee.name;
 
       const stats = getEmployeeTrainingStats(employee.name);
+      const assigned = getEmployeeTrainings(employee.name)
+        .slice()
+        .sort((a, b) => String(a.due || "").localeCompare(String(b.due || "")));
+
+      const realizadas = assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer");
+      const pendientes = assigned.filter(t => trainingState(t) === "Pendiente");
+      const programadas = assigned.filter(t => trainingState(t) === "Programada");
+      const vencidas = assigned.filter(t => trainingState(t) === "Realizada vencida" || trainingState(t) === "Vencida");
+      const realizadasTotales = assigned.filter(t => t.done).length;
+      const pendientesTotales = assigned.filter(t => !t.done).length;
+      const proximos = assigned
+        .filter(t => t.due && daysTo(t.due) >= 0)
+        .sort((a,b) => daysTo(a.due) - daysTo(b.due));
+      const proximo = proximos[0];
+      const ultimoHistorial = assigned
+        .slice()
+        .sort((a,b) => String(b.completed || b.due || "").localeCompare(String(a.completed || a.due || "")))
+        .slice(0, 5);
 
       const buildActionButtons = (t) => {
         const idx = trainings.indexOf(t);
@@ -4737,9 +4756,11 @@ async function guardarRealizacionSupabase(training) {
           <h4>${icon} ${title}</h4>
           ${list.length ? list.map(t => `
             <div class="training-item ${extraClass}">
-              <strong>${t.course}</strong>
+              <strong>${escapeHtml(t.course)}</strong>
+              <small><b>Fuente:</b> ${t.supabaseId ? "Supabase · asignaciones_capacitacion" : "Registro local"}</small>
               <small><b>Realización:</b> ${t.done && t.completed ? formatDate(t.completed) : "Pendiente"}</small>
-              <small><b>Vencimiento / programación:</b> ${formatDate(t.due)}</small>
+              <small><b>Vencimiento / programación:</b> ${t.due ? formatDate(t.due) : "Sin fecha"}</small>
+              <small><b>Frecuencia:</b> ${getCourseFrequencyText(t.course)} · <b>Duración:</b> ${getCourseDurationText(t.course)}</small>
               <span class="pill ${trainingStateClass(trainingState(t))}">● ${trainingStateLabel(t)}</span>
               ${buildActionButtons(t)}
             </div>
@@ -4747,35 +4768,47 @@ async function guardarRealizacionSupabase(training) {
         </div>
       `;
 
-      const realizadas = stats.assigned.filter(t => trainingState(t) === "Realizada vigente" || trainingState(t) === "Realizada por vencer");
-      const pendientes = stats.assigned.filter(t => trainingState(t) === "Pendiente");
-      const programadas = stats.assigned.filter(t => trainingState(t) === "Programada");
-      const vencidas = stats.assigned.filter(t => trainingState(t) === "Realizada vencida" || trainingState(t) === "Vencida");
+      const historialHtml = ultimoHistorial.length ? ultimoHistorial.map(t => `
+        <div class="training-item">
+          <strong>${escapeHtml(t.course)}</strong>
+          <small><b>Estado:</b> ${trainingState(t)}</small>
+          <small><b>Fecha:</b> ${t.done && t.completed ? formatDate(t.completed) : (t.due ? formatDate(t.due) : "Sin fecha")}</small>
+          <small><b>Vencimiento / programación:</b> ${t.due ? formatDate(t.due) : "Sin fecha"}</small>
+        </div>
+      `).join("") : `<div class="training-empty">Todavía no hay historial registrado para este trabajador.</div>`;
 
       detail.innerHTML = `
         <div class="employee-detail-header">
-          <h3>${employee.name}</h3>
-          <p>${employee.role} · ${employee.email}</p>
+          <h3>${escapeHtml(employee.name)}</h3>
+          <p>${escapeHtml(employee.role)} · ${escapeHtml(employee.email)}</p>
         </div>
 
         <div class="training-summary">
+          <div class="training-summary-card"><strong>${assigned.length}</strong><span>Asignadas</span></div>
+          <div class="training-summary-card"><strong>${realizadasTotales}</strong><span>Realizadas</span></div>
+          <div class="training-summary-card"><strong>${pendientesTotales}</strong><span>Pendientes</span></div>
+          <div class="training-summary-card"><strong>${vencidas.length}</strong><span>Vencidas</span></div>
           <div class="training-summary-card"><strong>${stats.compliance}%</strong><span>Cumplimiento</span></div>
-          <div class="training-summary-card"><strong>${stats.required}</strong><span>Exigibles</span></div>
-          <div class="training-summary-card"><strong>${stats.realizadas}</strong><span>Realizadas</span></div>
-          <div class="training-summary-card"><strong>${stats.pendientes}</strong><span>Pendientes</span></div>
-          <div class="training-summary-card"><strong>${stats.programadas}</strong><span>Programadas</span></div>
-          <div class="training-summary-card"><strong>${stats.vencidas}</strong><span>Vencidas</span></div>
+          <div class="training-summary-card"><strong>${proximo ? formatDate(proximo.due) : "—"}</strong><span>Próximo venc.</span></div>
+        </div>
+
+        <div class="training-note">
+          <strong>Legajo conectado a Supabase:</strong> esta ficha consolida las asignaciones reales de <b>asignaciones_capacitacion</b> y las realizaciones registradas. Cuando una capacitación pendiente se marca como realizada, se actualiza el estado y se recalculan los vencimientos.
         </div>
 
         <div class="training-groups-wrap">
           ${buildGroup("Capacitaciones realizadas vigentes / por vencer", "✅", realizadas)}
           ${buildGroup("Capacitaciones pendientes exigibles", "⚠️", pendientes, "pending")}
           ${buildGroup("Capacitaciones programadas futuras", "📅", programadas, "pending")}
-          ${buildGroup("Capacitaciones realizadas vencidas", "❌", vencidas, "expired")}
+          ${buildGroup("Capacitaciones vencidas", "❌", vencidas, "expired")}
+          <div class="training-group">
+            <h4>📌 Últimos movimientos del legajo</h4>
+            ${historialHtml}
+          </div>
         </div>
 
         <div class="footer-note">
-          Indicador individual = cursos del cronograma ya exigibles y realizados / cursos del cronograma ya exigibles × 100. Si enero, febrero o marzo no se realizaron, cuentan como pendientes aunque no se hayan asignado manualmente.
+          Indicador individual = cursos exigibles realizados y vigentes / cursos exigibles del cronograma × 100. Las asignaciones nuevas quedan respaldadas en Supabase y se mantienen al actualizar la página.
         </div>
       `;
     }
