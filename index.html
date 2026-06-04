@@ -2723,6 +2723,64 @@
       .executive-split { grid-template-columns: 1fr; display: grid; }
     }
 
+
+    /* ===== Centro de alertas preventivas SST ===== */
+    .alerts-dashboard {
+      margin-top: 18px;
+      border-top: 6px solid var(--ypf-red);
+      background:
+        radial-gradient(circle at top right, rgba(227,6,19,0.10), transparent 34%),
+        rgba(255,255,255,0.95);
+    }
+
+    .alerts-dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .alerts-dashboard-header h3 { margin: 0 0 6px; }
+    .alerts-dashboard-header p { margin: 0; color: var(--gray-500); font-weight: 700; line-height: 1.45; }
+
+    .alert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .alert-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      padding: 14px;
+      background: white;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+      border-left: 6px solid var(--ypf-blue);
+      display: grid;
+      gap: 8px;
+    }
+
+    .alert-card.critical { border-left-color: var(--ypf-red); background: linear-gradient(135deg, #fee2e2, #ffffff); }
+    .alert-card.warning { border-left-color: var(--orange); background: linear-gradient(135deg, #fef3c7, #ffffff); }
+    .alert-card.future { border-left-color: #2563eb; background: linear-gradient(135deg, #dbeafe, #ffffff); }
+    .alert-card.ok { border-left-color: var(--green); background: linear-gradient(135deg, #dcfce7, #ffffff); }
+
+    .alert-card strong { color: var(--ypf-blue-dark); line-height: 1.25; }
+    .alert-card small { color: var(--gray-700); font-weight: 700; line-height: 1.4; }
+
+    .alert-action {
+      margin-top: 4px;
+      border-radius: 14px;
+      padding: 10px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(203,213,225,0.85);
+      color: var(--gray-700);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
     @media print {
       aside, .topbar .badge, nav, button, input, select, .toolbar { display: none !important; }
       .app { display: block; }
@@ -2812,6 +2870,17 @@
             <span class="badge calendar-badge">Fuente: Supabase</span>
           </div>
           <div id="executiveDashboardSupabase"></div>
+        </div>
+
+        <div class="card alerts-dashboard">
+          <div class="alerts-dashboard-header">
+            <div>
+              <h3>🔔 Centro de alertas preventivas</h3>
+              <p>Listado automático de vencidas, próximas a vencer y programadas. Sirve para priorizar acciones de seguimiento SST.</p>
+            </div>
+            <span class="badge calendar-badge">Alertas SST</span>
+          </div>
+          <div id="supabaseAlertsPanel" class="alert-grid"></div>
         </div>
 
         <div class="card quarter-matrix-card">
@@ -5113,6 +5182,71 @@ async function guardarRealizacionSupabase(training) {
       `;
     }
 
+    function renderSupabaseAlertsPanel() {
+      const container = document.getElementById("supabaseAlertsPanel");
+      if (!container) return;
+
+      const rows = trainings
+        .filter(Boolean)
+        .map(t => {
+          const dueDate = getTrainingDueDateForExecutive(t);
+          const state = trainingState(t);
+          const days = dueDate ? daysTo(dueDate) : 9999;
+          let level = "ok";
+          let title = "Capacitación vigente";
+          let action = "Mantener registro documental y seguimiento según frecuencia definida.";
+
+          if (!t.done && days < 0) {
+            level = "critical";
+            title = "Vencida sin realizar";
+            action = "Prioridad alta: reprogramar capacitación y registrar realización en el legajo del trabajador.";
+          } else if (t.done && days < 0) {
+            level = "critical";
+            title = "Realizada vencida";
+            action = "Prioridad alta: renovar capacitación y emitir nuevo certificado actualizado.";
+          } else if (days >= 0 && days <= 15) {
+            level = "warning";
+            title = "Vence en 15 días o menos";
+            action = "Acción recomendada: coordinar fecha, confirmar asistencia y notificar al responsable SST.";
+          } else if (days > 15 && days <= 30) {
+            level = "warning";
+            title = "Vence dentro de 30 días";
+            action = "Seguimiento preventivo: dejar programada la capacitación antes del vencimiento.";
+          } else if (!t.done && days > 30) {
+            level = "future";
+            title = "Programada futura";
+            action = "Sin criticidad inmediata. Mantenerla en agenda y verificar disponibilidad del personal.";
+          }
+
+          return { ...t, dueDate, days, state, level, title, action };
+        })
+        .filter(t => t.level !== "ok")
+        .sort((a, b) => a.days - b.days)
+        .slice(0, 12);
+
+      if (!rows.length) {
+        container.innerHTML = `
+          <div class="alert-card ok">
+            <strong>✅ Sin alertas críticas</strong>
+            <small>No se detectan capacitaciones vencidas o próximas a vencer en la base actual.</small>
+            <div class="alert-action">Continuar con seguimiento periódico del plan anual SST.</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = rows.map(t => `
+        <div class="alert-card ${t.level}">
+          <strong>${escapeHtml(t.title)}</strong>
+          <small><b>Trabajador:</b> ${escapeHtml(t.employee || "Sin identificar")}</small>
+          <small><b>Curso:</b> ${escapeHtml(t.course || "Curso sin identificar")}</small>
+          <small><b>Fecha objetivo:</b> ${t.dueDate ? formatDate(t.dueDate) : "Sin fecha"} · <b>Estado:</b> ${escapeHtml(t.state)}</small>
+          <span class="pill ${trainingStateClass(t.state)}">${t.days < 0 ? `${Math.abs(t.days)} días vencida` : `${t.days} días restantes`}</span>
+          <div class="alert-action">${escapeHtml(t.action)}</div>
+        </div>
+      `).join("");
+    }
+
     function renderDashboard() {
       const total = employees.length;
       const globalStats = getGlobalTrainingStats();
@@ -6682,6 +6816,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       renderPersonnel();
       updateTrainingDashboard();
       renderDashboard();
+      renderSupabaseAlertsPanel();
       renderQuarterTrainingMatrix();
       renderDrills();
       renderDocuments();
