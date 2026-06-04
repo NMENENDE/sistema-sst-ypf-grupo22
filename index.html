@@ -2602,6 +2602,127 @@
     /* ===== Plan Word y calendario ancho ===== */
     .plan-word-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.plan-word-card{background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:16px;box-shadow:0 10px 22px rgba(15,23,42,.06);border-left:6px solid var(--ypf-blue)}.plan-word-card:nth-child(2){border-left-color:var(--ypf-yellow)}.plan-word-card:nth-child(3){border-left-color:var(--green)}.plan-word-card:nth-child(4){border-left-color:var(--ypf-red)}.plan-word-card strong{display:block;color:var(--ypf-blue-dark);margin-bottom:6px}.plan-word-card small,.plan-word-card li{color:var(--gray-700);font-weight:700;line-height:1.45}.plan-word-card ul{margin:6px 0 0;padding-left:18px}.plan-word-card.consideraciones-full{grid-column:1/-1}.plan-word-card.consideraciones-full ul{columns:2;column-gap:34px}.month-toggle-btn{width:auto;min-width:132px;padding:9px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.18)!important;color:white!important;border:1px solid rgba(255,255,255,.26)!important;box-shadow:none!important;font-size:12px}.month-card.collapsed .month-course-list{display:none!important}.month-card-summary{padding:10px 16px!important;display:flex!important;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px!important;background:linear-gradient(135deg,#fff,var(--gray-50));border-bottom:1px solid var(--gray-200)}.month-card-summary small{flex:1 1 420px;color:var(--gray-500);font-weight:800;line-height:1.35}.training-calendar-grid{display:grid!important;grid-template-columns:1fr!important;gap:12px!important}.month-card-header{padding:12px 16px!important;display:grid!important;grid-template-columns:minmax(140px,.22fr) minmax(280px,1fr) auto!important;align-items:center!important;gap:14px!important}.month-title-block strong{font-size:17px!important}.month-inline-summary{color:rgba(255,255,255,.92);font-size:12.5px;font-weight:800;line-height:1.35}.month-inline-summary b{color:#fff7cc}.month-course-list{display:grid!important;gap:12px!important;padding:14px 16px 16px!important}.month-course{padding:0!important;overflow:hidden;border-radius:18px!important;border-left:6px solid var(--ypf-blue)!important;background:white!important}.course-compact-row{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(260px,.9fr) auto;gap:14px;align-items:center;padding:14px}.course-compact-row strong{color:var(--ypf-blue-dark);font-size:15px;line-height:1.25}.course-compact-row small{display:block;color:var(--gray-500);font-weight:800;line-height:1.35;margin-top:4px}.course-chip-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start}.course-detail-collapse{border:0!important;border-top:1px solid var(--gray-200)!important;border-radius:0!important;background:linear-gradient(135deg,#fff,var(--gray-50))!important}.course-detail-collapse summary{cursor:pointer;padding:12px 14px!important;background:var(--ypf-blue-light);border-bottom:1px solid #cfe7ff;font-weight:900;color:var(--ypf-blue-dark);list-style:none;user-select:none}.course-detail-collapse summary::-webkit-details-marker{display:none}.course-detail-collapse summary::after{content:"+";float:right;font-size:18px;line-height:1;color:var(--ypf-blue)}.course-detail-collapse[open] summary::after{content:"−"}.course-detail-box{margin:0!important;padding:14px!important;border:0!important;border-radius:0!important;background:white!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px!important}.course-detail-field{border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50);padding:11px 12px;min-height:74px}.course-detail-field.wide{grid-column:span 2}.course-detail-field.full{grid-column:1/-1}.course-detail-field b{display:block;color:var(--ypf-blue-dark);margin-bottom:5px;font-size:12px;text-transform:uppercase;letter-spacing:.035em}.course-detail-field small,.course-detail-field span{color:var(--gray-700);font-weight:700;line-height:1.42}@media(max-width:1050px){.month-card-header,.course-compact-row{grid-template-columns:1fr!important;align-items:stretch!important}.course-detail-box{grid-template-columns:1fr!important}.course-detail-field.wide,.course-detail-field.full{grid-column:1/-1}}@media(max-width:760px){.plan-word-card.consideraciones-full ul{columns:1}}
 
+
+
+    /* ===== Dashboard Ejecutivo SST conectado a Supabase ===== */
+    .executive-dashboard {
+      margin-top: 18px;
+      border-top: 6px solid var(--ypf-yellow);
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.16), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(0,86,166,0.08), transparent 34%),
+        rgba(255,255,255,0.95);
+    }
+
+    .executive-dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .executive-dashboard-header h3 { margin: 0 0 6px; }
+    .executive-dashboard-header p { margin: 0; color: var(--gray-500); font-weight: 700; line-height: 1.45; }
+
+    .executive-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .executive-kpi {
+      border-radius: 18px;
+      padding: 14px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+      border-left: 6px solid var(--ypf-blue);
+    }
+
+    .executive-kpi.ok { border-left-color: var(--green); }
+    .executive-kpi.warn { border-left-color: var(--orange); }
+    .executive-kpi.bad { border-left-color: var(--ypf-red); }
+    .executive-kpi.future { border-left-color: #2563eb; }
+
+    .executive-kpi span {
+      display: block;
+      color: var(--gray-500);
+      font-weight: 900;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .executive-kpi strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--ypf-blue-dark);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .executive-kpi small {
+      display: block;
+      margin-top: 7px;
+      color: var(--gray-500);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .executive-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .executive-list-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      background: white;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .executive-list-card h4 { margin: 0; color: var(--ypf-blue-dark); }
+
+    .executive-mini-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      background: var(--gray-50);
+    }
+
+    .executive-mini-row strong { color: var(--ypf-blue-dark); font-size: 13px; line-height: 1.25; }
+    .executive-mini-row small { color: var(--gray-500); font-weight: 700; line-height: 1.35; }
+
+    .executive-bar {
+      height: 10px;
+      background: var(--gray-200);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 7px;
+    }
+
+    .executive-bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--ypf-blue), var(--ypf-sky));
+      border-radius: 99px;
+    }
+
+    @media (max-width: 900px) {
+      .executive-dashboard-header,
+      .executive-split { grid-template-columns: 1fr; display: grid; }
+    }
+
     @media print {
       aside, .topbar .badge, nav, button, input, select, .toolbar { display: none !important; }
       .app { display: block; }
@@ -2680,6 +2801,17 @@
           <h3>Lectura rápida de gestión SST</h3>
           <p>Resumen integrado del personal, capacitaciones, vencimientos y acciones críticas para tener una visión ejecutiva a simple vista.</p>
           <div class="dashboard-detail-grid" id="dashboardDetailCards"></div>
+        </div>
+
+        <div class="card executive-dashboard">
+          <div class="executive-dashboard-header">
+            <div>
+              <h3>📊 Dashboard ejecutivo SST</h3>
+              <p>Indicadores gerenciales conectados a Supabase: asignaciones, realizaciones, pendientes, vencimientos y distribución por curso.</p>
+            </div>
+            <span class="badge calendar-badge">Fuente: Supabase</span>
+          </div>
+          <div id="executiveDashboardSupabase"></div>
         </div>
 
         <div class="card quarter-matrix-card">
@@ -4896,6 +5028,91 @@ async function guardarRealizacionSupabase(training) {
       return;
     }
 
+
+    function getTrainingDueDateForExecutive(t) {
+      return t?.due || t?.fecha_programada || t?.fecha_vencimiento || "";
+    }
+
+    function renderExecutiveDashboardSupabase() {
+      const container = document.getElementById("executiveDashboardSupabase");
+      if (!container) return;
+
+      const rows = trainings.filter(Boolean);
+      const kpi = (typeof supabaseDashboardKpis !== "undefined" && supabaseDashboardKpis && supabaseDashboardKpis.source === "asignaciones_capacitacion")
+        ? supabaseDashboardKpis
+        : null;
+
+      const total = kpi ? kpi.total : rows.length;
+      const realizadas = kpi ? (kpi.realizadas || 0) : rows.filter(t => !!t.done).length;
+      const pendientes = kpi ? (kpi.pendientesTotales ?? kpi.pendientes ?? 0) : rows.filter(t => !t.done).length;
+      const vencidas = kpi ? (kpi.vencidas || 0) : rows.filter(t => trainingState(t) === "Vencida" || trainingState(t) === "Realizada vencida").length;
+      const porVencer = kpi ? (kpi.porVencer || 0) : rows.filter(t => trainingState(t) === "Pendiente" || trainingState(t) === "Realizada por vencer").length;
+      const programadas = kpi ? (kpi.programadas || 0) : rows.filter(t => trainingState(t) === "Programada").length;
+      const compliance = total ? Math.round((realizadas / total) * 100) : 0;
+
+      const byCourse = {};
+      rows.forEach(t => {
+        const course = t.course || "Curso sin identificar";
+        if (!byCourse[course]) byCourse[course] = { total: 0, realizadas: 0, pendientes: 0, vencidas: 0 };
+        byCourse[course].total += 1;
+        if (t.done) byCourse[course].realizadas += 1;
+        else byCourse[course].pendientes += 1;
+        if (trainingState(t) === "Vencida" || trainingState(t) === "Realizada vencida") byCourse[course].vencidas += 1;
+      });
+
+      const courseRows = Object.entries(byCourse)
+        .sort((a, b) => b[1].total - a[1].total)
+        .slice(0, 6);
+      const maxCourse = Math.max(...courseRows.map(([, v]) => v.total), 1);
+
+      const upcoming = rows
+        .filter(t => getTrainingDueDateForExecutive(t))
+        .map(t => ({ ...t, days: daysTo(getTrainingDueDateForExecutive(t)), state: trainingState(t) }))
+        .filter(t => !t.done || t.days <= 45)
+        .sort((a, b) => a.days - b.days)
+        .slice(0, 6);
+
+      container.innerHTML = `
+        <div class="executive-kpi-grid">
+          <div class="executive-kpi"><span>Asignaciones</span><strong>${total}</strong><small>Total real cargado desde calendario.</small></div>
+          <div class="executive-kpi ok"><span>Realizadas</span><strong>${realizadas}</strong><small>Impactan en cumplimiento SST.</small></div>
+          <div class="executive-kpi warn"><span>Pendientes</span><strong>${pendientes}</strong><small>Requieren ejecución o seguimiento.</small></div>
+          <div class="executive-kpi bad"><span>Vencidas</span><strong>${vencidas}</strong><small>Prioridad de regularización.</small></div>
+          <div class="executive-kpi future"><span>Programadas</span><strong>${programadas}</strong><small>Fuera de ventana crítica de 30 días.</small></div>
+          <div class="executive-kpi ok"><span>Cumplimiento</span><strong>${compliance}%</strong><small>Realizadas / asignadas.</small></div>
+        </div>
+
+        <div class="executive-split">
+          <div class="executive-list-card">
+            <h4>Distribución por curso</h4>
+            ${courseRows.length ? courseRows.map(([course, data]) => `
+              <div class="executive-mini-row">
+                <div>
+                  <strong>${escapeHtml(course)}</strong><br>
+                  <small>${data.realizadas} realizadas · ${data.pendientes} pendientes · ${data.vencidas} vencidas</small>
+                  <div class="executive-bar"><span style="width:${Math.round((data.total / maxCourse) * 100)}%"></span></div>
+                </div>
+                <span class="pill programado">${data.total}</span>
+              </div>
+            `).join("") : `<div class="training-empty">Todavía no hay asignaciones para mostrar.</div>`}
+          </div>
+
+          <div class="executive-list-card">
+            <h4>Próximos vencimientos / acciones</h4>
+            ${upcoming.length ? upcoming.map(t => `
+              <div class="executive-mini-row">
+                <div>
+                  <strong>${escapeHtml(t.employee || "Trabajador sin identificar")}</strong><br>
+                  <small>${escapeHtml(t.course || "Curso")} · ${formatDate(getTrainingDueDateForExecutive(t))}</small>
+                </div>
+                <span class="pill ${trainingStateClass(t.state)}">${escapeHtml(t.state)}</span>
+              </div>
+            `).join("") : `<div class="training-empty">No hay vencimientos críticos o acciones próximas.</div>`}
+          </div>
+        </div>
+      `;
+    }
+
     function renderDashboard() {
       const total = employees.length;
       const globalStats = getGlobalTrainingStats();
@@ -4936,6 +5153,8 @@ async function guardarRealizacionSupabase(training) {
         `;
       }
 
+
+      renderExecutiveDashboardSupabase();
       
 const courseCounts = courses.slice(0, 7).map(course => {
         const records = trainings.filter(t => t.course === course);
@@ -5470,7 +5689,128 @@ const courseCounts = courses.slice(0, 7).map(course => {
               color: white;
             }
             button.secondary { background: #e7f2ff; color: #003f7d; }
-            @media print {
+        
+
+    /* ===== Dashboard Ejecutivo SST conectado a Supabase ===== */
+    .executive-dashboard {
+      margin-top: 18px;
+      border-top: 6px solid var(--ypf-yellow);
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.16), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(0,86,166,0.08), transparent 34%),
+        rgba(255,255,255,0.95);
+    }
+
+    .executive-dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .executive-dashboard-header h3 { margin: 0 0 6px; }
+    .executive-dashboard-header p { margin: 0; color: var(--gray-500); font-weight: 700; line-height: 1.45; }
+
+    .executive-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .executive-kpi {
+      border-radius: 18px;
+      padding: 14px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+      border-left: 6px solid var(--ypf-blue);
+    }
+
+    .executive-kpi.ok { border-left-color: var(--green); }
+    .executive-kpi.warn { border-left-color: var(--orange); }
+    .executive-kpi.bad { border-left-color: var(--ypf-red); }
+    .executive-kpi.future { border-left-color: #2563eb; }
+
+    .executive-kpi span {
+      display: block;
+      color: var(--gray-500);
+      font-weight: 900;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .executive-kpi strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--ypf-blue-dark);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .executive-kpi small {
+      display: block;
+      margin-top: 7px;
+      color: var(--gray-500);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .executive-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .executive-list-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      background: white;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .executive-list-card h4 { margin: 0; color: var(--ypf-blue-dark); }
+
+    .executive-mini-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      background: var(--gray-50);
+    }
+
+    .executive-mini-row strong { color: var(--ypf-blue-dark); font-size: 13px; line-height: 1.25; }
+    .executive-mini-row small { color: var(--gray-500); font-weight: 700; line-height: 1.35; }
+
+    .executive-bar {
+      height: 10px;
+      background: var(--gray-200);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 7px;
+    }
+
+    .executive-bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--ypf-blue), var(--ypf-sky));
+      border-radius: 99px;
+    }
+
+    @media (max-width: 900px) {
+      .executive-dashboard-header,
+      .executive-split { grid-template-columns: 1fr; display: grid; }
+    }
+
+    @media print {
               body { background: white; padding: 0; }
               .certificate { box-shadow: none; border-radius: 0; max-width: none; min-height: 100vh; }
               .actions { display: none; }
@@ -5677,7 +6017,128 @@ const courseCounts = courses.slice(0, 7).map(course => {
             .actions { max-width: 1240px; margin: 16px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
             button { border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 900; cursor: pointer; background: #0056a6; color: white; }
             button.secondary { background: #e7f2ff; color: #003f7d; }
-            @media print { body { background: white; padding: 0; } .sheet { box-shadow: none; border-radius: 0; max-width: none; } .actions { display: none; } .canvas-wrap { break-inside: avoid; } }
+        
+
+    /* ===== Dashboard Ejecutivo SST conectado a Supabase ===== */
+    .executive-dashboard {
+      margin-top: 18px;
+      border-top: 6px solid var(--ypf-yellow);
+      background:
+        radial-gradient(circle at top right, rgba(255,204,0,0.16), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(0,86,166,0.08), transparent 34%),
+        rgba(255,255,255,0.95);
+    }
+
+    .executive-dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .executive-dashboard-header h3 { margin: 0 0 6px; }
+    .executive-dashboard-header p { margin: 0; color: var(--gray-500); font-weight: 700; line-height: 1.45; }
+
+    .executive-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .executive-kpi {
+      border-radius: 18px;
+      padding: 14px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+      border-left: 6px solid var(--ypf-blue);
+    }
+
+    .executive-kpi.ok { border-left-color: var(--green); }
+    .executive-kpi.warn { border-left-color: var(--orange); }
+    .executive-kpi.bad { border-left-color: var(--ypf-red); }
+    .executive-kpi.future { border-left-color: #2563eb; }
+
+    .executive-kpi span {
+      display: block;
+      color: var(--gray-500);
+      font-weight: 900;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .executive-kpi strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--ypf-blue-dark);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .executive-kpi small {
+      display: block;
+      margin-top: 7px;
+      color: var(--gray-500);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .executive-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .executive-list-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      background: white;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .executive-list-card h4 { margin: 0; color: var(--ypf-blue-dark); }
+
+    .executive-mini-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      background: var(--gray-50);
+    }
+
+    .executive-mini-row strong { color: var(--ypf-blue-dark); font-size: 13px; line-height: 1.25; }
+    .executive-mini-row small { color: var(--gray-500); font-weight: 700; line-height: 1.35; }
+
+    .executive-bar {
+      height: 10px;
+      background: var(--gray-200);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 7px;
+    }
+
+    .executive-bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--ypf-blue), var(--ypf-sky));
+      border-radius: 99px;
+    }
+
+    @media (max-width: 900px) {
+      .executive-dashboard-header,
+      .executive-split { grid-template-columns: 1fr; display: grid; }
+    }
+
+    @media print { body { background: white; padding: 0; } .sheet { box-shadow: none; border-radius: 0; max-width: none; } .actions { display: none; } .canvas-wrap { break-inside: avoid; } }
             @media (max-width: 900px) { .top, .info-grid, .instructor-grid { grid-template-columns: 1fr; } .field.wide, .field.full { grid-column: 1; } }
           </style>
         </head>
