@@ -2790,9 +2790,178 @@
       .print-only { display: block; }
       body { background: white; }
     }
+
+
+    /* ===== Login simple demo SST ===== */
+    body.login-locked .app { display: none; }
+
+    .login-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(0,86,166,0.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(255,204,0,0.20), transparent 24%),
+        linear-gradient(135deg, #f6fbff 0%, #eef6ff 45%, #ffffff 100%);
+    }
+
+    body.login-locked .login-screen { display: flex; }
+
+    .login-card {
+      width: min(480px, 100%);
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(203,213,225,0.9);
+      border-top: 6px solid var(--ypf-yellow);
+      border-radius: 28px;
+      box-shadow: 0 24px 70px rgba(15,23,42,0.18);
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-card::after {
+      content: "YPF";
+      position: absolute;
+      right: 20px;
+      bottom: -18px;
+      font-size: 82px;
+      font-weight: 900;
+      color: var(--ypf-blue-dark);
+      opacity: 0.06;
+      letter-spacing: -0.08em;
+    }
+
+    .login-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .login-brand .logo { width: 68px; height: 45px; }
+
+    .login-brand h2 {
+      margin: 0;
+      color: var(--ypf-blue-dark);
+      font-size: 22px;
+      line-height: 1.12;
+    }
+
+    .login-brand small {
+      display: block;
+      color: var(--gray-500);
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .login-form {
+      display: grid;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-help {
+      border-radius: 18px;
+      padding: 13px;
+      background: var(--ypf-blue-light);
+      color: var(--ypf-blue-dark);
+      border: 1px solid #cfe7ff;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .quick-login-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .quick-login-grid button {
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid var(--gray-200);
+      background: white;
+      color: var(--ypf-blue-dark);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .session-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: #fff7cc;
+      color: #7c5a00;
+      font-size: 13px;
+      font-weight: 900;
+      border: 1px solid #fde68a;
+    }
+
+    .session-chip button {
+      border: 0;
+      border-radius: 999px;
+      background: rgba(124,90,0,0.12);
+      color: #7c5a00;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    @media (max-width:650px) {
+      .quick-login-grid { grid-template-columns: 1fr; }
+      .topbar-actions { justify-content: flex-start; }
+    }
+
   </style>
 </head>
-<body>
+<body class="login-locked">
+
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="logo">YPF</div>
+        <div>
+          <h2>Sistema Digital SST</h2>
+          <small>Grupo 22 · UTN BA · YPF</small>
+        </div>
+      </div>
+
+      <form class="login-form" onsubmit="iniciarSesionDemo(event)">
+        <div class="login-help">
+          Acceso institucional de demostración. Todos los usuarios ingresan para ver la app completa.
+        </div>
+
+        <input id="loginUser" placeholder="Usuario" autocomplete="username" value="GRUPO22@UTN-YPF" />
+        <input id="loginPass" type="password" placeholder="Contraseña" autocomplete="current-password" value="UTN" />
+
+        <button class="primary" type="submit">Ingresar al sistema</button>
+
+        <small style="color:var(--gray-500); font-weight:800; line-height:1.4;">
+          Credenciales de demostración:<br>
+          Usuario: <b>GRUPO22@UTN-YPF</b><br>
+          Contraseña: <b>UTN</b>
+        </small>
+      </form>
+    </div>
+  </div>
+
   <div class="app">
     <aside>
       <div class="brand">
@@ -2828,7 +2997,10 @@
           <h2 id="pageTitle">Panel general SST</h2>
           <p>Estación de Servicio YPF · San Nicolás de los Arroyos · Implementación ISO 45001</p>
         </div>
-        <span class="badge">🟢 Sistema demostrativo activo</span>
+        <div class="topbar-actions">
+          <span class="badge">🟢 Sistema demostrativo activo</span>
+          <span class="session-chip" id="sessionChip">👤 GRUPO22@UTN-YPF</span>
+        </div>
       </div>
 
       <section class="section active" id="dashboard">
@@ -6835,6 +7007,59 @@ const courseCounts = courses.slice(0, 7).map(course => {
     document.getElementById("personSearch")?.addEventListener("input", renderPersonnel);
     document.getElementById("personStatusFilter")?.addEventListener("change", renderPersonnel);
 
+
+
+    const demoUsers = [
+      { usuario: "grupo22@utn-ypf", usuarioVisible: "GRUPO22@UTN-YPF", clave: "UTN", nombre: "Grupo 22 - UTN Buenos Aires", rol: "Acceso institucional" }
+    ];
+
+    function aplicarSesionDemo(user) {
+      localStorage.setItem("ypfCurrentUser", JSON.stringify(user));
+      document.body.classList.remove("login-locked");
+      renderSessionChip();
+    }
+
+    function iniciarSesionDemo(event) {
+      event.preventDefault();
+      const usuario = String(document.getElementById("loginUser")?.value || "").trim().toLowerCase();
+      const clave = String(document.getElementById("loginPass")?.value || "").trim();
+      const user = demoUsers.find(u => u.usuario === usuario && u.clave === clave);
+      if (!user) {
+        alert("Usuario o contraseña incorrectos. Usá GRUPO22@UTN-YPF / UTN.");
+        return;
+      }
+      aplicarSesionDemo(user);
+      showToast?.(`✅ Bienvenido: ${user.usuarioVisible}`);
+    }
+
+    function cerrarSesionDemo() {
+      localStorage.removeItem("ypfCurrentUser");
+      document.body.classList.add("login-locked");
+      const userInput = document.getElementById("loginUser");
+      const passInput = document.getElementById("loginPass");
+      if (userInput) userInput.value = "GRUPO22@UTN-YPF";
+      if (passInput) passInput.value = "UTN";
+    }
+
+    function renderSessionChip() {
+      const chip = document.getElementById("sessionChip");
+      if (!chip) return;
+      const raw = localStorage.getItem("ypfCurrentUser");
+      const user = raw ? JSON.parse(raw) : null;
+      if (!user) {
+        chip.innerHTML = "👤 Sin sesión";
+        return;
+      }
+      chip.innerHTML = `👤 ${user.usuarioVisible || user.nombre} <button type="button" onclick="cerrarSesionDemo()">Cerrar sesión</button>`;
+    }
+
+    function initLoginDemo() {
+      const raw = localStorage.getItem("ypfCurrentUser");
+      if (raw) document.body.classList.remove("login-locked");
+      else document.body.classList.add("login-locked");
+      renderSessionChip();
+    }
+
     async function inicializarApp() {
       normalizeEmployees();
       await cargarCursosSstSupabase(true);
@@ -6847,6 +7072,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       refreshAll();
     }
 
+    initLoginDemo();
     inicializarApp();
   </script>
 </body>
