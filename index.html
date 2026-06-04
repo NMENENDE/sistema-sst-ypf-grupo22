@@ -5237,9 +5237,22 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
       const employee = employees.find(e => e.name === t.employee) || {};
       const planItem = getPlanItemById(t.courseId) || getAllTrainingPlanItems().find(item => item.course === t.course) || {};
-      const issueDate = today.toISOString().slice(0,10);
+      const meta = getCourseMeta(t.course);
+      const issueDate = new Date().toISOString().slice(0, 10);
+      const completedDate = t.completed || issueDate;
+      const dueDate = t.due || calculateTrainingDueISO(completedDate, t.course);
       const certificateId = `SST-G22-${String(index + 1).padStart(3, "0")}-${Date.now().toString().slice(-5)}`;
       const status = trainingState(t);
+      const duration = meta.duracion || getCourseDurationText(t.course) || "A definir";
+      const frequency = getCourseFrequencyText(t.course);
+      const responsible = meta.responsable || "Personal de Higiene y Seguridad";
+      const modality = meta.modalidad || "Teórico-práctica";
+      const legal = meta.marcoLegal || getCourseLegalText(t.course);
+      const iper = meta.iperAsociado || meta.riesgosIper || getCourseIperText(t.course);
+      const contents = meta.contenidos || "Contenidos definidos en la Matriz Maestra de Cursos SST.";
+      const activities = meta.actividades || "Actividades teórico-prácticas y participativas.";
+      const evaluation = meta.evaluacion || "Participación, observación en puesto y/o evaluación breve.";
+      const courseCode = meta.codigo || "SST-CAP";
 
       const certificateHtml = `
         <!DOCTYPE html>
@@ -5251,20 +5264,20 @@ const courseCounts = courses.slice(0, 7).map(course => {
             * { box-sizing: border-box; }
             body {
               margin: 0;
-              padding: 28px;
+              padding: 24px;
               font-family: Arial, Helvetica, sans-serif;
               background: #f1f5f9;
               color: #0f172a;
             }
             .certificate {
               width: 100%;
-              max-width: 1050px;
-              min-height: 720px;
+              max-width: 1120px;
+              min-height: 760px;
               margin: 0 auto;
               background: white;
               border: 8px solid #0056a6;
               border-radius: 28px;
-              padding: 42px;
+              padding: 38px;
               position: relative;
               overflow: hidden;
               box-shadow: 0 18px 45px rgba(15,23,42,0.16);
@@ -5272,7 +5285,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
             .certificate::before {
               content: "";
               position: absolute;
-              inset: 18px;
+              inset: 17px;
               border: 3px solid #ffcc00;
               border-radius: 18px;
               pointer-events: none;
@@ -5280,8 +5293,8 @@ const courseCounts = courses.slice(0, 7).map(course => {
             .watermark {
               position: absolute;
               right: -18px;
-              bottom: -38px;
-              font-size: 150px;
+              bottom: -42px;
+              font-size: 158px;
               font-weight: 900;
               color: rgba(0,86,166,0.06);
               letter-spacing: -8px;
@@ -5316,7 +5329,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
               line-height: 1.5;
             }
             h1 {
-              margin: 58px 0 8px;
+              margin: 44px 0 8px;
               text-align: center;
               color: #003f7d;
               font-size: 42px;
@@ -5335,29 +5348,29 @@ const courseCounts = courses.slice(0, 7).map(course => {
               z-index: 2;
             }
             .body {
-              margin: 52px auto 34px;
-              max-width: 820px;
+              margin: 36px auto 24px;
+              max-width: 880px;
               text-align: center;
-              font-size: 22px;
-              line-height: 1.55;
+              font-size: 21px;
+              line-height: 1.5;
               position: relative;
               z-index: 2;
             }
             .person {
               display: block;
-              margin: 16px 0;
+              margin: 14px 0;
               color: #0056a6;
               font-size: 34px;
               font-weight: 900;
             }
             .course {
               display: block;
-              margin: 16px auto;
-              padding: 16px 22px;
+              margin: 14px auto;
+              padding: 15px 20px;
               border-radius: 18px;
               background: #e7f2ff;
               color: #003f7d;
-              font-size: 25px;
+              font-size: 24px;
               font-weight: 900;
               border: 1px solid #cfe7ff;
             }
@@ -5365,7 +5378,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
               display: grid;
               grid-template-columns: repeat(4, 1fr);
               gap: 12px;
-              margin: 30px 0;
+              margin: 24px 0;
               position: relative;
               z-index: 2;
             }
@@ -5373,24 +5386,54 @@ const courseCounts = courses.slice(0, 7).map(course => {
               border-radius: 16px;
               background: #f8fafc;
               border: 1px solid #e2e8f0;
-              padding: 14px;
+              padding: 13px;
             }
             .detail strong {
               display: block;
               color: #003f7d;
-              font-size: 17px;
+              font-size: 16px;
               margin-bottom: 4px;
+              line-height: 1.25;
             }
             .detail span {
               color: #475569;
               font-weight: 700;
-              font-size: 13px;
+              font-size: 12px;
             }
+            .info-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 12px;
+              margin-top: 16px;
+              position: relative;
+              z-index: 2;
+            }
+            .info {
+              border-radius: 16px;
+              border: 1px solid #e2e8f0;
+              background: #ffffff;
+              padding: 13px;
+            }
+            .info b {
+              display: block;
+              color: #003f7d;
+              font-size: 12px;
+              text-transform: uppercase;
+              letter-spacing: .04em;
+              margin-bottom: 5px;
+            }
+            .info small {
+              display: block;
+              color: #475569;
+              font-weight: 700;
+              line-height: 1.35;
+            }
+            .full { grid-column: 1 / -1; }
             .signatures {
               display: grid;
               grid-template-columns: 1fr 1fr;
               gap: 34px 48px;
-              margin-top: 48px;
+              margin-top: 38px;
               position: relative;
               z-index: 2;
             }
@@ -5402,7 +5445,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
               font-weight: 800;
             }
             .footer {
-              margin-top: 24px;
+              margin-top: 22px;
               text-align: center;
               color: #64748b;
               font-size: 12px;
@@ -5411,7 +5454,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
               z-index: 2;
             }
             .actions {
-              max-width: 1050px;
+              max-width: 1120px;
               margin: 18px auto 0;
               display: flex;
               justify-content: center;
@@ -5427,11 +5470,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
               color: white;
             }
             button.secondary { background: #e7f2ff; color: #003f7d; }
-        
-    /* ===== Plan Word y calendario ancho ===== */
-    .plan-word-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.plan-word-card{background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:16px;box-shadow:0 10px 22px rgba(15,23,42,.06);border-left:6px solid var(--ypf-blue)}.plan-word-card:nth-child(2){border-left-color:var(--ypf-yellow)}.plan-word-card:nth-child(3){border-left-color:var(--green)}.plan-word-card:nth-child(4){border-left-color:var(--ypf-red)}.plan-word-card strong{display:block;color:var(--ypf-blue-dark);margin-bottom:6px}.plan-word-card small,.plan-word-card li{color:var(--gray-700);font-weight:700;line-height:1.45}.plan-word-card ul{margin:6px 0 0;padding-left:18px}.plan-word-card.consideraciones-full{grid-column:1/-1}.plan-word-card.consideraciones-full ul{columns:2;column-gap:34px}.month-toggle-btn{width:auto;min-width:132px;padding:9px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.18)!important;color:white!important;border:1px solid rgba(255,255,255,.26)!important;box-shadow:none!important;font-size:12px}.month-card.collapsed .month-course-list{display:none!important}.month-card-summary{padding:10px 16px!important;display:flex!important;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px!important;background:linear-gradient(135deg,#fff,var(--gray-50));border-bottom:1px solid var(--gray-200)}.month-card-summary small{flex:1 1 420px;color:var(--gray-500);font-weight:800;line-height:1.35}.training-calendar-grid{display:grid!important;grid-template-columns:1fr!important;gap:12px!important}.month-card-header{padding:12px 16px!important;display:grid!important;grid-template-columns:minmax(140px,.22fr) minmax(280px,1fr) auto!important;align-items:center!important;gap:14px!important}.month-title-block strong{font-size:17px!important}.month-inline-summary{color:rgba(255,255,255,.92);font-size:12.5px;font-weight:800;line-height:1.35}.month-inline-summary b{color:#fff7cc}.month-course-list{display:grid!important;gap:12px!important;padding:14px 16px 16px!important}.month-course{padding:0!important;overflow:hidden;border-radius:18px!important;border-left:6px solid var(--ypf-blue)!important;background:white!important}.course-compact-row{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(260px,.9fr) auto;gap:14px;align-items:center;padding:14px}.course-compact-row strong{color:var(--ypf-blue-dark);font-size:15px;line-height:1.25}.course-compact-row small{display:block;color:var(--gray-500);font-weight:800;line-height:1.35;margin-top:4px}.course-chip-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start}.course-detail-collapse{border:0!important;border-top:1px solid var(--gray-200)!important;border-radius:0!important;background:linear-gradient(135deg,#fff,var(--gray-50))!important}.course-detail-collapse summary{cursor:pointer;padding:12px 14px!important;background:var(--ypf-blue-light);border-bottom:1px solid #cfe7ff;font-weight:900;color:var(--ypf-blue-dark);list-style:none;user-select:none}.course-detail-collapse summary::-webkit-details-marker{display:none}.course-detail-collapse summary::after{content:"+";float:right;font-size:18px;line-height:1;color:var(--ypf-blue)}.course-detail-collapse[open] summary::after{content:"−"}.course-detail-box{margin:0!important;padding:14px!important;border:0!important;border-radius:0!important;background:white!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px!important}.course-detail-field{border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50);padding:11px 12px;min-height:74px}.course-detail-field.wide{grid-column:span 2}.course-detail-field.full{grid-column:1/-1}.course-detail-field b{display:block;color:var(--ypf-blue-dark);margin-bottom:5px;font-size:12px;text-transform:uppercase;letter-spacing:.035em}.course-detail-field small,.course-detail-field span{color:var(--gray-700);font-weight:700;line-height:1.42}@media(max-width:1050px){.month-card-header,.course-compact-row{grid-template-columns:1fr!important;align-items:stretch!important}.course-detail-box{grid-template-columns:1fr!important}.course-detail-field.wide,.course-detail-field.full{grid-column:1/-1}}@media(max-width:760px){.plan-word-card.consideraciones-full ul{columns:1}}
-
-    @media print {
+            @media print {
               body { background: white; padding: 0; }
               .certificate { box-shadow: none; border-radius: 0; max-width: none; min-height: 100vh; }
               .actions { display: none; }
@@ -5445,6 +5484,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
               <div class="logo">YPF</div>
               <div class="meta">
                 <div><b>Certificado:</b> ${certificateId}</div>
+                <div><b>Código curso:</b> ${escapeHtml(courseCode)}</div>
                 <div><b>Emisión:</b> ${formatDate(issueDate)}</div>
                 <div><b>Sistema Digital SST · Grupo 22 UTN BA</b></div>
               </div>
@@ -5456,15 +5496,28 @@ const courseCounts = courses.slice(0, 7).map(course => {
             <div class="body">
               Se deja constancia de que
               <span class="person">${escapeHtml(t.employee)}</span>
-              perteneciente al rol/cargo <b>${escapeHtml(t.role || employee.role || "Personal SST")}</b>, ha realizado satisfactoriamente la capacitación:
+              DNI <b>${escapeHtml(employee.dni || "A completar")}</b> · Legajo <b>${escapeHtml(employee.legajo || "A completar")}</b><br>
+              Cargo/rol: <b>${escapeHtml(t.role || employee.role || "Personal SST")}</b><br>
+              realizó satisfactoriamente la capacitación:
               <span class="course">${escapeHtml(t.course)}</span>
             </div>
 
             <div class="details">
-              <div class="detail"><strong>${formatDate(t.completed || issueDate)}</strong><span>Fecha real de realización</span></div>
-              <div class="detail"><strong>${formatDate(t.due)}</strong><span>Vigencia calculada 12 meses desde realización</span></div>
-              <div class="detail"><strong>${escapeHtml(planItem.month || t.courseMonth || "Registro manual")}</strong><span>Mes / edición del cronograma</span></div>
+              <div class="detail"><strong>${formatDate(completedDate)}</strong><span>Fecha real de realización</span></div>
+              <div class="detail"><strong>${formatDate(dueDate)}</strong><span>Vencimiento calculado</span></div>
+              <div class="detail"><strong>${escapeHtml(frequency)}</strong><span>Frecuencia / vigencia</span></div>
               <div class="detail"><strong>${escapeHtml(status)}</strong><span>Estado en sistema</span></div>
+              <div class="detail"><strong>${escapeHtml(duration)}</strong><span>Duración</span></div>
+              <div class="detail"><strong>${escapeHtml(modality)}</strong><span>Modalidad</span></div>
+              <div class="detail"><strong>${escapeHtml(planItem.month || t.courseMonth || "Registro manual")}</strong><span>Mes / edición</span></div>
+              <div class="detail"><strong>${escapeHtml(responsible)}</strong><span>Responsable</span></div>
+            </div>
+
+            <div class="info-grid">
+              <div class="info"><b>Contenidos</b><small>${escapeHtml(contents)}</small></div>
+              <div class="info"><b>Actividades / evaluación</b><small>${escapeHtml(activities)} ${escapeHtml(evaluation)}</small></div>
+              <div class="info"><b>Marco legal</b><small>${escapeHtml(legal)}</small></div>
+              <div class="info"><b>IPER / riesgo asociado</b><small>${escapeHtml(iper)}</small></div>
             </div>
 
             <div class="signatures">
@@ -5475,7 +5528,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
             </div>
 
             <div class="footer">
-              Documento generado por el Sistema Digital SST YPF - Grupo 22. Vigencia de la capacitación: 12 meses desde la fecha de realización.
+              Documento generado por el Sistema Digital SST YPF - Grupo 22. Fuente de datos: personal, cursos_sst, asignaciones_capacitacion y realizaciones.
             </div>
           </div>
 
