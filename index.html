@@ -3079,7 +3079,7 @@
     </div>
 
 
-    <div class="card"><h3>Resumen documental del plan</h3><p>Cronograma de Capacitación.</p><div class="plan-word-overview"><div class="plan-word-card"><strong>📌 Metodología</strong><small>Modalidad grupal, presencial y virtual, con enfoque teórico-práctico y participativo.</small></div><div class="plan-word-card"><strong>💻 Recursos tecnológicos</strong><small>Presentaciones en PowerPoint, videos, folletería y material informativo.</small></div><div class="plan-word-card"><strong>👥 Recursos humanos</strong><small>Personal de Higiene y Seguridad, Bomberos y Medicina del Trabajo.</small></div><div class="plan-word-card consideraciones-full"><strong>✅ Consideraciones generales</strong><ul><li>Los cursos se dictarán en los sectores donde el personal desempeña sus tareas, durante el horario laboral.</li><li>Se incluirán análisis de eventos transcurridos en la empresa y en organizaciones afines.</li><li>Se difundirán procedimientos, instructivos y métodos seguros de trabajo elaborados durante el año.</li></ul></div></div></div>
+    <div class="card"><h3>Resumen documental del plan</h3><p>Información base tomada del documento Word del Plan y Cronograma de Capacitación.</p><div class="plan-word-overview"><div class="plan-word-card"><strong>📌 Metodología</strong><small>Modalidad grupal, presencial y virtual, con enfoque teórico-práctico y participativo.</small></div><div class="plan-word-card"><strong>💻 Recursos tecnológicos</strong><small>Presentaciones en PowerPoint, videos, folletería y material informativo.</small></div><div class="plan-word-card"><strong>👥 Recursos humanos</strong><small>Personal de Higiene y Seguridad, Bomberos y Medicina del Trabajo.</small></div><div class="plan-word-card consideraciones-full"><strong>✅ Consideraciones generales</strong><ul><li>Los cursos se dictarán en los sectores donde el personal desempeña sus tareas, durante el horario laboral.</li><li>Se incluirán análisis de eventos transcurridos en la empresa y en organizaciones afines.</li><li>Se difundirán procedimientos, instructivos y métodos seguros de trabajo elaborados durante el año.</li></ul></div></div></div>
 
     <div class="card" id="trainingModuleHome">
       <h3>Centro de gestión de capacitaciones</h3>
@@ -3929,6 +3929,7 @@ function asignacionSupabaseToTraining(row, personalRows, cursosRows) {
     supabaseCursoSstId: row.curso_sst_id,
     employee: employee.name,
     role: employee.role,
+    emergencyRole: employee.emergencyRole || employee.role || "Apoyo operativo",
     email: employee.email,
     courseId: planItem?.id || `${normalizeText(curso.nombre)}-${due}`,
     courseMonth: row.observaciones || planItem?.month || "",
@@ -4544,6 +4545,7 @@ async function guardarRealizacionSupabase(training) {
               <div>
                 <strong style="color:var(--ypf-blue-dark); font-size:16px;">${emp.name}</strong><br>
                 <small style="color:var(--gray-500); font-weight:800;">${emp.role}</small><br>
+                <small style="color:var(--gray-500); font-weight:800;">Rol emergencia: ${emp.emergencyRole || emp.role || "Apoyo operativo"}</small><br>
                 <span class="pill ${employeeStatusPillClass(status)}" style="margin-top:8px;">● ${status}</span>
               </div>
             </div>
@@ -4681,11 +4683,16 @@ async function guardarRealizacionSupabase(training) {
         }
 
         if (originalName && originalName !== person.name) {
-          trainings = trainings.map(t => t.employee === originalName ? { ...t, employee: person.name, role: person.role, email: person.email } : t);
+          trainings = trainings.map(t => t.employee === originalName ? {
+            ...t,
+            employee: person.name,
+            role: person.role,
+            emergencyRole: person.emergencyRole || person.role || "Apoyo operativo",
+            email: person.email
+          } : t);
           localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
         } else {
-          trainings = trainings.map(t => t.employee === person.name ? { ...t, role: person.role, email: person.email } : t);
-          localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+          sincronizarDatosPersonalEnCapacitaciones(person);
         }
 
         saveEmployees();
@@ -4840,6 +4847,34 @@ async function guardarRealizacionSupabase(training) {
         .replace(/[\u0300-\u036f]/g, "");
     }
 
+    function getCurrentEmployeeData(employeeName) {
+      return employees.find(e => e.name === employeeName) || {};
+    }
+
+    function getCurrentEmployeeRole(employeeName, fallback = "") {
+      const emp = getCurrentEmployeeData(employeeName);
+      return emp.role || fallback || "Personal SST";
+    }
+
+    function getCurrentEmergencyRole(employeeName, fallback = "") {
+      const emp = getCurrentEmployeeData(employeeName);
+      return emp.emergencyRole || fallback || emp.role || "Apoyo operativo";
+    }
+
+    function sincronizarDatosPersonalEnCapacitaciones(person) {
+      if (!person || !person.name) return;
+      trainings = trainings.map(t => {
+        if (t.employee !== person.name) return t;
+        return {
+          ...t,
+          role: person.role,
+          emergencyRole: person.emergencyRole || person.role || "Apoyo operativo",
+          email: person.email
+        };
+      });
+      localStorage.setItem("ypfTrainings", JSON.stringify(trainings));
+    }
+
 
     function isFutureScheduled(t) {
       return !t.done && daysTo(t.due) > 0;
@@ -4986,7 +5021,8 @@ async function guardarRealizacionSupabase(training) {
               <div class="employee-avatar">${initials}</div>
               <div>
                 <strong>${emp.name}</strong><br>
-                <small>${emp.role}</small>
+                <small>${emp.role}</small><br>
+                <small>Rol emergencia: ${emp.emergencyRole || emp.role || "Apoyo operativo"}</small>
               </div>
             </div>
 
@@ -5078,7 +5114,7 @@ async function guardarRealizacionSupabase(training) {
       detail.innerHTML = `
         <div class="employee-detail-header">
           <h3>${escapeHtml(employee.name)}</h3>
-          <p>${escapeHtml(employee.role)} · ${escapeHtml(employee.email)}</p>
+          <p>${escapeHtml(employee.role)} · Rol emergencia: ${escapeHtml(employee.emergencyRole || employee.role || "Apoyo operativo")} · ${escapeHtml(employee.email)}</p>
         </div>
 
         <div class="training-summary">
@@ -5614,7 +5650,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
         const existing = trainings.find(t => t.employee === emp.name && getTrainingRecordKey(t) === selectedCalendarCourse.id);
         const state = existing ? trainingState(existing) : "Sin asignar";
         const stateClass = existing ? trainingStateClass(state) : "programado";
-        return `<label class="multi-assign-item"><input type="checkbox" class="calendar-person-check" value="${emp.name}" ${existing ? "checked" : ""}><span><strong>${emp.name}</strong><br><small>${emp.role} · ${emp.legajo || `SST-${String(index+1).padStart(3,"0")}`}</small><br><span class="pill ${stateClass}">${state}</span></span></label>`;
+        return `<label class="multi-assign-item"><input type="checkbox" class="calendar-person-check" value="${emp.name}" ${existing ? "checked" : ""}><span><strong>${emp.name}</strong><br><small>${emp.role} · Rol emergencia: ${emp.emergencyRole || emp.role || "Apoyo operativo"} · ${emp.legajo || `SST-${String(index+1).padStart(3,"0")}`}</small><br><span class="pill ${stateClass}">${state}</span></span></label>`;
       }).join("");
     }
 
@@ -5642,6 +5678,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
             supabasePersonalId: employee.supabaseId,
             employee: employee.name,
             role: employee.role,
+            emergencyRole: employee.emergencyRole || employee.role || "Apoyo operativo",
             email: employee.email,
             courseId: selectedCalendarCourse.id,
             courseMonth: selectedCalendarCourse.month,
@@ -6071,7 +6108,8 @@ const courseCounts = courses.slice(0, 7).map(course => {
               Se deja constancia de que
               <span class="person">${escapeHtml(t.employee)}</span>
               DNI <b>${escapeHtml(employee.dni || "A completar")}</b> · Legajo <b>${escapeHtml(employee.legajo || "A completar")}</b><br>
-              Cargo/rol: <b>${escapeHtml(t.role || employee.role || "Personal SST")}</b><br>
+              Cargo/función: <b>${escapeHtml(getCurrentEmployeeRole(t.employee, t.role || employee.role || "Personal SST"))}</b><br>
+              Rol de emergencia: <b>${escapeHtml(getCurrentEmergencyRole(t.employee, t.emergencyRole || employee.emergencyRole || t.role || employee.role || "Apoyo operativo"))}</b><br>
               realizó satisfactoriamente la capacitación:
               <span class="course">${escapeHtml(t.course)}</span>
             </div>
@@ -6196,7 +6234,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
             <td>${escapeHtml(record.employee || "")}</td>
             <td>${escapeHtml(employee.dni || "")}</td>
             <td>${escapeHtml(employee.legajo || "")}</td>
-            <td>${escapeHtml(employee.role || record.role || "")}</td>
+            <td>${escapeHtml(getCurrentEmergencyRole(record.employee, record.emergencyRole || employee.emergencyRole || employee.role || record.role || ""))}</td>
             <td>${escapeHtml(estado)}</td>
             <td class="signature"></td>
           </tr>
@@ -6551,11 +6589,12 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const updatedRecord = {
         employee: employee.name,
         role: employee.role,
+        emergencyRole: employee.emergencyRole || employee.role || "Apoyo operativo",
         email,
         course,
         done,
         completed: done ? completed : "",
-        due: done ? calculateTrainingDueISO(completed, selectedCalendarCourse.course) : due
+        due: done ? calculateTrainingDueISO(completed, course) : due
       };
 
       try {
