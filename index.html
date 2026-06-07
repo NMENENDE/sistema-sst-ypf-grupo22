@@ -4034,7 +4034,9 @@ async function cargarDashboardKpisSupabase(silent = false) {
     return !esRealizada(row) && f && f > limite30;
   }).length;
   const pendientes = Math.max(pendientesTotales - vencidas, 0);
-  const compliance = total ? Math.round((realizadas / total) * 100) : 0;
+  // Cumplimiento de vigencia: las pendientes NO penalizan mientras no estén vencidas.
+  // Solo descuentan las capacitaciones vencidas.
+  const compliance = total ? Math.round(((total - vencidas) / total) * 100) : 0;
 
   supabaseDashboardKpis = {
     source: "asignaciones_capacitacion",
@@ -5276,7 +5278,7 @@ async function guardarRealizacionSupabase(training) {
       const vencidas = kpi ? (kpi.vencidas || 0) : rows.filter(t => trainingState(t) === "Vencida" || trainingState(t) === "Realizada vencida").length;
       const porVencer = kpi ? (kpi.porVencer || 0) : rows.filter(t => trainingState(t) === "Pendiente" || trainingState(t) === "Realizada por vencer").length;
       const programadas = kpi ? (kpi.programadas || 0) : rows.filter(t => trainingState(t) === "Programada").length;
-      const compliance = total ? Math.round((realizadas / total) * 100) : 0;
+      const compliance = total ? Math.round(((total - vencidas) / total) * 100) : 0;
 
       const byCourse = {};
       rows.forEach(t => {
@@ -5406,18 +5408,64 @@ async function guardarRealizacionSupabase(training) {
       `).join("");
     }
 
+
+    function getDashboardKpisFromTrainings() {
+      const rows = Array.isArray(trainings) ? trainings.filter(Boolean) : [];
+      const total = rows.length;
+
+      const realizadas = rows.filter(t => !!t.done).length;
+      const pendientesTotales = rows.filter(t => !t.done).length;
+      const vencidas = rows.filter(t => {
+        const state = trainingState(t);
+        return state === "Vencida" || state === "Realizada vencida";
+      }).length;
+      const porVencer = rows.filter(t => {
+        const state = trainingState(t);
+        return state === "Pendiente" || state === "Realizada por vencer";
+      }).length;
+      const programadas = rows.filter(t => trainingState(t) === "Programada").length;
+      const pendientes = rows.filter(t => {
+        const state = trainingState(t);
+        return !t.done && (state === "Pendiente" || state === "Programada");
+      }).length;
+
+      // KPI correcto para la tarjeta "Capacitaciones vigentes":
+      // pendientes/programadas sin vencer NO bajan el porcentaje.
+      const compliance = total ? Math.round(((total - vencidas) / total) * 100) : 0;
+
+      return {
+        source: "trainings_vigencia",
+        rows,
+        total,
+        asignadas: total,
+        realizadas,
+        pendientes,
+        pendientesTotales,
+        porVencer,
+        programadas,
+        vencidas,
+        validas: total - vencidas,
+        compliance
+      };
+    }
+
     function renderDashboard() {
       const total = employees.length;
       const globalStats = getGlobalTrainingStats();
       const usarKpiSupabase = typeof supabaseDashboardKpis !== "undefined" && supabaseDashboardKpis && Array.isArray(supabaseDashboardKpis.rows);
       const kpiAsignaciones = usarKpiSupabase && supabaseDashboardKpis.source === "asignaciones_capacitacion";
-      const porVencer = usarKpiSupabase ? supabaseDashboardKpis.porVencer : globalStats.porVencer;
-      const vencidas = usarKpiSupabase ? supabaseDashboardKpis.vencidas : globalStats.vencidas;
-      const pendientes = usarKpiSupabase ? (supabaseDashboardKpis.pendientesTotales ?? supabaseDashboardKpis.pendientes ?? 0) : globalStats.pendientes;
-      const programadas = usarKpiSupabase ? (supabaseDashboardKpis.programadas ?? 0) : globalStats.programadas;
-      const compliance = usarKpiSupabase ? supabaseDashboardKpis.compliance : globalStats.compliance;
-      const realizadasSupabase = usarKpiSupabase ? (supabaseDashboardKpis.realizadas ?? supabaseDashboardKpis.validas ?? 0) : globalStats.realizadas;
-      const totalSupabase = usarKpiSupabase ? supabaseDashboardKpis.total : globalStats.totalRequired;
+
+      // Para el panel general, el cumplimiento representa VIGENCIA:
+      // pendientes/programadas que todavía no vencieron NO bajan el porcentaje.
+      const kpiVigencia = kpiAsignaciones ? getDashboardKpisFromTrainings() : null;
+
+      const porVencer = kpiVigencia ? kpiVigencia.porVencer : (usarKpiSupabase ? supabaseDashboardKpis.porVencer : globalStats.porVencer);
+      const vencidas = kpiVigencia ? kpiVigencia.vencidas : (usarKpiSupabase ? supabaseDashboardKpis.vencidas : globalStats.vencidas);
+      const pendientes = kpiVigencia ? kpiVigencia.pendientesTotales : (usarKpiSupabase ? (supabaseDashboardKpis.pendientesTotales ?? supabaseDashboardKpis.pendientes ?? 0) : globalStats.pendientes);
+      const programadas = kpiVigencia ? kpiVigencia.programadas : (usarKpiSupabase ? (supabaseDashboardKpis.programadas ?? 0) : globalStats.programadas);
+      const compliance = kpiVigencia ? kpiVigencia.compliance : (usarKpiSupabase ? supabaseDashboardKpis.compliance : globalStats.compliance);
+      const realizadasSupabase = kpiVigencia ? kpiVigencia.realizadas : (usarKpiSupabase ? (supabaseDashboardKpis.realizadas ?? supabaseDashboardKpis.validas ?? 0) : globalStats.realizadas);
+      const totalSupabase = kpiVigencia ? kpiVigencia.total : (usarKpiSupabase ? supabaseDashboardKpis.total : globalStats.totalRequired);
 
       document.getElementById("totalEmployees").textContent = total;
       document.getElementById("compliance").textContent = compliance + "%";
