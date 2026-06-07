@@ -3909,7 +3909,17 @@ function findTrainingPlanItemByCourseAndMonth(courseName, monthName) {
     || getAllTrainingPlanItems().find(item => item.course === courseName);
 }
 
-function asignacionSupabaseToTraining(row, personalRows, cursosRows) {
+function buscarRealizacionParaAsignacion(row, curso, realizacionesRows = []) {
+  const samePerson = realizacionesRows.filter(r => String(r.persona_id) === String(row.persona_id));
+  const byName = samePerson.filter(r => normalizeText(r.curso_nombre || "") === normalizeText(curso.nombre || ""));
+  const byCourseId = samePerson.filter(r => String(r.curso_id || "") === String(row.id || "") || String(r.curso_id || "") === String(row.curso_sst_id || ""));
+  const candidates = [...byName, ...byCourseId]
+    .filter((item, idx, arr) => arr.findIndex(x => String(x.id || JSON.stringify(x)) === String(item.id || JSON.stringify(item))) === idx)
+    .sort((a, b) => String(b.fecha_realizacion || "").localeCompare(String(a.fecha_realizacion || "")));
+  return candidates[0] || null;
+}
+
+function asignacionSupabaseToTraining(row, personalRows, cursosRows, realizacionesRows = []) {
   const person = personalRows.find(p => String(p.id) === String(row.persona_id));
   const curso = cursosRows.find(c => String(c.id) === String(row.curso_sst_id));
   if (!person || !curso) return null;
@@ -3917,11 +3927,15 @@ function asignacionSupabaseToTraining(row, personalRows, cursosRows) {
   const employee = supabaseRowToEmployee(person);
   const planItem = findTrainingPlanItemByCourseAndMonth(curso.nombre, row.observaciones || "")
     || getAllTrainingPlanItems().find(item => item.course === curso.nombre);
-  const done = String(row.estado || "").toLowerCase() === "realizado";
-  const completed = row.fecha_realizacion || "";
+
+  const done = String(row.estado || "").toLowerCase().startsWith("realiz");
+  const realizacion = done ? buscarRealizacionParaAsignacion(row, curso, realizacionesRows) : null;
+
+  const completed = row.fecha_realizacion || realizacion?.fecha_realizacion || "";
+  const plannedDue = row.fecha_programada || planItem?.due || "";
   const due = done
-    ? (row.fecha_vencimiento || (completed ? calculateTrainingDueISO(completed, curso.nombre) : row.fecha_programada || planItem?.due || ""))
-    : (row.fecha_programada || planItem?.due || "");
+    ? (row.fecha_vencimiento || realizacion?.fecha_vencimiento || (completed ? calculateTrainingDueISO(completed, curso.nombre) : plannedDue))
+    : plannedDue;
 
   return {
     supabaseId: row.id,
@@ -3931,20 +3945,22 @@ function asignacionSupabaseToTraining(row, personalRows, cursosRows) {
     role: employee.role,
     emergencyRole: employee.emergencyRole || employee.role || "Apoyo operativo",
     email: employee.email,
-    courseId: planItem?.id || `${normalizeText(curso.nombre)}-${due}`,
+    courseId: planItem?.id || `${normalizeText(curso.nombre)}-${plannedDue || due}`,
     courseMonth: row.observaciones || planItem?.month || "",
     course: curso.nombre,
     done,
     completed,
-    due
+    due,
+    plannedDue
   };
 }
 
 async function cargarAsignacionesSupabase(silent = false) {
-  const [asigRes, personalRes, cursosRes] = await Promise.all([
+  const [asigRes, personalRes, cursosRes, realizacionesRes] = await Promise.all([
     supabaseClient.from("asignaciones_capacitacion").select("*"),
     supabaseClient.from("personal").select("*"),
-    supabaseClient.from("cursos_sst").select("*")
+    supabaseClient.from("cursos_sst").select("*"),
+    supabaseClient.from("realizaciones").select("*")
   ]);
 
   if (asigRes.error || personalRes.error || cursosRes.error) {
@@ -3953,12 +3969,17 @@ async function cargarAsignacionesSupabase(silent = false) {
     return false;
   }
 
+  if (realizacionesRes.error) {
+    console.warn("No se pudieron leer realizaciones. Se cargan asignaciones sin enriquecer certificados:", realizacionesRes.error);
+  }
+
   supabaseAsignaciones = asigRes.data || [];
   supabaseCursosSst = cursosRes.data || supabaseCursosSst || [];
+  const realizacionesRows = realizacionesRes.data || [];
 
   if (supabaseAsignaciones.length > 0) {
     const mapped = supabaseAsignaciones
-      .map(row => asignacionSupabaseToTraining(row, personalRes.data || [], supabaseCursosSst))
+      .map(row => asignacionSupabaseToTraining(row, personalRes.data || [], supabaseCursosSst, realizacionesRows))
       .filter(Boolean);
 
     if (mapped.length > 0) {
@@ -4067,7 +4088,9 @@ async function guardarAsignacionSupabase(employee, selectedCourse, done, complet
   const payload = {
     persona_id: employee.supabaseId,
     curso_sst_id: curso.id,
-    fecha_programada: due,
+    // fecha_programada conserva la fecha objetivo del cronograma.
+    // Si la capacitación se realiza, la fecha real y la vigencia quedan registradas en la tabla realizaciones.
+    fecha_programada: selectedCourse.due || due,
     estado: done ? "Realizado" : "Pendiente",
     observaciones: selectedCourse.month || ""
   };
@@ -5685,7 +5708,8 @@ const courseCounts = courses.slice(0, 7).map(course => {
             course: selectedCalendarCourse.course,
             done,
             completed: done ? completed : "",
-            due: done ? calculateTrainingDueISO(completed, selectedCalendarCourse.course) : due
+            due: done ? calculateTrainingDueISO(completed, selectedCalendarCourse.course) : due,
+            plannedDue: selectedCalendarCourse.due || due
           };
           if (existingIndex >= 0) trainings[existingIndex] = { ...trainings[existingIndex], ...record };
           else trainings.push(record);
@@ -6676,20 +6700,27 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
       const todayISO = today.toISOString().slice(0, 10);
       const employee = employees.find(e => e.name === training.employee);
+      const planItem = getPlanItemById(training.courseId)
+        || getAllTrainingPlanItems().find(item => item.course === training.course && item.month === training.courseMonth)
+        || getAllTrainingPlanItems().find(item => item.course === training.course);
+
+      // Conservamos la fecha planificada del calendario para que la matriz mensual no se desordene.
+      const plannedDue = training.plannedDue || planItem?.due || training.due;
 
       training.done = true;
       training.completed = todayISO;
       training.due = calculateTrainingDueISO(todayISO, training.course);
+      training.plannedDue = plannedDue;
 
       try {
         if (employee) {
           const selectedCourse = {
-            id: training.courseId || getTrainingRecordKey(training),
+            id: training.courseId || planItem?.id || getTrainingRecordKey(training),
             course: training.course,
-            month: training.courseMonth || "Registro manual",
-            due: training.due
+            month: training.courseMonth || planItem?.month || "Registro manual",
+            due: plannedDue
           };
-          const supabaseAssignmentId = await guardarAsignacionSupabase(employee, selectedCourse, true, todayISO, training.due);
+          const supabaseAssignmentId = await guardarAsignacionSupabase(employee, selectedCourse, true, todayISO, plannedDue);
           training.supabaseId = supabaseAssignmentId;
           training.supabasePersonalId = employee.supabaseId;
         }
