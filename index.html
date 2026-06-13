@@ -4025,11 +4025,16 @@
         </div>
         <div class="footer-note">Firma digital: Responsable SST / Encargado de turno / Dirección. Adjuntos: evidencia fotográfica, acta, checklist, planilla o informe.</div>
         <br>
-        <button class="primary" onclick="saveSstRecord()">Guardar registro SST</button>
+        <button class="primary" onclick="saveSstRecord(event)">Guardar registro SST</button>
         <button class="secondary" onclick="clearSstForm()">Limpiar</button>
       </div>
       <div class="card">
         <h3>Campos guía por tipo</h3>
+        <div class="traceability-card">
+          Trazabilidad del registro
+          <small>Al guardar, el registro queda asociado al Riesgo IPER y al Requisito de Matriz Legal seleccionados. Si no se seleccionan, el sistema intenta inferirlos por palabras clave como matafuegos, simulacro, legal, incidente, capacitación, EPP, botiquín o derrames.</small>
+          <small>Flujo: Registro SST → IPER → Matriz Legal → Acción Correctiva → KPI.</small>
+        </div>
         <div id="sstTypeGuide" class="grid"></div>
       </div>
     </div>
@@ -9684,6 +9689,8 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
     function clearSstForm() {
       ["sstRecordResponsible","sstRecordSector","sstRecordFinding","sstRecordRisk","sstRecordAction","sstRecordDue","sstRecordObservations"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+      ["sstRecordIperId","sstRecordLegalId"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+      const gen = document.getElementById("sstRecordGenerateAction"); if (gen) gen.value = "no";
       const date = document.getElementById("sstRecordDate"); if (date) date.value = today.toISOString().slice(0,10);
       const state = document.getElementById("sstRecordState"); if (state) state.value = "Pendiente";
       updateSstRecordCode();
@@ -9844,7 +9851,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       return "";
     }
 
-    async function saveSstRecord() {
+    async function saveSstRecord(evt) {
       const type = document.getElementById("sstRecordType")?.value || "Inspección";
       const record = {
         code: document.getElementById("sstRecordCode")?.value || nextSstCode(type),
@@ -9876,7 +9883,7 @@ Matriz Legal asociada: ${sstLegalLabel(legalRow)}`;
       }
 
       // Evita doble guardado por click repetido y muestra estado real al usuario.
-      const saveBtn = event?.target;
+      const saveBtn = evt?.target || document.querySelector('button[onclick^="saveSstRecord"]');
       if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = "Guardando..."; }
 
       const monitoreoRelacionado = inferMonitoreoNameFromRecord(record);
