@@ -5132,15 +5132,49 @@ async function actualizarMonitoreoSupabasePorNombre(nombre, estado = "Actualizad
   return true;
 }
 
+function getSstPrefixByType(type) {
+  const map = { "Inspección":"INS", "Observación":"OBS", "Verificación":"VER", "Auditoría Interna":"AUD", "Investigación":"INV", "Revisión por la Dirección":"RD", "No Conformidad":"NC", "Acción Correctiva":"AC", "Simulacro":"SIM" };
+  return map[type] || "REG";
+}
+
 async function obtenerCodigoRegistroSstDesdeSupabase(tipo) {
+  const prefix = getSstPrefixByType(tipo);
+  const year = String(new Date().getFullYear());
+
+  // 1) Primero intenta usar la función SQL oficial de Supabase.
   try {
-    const { data, error } = await supabaseClient.rpc("next_registro_sst_codigo", { p_tipo: tipo });
-    if (error) throw error;
-    return data || nextSstCode(tipo);
+    if (typeof supabaseClient !== "undefined" && supabaseClient?.rpc) {
+      const { data, error } = await supabaseClient.rpc("next_registro_sst_codigo", { p_tipo: tipo });
+      if (!error && data) return data;
+      if (error) console.warn("RPC next_registro_sst_codigo no disponible para el cliente:", error);
+    }
   } catch (error) {
-    console.warn("No se pudo obtener código desde Supabase, se usa correlativo local:", error);
-    return nextSstCode(tipo);
+    console.warn("No se pudo llamar next_registro_sst_codigo:", error);
   }
+
+  // 2) Respaldo robusto: lee los códigos ya guardados en Supabase y calcula el siguiente.
+  try {
+    if (typeof supabaseClient !== "undefined" && supabaseClient?.from) {
+      const { data, error } = await supabaseClient
+        .from("registros_sst")
+        .select("codigo")
+        .ilike("codigo", `${prefix}-${year}-%`);
+      if (!error && Array.isArray(data)) {
+        let max = 0;
+        data.forEach(row => {
+          const m = String(row.codigo || "").match(new RegExp(`^${prefix}-${year}-(\\d+)$`));
+          if (m) max = Math.max(max, parseInt(m[1], 10) || 0);
+        });
+        return `${prefix}-${year}-${String(max + 1).padStart(3, "0")}`;
+      }
+      if (error) console.warn("No se pudieron leer códigos existentes de registros_sst:", error);
+    }
+  } catch (error) {
+    console.warn("No se pudo calcular código desde registros_sst:", error);
+  }
+
+  // 3) Último respaldo local, sólo si Supabase no respondió.
+  return nextSstCode(tipo);
 }
 
 async function actualizarCronogramaSupabasePorNombre(nombre, estado = "Realizado", fechaRealizada = null, observaciones = "") {
@@ -10125,34 +10159,49 @@ const courseCounts = courses.slice(0, 7).map(course => {
     }
 
     async function insertRegistroSstWithTraceability(record) {
-      const payload = registroLocalToSupabaseRow(record);
-      let { data, error } = await supabaseClient
-        .from("registros_sst")
-        .insert([payload])
-        .select("*")
-        .single();
+      let payload = registroLocalToSupabaseRow(record);
+      let data = null;
+      let error = null;
 
-      // Si la base todavía no tiene iper_id/legal_id/accion_correctiva_id, reintenta sin esos campos.
-      if (error && /column|schema cache|iper_id|legal_id|accion_correctiva_id/i.test(error.message || "")) {
-        delete payload.iper_id;
-        delete payload.legal_id;
-        delete payload.accion_correctiva_id;
-        const retry = await supabaseClient
+      for (let attempt = 0; attempt < 6; attempt++) {
+        const result = await supabaseClient
           .from("registros_sst")
           .insert([payload])
           .select("*")
           .single();
-        data = retry.data;
-        error = retry.error;
+
+        data = result.data;
+        error = result.error;
+
+        // Si la base todavía no tiene algún campo nuevo, reintenta sin esos campos.
+        if (error && /column|schema cache|iper_id|legal_id|accion_correctiva_id/i.test(error.message || "")) {
+          delete payload.iper_id;
+          delete payload.legal_id;
+          delete payload.accion_correctiva_id;
+          delete payload.monitoreo_nombre;
+          delete payload.alcance;
+          delete payload.iper_asociado;
+          delete payload.legal_asociado;
+          delete payload.frecuencia_cronograma;
+          delete payload.registro_asociado;
+          delete payload.instrumental;
+          continue;
+        }
+
+        // Si el código está duplicado, pide/calcula otro y reintenta sin guardar localmente el duplicado.
+        if (error && /duplicate key|registros_sst_codigo_key/i.test(error.message || "")) {
+          const tipo = record.type || "Inspección";
+          const nextCode = await obtenerCodigoRegistroSstDesdeSupabase(tipo);
+          record.code = nextCode;
+          payload.codigo = nextCode;
+          const codeEl = document.getElementById("sstRecordCode");
+          if (codeEl) codeEl.value = nextCode;
+          continue;
+        }
+
+        break;
       }
-      if (error && /duplicate key|registros_sst_codigo_key/i.test(error.message || "")) {
-        const tipo = record.type || "Inspección";
-        record.code = await obtenerCodigoRegistroSstDesdeSupabase(tipo);
-        payload.codigo = record.code;
-        const retryDup = await supabaseClient.from("registros_sst").insert([payload]).select("*").single();
-        data = retryDup.data;
-        error = retryDup.error;
-      }
+
       if (error) throw error;
       return data;
     }
