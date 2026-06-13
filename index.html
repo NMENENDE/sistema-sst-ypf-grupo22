@@ -5137,6 +5137,21 @@ function getSstPrefixByType(type) {
   return map[type] || "REG";
 }
 
+
+function incrementarCodigoRegistroSst(codigo, incremento = 1) {
+  const m = String(codigo || "").match(/^(.*-)(\d+)$/);
+  if (!m) return codigo || `REG-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
+  const n = (parseInt(m[2], 10) || 0) + incremento;
+  return `${m[1]}${String(n).padStart(m[2].length, "0")}`;
+}
+
+async function obtenerCodigoRegistroSstSeguro(tipo, codigoActual = "") {
+  // Siempre intenta pedir el próximo a Supabase. Si no puede, usa el código actual incrementado.
+  const rpcCode = await obtenerCodigoRegistroSstDesdeSupabase(tipo);
+  if (rpcCode && rpcCode !== codigoActual) return rpcCode;
+  return incrementarCodigoRegistroSst(codigoActual || rpcCode || nextSstCode(tipo), 1);
+}
+
 async function obtenerCodigoRegistroSstDesdeSupabase(tipo) {
   const prefix = getSstPrefixByType(tipo);
   const year = String(new Date().getFullYear());
@@ -10191,7 +10206,8 @@ const courseCounts = courses.slice(0, 7).map(course => {
         // Si el código está duplicado, pide/calcula otro y reintenta sin guardar localmente el duplicado.
         if (error && /duplicate key|registros_sst_codigo_key/i.test(error.message || "")) {
           const tipo = record.type || "Inspección";
-          const nextCode = await obtenerCodigoRegistroSstDesdeSupabase(tipo);
+          // Evita quedar trabado si el RPC o la caché devuelven el mismo código repetido.
+          const nextCode = await obtenerCodigoRegistroSstSeguro(tipo, payload.codigo || record.code);
           record.code = nextCode;
           payload.codigo = nextCode;
           const codeEl = document.getElementById("sstRecordCode");
@@ -10266,123 +10282,123 @@ const courseCounts = courses.slice(0, 7).map(course => {
     }
 
     async function saveSstRecord(evt) {
-      const type = document.getElementById("sstRecordType")?.value || "Inspección";
-      const record = {
-        code: await obtenerCodigoRegistroSstDesdeSupabase(type),
-        type,
-        date: document.getElementById("sstRecordDate")?.value || today.toISOString().slice(0,10),
-        responsible: document.getElementById("sstRecordResponsible")?.value.trim() || "Responsable SST",
-        sector: document.getElementById("sstRecordSector")?.value.trim() || "Sector operativo",
-        state: document.getElementById("sstRecordState")?.value || "Pendiente",
-        finding: document.getElementById("sstRecordFinding")?.value.trim() || "Registro SST",
-        risk: document.getElementById("sstRecordRisk")?.value.trim() || "Riesgo asociado según IPER",
-        iperId: document.getElementById("sstRecordIperId")?.value || "",
-        legalId: document.getElementById("sstRecordLegalId")?.value || "",
-        action: document.getElementById("sstRecordAction")?.value.trim() || "Definir acción de seguimiento",
-        due: document.getElementById("sstRecordDue")?.value || "",
-        observations: document.getElementById("sstRecordObservations")?.value.trim() || "Sin observaciones adicionales."
-      };
-
-      const traceBundle = getTraceabilityBundleFromRecord(record);
-      record.monitoreoNombre = traceBundle.monitoringName || record.finding;
-      record.alcance = traceBundle.monitoring?.sector || record.sector;
-      record.iperAsociado = traceBundle.iper ? sstIperLabel(traceBundle.iper) : (traceBundle.riskText || record.risk);
-      record.legalAsociado = traceBundle.legal ? sstLegalLabel(traceBundle.legal) : (traceBundle.legalText || "");
-      record.frecuenciaCronograma = `${traceBundle.monitoring?.frequency || ""}${traceBundle.monitoring?.schedule ? " · " + traceBundle.monitoring.schedule : ""}`.trim();
-      record.registroAsociado = traceBundle.monitoring?.registroAsociado || "Registro SST";
-      record.instrumental = traceBundle.monitoring?.instrumental || "Registro operativo / documental SST";
-      record.generaAccionCorrectiva = document.getElementById("sstRecordGenerateAction")?.value === "si";
-      const codeEl = document.getElementById("sstRecordCode");
-      if (codeEl) codeEl.value = record.code;
-
-      const inferredTrace = inferTraceabilityFromRecord(record);
-      if (!record.iperId && inferredTrace.iperId) record.iperId = String(inferredTrace.iperId);
-      if (!record.legalId && inferredTrace.legalId) record.legalId = String(inferredTrace.legalId);
-      if ((!record.risk || normalizeText(record.risk).includes("riesgo asociado")) && inferredTrace.riskText) record.risk = inferredTrace.riskText;
-      if (inferredTrace.monitoringName && !normalizeText(record.observations).includes("monitoreo asociado")) {
-        record.observations += `
-Monitoreo asociado: ${inferredTrace.monitoringName}`;
-      }
-      const iperRow = (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId));
-      const legalRow = (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId));
-      if (iperRow) record.risk = sstIperLabel(iperRow);
-      if (legalRow && !normalizeText(record.observations).includes("requisito legal vinculado")) {
-        record.observations += `
-Requisito legal vinculado: ${sstLegalLabel(legalRow)}`;
-      }
-
-      // Evita doble guardado por click repetido y muestra estado real al usuario.
       const saveBtn = evt?.target || document.querySelector('button[onclick^="saveSstRecord"]');
+      const oldBtnText = saveBtn ? saveBtn.textContent : "Guardar registro SST";
       if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = "Guardando..."; }
 
-      const monitoreoRelacionado = inferMonitoreoNameFromRecord(record);
+      let record = null;
       let insertedOk = false;
-      let monitoreoOk = false;
+      let monitoreoRelacionado = "";
+      let generatedAction = null;
+      let traceMsg = "";
 
       try {
+        const type = document.getElementById("sstRecordType")?.value || "Inspección";
+        const codigoInicial = await obtenerCodigoRegistroSstDesdeSupabase(type);
+        record = {
+          code: codigoInicial,
+          type,
+          date: document.getElementById("sstRecordDate")?.value || today.toISOString().slice(0,10),
+          responsible: document.getElementById("sstRecordResponsible")?.value.trim() || "Responsable SST",
+          sector: document.getElementById("sstRecordSector")?.value.trim() || "Sector operativo",
+          state: document.getElementById("sstRecordState")?.value || "Pendiente",
+          finding: document.getElementById("sstRecordFinding")?.value.trim() || "Registro SST",
+          risk: document.getElementById("sstRecordRisk")?.value.trim() || "Riesgo asociado según IPER",
+          iperId: document.getElementById("sstRecordIperId")?.value || "",
+          legalId: document.getElementById("sstRecordLegalId")?.value || "",
+          action: document.getElementById("sstRecordAction")?.value.trim() || "Definir acción de seguimiento",
+          due: document.getElementById("sstRecordDue")?.value || "",
+          observations: document.getElementById("sstRecordObservations")?.value.trim() || "Sin observaciones adicionales."
+        };
+
+        const codeEl = document.getElementById("sstRecordCode");
+        if (codeEl) codeEl.value = record.code;
+
+        const traceBundle = getTraceabilityBundleFromRecord(record);
+        record.monitoreoNombre = traceBundle.monitoringName || record.finding;
+        record.alcance = traceBundle.monitoring?.sector || record.sector;
+        record.iperAsociado = traceBundle.iper ? sstIperLabel(traceBundle.iper) : (traceBundle.riskText || record.risk);
+        record.legalAsociado = traceBundle.legal ? sstLegalLabel(traceBundle.legal) : (traceBundle.legalText || "");
+        record.frecuenciaCronograma = `${traceBundle.monitoring?.frequency || ""}${traceBundle.monitoring?.schedule ? " · " + traceBundle.monitoring.schedule : ""}`.trim();
+        record.registroAsociado = traceBundle.monitoring?.registroAsociado || "Registro SST";
+        record.instrumental = traceBundle.monitoring?.instrumental || "Registro operativo / documental SST";
+        record.generaAccionCorrectiva = document.getElementById("sstRecordGenerateAction")?.value === "si";
+
+        const inferredTrace = inferTraceabilityFromRecord(record);
+        if (!record.iperId && inferredTrace.iperId) record.iperId = String(inferredTrace.iperId);
+        if (!record.legalId && inferredTrace.legalId) record.legalId = String(inferredTrace.legalId);
+        if ((!record.risk || normalizeText(record.risk).includes("riesgo asociado")) && inferredTrace.riskText) record.risk = inferredTrace.riskText;
+        if (inferredTrace.monitoringName && !normalizeText(record.observations).includes("monitoreo asociado")) {
+          record.observations += `\nMonitoreo asociado: ${inferredTrace.monitoringName}`;
+        }
+        const iperRow = (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId));
+        const legalRow = (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId));
+        if (iperRow) record.risk = sstIperLabel(iperRow);
+        if (legalRow && !normalizeText(record.observations).includes("requisito legal vinculado")) {
+          record.observations += `\nRequisito legal vinculado: ${sstLegalLabel(legalRow)}`;
+        }
+
+        monitoreoRelacionado = inferMonitoreoNameFromRecord(record);
+
+        // Inserta en Supabase con reintentos por código duplicado.
         const data = await insertRegistroSstWithTraceability(record);
         insertedOk = true;
         if (data) record.supabaseId = data.id;
-      } catch (error) {
-        console.error("No se pudo guardar registros_sst:", error);
-        showToast(`⚠️ No se pudo guardar en Supabase: ${error.message || "revisar permisos/RLS"}. Se conserva localmente.`);
-      }
 
-      // Siempre actualiza la vista local para que el usuario vea el registro aunque Supabase falle.
-      sstRecords = sstRecords.filter(r => r.code !== record.code);
-      sstRecords.unshift(record);
-      const generatedAction = await createCorrectiveActionRecord(record);
-      if (generatedAction) record.accionCorrectivaId = generatedAction.supabaseId || generatedAction.code;
-      localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
+        // Vista local inmediata.
+        sstRecords = sstRecords.filter(r => r.code !== record.code);
+        sstRecords.unshift(record);
+        localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
 
-      if (monitoreoRelacionado) {
-        const nuevoEstado = isClosedSstState(record.state) ? "Actualizado" : record.state;
-        try {
-          monitoreoOk = await actualizarMonitoreoSupabasePorNombre(monitoreoRelacionado, nuevoEstado, record.date, record.observations);
+        generatedAction = await createCorrectiveActionRecord(record);
+        if (generatedAction) record.accionCorrectivaId = generatedAction.supabaseId || generatedAction.code;
+
+        // Impacto en monitoreo / cronograma.
+        if (monitoreoRelacionado) {
+          const nuevoEstado = isClosedSstState(record.state) ? "Actualizado" : record.state;
+          await actualizarMonitoreoSupabasePorNombre(monitoreoRelacionado, nuevoEstado, record.date, record.observations);
           if (isClosedSstState(record.state)) {
             await actualizarCronogramaSupabasePorNombre(monitoreoRelacionado, "Realizado", record.date, record.observations);
           }
-        } catch (error) {
-          console.warn("No se pudo actualizar monitoreo relacionado:", error);
-        }
 
-        // Actualización local del programa para que el KPI impacte inmediatamente.
-        if (typeof monitoringProgram !== "undefined") {
-          const item = monitoringProgram.find(m => normalizeText(m.item || "") === normalizeText(monitoreoRelacionado));
-          if (item) {
-            item.status = estadoMonitoreoNormalizado(isClosedSstState(record.state) ? "Actualizado" : record.state);
-            item.fechaRealizada = record.date;
-            item.observaciones = record.observations;
+          if (typeof monitoringProgram !== "undefined") {
+            const item = monitoringProgram.find(m => normalizeText(m.item || "") === normalizeText(monitoreoRelacionado));
+            if (item) {
+              item.status = estadoMonitoreoNormalizado(isClosedSstState(record.state) ? "Actualizado" : record.state);
+              item.fechaRealizada = record.date;
+              item.observaciones = record.observations;
+            }
+          }
+          if (typeof sstSchedule !== "undefined" && Array.isArray(sstSchedule)) {
+            const sched = sstSchedule.find(x => normalizeText(x.activity || "") === normalizeText(monitoreoRelacionado));
+            if (sched && isClosedSstState(record.state)) {
+              sched.estado = "Realizado";
+              sched.fechaRealizada = record.date;
+            }
           }
         }
-        if (typeof sstSchedule !== "undefined" && Array.isArray(sstSchedule)) {
-          const sched = sstSchedule.find(x => normalizeText(x.activity || "") === normalizeText(monitoreoRelacionado));
-          if (sched && isClosedSstState(record.state)) {
-            sched.estado = "Realizado";
-            sched.fechaRealizada = record.date;
-          }
-        }
-      }
 
-      // Solo recarga desde Supabase si se insertó correctamente; si no, no pisa el registro local recién cargado.
-      if (insertedOk) {
         await cargarSstSupabase(true);
-      } else {
-        refreshAll();
+        renderVerificationModule();
+        clearSstForm();
+        showVerificationTab("historial");
+
+        traceMsg = `${record.iperId ? " · IPER vinculado" : ""}${record.legalId ? " · Legal vinculado" : ""}${generatedAction ? " · Acción correctiva generada" : ""}`;
+        if (monitoreoRelacionado) showToast(`✅ Registro guardado. Impactó en: ${monitoreoRelacionado}${traceMsg}.`);
+        else showToast(`✅ Registro SST guardado${traceMsg}. No se detectó un monitoreo asociado automáticamente.`);
+      } catch (error) {
+        console.error("Error general al guardar Registro SST:", error);
+        // Si el INSERT falló, conserva localmente y NO deja el botón trabado.
+        if (record) {
+          sstRecords = sstRecords.filter(r => r.code !== record.code);
+          sstRecords.unshift(record);
+          localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
+          refreshAll();
+        }
+        showToast(`⚠️ No se pudo guardar en Supabase: ${error.message || "revisar permisos/RLS"}. Se conserva localmente.`);
+      } finally {
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = oldBtnText || "Guardar registro SST"; }
       }
-
-      renderVerificationModule();
-      clearSstForm();
-      showVerificationTab("historial");
-
-      const traceMsg = `${record.iperId ? " · IPER vinculado" : ""}${record.legalId ? " · Legal vinculado" : ""}${generatedAction ? " · Acción correctiva generada" : ""}`;
-      if (insertedOk && monitoreoRelacionado) {
-        showToast(`✅ Registro guardado. Impactó en: ${monitoreoRelacionado}${traceMsg}.`);
-      } else if (insertedOk) {
-        showToast(`✅ Registro SST guardado${traceMsg}. No se detectó un monitoreo asociado automáticamente.`);
-      }
-
-      if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = "Guardar registro SST"; }
     }
 
     function showVerificationTab(tab) {
