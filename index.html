@@ -4656,7 +4656,246 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+
+/* ===== PARCHE FINAL: Matriz maestra de trazabilidad SST 01-16 =====
+   Fuente única para Nuevo Registro → Monitoreo → IPER → Legal → Cronograma → KPI.
+   No elimina la integración Supabase: usa IDs reales cuando encuentra coincidencia y usa texto local cuando no hay match.
+*/
+const SST_MONITORING_TRACE_MASTER = [
+  { order:1, item:"Cumplimiento del Plan Anual de Capacitación", sector:"Todo el personal operativo, administrativo y mandos medios", iper:"Falta de competencia preventiva, incumplimiento de procedimientos SST y mayor probabilidad de incidentes por desconocimiento", legal:"Ley 19.587 · Decreto 351/79 Cap. 21 · Res. SRT 905/15 · ISO 45001:2018 cláusulas 7.2 y 7.3", frequency:"Mensual", registro:"Registro de Capacitación / Plan Anual de Capacitación", instrumental:"Plan anual, listado de cursos, asistencia, certificados y evidencias", action:"Verificar ejecución del plan anual y regularizar capacitaciones pendientes" },
+  { order:2, item:"Control de Asistencia a Capacitaciones", sector:"Todo el personal alcanzado por el plan de capacitación", iper:"Personal sin participación registrada, falta de evidencia de formación y brechas de competencia preventiva", legal:"Ley 19.587 · Decreto 351/79 · Res. SRT 905/15 · ISO 45001:2018 cláusula 7.2", frequency:"Mensual", registro:"Planilla de Asistencia", instrumental:"Listado de asistencia, firma de participantes y registro digital", action:"Regularizar asistencia, reprogramar ausentes y conservar evidencia" },
+  { order:3, item:"Vigencia de Certificados", sector:"Legajos, certificados y registros de capacitación del personal", iper:"Certificados vencidos o sin renovación, pérdida de trazabilidad documental y falta de competencia vigente", legal:"Ley 19.587 · Decreto 351/79 · Res. SRT 905/15 · ISO 45001:2018 información documentada", frequency:"Mensual", registro:"Registro de Certificados", instrumental:"Matriz de vencimientos, certificados emitidos y legajos", action:"Renovar certificados vencidos o próximos a vencer" },
+  { order:4, item:"Estado de Matafuegos", sector:"Playa, tienda, administración, tableros eléctricos, descarga, GNC y sectores críticos", iper:"Incendio, explosión, respuesta inicial deficiente y equipos contra incendio no operativos", legal:"Ley 19.587 · Decreto 351/79 Cap. 18 Protección contra incendios · IRAM 3517", frequency:"Mensual", registro:"Check List de Inspección de Matafuegos", instrumental:"Registro visual, oblea/carga, manómetro, precinto, accesibilidad y señalización", action:"Corregir matafuegos vencidos, obstruidos, descargados o sin señalización" },
+  { order:5, item:"Estado de Luces de Emergencia", sector:"Salidas, rutas de evacuación, tienda, sanitarios, administración y sectores críticos", iper:"Evacuación deficiente ante corte eléctrico, baja visibilidad y demoras de respuesta", legal:"Ley 19.587 · Decreto 351/79 · criterios de evacuación, iluminación de emergencia y respuesta ante emergencias", frequency:"Mensual", registro:"Registro de Inspección de Luces de Emergencia", instrumental:"Prueba funcional, autonomía, ubicación, visibilidad y registro operativo/documental SST", action:"Reparar, reemplazar o instalar luces de emergencia no operativas" },
+  { order:6, item:"Estado de Botiquines", sector:"Tienda, administración, playa y punto de primeros auxilios", iper:"Respuesta inadecuada ante primeros auxilios, falta de insumos básicos y agravamiento de lesiones", legal:"Decreto 351/79 · primeros auxilios · Res. SRT 905/15 · procedimientos internos SST", frequency:"Mensual", registro:"Registro de Control de Botiquines", instrumental:"Checklist de stock, vencimientos, reposición y ubicación", action:"Reponer insumos faltantes o vencidos y verificar accesibilidad" },
+  { order:7, item:"Estado de Señalización", sector:"Todo el establecimiento: playa, tienda, depósitos, sanitarios, salidas, tableros y zonas de riesgo", iper:"Falta de advertencia, desorientación, evacuación deficiente e incumplimiento de obligaciones visuales", legal:"Decreto 351/79 Cap. 7 · señalización de seguridad · IRAM 10005 · ISO 7010", frequency:"Mensual", registro:"Registro de Inspección de Señalización", instrumental:"Inspección visual, cartelería, pictogramas, flechas, salidas y demarcaciones", action:"Reponer, corregir o mejorar señalización deteriorada, ausente o poco visible" },
+  { order:8, item:"Orden y Limpieza", sector:"Playa, tienda, sanitarios, circulación, depósito de insumos y sectores operativos", iper:"Caídas al mismo nivel, golpes, obstrucción de vías, derrames no contenidos y condiciones inseguras", legal:"Ley 19.587 · Decreto 351/79 · condiciones de higiene y seguridad · ISO 45001 control operacional", frequency:"Semanal", registro:"Check List de Seguridad / Orden y Limpieza", instrumental:"Recorrida, checklist, evidencia fotográfica y observaciones preventivas", action:"Eliminar obstrucciones, ordenar sectores, limpiar derrames y corregir condiciones inseguras" },
+  { order:9, item:"Uso de Elementos de Protección Personal", sector:"Playa, GNC, descarga, mantenimiento, limpieza y tareas con exposición operativa", iper:"Contacto químico, salpicaduras, golpes, cortes, exposición a hidrocarburos y tareas sin protección", legal:"Ley 19.587 · Decreto 351/79 · Res. SRT 299/11 entrega y uso de EPP", frequency:"Semanal", registro:"Registro de Observación / Control de EPP", instrumental:"Observación en puesto, registro de entrega, reposición y uso correcto", action:"Reforzar uso, reponer EPP faltante y registrar desvíos de cumplimiento" },
+  { order:10, item:"Control de Derrames y Contingencias", sector:"Playa, descarga de combustible, tanques, rejillas, kit antiderrame y zonas de despacho", iper:"Derrames, incendio, resbalones, contacto químico, contaminación y respuesta deficiente ante contingencias", legal:"Ley 19.587 · Decreto 351/79 · Ley 24.051 residuos peligrosos · Plan de Emergencias / Contingencias", frequency:"Mensual", registro:"Registro de Verificación de Derrames y Contingencias", instrumental:"Kit antiderrame, absorbentes, contenedores, bolsas, pala, señalización y procedimiento", action:"Reponer recursos de contingencia y corregir desvíos del kit antiderrame" },
+  { order:11, item:"Simulacros de Emergencia", sector:"Todo el establecimiento, roles de emergencia, punto de encuentro y rutas de evacuación", iper:"Respuesta deficiente ante emergencias, demoras de evacuación, fallas de coordinación y desconocimiento de roles", legal:"Ley 19.587 · Decreto 351/79 · Plan de Emergencias · ISO 45001:2018 preparación y respuesta ante emergencias", frequency:"Semestral", registro:"Informe de Simulacro", instrumental:"Acta, tiempos de evacuación, participantes, observaciones, fotos y acciones de mejora", action:"Registrar simulacro, evaluar desempeño y generar acciones correctivas si corresponde" },
+  { order:12, item:"Investigación de Incidentes", sector:"Sector donde ocurrió el evento, personal involucrado y proceso afectado", iper:"Repetición de eventos, causas no tratadas, acciones correctivas insuficientes y aprendizaje organizacional deficiente", legal:"Ley 19.587 · Ley 24.557 · Decreto 351/79 · Res. SRT 905/15 · ISO 45001 investigación de incidentes", frequency:"Según ocurrencia", registro:"Informe de Investigación", instrumental:"Descripción del evento, causa inmediata/básica, 5 porqués, evidencias y acciones", action:"Investigar causa raíz, definir acciones correctivas y verificar eficacia" },
+  { order:13, item:"Cumplimiento Legal", sector:"Sistema de Gestión SST, requisitos legales aplicables y obligaciones documentales", iper:"Incumplimiento normativo, matriz legal desactualizada, sanciones y observaciones de auditoría", legal:"Ley 19.587 · Decreto 351/79 · SRT · IRAM · normativa aplicable a estación de servicio", frequency:"Trimestral", registro:"Matriz Legal", instrumental:"Matriz legal, revisión normativa, evidencia de cumplimiento y responsable asignado", action:"Actualizar matriz legal y corregir requisitos incumplidos" },
+  { order:14, item:"Control Documental", sector:"Administración SST, procedimientos, registros, actas, checklists e informes", iper:"Documentación desactualizada, pérdida de evidencia, uso de información no vigente y falta de trazabilidad", legal:"ISO 45001:2018 cláusula 7.5 información documentada · Ley 19.587 · Decreto 351/79", frequency:"Trimestral", registro:"Registro de Control Documental", instrumental:"Listado maestro, versiones, responsables, vigencias y control de cambios", action:"Actualizar documentos, controlar versiones y retirar información obsoleta" },
+  { order:15, item:"Evaluación Interna del Sistema SST", sector:"Sistema de Gestión SST completo: desempeño, indicadores, hallazgos y oportunidades de mejora", iper:"Falta de evaluación de eficacia, desvíos no detectados y oportunidades de mejora no gestionadas", legal:"ISO 45001:2018 cláusula 9.1 evaluación del desempeño · Res. SRT 905/15", frequency:"Anual", registro:"Informe de Evaluación Interna", instrumental:"Indicadores, auditorías, registros, hallazgos, acciones y conclusión anual", action:"Evaluar eficacia del sistema y proponer acciones de mejora" },
+  { order:16, item:"Revisión por la Dirección", sector:"Dirección / Gerencia, Responsable SST y toma de decisiones del sistema", iper:"Falta de análisis directivo, recursos insuficientes, decisiones no formalizadas y pérdida de mejora continua", legal:"ISO 45001:2018 cláusula 9.3 Revisión por la Dirección · mejora continua", frequency:"Anual", registro:"Acta de Revisión", instrumental:"Acta, KPIs, recursos, objetivos, decisiones, responsables y fechas compromiso", action:"Documentar revisión por la dirección, decisiones, recursos y objetivos futuros" }
+];
+
+function getMasterMonitoringByName(name) {
+  const n = normalizeText(name || "");
+  return SST_MONITORING_TRACE_MASTER.find(m => normalizeText(m.item) === n) || null;
+}
+
+function getMonitoringOptionsSource() {
+  return SST_MONITORING_TRACE_MASTER.map(m => ({
+    ...m,
+    activity: m.item,
+    risk: m.iper,
+    legal: m.legal,
+    schedule: m.item,
+    status: (typeof monitoringProgram !== "undefined" ? (monitoringProgram.find(x => normalizeText(x.item || x.activity || "") === normalizeText(m.item))?.status) : "") || "Programado"
+  }));
+}
+
+function renderSstMonitoringOptions() {
+  const select = document.getElementById("sstRecordFinding");
+  if (!select || select.tagName !== "SELECT") return;
+  const current = select.value;
+  select.innerHTML = '<option value="">Seleccionar monitoreo / hallazgo del Programa SST</option>' +
+    getMonitoringOptionsSource().map(m => `<option value="${escapeHtml(m.item)}">${String(m.order).padStart(2,"0")} · ${escapeHtml(m.item)}</option>`).join("");
+  if ([...select.options].some(o => o.value === current)) select.value = current;
+}
+
+function sstIperLabel(row) {
+  if (!row) return "";
+  return [row.proceso, row.peligro, row.riesgo].filter(Boolean).join(" · ") || row.riesgo || row.peligro || row.proceso || "IPER asociado";
+}
+
+function sstLegalLabel(row) {
+  if (!row) return "";
+  return [row.norma, row.articulo, row.requisito].filter(Boolean).join(" · ") || row.norma || row.requisito || "Requisito legal asociado";
+}
+
+function findBestRowByTerms(rows, fields, terms) {
+  if (!Array.isArray(rows) || !rows.length || !Array.isArray(terms) || !terms.length) return null;
+  let best = null;
+  let bestScore = 0;
+  rows.forEach(row => {
+    const haystack = normalizeText(fields.map(f => row?.[f] || "").join(" "));
+    let score = 0;
+    terms.forEach(term => { if (haystack.includes(normalizeText(term))) score += 1; });
+    if (score > bestScore) { best = row; bestScore = score; }
+  });
+  return bestScore ? best : null;
+}
+
+function getMonitoringTraceTerms(monitoring, type = "iper") {
+  const m = getMasterMonitoringByName(monitoring?.item || monitoring?.activity || monitoring?.monitoreo || monitoring || "") || monitoring || {};
+  const text = type === "legal" ? (m.legal || m.legalText || "") : (m.iper || m.risk || m.riskText || "");
+  const base = `${m.item || m.activity || ""} ${text}`;
+  return normalizeText(base).split(/\s+/).filter(w => w.length > 4).slice(0, 14).concat([m.item || m.activity || ""]);
+}
+
+function findIperForMonitoring(monitoring, family) {
+  const terms = getMonitoringTraceTerms(monitoring, "iper");
+  return findBestRowByTerms(supabaseMatrizIper || [], ["proceso", "peligro", "riesgo", "control_existente", "accion_requerida"], terms);
+}
+
+function findLegalForMonitoring(monitoring, family) {
+  const terms = getMonitoringTraceTerms(monitoring, "legal");
+  return findBestRowByTerms(supabaseMatrizLegal || [], ["norma", "articulo", "requisito", "evidencia", "responsable"], terms);
+}
+
+function getSelectedMonitoringName() {
+  return (document.getElementById("sstRecordFinding")?.value || "").trim();
+}
+
+function getSelectedMonitoringItem() {
+  const name = getSelectedMonitoringName();
+  if (!name) return null;
+  return getMonitoringOptionsSource().find(m => normalizeText(m.item || m.activity || "") === normalizeText(name)) || null;
+}
+
+function populateTraceabilitySelectsForMonitoring(monitoring) {
+  const iperSelect = document.getElementById("sstRecordIperId");
+  const legalSelect = document.getElementById("sstRecordLegalId");
+  if (!monitoring) return;
+  const iperRow = findIperForMonitoring(monitoring);
+  const legalRow = findLegalForMonitoring(monitoring);
+  if (iperSelect) {
+    const localValue = `local:${normalizeText(monitoring.item).replace(/\s+/g,"-")}:iper`;
+    const supaOptions = (supabaseMatrizIper || []).map(row => `<option value="${row.id}">${escapeHtml(sstIperLabel(row))}</option>`).join("");
+    iperSelect.innerHTML = `<option value="">Vincular riesgo IPER asociado</option><option value="${localValue}">${escapeHtml(monitoring.iper || monitoring.risk || "IPER asociado")}</option>${supaOptions}`;
+    iperSelect.value = iperRow?.id ? String(iperRow.id) : localValue;
+  }
+  if (legalSelect) {
+    const localValue = `local:${normalizeText(monitoring.item).replace(/\s+/g,"-")}:legal`;
+    const supaOptions = (supabaseMatrizLegal || []).map(row => `<option value="${row.id}">${escapeHtml(sstLegalLabel(row))}</option>`).join("");
+    legalSelect.innerHTML = `<option value="">Vincular requisito legal asociado</option><option value="${localValue}">${escapeHtml(monitoring.legal || "Matriz Legal asociada")}</option>${supaOptions}`;
+    legalSelect.value = legalRow?.id ? String(legalRow.id) : localValue;
+  }
+}
+
+function getTraceabilityBundleFromRecord(record) {
+  const selectedMonitoring = getSelectedMonitoringItem() || getMasterMonitoringByName(record.finding) || getMasterMonitoringByName(inferMonitoreoNameFromRecord(record));
+  const monitoringName = selectedMonitoring?.item || record.finding || "";
+  const iper = record.iperId && /^\d+$/.test(String(record.iperId)) ? (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId)) : null;
+  const legal = record.legalId && /^\d+$/.test(String(record.legalId)) ? (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId)) : null;
+  const autoIper = iper || findIperForMonitoring(selectedMonitoring);
+  const autoLegal = legal || findLegalForMonitoring(selectedMonitoring);
+  return {
+    monitoringName,
+    monitoring: selectedMonitoring,
+    iperId: autoIper?.id || (record.iperId || ""),
+    legalId: autoLegal?.id || (record.legalId || ""),
+    iper: autoIper || null,
+    legal: autoLegal || null,
+    riskText: autoIper ? sstIperLabel(autoIper) : (selectedMonitoring?.iper || selectedMonitoring?.risk || ""),
+    legalText: autoLegal ? sstLegalLabel(autoLegal) : (selectedMonitoring?.legal || "")
+  };
+}
+
+function inferTraceabilityFromRecord(record) {
+  const bundle = getTraceabilityBundleFromRecord(record);
+  return { iperId: bundle.iperId || "", legalId: bundle.legalId || "", monitoringName: bundle.monitoringName || "", riskText: bundle.riskText || "", legalText: bundle.legalText || "" };
+}
+
+function setTraceabilityPreview(bundle) {
+  const preview = document.getElementById("sstTraceabilityPreview");
+  if (!preview) return;
+  if (!bundle?.monitoring) { preview.textContent = "Sin monitoreo seleccionado."; return; }
+  const m = bundle.monitoring;
+  preview.innerHTML = `
+    <b>Sector / alcance:</b> ${escapeHtml(m.sector || "Estación de servicio YPF")}<br>
+    <b>IPER:</b> ${escapeHtml(bundle.riskText || m.iper || "IPER asociado")}<br>
+    <b>Matriz legal:</b> ${escapeHtml(bundle.legalText || m.legal || "Matriz Legal asociada")}<br>
+    <b>Frecuencia / Cronograma:</b> ${escapeHtml(m.frequency || "A definir")} · ${escapeHtml(m.schedule || m.item)}<br>
+    <b>Registro asociado:</b> ${escapeHtml(m.registro || "Sin registro asociado cargado")}<br>
+    <b>Instrumental:</b> ${escapeHtml(m.instrumental || "Registro operativo / documental SST")}`;
+}
+
+function autoFillSstTraceability(force = false) {
+  const record = {
+    type: document.getElementById("sstRecordType")?.value || "",
+    sector: document.getElementById("sstRecordSector")?.value || "",
+    finding: document.getElementById("sstRecordFinding")?.value || "",
+    risk: document.getElementById("sstRecordRisk")?.value || "",
+    action: document.getElementById("sstRecordAction")?.value || "",
+    observations: document.getElementById("sstRecordObservations")?.value || "",
+    iperId: force ? "" : (document.getElementById("sstRecordIperId")?.value || ""),
+    legalId: force ? "" : (document.getElementById("sstRecordLegalId")?.value || "")
+  };
+  const bundle = getTraceabilityBundleFromRecord(record);
+  const m = bundle.monitoring;
+  if (m && force) populateTraceabilitySelectsForMonitoring(m);
+  const sectorInput = document.getElementById("sstRecordSector");
+  const riskInput = document.getElementById("sstRecordRisk");
+  const actionInput = document.getElementById("sstRecordAction");
+  if (m && sectorInput && (force || !sectorInput.value || sectorInput.value === "Sector")) sectorInput.value = m.sector || "";
+  if (riskInput && (force || !riskInput.value || normalizeText(riskInput.value).includes("riesgo asociado"))) riskInput.value = bundle.riskText || m?.iper || "";
+  if (m && actionInput && (force || !actionInput.value || normalizeText(actionInput.value).includes("definir accion"))) actionInput.value = m.action || "";
+  setTraceabilityPreview(bundle);
+}
+
+function onSstMonitoringSelectionChange() {
+  const m = getSelectedMonitoringItem();
+  ["sstRecordRisk", "sstRecordAction"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+  if (m) populateTraceabilitySelectsForMonitoring(m);
+  autoFillSstTraceability(true);
+}
+
+function registroLocalToSupabaseRow(record) {
+  const numericIper = /^\d+$/.test(String(record.iperId || "")) ? Number(record.iperId) : null;
+  const numericLegal = /^\d+$/.test(String(record.legalId || "")) ? Number(record.legalId) : null;
+  const numericAc = /^\d+$/.test(String(record.accionCorrectivaId || "")) ? Number(record.accionCorrectivaId) : null;
+  return {
+    codigo: record.code || null,
+    tipo: record.type || null,
+    fecha: record.date || null,
+    responsable: record.responsible || null,
+    sector: record.sector || null,
+    estado: record.state || null,
+    hallazgo: record.finding || null,
+    riesgo: record.risk || null,
+    accion: record.action || null,
+    vencimiento: record.due || null,
+    observaciones: record.observations || null,
+    iper_id: numericIper,
+    legal_id: numericLegal,
+    accion_correctiva_id: numericAc
+  };
+}
+
+function bindSstTraceabilityAutofill() {
+  renderSstMonitoringOptions();
+  ["sstRecordType", "sstRecordSector", "sstRecordRisk", "sstRecordAction", "sstRecordObservations", "sstRecordIperId", "sstRecordLegalId"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.dataset.traceabilityBoundFinal) {
+      el.addEventListener("input", () => autoFillSstTraceability(false));
+      el.addEventListener("change", () => autoFillSstTraceability(false));
+      el.dataset.traceabilityBoundFinal = "1";
+    }
+  });
+  const finding = document.getElementById("sstRecordFinding");
+  if (finding && !finding.dataset.traceabilityBoundFinal) {
+    finding.addEventListener("change", onSstMonitoringSelectionChange);
+    finding.dataset.traceabilityBoundFinal = "1";
+  }
+}
+
+(function initFinalSstTraceabilityPatch(){
+  const run = () => {
+    try {
+      renderSstMonitoringOptions();
+      bindSstTraceabilityAutofill();
+      setTraceabilityPreview(null);
+    } catch (e) { console.warn("No se pudo inicializar trazabilidad SST final:", e); }
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run);
+  else run();
+})();
+
+</script>
 
 <script>
 
