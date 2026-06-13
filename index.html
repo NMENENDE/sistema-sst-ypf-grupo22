@@ -4705,6 +4705,11 @@ let supabaseCapacitaciones = [];
 let supabaseAsignaciones = [];
 let supabaseCursosSst = [];
 let supabaseDashboardKpis = null;
+let supabaseDashboardSst = null;
+let supabaseMonitoreosSst = [];
+let supabaseMatrizIper = [];
+let supabaseMatrizLegal = [];
+let supabaseRegistrosSst = [];
 
 function cursoSstRowToCourseDetails(row) {
   const duracion = row.duracion_horas ? `${Number(row.duracion_horas).toLocaleString("es-AR")} hora${Number(row.duracion_horas) === 1 ? "" : "s"}` : "A definir";
@@ -4904,6 +4909,149 @@ async function cargarAsignacionesSupabase(silent = false) {
   return true;
 }
 
+
+
+function estadoMonitoreoNormalizado(estado) {
+  const e = String(estado || "").trim().toLowerCase();
+  if (["realizado", "actualizado", "cerrado", "cumplido"].some(x => e.includes(x))) return "Actualizado";
+  if (["observ", "proceso", "parcial"].some(x => e.includes(x))) return "Con observaciones";
+  if (["no conforme", "vencido", "critico", "crítico"].some(x => e.includes(x))) return "No conforme";
+  return "Programado";
+}
+
+function monitoreoSupabaseToProgram(row, idx = 0) {
+  return {
+    supabaseId: row.id,
+    item: row.monitoreo || `Monitoreo ${idx + 1}`,
+    risk: row.riesgo || "Riesgo asociado según Matriz IPER",
+    legal: row.requisito_legal || "Requisito legal asociado según Matriz Legal",
+    frequency: row.frecuencia || "A definir",
+    schedule: row.monitoreo || "Cronograma SST",
+    sector: row.sector || "Estación de servicio YPF",
+    status: estadoMonitoreoNormalizado(row.estado),
+    estadoSupabase: row.estado || "Pendiente",
+    fechaProgramada: row.fecha_programada || "",
+    fechaRealizada: row.fecha_realizada || "",
+    observaciones: row.observaciones || ""
+  };
+}
+
+function registroSupabaseToLocal(row) {
+  return {
+    supabaseId: row.id,
+    code: row.codigo || `REG-${row.id}`,
+    type: row.tipo || "Registro SST",
+    date: row.fecha || "",
+    responsible: row.responsable || "Responsable SST",
+    sector: row.sector || "Sector operativo",
+    state: row.estado || "Pendiente",
+    finding: row.hallazgo || "Registro SST",
+    risk: row.riesgo || "Riesgo asociado según IPER",
+    action: row.accion || "Acción de seguimiento",
+    due: row.vencimiento || "",
+    observations: row.observaciones || ""
+  };
+}
+
+function registroLocalToSupabaseRow(record) {
+  return {
+    codigo: record.code || null,
+    tipo: record.type || null,
+    fecha: record.date || null,
+    responsable: record.responsible || null,
+    sector: record.sector || null,
+    estado: record.state || null,
+    hallazgo: record.finding || null,
+    riesgo: record.risk || null,
+    accion: record.action || null,
+    vencimiento: record.due || null,
+    observaciones: record.observations || null
+  };
+}
+
+async function cargarSstSupabase(silent = false) {
+  const [monRes, iperRes, legalRes, dashRes, regRes] = await Promise.all([
+    supabaseClient.from("monitoreos_sst").select("*").order("id", { ascending: true }),
+    supabaseClient.from("matriz_iper").select("*").order("id", { ascending: true }),
+    supabaseClient.from("matriz_legal").select("*").order("id", { ascending: true }),
+    supabaseClient.from("vw_dashboard_sst").select("*").limit(1),
+    supabaseClient.from("registros_sst").select("*").order("created_at", { ascending: false })
+  ]);
+
+  if (monRes.error) {
+    console.error("Error al leer monitoreos_sst:", monRes.error);
+    if (!silent) showToast("No se pudo leer monitoreos_sst. Se mantiene Programa de Monitoreo local.");
+  } else {
+    supabaseMonitoreosSst = monRes.data || [];
+    if (Array.isArray(supabaseMonitoreosSst) && supabaseMonitoreosSst.length && typeof monitoringProgram !== "undefined") {
+      monitoringProgram.splice(0, monitoringProgram.length, ...supabaseMonitoreosSst.map(monitoreoSupabaseToProgram));
+    }
+  }
+
+  if (iperRes.error) {
+    console.error("Error al leer matriz_iper:", iperRes.error);
+  } else {
+    supabaseMatrizIper = iperRes.data || [];
+  }
+
+  if (legalRes.error) {
+    console.error("Error al leer matriz_legal:", legalRes.error);
+  } else {
+    supabaseMatrizLegal = legalRes.data || [];
+    if (Array.isArray(supabaseMatrizLegal) && supabaseMatrizLegal.length && typeof normativeFramework !== "undefined") {
+      normativeFramework.splice(0, normativeFramework.length, ...supabaseMatrizLegal.map(row => ({
+        title: row.norma || "Normativa SST",
+        detail: `${row.articulo ? row.articulo + " · " : ""}${row.requisito || "Requisito SST"}`,
+        evidencia: row.evidencia || "Evidencia documental SST",
+        responsable: row.responsable || "Responsable SST",
+        estado: row.estado || "Vigente"
+      })));
+    }
+  }
+
+  if (dashRes.error) {
+    console.warn("No se pudo leer vw_dashboard_sst:", dashRes.error);
+    supabaseDashboardSst = null;
+  } else {
+    supabaseDashboardSst = Array.isArray(dashRes.data) ? (dashRes.data[0] || null) : null;
+  }
+
+  if (regRes.error) {
+    console.warn("No se pudo leer registros_sst:", regRes.error);
+  } else {
+    supabaseRegistrosSst = regRes.data || [];
+    if (Array.isArray(supabaseRegistrosSst) && supabaseRegistrosSst.length) {
+      sstRecords = supabaseRegistrosSst.map(registroSupabaseToLocal);
+      localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
+    }
+  }
+
+  refreshAll();
+  if (!silent) showToast(`✅ SST sincronizado: ${supabaseMonitoreosSst.length} monitoreos · ${supabaseMatrizIper.length} IPER · ${supabaseMatrizLegal.length} legales.`);
+  return true;
+}
+
+async function actualizarMonitoreoSupabasePorNombre(nombre, estado = "Actualizado", fechaRealizada = null, observaciones = "") {
+  if (!nombre) return false;
+  const row = supabaseMonitoreosSst.find(m => normalizeText(m.monitoreo || "") === normalizeText(nombre));
+  if (!row?.id) return false;
+  const payload = {
+    estado,
+    fecha_realizada: fechaRealizada || today.toISOString().slice(0, 10),
+    observaciones: observaciones || row.observaciones || "Actualizado desde Sistema Digital SST"
+  };
+  const { error } = await supabaseClient.from("monitoreos_sst").update(payload).eq("id", row.id);
+  if (error) {
+    console.warn("No se pudo actualizar monitoreos_sst:", error);
+    return false;
+  }
+  Object.assign(row, payload);
+  if (typeof monitoringProgram !== "undefined") {
+    const item = monitoringProgram.find(m => normalizeText(m.item || "") === normalizeText(nombre));
+    if (item) Object.assign(item, monitoreoSupabaseToProgram(row));
+  }
+  return true;
+}
 
 async function cargarDashboardKpisSupabase(silent = false) {
   // KPI principal conectado a la tabla nueva de asignaciones reales.
@@ -9399,6 +9547,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       await cargarPersonalSupabase(true);
       await cargarAsignacionesSupabase(true);
       await cargarDashboardKpisSupabase(true);
+      await cargarSstSupabase(true);
       refreshAll();
     }
 
@@ -9503,7 +9652,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       updateSstRecordCode();
     }
 
-    function saveSstRecord() {
+    async function saveSstRecord() {
       const type = document.getElementById("sstRecordType")?.value || "Inspección";
       const record = {
         code: document.getElementById("sstRecordCode")?.value || nextSstCode(type),
@@ -9520,6 +9669,12 @@ const courseCounts = courses.slice(0, 7).map(course => {
       };
       sstRecords.unshift(record);
       localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
+      try {
+        const { error } = await supabaseClient.from("registros_sst").insert([registroLocalToSupabaseRow(record)]);
+        if (error) console.warn("No se pudo guardar registros_sst:", error);
+      } catch (e) { console.warn("Error al insertar registros_sst:", e); }
+      try { await actualizarMonitoreoSupabasePorNombre(record.finding, isClosedSstState(record.state) ? "Actualizado" : record.state, record.date, record.observations); } catch (e) {}
+      await cargarSstSupabase(true);
       renderVerificationModule();
       clearSstForm();
       showVerificationTab("historial");
@@ -9975,6 +10130,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
     }
 
     function getMonitoringDynamicStatus(m) {
+      if (m?.fechaRealizada || ["Actualizado","Realizado","Cerrado"].includes(String(m?.estadoSupabase || m?.status || ""))) return "Actualizado";
       const hysRec = getLatestHysRecordForMonitor(m);
       if (hysRec) {
         if (hysRec.statusClass === "bad") return "No conforme";
@@ -10253,11 +10409,23 @@ const courseCounts = courses.slice(0, 7).map(course => {
     // Simulacros deja de ser módulo independiente: se registra como tipo dentro de Verificación y Actuación.
     function renderDrills() { /* compatibilidad con refreshAll */ }
 
-    function addDrill() {
+    async function addDrill() {
       const record = {
         code: nextSstCode("Simulacro"), type: "Simulacro", date: document.getElementById("drillDate")?.value || today.toISOString().slice(0,10), responsible: "Responsable SST", sector: "Emergencias", state: document.getElementById("drillResult")?.value === "Aprobado" ? "Realizado" : "En proceso", finding: document.getElementById("drillType")?.value || "Simulacro", risk: "Emergencia operativa", action: "Registrar desvíos y acciones correctivas", due: "", observations: "Tiempo de evacuación/respuesta: " + (document.getElementById("drillTime")?.value || "Sin dato")
       };
-      sstRecords.unshift(record); localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords)); closeModal("drillModal"); renderVerificationModule(); showToast("✅ Simulacro guardado como Registro SST.");
+      sstRecords.unshift(record);
+      localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
+      try { await supabaseClient.from("registros_sst").insert([registroLocalToSupabaseRow(record)]); } catch (e) { console.warn("No se pudo guardar simulacro en registros_sst", e); }
+      try {
+        await supabaseClient.from("simulacros").insert([{
+          fecha: record.date, tipo: record.finding, responsable: record.responsible, resultado: record.state, observaciones: record.observations
+        }]);
+      } catch (e) { console.warn("No se pudo guardar simulacro en simulacros", e); }
+      await actualizarMonitoreoSupabasePorNombre("Simulacros de Emergencia", record.state === "Realizado" ? "Actualizado" : "En proceso", record.date, record.observations);
+      await cargarSstSupabase(true);
+      closeModal("drillModal");
+      renderVerificationModule();
+      showToast("✅ Simulacro guardado y sincronizado con Supabase.");
     }
 
     initLoginDemo();
