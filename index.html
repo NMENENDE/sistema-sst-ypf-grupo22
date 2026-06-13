@@ -4747,6 +4747,7 @@ let supabaseMonitoreosSst = [];
 let supabaseMatrizIper = [];
 let supabaseMatrizLegal = [];
 let supabaseRegistrosSst = [];
+let supabaseMonitoreoTrazabilidadSst = [];
 
 function cursoSstRowToCourseDetails(row) {
   const duracion = row.duracion_horas ? `${Number(row.duracion_horas).toLocaleString("es-AR")} hora${Number(row.duracion_horas) === 1 ? "" : "s"}` : "A definir";
@@ -4973,6 +4974,22 @@ function monitoreoSupabaseToProgram(row, idx = 0) {
   };
 }
 
+function trazabilidadSupabaseToProgram(row, idx = 0) {
+  return {
+    traceId: row.id,
+    order: row.orden || idx + 1,
+    item: row.monitoreo || row.cronograma || `Monitoreo ${idx + 1}`,
+    risk: row.iper_asociado || row.riesgo || "Riesgo asociado según Matriz IPER",
+    legal: row.legal_asociado || row.requisito_legal || "Requisito legal asociado según Matriz Legal",
+    frequency: row.frecuencia || "A definir",
+    schedule: row.cronograma || row.monitoreo || "Cronograma SST",
+    sector: row.alcance || row.sector || "Estación de servicio YPF",
+    registroAsociado: row.registro_asociado || "Registro SST",
+    instrumental: row.instrumental || "Registro operativo / documental SST",
+    status: "Programado"
+  };
+}
+
 function registroSupabaseToLocal(row) {
   return {
     supabaseId: row.id,
@@ -5008,17 +5025,26 @@ function registroLocalToSupabaseRow(record) {
     observaciones: record.observations || null,
     iper_id: record.iperId ? Number(record.iperId) : null,
     legal_id: record.legalId ? Number(record.legalId) : null,
-    accion_correctiva_id: record.accionCorrectivaId ? Number(record.accionCorrectivaId) : null
+    accion_correctiva_id: record.accionCorrectivaId ? Number(record.accionCorrectivaId) : null,
+    monitoreo_nombre: record.monitoreoNombre || record.monitoringName || record.finding || null,
+    alcance: record.alcance || record.sector || null,
+    iper_asociado: record.iperAsociado || record.risk || null,
+    legal_asociado: record.legalAsociado || null,
+    frecuencia_cronograma: record.frecuenciaCronograma || null,
+    registro_asociado: record.registroAsociado || null,
+    instrumental: record.instrumental || null,
+    genera_accion_correctiva: !!record.generaAccionCorrectiva
   };
 }
 
 async function cargarSstSupabase(silent = false) {
-  const [monRes, iperRes, legalRes, dashRes, regRes] = await Promise.all([
+  const [monRes, iperRes, legalRes, dashRes, regRes, trazRes] = await Promise.all([
     supabaseClient.from("monitoreos_sst").select("*").order("id", { ascending: true }),
     supabaseClient.from("matriz_iper").select("*").order("id", { ascending: true }),
     supabaseClient.from("matriz_legal").select("*").order("id", { ascending: true }),
     supabaseClient.from("vw_dashboard_sst").select("*").limit(1),
-    supabaseClient.from("registros_sst").select("*").order("created_at", { ascending: false })
+    supabaseClient.from("registros_sst").select("*").order("created_at", { ascending: false }),
+    supabaseClient.from("monitoreo_trazabilidad_sst").select("*").order("orden", { ascending: true })
   ]);
 
   if (monRes.error) {
@@ -5069,6 +5095,15 @@ async function cargarSstSupabase(silent = false) {
     }
   }
 
+  if (trazRes?.error) {
+    console.warn("No se pudo leer monitoreo_trazabilidad_sst:", trazRes.error);
+  } else {
+    supabaseMonitoreoTrazabilidadSst = trazRes?.data || [];
+    if (Array.isArray(supabaseMonitoreoTrazabilidadSst) && supabaseMonitoreoTrazabilidadSst.length && typeof monitoringProgram !== "undefined" && (!supabaseMonitoreosSst || !supabaseMonitoreosSst.length)) {
+      monitoringProgram.splice(0, monitoringProgram.length, ...supabaseMonitoreoTrazabilidadSst.map(trazabilidadSupabaseToProgram));
+    }
+  }
+
   renderSstTraceabilityOptions();
   refreshAll();
   if (!silent) showToast(`✅ SST sincronizado: ${supabaseMonitoreosSst.length} monitoreos · ${supabaseMatrizIper.length} IPER · ${supabaseMatrizLegal.length} legales.`);
@@ -5095,6 +5130,40 @@ async function actualizarMonitoreoSupabasePorNombre(nombre, estado = "Actualizad
     if (item) Object.assign(item, monitoreoSupabaseToProgram(row));
   }
   return true;
+}
+
+async function obtenerCodigoRegistroSstDesdeSupabase(tipo) {
+  try {
+    const { data, error } = await supabaseClient.rpc("next_registro_sst_codigo", { p_tipo: tipo });
+    if (error) throw error;
+    return data || nextSstCode(tipo);
+  } catch (error) {
+    console.warn("No se pudo obtener código desde Supabase, se usa correlativo local:", error);
+    return nextSstCode(tipo);
+  }
+}
+
+async function actualizarCronogramaSupabasePorNombre(nombre, estado = "Realizado", fechaRealizada = null, observaciones = "") {
+  if (!nombre) return false;
+  const fecha = fechaRealizada || today.toISOString().slice(0, 10);
+  const payloadBase = { estado, fecha_realizada: fecha, observaciones: observaciones || "Actualizado desde Registro SST" };
+  const attempts = [
+    { col: "actividad", value: nombre, payload: payloadBase },
+    { col: "monitoreo", value: nombre, payload: payloadBase },
+    { col: "tarea", value: nombre, payload: payloadBase },
+    { col: "nombre", value: nombre, payload: payloadBase },
+    { col: "cronograma", value: nombre, payload: payloadBase }
+  ];
+  for (const a of attempts) {
+    try {
+      const { error, data } = await supabaseClient.from("cronograma_sst").update(a.payload).eq(a.col, a.value).select("id");
+      if (!error && (!Array.isArray(data) || data.length >= 0)) return true;
+      if (error && !/column|schema cache|does not exist/i.test(error.message || "")) console.warn("No se pudo actualizar cronograma_sst:", error);
+    } catch (err) {
+      console.warn("Error actualizando cronograma_sst:", err);
+    }
+  }
+  return false;
 }
 
 async function cargarDashboardKpisSupabase(silent = false) {
@@ -9692,10 +9761,15 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
 
     function getMonitoringOptionsSource() {
-      const base = (typeof monitoringProgram !== "undefined" && Array.isArray(monitoringProgram) && monitoringProgram.length)
-        ? monitoringProgram
-        : sstSchedule.map(x => ({ item: x.activity, frequency: x.frequency, schedule: x.activity, risk: "", legal: "" }));
-      return base.map((m, idx) => ({ ...m, order: idx + 1 }));
+      const trazabilidad = (typeof supabaseMonitoreoTrazabilidadSst !== "undefined" && Array.isArray(supabaseMonitoreoTrazabilidadSst) && supabaseMonitoreoTrazabilidadSst.length)
+        ? supabaseMonitoreoTrazabilidadSst.map(trazabilidadSupabaseToProgram)
+        : [];
+      const base = trazabilidad.length
+        ? trazabilidad
+        : ((typeof monitoringProgram !== "undefined" && Array.isArray(monitoringProgram) && monitoringProgram.length)
+          ? monitoringProgram
+          : sstSchedule.map(x => ({ item: x.activity, frequency: x.frequency, schedule: x.activity, risk: "", legal: "" })));
+      return base.map((m, idx) => ({ ...m, order: m.order || idx + 1 }));
     }
 
     function renderSstMonitoringOptions() {
@@ -9727,6 +9801,8 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const date = document.getElementById("sstRecordDate"); if (date) date.value = today.toISOString().slice(0,10);
       const state = document.getElementById("sstRecordState"); if (state) state.value = "Pendiente";
       updateSstRecordCode();
+      const preview = document.getElementById("sstTraceabilityPreview");
+      if (preview) preview.textContent = "Sin monitoreo seleccionado.";
     }
 
 
@@ -10005,9 +10081,20 @@ const courseCounts = courses.slice(0, 7).map(course => {
       if (riskInput && (force || !riskInput.value || normalizeText(riskInput.value).includes("riesgo asociado")) && bundle.riskText) riskInput.value = bundle.riskText;
       const preview = document.getElementById("sstTraceabilityPreview");
       if (preview) {
-        preview.textContent = bundle.monitoringName
-          ? `Seleccionado: ${bundle.monitoringName} → IPER: ${bundle.iper ? sstIperLabel(bundle.iper) : "sin coincidencia"} → Legal: ${bundle.legal ? sstLegalLabel(bundle.legal) : "sin coincidencia"}`
-          : "Sin monitoreo seleccionado.";
+        if (bundle.monitoringName) {
+          const m = bundle.monitoring || {};
+          preview.innerHTML = `
+            <b>${escapeHtml(bundle.monitoringName)}</b><br>
+            Sector / alcance: ${escapeHtml(m.sector || m.alcance || "Estación de servicio YPF")}<br>
+            IPER: ${escapeHtml(bundle.iper ? sstIperLabel(bundle.iper) : (bundle.riskText || "sin coincidencia"))}<br>
+            Matriz legal: ${escapeHtml(bundle.legal ? sstLegalLabel(bundle.legal) : (bundle.legalText || "sin coincidencia"))}<br>
+            Frecuencia / Cronograma: ${escapeHtml(m.frequency || "A definir")} · ${escapeHtml(m.schedule || bundle.monitoringName)}<br>
+            Registro asociado: ${escapeHtml(m.registroAsociado || "Registro SST")}<br>
+            Instrumental: ${escapeHtml(m.instrumental || "Registro operativo / documental SST")}
+          `;
+        } else {
+          preview.textContent = "Sin monitoreo seleccionado.";
+        }
       }
     }
 
@@ -10058,6 +10145,14 @@ const courseCounts = courses.slice(0, 7).map(course => {
         data = retry.data;
         error = retry.error;
       }
+      if (error && /duplicate key|registros_sst_codigo_key/i.test(error.message || "")) {
+        const tipo = record.type || "Inspección";
+        record.code = await obtenerCodigoRegistroSstDesdeSupabase(tipo);
+        payload.codigo = record.code;
+        const retryDup = await supabaseClient.from("registros_sst").insert([payload]).select("*").single();
+        data = retryDup.data;
+        error = retryDup.error;
+      }
       if (error) throw error;
       return data;
     }
@@ -10068,7 +10163,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const needsAction = ["Pendiente", "En proceso"].includes(parentRecord.state) || normalizeText(parentRecord.type).includes("no conformidad");
       if (!needsAction) return null;
       const actionRecord = {
-        code: nextSstCode("Acción Correctiva"),
+        code: await obtenerCodigoRegistroSstDesdeSupabase("Acción Correctiva"),
         type: "Acción Correctiva",
         date: parentRecord.date,
         responsible: parentRecord.responsible,
@@ -10124,7 +10219,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
     async function saveSstRecord(evt) {
       const type = document.getElementById("sstRecordType")?.value || "Inspección";
       const record = {
-        code: document.getElementById("sstRecordCode")?.value || nextSstCode(type),
+        code: await obtenerCodigoRegistroSstDesdeSupabase(type),
         type,
         date: document.getElementById("sstRecordDate")?.value || today.toISOString().slice(0,10),
         responsible: document.getElementById("sstRecordResponsible")?.value.trim() || "Responsable SST",
@@ -10138,6 +10233,18 @@ const courseCounts = courses.slice(0, 7).map(course => {
         due: document.getElementById("sstRecordDue")?.value || "",
         observations: document.getElementById("sstRecordObservations")?.value.trim() || "Sin observaciones adicionales."
       };
+
+      const traceBundle = getTraceabilityBundleFromRecord(record);
+      record.monitoreoNombre = traceBundle.monitoringName || record.finding;
+      record.alcance = traceBundle.monitoring?.sector || record.sector;
+      record.iperAsociado = traceBundle.iper ? sstIperLabel(traceBundle.iper) : (traceBundle.riskText || record.risk);
+      record.legalAsociado = traceBundle.legal ? sstLegalLabel(traceBundle.legal) : (traceBundle.legalText || "");
+      record.frecuenciaCronograma = `${traceBundle.monitoring?.frequency || ""}${traceBundle.monitoring?.schedule ? " · " + traceBundle.monitoring.schedule : ""}`.trim();
+      record.registroAsociado = traceBundle.monitoring?.registroAsociado || "Registro SST";
+      record.instrumental = traceBundle.monitoring?.instrumental || "Registro operativo / documental SST";
+      record.generaAccionCorrectiva = document.getElementById("sstRecordGenerateAction")?.value === "si";
+      const codeEl = document.getElementById("sstRecordCode");
+      if (codeEl) codeEl.value = record.code;
 
       const inferredTrace = inferTraceabilityFromRecord(record);
       if (!record.iperId && inferredTrace.iperId) record.iperId = String(inferredTrace.iperId);
@@ -10183,6 +10290,9 @@ Requisito legal vinculado: ${sstLegalLabel(legalRow)}`;
         const nuevoEstado = isClosedSstState(record.state) ? "Actualizado" : record.state;
         try {
           monitoreoOk = await actualizarMonitoreoSupabasePorNombre(monitoreoRelacionado, nuevoEstado, record.date, record.observations);
+          if (isClosedSstState(record.state)) {
+            await actualizarCronogramaSupabasePorNombre(monitoreoRelacionado, "Realizado", record.date, record.observations);
+          }
         } catch (error) {
           console.warn("No se pudo actualizar monitoreo relacionado:", error);
         }
@@ -10194,6 +10304,13 @@ Requisito legal vinculado: ${sstLegalLabel(legalRow)}`;
             item.status = estadoMonitoreoNormalizado(isClosedSstState(record.state) ? "Actualizado" : record.state);
             item.fechaRealizada = record.date;
             item.observaciones = record.observations;
+          }
+        }
+        if (typeof sstSchedule !== "undefined" && Array.isArray(sstSchedule)) {
+          const sched = sstSchedule.find(x => normalizeText(x.activity || "") === normalizeText(monitoreoRelacionado));
+          if (sched && isClosedSstState(record.state)) {
+            sched.estado = "Realizado";
+            sched.fechaRealizada = record.date;
           }
         }
       }
