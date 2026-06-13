@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -2371,6 +2371,26 @@
       }
     }
 
+
+
+    .traceability-card {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--ypf-blue-light), #ffffff);
+      border: 1px solid #cfe7ff;
+      color: var(--ypf-blue-dark);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .traceability-card small {
+      display: block;
+      color: var(--gray-700);
+      font-weight: 700;
+      margin-top: 5px;
+    }
+
     .print-only { display: none; }
 
     @media (max-width: 1050px) {
@@ -3989,6 +4009,16 @@
           </select>
           <input id="sstRecordFinding" placeholder="Hallazgo / requisito / evento" />
           <input id="sstRecordRisk" placeholder="Riesgo asociado / IPER" />
+          <select id="sstRecordIperId" title="Riesgo IPER asociado">
+            <option value="">Vincular riesgo IPER asociado</option>
+          </select>
+          <select id="sstRecordLegalId" title="Requisito legal asociado">
+            <option value="">Vincular requisito legal asociado</option>
+          </select>
+          <select id="sstRecordGenerateAction" title="Generar acción correctiva">
+            <option value="no">No generar acción correctiva</option>
+            <option value="si">Generar acción correctiva si queda pendiente / no conforme</option>
+          </select>
           <input id="sstRecordAction" placeholder="Acción requerida / correctiva" />
           <input id="sstRecordDue" type="date" title="Fecha compromiso" />
           <textarea id="sstRecordObservations" placeholder="Observaciones, evidencia, participantes, 5 porqués, decisiones o recursos asignados según corresponda..."></textarea>
@@ -4949,7 +4979,10 @@ function registroSupabaseToLocal(row) {
     risk: row.riesgo || "Riesgo asociado según IPER",
     action: row.accion || "Acción de seguimiento",
     due: row.vencimiento || "",
-    observations: row.observaciones || ""
+    observations: row.observaciones || "",
+    iperId: row.iper_id || "",
+    legalId: row.legal_id || "",
+    accionCorrectivaId: row.accion_correctiva_id || ""
   };
 }
 
@@ -4965,7 +4998,10 @@ function registroLocalToSupabaseRow(record) {
     riesgo: record.risk || null,
     accion: record.action || null,
     vencimiento: record.due || null,
-    observaciones: record.observations || null
+    observaciones: record.observations || null,
+    iper_id: record.iperId ? Number(record.iperId) : null,
+    legal_id: record.legalId ? Number(record.legalId) : null,
+    accion_correctiva_id: record.accionCorrectivaId ? Number(record.accionCorrectivaId) : null
   };
 }
 
@@ -5026,6 +5062,7 @@ async function cargarSstSupabase(silent = false) {
     }
   }
 
+  renderSstTraceabilityOptions();
   refreshAll();
   if (!silent) showToast(`✅ SST sincronizado: ${supabaseMonitoreosSst.length} monitoreos · ${supabaseMatrizIper.length} IPER · ${supabaseMatrizLegal.length} legales.`);
   return true;
@@ -9652,6 +9689,161 @@ const courseCounts = courses.slice(0, 7).map(course => {
       updateSstRecordCode();
     }
 
+
+    function sstIperLabel(row) {
+      if (!row) return "";
+      const proceso = row.proceso ? `${row.proceso} · ` : "";
+      const riesgo = row.riesgo || row.peligro || "Riesgo IPER";
+      const nivel = row.nivel_riesgo ? ` · Nivel ${row.nivel_riesgo}` : "";
+      return `${proceso}${riesgo}${nivel}`;
+    }
+
+    function sstLegalLabel(row) {
+      if (!row) return "";
+      const art = row.articulo ? ` · ${row.articulo}` : "";
+      const req = row.requisito ? ` · ${row.requisito}` : "";
+      return `${row.norma || "Norma SST"}${art}${req}`;
+    }
+
+    function renderSstTraceabilityOptions() {
+      const iperSelect = document.getElementById("sstRecordIperId");
+      const legalSelect = document.getElementById("sstRecordLegalId");
+      if (iperSelect) {
+        const current = iperSelect.value;
+        const options = ['<option value="">Vincular riesgo IPER asociado</option>'].concat(
+          (supabaseMatrizIper || []).map(row => `<option value="${row.id}">${sstIperLabel(row)}</option>`)
+        );
+        iperSelect.innerHTML = options.join("");
+        if ([...iperSelect.options].some(o => o.value === current)) iperSelect.value = current;
+      }
+      if (legalSelect) {
+        const current = legalSelect.value;
+        const options = ['<option value="">Vincular requisito legal asociado</option>'].concat(
+          (supabaseMatrizLegal || []).map(row => `<option value="${row.id}">${sstLegalLabel(row)}</option>`)
+        );
+        legalSelect.innerHTML = options.join("");
+        if ([...legalSelect.options].some(o => o.value === current)) legalSelect.value = current;
+      }
+    }
+
+    function inferTraceabilityFromRecord(record) {
+      const text = normalizeText(`${record.type || ""} ${record.finding || ""} ${record.risk || ""} ${record.action || ""} ${record.observations || ""}`);
+      const iper = (supabaseMatrizIper || []).find(row => {
+        const haystack = normalizeText(`${row.proceso || ""} ${row.peligro || ""} ${row.riesgo || ""} ${row.control_existente || ""} ${row.accion_requerida || ""}`);
+        return haystack && (text.includes(haystack.slice(0, Math.min(20, haystack.length))) ||
+          (text.includes("matafuego") && haystack.includes("incendio")) ||
+          (text.includes("extintor") && haystack.includes("incendio")) ||
+          (text.includes("simulacro") && haystack.includes("emergencia")) ||
+          (text.includes("derrame") && haystack.includes("derrame")) ||
+          (text.includes("legal") && haystack.includes("legal")) ||
+          (text.includes("document") && haystack.includes("document")) ||
+          (text.includes("capacit") && haystack.includes("capacit")) ||
+          (text.includes("epp") && haystack.includes("epp")) ||
+          (text.includes("botiquin") && haystack.includes("primeros")) ||
+          (text.includes("incidente") && haystack.includes("incidente")));
+      });
+      const legal = (supabaseMatrizLegal || []).find(row => {
+        const haystack = normalizeText(`${row.norma || ""} ${row.articulo || ""} ${row.requisito || ""} ${row.evidencia || ""}`);
+        return haystack && (
+          text.includes(normalizeText(row.norma || "__")) ||
+          (text.includes("matafuego") && haystack.includes("incendio")) ||
+          (text.includes("extintor") && haystack.includes("incendio")) ||
+          (text.includes("simulacro") && haystack.includes("emergencia")) ||
+          (text.includes("capacit") && haystack.includes("capacit")) ||
+          (text.includes("botiquin") && haystack.includes("primeros")) ||
+          (text.includes("legal") && haystack.includes("legal")) ||
+          (text.includes("document") && haystack.includes("document")) ||
+          (text.includes("incidente") && haystack.includes("accident")) ||
+          (text.includes("iper") && haystack.includes("45001"))
+        );
+      });
+      return { iperId: iper?.id || "", legalId: legal?.id || "" };
+    }
+
+    async function insertRegistroSstWithTraceability(record) {
+      const payload = registroLocalToSupabaseRow(record);
+      let { data, error } = await supabaseClient
+        .from("registros_sst")
+        .insert([payload])
+        .select("*")
+        .single();
+
+      // Si la base todavía no tiene iper_id/legal_id/accion_correctiva_id, reintenta sin esos campos.
+      if (error && /column|schema cache|iper_id|legal_id|accion_correctiva_id/i.test(error.message || "")) {
+        delete payload.iper_id;
+        delete payload.legal_id;
+        delete payload.accion_correctiva_id;
+        const retry = await supabaseClient
+          .from("registros_sst")
+          .insert([payload])
+          .select("*")
+          .single();
+        data = retry.data;
+        error = retry.error;
+      }
+      if (error) throw error;
+      return data;
+    }
+
+    async function createCorrectiveActionRecord(parentRecord) {
+      const shouldCreate = document.getElementById("sstRecordGenerateAction")?.value === "si";
+      if (!shouldCreate) return null;
+      const needsAction = ["Pendiente", "En proceso"].includes(parentRecord.state) || normalizeText(parentRecord.type).includes("no conformidad");
+      if (!needsAction) return null;
+      const actionRecord = {
+        code: nextSstCode("Acción Correctiva"),
+        type: "Acción Correctiva",
+        date: parentRecord.date,
+        responsible: parentRecord.responsible,
+        sector: parentRecord.sector,
+        state: "Pendiente",
+        finding: `Acción derivada de ${parentRecord.code}: ${parentRecord.finding}`,
+        risk: parentRecord.risk,
+        action: parentRecord.action || "Definir acción correctiva",
+        due: parentRecord.due || "",
+        observations: `Registro padre: ${parentRecord.code}. Trazabilidad: IPER ID ${parentRecord.iperId || "sin asignar"} · Legal ID ${parentRecord.legalId || "sin asignar"}.`,
+        iperId: parentRecord.iperId,
+        legalId: parentRecord.legalId
+      };
+      try {
+        const data = await insertRegistroSstWithTraceability(actionRecord);
+        if (data?.id) actionRecord.supabaseId = data.id;
+      } catch (error) {
+        console.warn("No se pudo crear la acción correctiva vinculada:", error);
+      }
+      sstRecords = sstRecords.filter(r => r.code !== actionRecord.code);
+      sstRecords.unshift(actionRecord);
+      return actionRecord;
+    }
+
+    function inferMonitoreoNameFromRecord(record) {
+      const text = normalizeText(`${record.type || ""} ${record.finding || ""} ${record.risk || ""} ${record.sector || ""} ${record.action || ""} ${record.observations || ""}`);
+      const direct = (typeof monitoringProgram !== "undefined" ? monitoringProgram : []).find(m =>
+        normalizeText(record.finding || "") === normalizeText(m.item || "") ||
+        normalizeText(record.finding || "").includes(normalizeText(m.item || "")) ||
+        normalizeText(m.item || "").includes(normalizeText(record.finding || ""))
+      );
+      if (direct?.item) return direct.item;
+
+      if (text.includes("matafuego") || text.includes("extintor") || text.includes("incendio")) return "Estado de Matafuegos";
+      if (text.includes("luz") || text.includes("luces") || text.includes("emergencia") && text.includes("ilumin")) return "Estado de Luces de Emergencia";
+      if (text.includes("botiquin") || text.includes("primeros auxilios")) return "Estado de Botiquines";
+      if (text.includes("senalizacion") || text.includes("cartel") || text.includes("carteleria")) return "Estado de Señalización";
+      if (text.includes("derrame") || text.includes("contingencia") || text.includes("kit antiderrame")) return "Control de Derrames y Contingencias";
+      if (text.includes("orden") || text.includes("limpieza")) return "Orden y Limpieza";
+      if (text.includes("epp") || text.includes("proteccion personal") || text.includes("elementos de proteccion")) return "Uso de Elementos de Protección Personal";
+      if (text.includes("capacitacion") || text.includes("curso")) return "Cumplimiento del Plan Anual de Capacitación";
+      if (text.includes("asistencia")) return "Control de Asistencia a Capacitaciones";
+      if (text.includes("certificado") || text.includes("vencimiento")) return "Vigencia de Certificados";
+      if (text.includes("simulacro")) return "Simulacros de Emergencia";
+      if (text.includes("incidente") || text.includes("investigacion")) return "Investigación de Incidentes";
+      if (text.includes("legal") || text.includes("normativa")) return "Cumplimiento Legal";
+      if (text.includes("documental") || text.includes("documento")) return "Control Documental";
+      if (text.includes("evaluacion interna")) return "Evaluación Interna del Sistema SST";
+      if (text.includes("revision por la direccion") || text.includes("direccion")) return "Revisión por la Dirección";
+      return "";
+    }
+
     async function saveSstRecord() {
       const type = document.getElementById("sstRecordType")?.value || "Inspección";
       const record = {
@@ -9663,22 +9855,88 @@ const courseCounts = courses.slice(0, 7).map(course => {
         state: document.getElementById("sstRecordState")?.value || "Pendiente",
         finding: document.getElementById("sstRecordFinding")?.value.trim() || "Registro SST",
         risk: document.getElementById("sstRecordRisk")?.value.trim() || "Riesgo asociado según IPER",
+        iperId: document.getElementById("sstRecordIperId")?.value || "",
+        legalId: document.getElementById("sstRecordLegalId")?.value || "",
         action: document.getElementById("sstRecordAction")?.value.trim() || "Definir acción de seguimiento",
         due: document.getElementById("sstRecordDue")?.value || "",
         observations: document.getElementById("sstRecordObservations")?.value.trim() || "Sin observaciones adicionales."
       };
-      sstRecords.unshift(record);
-      localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
+
+      if (!record.iperId || !record.legalId) {
+        const inferredTrace = inferTraceabilityFromRecord(record);
+        if (!record.iperId && inferredTrace.iperId) record.iperId = String(inferredTrace.iperId);
+        if (!record.legalId && inferredTrace.legalId) record.legalId = String(inferredTrace.legalId);
+      }
+      const iperRow = (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId));
+      const legalRow = (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId));
+      if (iperRow && (!record.risk || record.risk === "Riesgo asociado según IPER")) record.risk = sstIperLabel(iperRow);
+      if (legalRow && !normalizeText(record.observations).includes("matriz legal")) {
+        record.observations += `
+Matriz Legal asociada: ${sstLegalLabel(legalRow)}`;
+      }
+
+      // Evita doble guardado por click repetido y muestra estado real al usuario.
+      const saveBtn = event?.target;
+      if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = "Guardando..."; }
+
+      const monitoreoRelacionado = inferMonitoreoNameFromRecord(record);
+      let insertedOk = false;
+      let monitoreoOk = false;
+
       try {
-        const { error } = await supabaseClient.from("registros_sst").insert([registroLocalToSupabaseRow(record)]);
-        if (error) console.warn("No se pudo guardar registros_sst:", error);
-      } catch (e) { console.warn("Error al insertar registros_sst:", e); }
-      try { await actualizarMonitoreoSupabasePorNombre(record.finding, isClosedSstState(record.state) ? "Actualizado" : record.state, record.date, record.observations); } catch (e) {}
-      await cargarSstSupabase(true);
+        const data = await insertRegistroSstWithTraceability(record);
+        insertedOk = true;
+        if (data) record.supabaseId = data.id;
+      } catch (error) {
+        console.error("No se pudo guardar registros_sst:", error);
+        showToast(`⚠️ No se pudo guardar en Supabase: ${error.message || "revisar permisos/RLS"}. Se conserva localmente.`);
+      }
+
+      // Siempre actualiza la vista local para que el usuario vea el registro aunque Supabase falle.
+      sstRecords = sstRecords.filter(r => r.code !== record.code);
+      sstRecords.unshift(record);
+      const generatedAction = await createCorrectiveActionRecord(record);
+      if (generatedAction) record.accionCorrectivaId = generatedAction.supabaseId || generatedAction.code;
+      localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
+
+      if (monitoreoRelacionado) {
+        const nuevoEstado = isClosedSstState(record.state) ? "Actualizado" : record.state;
+        try {
+          monitoreoOk = await actualizarMonitoreoSupabasePorNombre(monitoreoRelacionado, nuevoEstado, record.date, record.observations);
+        } catch (error) {
+          console.warn("No se pudo actualizar monitoreo relacionado:", error);
+        }
+
+        // Actualización local del programa para que el KPI impacte inmediatamente.
+        if (typeof monitoringProgram !== "undefined") {
+          const item = monitoringProgram.find(m => normalizeText(m.item || "") === normalizeText(monitoreoRelacionado));
+          if (item) {
+            item.status = estadoMonitoreoNormalizado(isClosedSstState(record.state) ? "Actualizado" : record.state);
+            item.fechaRealizada = record.date;
+            item.observaciones = record.observations;
+          }
+        }
+      }
+
+      // Solo recarga desde Supabase si se insertó correctamente; si no, no pisa el registro local recién cargado.
+      if (insertedOk) {
+        await cargarSstSupabase(true);
+      } else {
+        refreshAll();
+      }
+
       renderVerificationModule();
       clearSstForm();
       showVerificationTab("historial");
-      showToast("✅ Registro SST guardado en el historial.");
+
+      const traceMsg = `${record.iperId ? " · IPER vinculado" : ""}${record.legalId ? " · Legal vinculado" : ""}${generatedAction ? " · Acción correctiva generada" : ""}`;
+      if (insertedOk && monitoreoRelacionado) {
+        showToast(`✅ Registro guardado. Impactó en: ${monitoreoRelacionado}${traceMsg}.`);
+      } else if (insertedOk) {
+        showToast(`✅ Registro SST guardado${traceMsg}. No se detectó un monitoreo asociado automáticamente.`);
+      }
+
+      if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = "Guardar registro SST"; }
     }
 
     function showVerificationTab(tab) {
@@ -9817,7 +10075,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
           if (state === "overdue") return `<td><span class="month-dot overdue">!</span></td>`;
           return `<td><span class="month-dot pending">•</span></td>`;
         }).join("");
-        const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : (states.includes("done") && states.includes("pending")) ? { txt:"Realizado", cls:"vigente" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
+        const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : (states.includes("done") && states.includes("pending")) ? { txt:"Al día", cls:"vigente" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
         return `<tr><td><strong>${row.activity}</strong><br><small>${row.frequency}</small></td>${cells}<td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
       }).join("") + `</tbody>`;
     }
