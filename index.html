@@ -6419,7 +6419,7 @@ async function guardarRealizacionSupabase(training) {
           <div class="executive-kpi warn"><span>Pendientes</span><strong>${pendientes}</strong><small>Requieren ejecución o seguimiento.</small></div>
           <div class="executive-kpi bad"><span>Vencidas</span><strong>${vencidas}</strong><small>Prioridad de regularización.</small></div>
           <div class="executive-kpi future"><span>Programadas</span><strong>${programadas}</strong><small>Fuera de ventana crítica de 30 días.</small></div>
-          <div class="executive-kpi ok"><span>Cumplimiento</span><strong>${compliance}%</strong><small>Realizadas / asignadas.</small></div>
+          <div class="executive-kpi ok"><span>Cumplimiento a la fecha</span><strong>${compliance}%</strong><small>Solo descuenta vencidas; futuras no penalizan.</small></div>
         </div>
 
         <div class="executive-split">
@@ -6594,7 +6594,7 @@ async function guardarRealizacionSupabase(training) {
         detailCards.innerHTML = kpiAsignaciones ? `
           <div class="dashboard-detail-card"><strong>${totalSupabase} asignadas</strong><small>Fuente: asignaciones_capacitacion de Supabase. Registros reales creados desde el calendario anual SST.</small></div>
           <div class="dashboard-detail-card warning"><strong>${pendientes} pendientes</strong><small>Asignaciones todavía no marcadas como realizadas. Incluye programadas y próximas a vencer.</small></div>
-          <div class="dashboard-detail-card ok"><strong>${realizadasSupabase} realizadas</strong><small>Asignaciones completadas. El cumplimiento global se calcula como realizadas / asignadas × 100.</small></div>
+          <div class="dashboard-detail-card ok"><strong>${realizadasSupabase} realizadas</strong><small>Asignaciones completadas. El cumplimiento global es a la fecha: las futuras o no vencidas no penalizan.</small></div>
           <div class="dashboard-detail-card danger"><strong>${vencidas} vencidas</strong><small>Pendientes cuya fecha programada ya fue superada. Requieren regularización.</small></div>
         ` : `
           <div class="dashboard-detail-card ok"><strong>${usarKpiSupabase ? realizadasSupabase : aptos} vigentes / aptos</strong><small>${usarKpiSupabase ? "Dato leído desde Supabase." : "Personal con capacitaciones vigentes y sin bloqueos críticos."}</small></div>
@@ -9710,8 +9710,51 @@ const courseCounts = courses.slice(0, 7).map(course => {
         <div class="sst-kpi legal"><span>Cumplimiento legal</span><strong>${legalOk}%</strong><small>IPER + Matriz Legal + registros asociados.</small></div>`;
     }
 
+    function isTrainingMonitoringActivity(activity) {
+      return [
+        "Cumplimiento del Plan Anual de Capacitación",
+        "Control de Asistencia a Capacitaciones",
+        "Vigencia de Certificados"
+      ].includes(activity);
+    }
+
+    function getTrainingScheduleCellStateForMonth(activity, month) {
+      const planMonth = (typeof trainingPlan !== "undefined" && Array.isArray(trainingPlan))
+        ? trainingPlan.find(m => {
+            const firstCourse = Array.isArray(m.courses) ? m.courses[0] : null;
+            if (!firstCourse?.due) return false;
+            const d = new Date(firstCourse.due + "T12:00:00");
+            return d.getFullYear() === 2026 && d.getMonth() + 1 === month;
+          })
+        : null;
+
+      if (!planMonth || !Array.isArray(planMonth.courses) || !planMonth.courses.length) return "na";
+
+      const activeEmployees = (Array.isArray(employees) ? employees : []).filter(e => e.active !== false);
+      const items = planMonth.courses.map(item => ({ ...item, month: planMonth.month, short: planMonth.short }));
+      const dueDates = items
+        .map(item => item.due ? new Date(item.due + "T12:00:00") : null)
+        .filter(Boolean);
+      const lastDue = dueDates.length ? new Date(Math.max(...dueDates.map(d => d.getTime()))) : null;
+
+      const totalRequired = activeEmployees.length * items.length;
+      if (!totalRequired) return "na";
+
+      const completed = activeEmployees.reduce((acc, emp) => {
+        return acc + items.filter(item => isCompletedValid(getEmployeeRecordForPlanItem(emp.name, item))).length;
+      }, 0);
+
+      if (completed >= totalRequired) return "done";
+
+      // Criterio correcto de auditoría: las capacitaciones futuras o aún no vencidas no penalizan.
+      if (lastDue && lastDue > today) return "pending";
+
+      return "overdue";
+    }
+
     function getSstScheduleCellState(row, month) {
       if (!row.months.includes(month)) return "na";
+      if (isTrainingMonitoringActivity(row.activity)) return getTrainingScheduleCellStateForMonth(row.activity, month);
       const currentMonth = today.getMonth() + 1;
       const recordTypeByActivity = {
         "Cumplimiento del Plan Anual de Capacitación": "Verificación",
@@ -9774,7 +9817,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
           if (state === "overdue") return `<td><span class="month-dot overdue">!</span></td>`;
           return `<td><span class="month-dot pending">•</span></td>`;
         }).join("");
-        const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
+        const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : (states.includes("done") && states.includes("pending")) ? { txt:"Realizado", cls:"vigente" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
         return `<tr><td><strong>${row.activity}</strong><br><small>${row.frequency}</small></td>${cells}<td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
       }).join("") + `</tbody>`;
     }
