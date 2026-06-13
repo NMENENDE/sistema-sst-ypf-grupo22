@@ -5006,7 +5006,16 @@ function registroSupabaseToLocal(row) {
     observations: row.observaciones || "",
     iperId: row.iper_id || "",
     legalId: row.legal_id || "",
-    accionCorrectivaId: row.accion_correctiva_id || ""
+    accionCorrectivaId: row.accion_correctiva_id || "",
+    monitoreoNombre: row.monitoreo_nombre || row.hallazgo || "",
+    monitoringName: row.monitoreo_nombre || row.hallazgo || "",
+    alcance: row.alcance || row.sector || "",
+    iperAsociado: row.iper_asociado || row.riesgo || "",
+    legalAsociado: row.legal_asociado || "",
+    frecuenciaCronograma: row.frecuencia_cronograma || "",
+    registroAsociado: row.registro_asociado || "",
+    instrumental: row.instrumental || "",
+    generaAccionCorrectiva: !!row.genera_accion_correctiva
   };
 }
 
@@ -5206,7 +5215,8 @@ async function actualizarCronogramaSupabasePorNombre(nombre, estado = "Realizado
   for (const a of attempts) {
     try {
       const { error, data } = await supabaseClient.from("cronograma_sst").update(a.payload).eq(a.col, a.value).select("id");
-      if (!error && (!Array.isArray(data) || data.length >= 0)) return true;
+      if (!error && Array.isArray(data) && data.length > 0) return true;
+      if (!error && Array.isArray(data) && data.length === 0) continue;
       if (error && !/column|schema cache|does not exist/i.test(error.message || "")) console.warn("No se pudo actualizar cronograma_sst:", error);
     } catch (err) {
       console.warn("Error actualizando cronograma_sst:", err);
@@ -10475,6 +10485,46 @@ const courseCounts = courses.slice(0, 7).map(course => {
       return "overdue";
     }
 
+
+    function recordMatchesSstScheduleActivity(record, activity) {
+      const activityKey = normalizeText(activity || "");
+      const text = normalizeText([
+        record?.monitoreoNombre,
+        record?.monitoringName,
+        record?.finding,
+        record?.type,
+        record?.sector,
+        record?.risk,
+        record?.action,
+        record?.observations,
+        record?.frecuenciaCronograma,
+        record?.registroAsociado,
+        record?.instrumental
+      ].filter(Boolean).join(" "));
+
+      if (!activityKey) return false;
+      if (text.includes(activityKey)) return true;
+
+      const synonyms = {
+        "simulacros de emergencia": ["simulacro", "simulacion", "simulación", "emergencia", "evacuacion", "evacuación"],
+        "estado de matafuegos": ["matafuego", "matafuegos", "extintor", "extintores", "incendio"],
+        "estado de luces de emergencia": ["luces de emergencia", "luz de emergencia", "emergencia", "evacuacion", "evacuación"],
+        "estado de botiquines": ["botiquin", "botiquín", "botiquines", "primeros auxilios"],
+        "estado de señalización": ["senalizacion", "señalizacion", "señalización", "carteleria", "cartelería"],
+        "control de derrames y contingencias": ["derrame", "derrames", "contingencia", "kit antiderrame"],
+        "orden y limpieza": ["orden", "limpieza"],
+        "uso de elementos de proteccion personal": ["epp", "proteccion personal", "protección personal", "elementos de proteccion"],
+        "cumplimiento legal": ["cumplimiento legal", "matriz legal", "legal"],
+        "control documental": ["control documental", "documental", "documentacion", "documentación"],
+        "investigacion de incidentes": ["investigacion", "investigación", "incidente", "incidentes"],
+        "evaluacion interna del sistema sst": ["evaluacion interna", "evaluación interna", "sistema sst"],
+        "revision por la direccion": ["revision por la direccion", "revisión por la dirección", "direccion", "dirección"]
+      };
+      const key = Object.keys(synonyms).find(k => activityKey === normalizeText(k));
+      if (key) return synonyms[key].some(word => text.includes(normalizeText(word)));
+      return false;
+    }
+
     function getSstScheduleCellState(row, month) {
       if (!row.months.includes(month)) return "na";
       if (isTrainingMonitoringActivity(row.activity)) return getTrainingScheduleCellStateForMonth(row.activity, month);
@@ -10520,8 +10570,10 @@ const courseCounts = courses.slice(0, 7).map(course => {
         const d = r.date ? new Date(r.date + "T12:00:00") : null;
         if (!d || d.getFullYear() !== 2026 || d.getMonth() + 1 !== month) return false;
         const stateOk = ["Cerrado", "Realizado"].includes(r.state);
-        const typeOk = r.type === expectedType || normalizeText(`${r.finding || ""} ${r.action || ""} ${r.observations || ""}`).includes(normalizeText(row.activity));
-        return stateOk && typeOk;
+        if (!stateOk) return false;
+        const typeOk = r.type === expectedType || recordMatchesSstScheduleActivity(r, row.activity);
+        const monitoringOk = recordMatchesSstScheduleActivity(r, row.activity);
+        return typeOk && monitoringOk;
       });
       if (hasClosedRecord) return "done";
       if (month < currentMonth) return "overdue";
