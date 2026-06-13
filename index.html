@@ -9678,6 +9678,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const code = document.getElementById("sstRecordCode");
       if (code) code.value = nextSstCode(type);
       renderSstTypeGuide();
+      bindSstTraceabilityAutofill();
     }
 
     function renderSstTypeGuide() {
@@ -9731,40 +9732,162 @@ const courseCounts = courses.slice(0, 7).map(course => {
         legalSelect.innerHTML = options.join("");
         if ([...legalSelect.options].some(o => o.value === current)) legalSelect.value = current;
       }
+      bindSstTraceabilityAutofill();
+    }
+
+    function getSstKeywordFamily(text) {
+      const t = normalizeText(text || "");
+      if (t.includes("matafuego") || t.includes("mata fuego") || t.includes("extintor") || t.includes("incendio")) return "matafuegos";
+      if ((t.includes("luz") || t.includes("luces")) && t.includes("emergencia")) return "luces_emergencia";
+      if (t.includes("botiquin") || t.includes("primeros auxilios")) return "botiquines";
+      if (t.includes("senal") || t.includes("señal") || t.includes("cartel") || t.includes("carteleria")) return "senalizacion";
+      if (t.includes("derrame") || t.includes("contingencia") || t.includes("antiderrame")) return "derrames";
+      if (t.includes("orden") || t.includes("limpieza")) return "orden_limpieza";
+      if (t.includes("epp") || t.includes("proteccion personal") || t.includes("elementos de proteccion")) return "epp";
+      if (t.includes("capacit") || t.includes("curso")) return "capacitacion";
+      if (t.includes("asistencia")) return "asistencia_capacitacion";
+      if (t.includes("certificado") || t.includes("vencimiento")) return "certificados";
+      if (t.includes("simulacro")) return "simulacros";
+      if (t.includes("incidente") || t.includes("investigacion")) return "incidentes";
+      if (t.includes("legal") || t.includes("norma") || t.includes("normativa")) return "cumplimiento_legal";
+      if (t.includes("document")) return "control_documental";
+      if (t.includes("evaluacion interna")) return "evaluacion_interna";
+      if (t.includes("revision") && t.includes("direccion")) return "revision_direccion";
+      return "";
+    }
+
+    function getMonitoringNameByFamily(family) {
+      const map = {
+        matafuegos: "Estado de Matafuegos",
+        luces_emergencia: "Estado de Luces de Emergencia",
+        botiquines: "Estado de Botiquines",
+        senalizacion: "Estado de Señalización",
+        derrames: "Control de Derrames y Contingencias",
+        orden_limpieza: "Orden y Limpieza",
+        epp: "Uso de Elementos de Protección Personal",
+        capacitacion: "Cumplimiento del Plan Anual de Capacitación",
+        asistencia_capacitacion: "Control de Asistencia a Capacitaciones",
+        certificados: "Vigencia de Certificados",
+        simulacros: "Simulacros de Emergencia",
+        incidentes: "Investigación de Incidentes",
+        cumplimiento_legal: "Cumplimiento Legal",
+        control_documental: "Control Documental",
+        evaluacion_interna: "Evaluación Interna del Sistema SST",
+        revision_direccion: "Revisión por la Dirección"
+      };
+      return map[family] || "";
+    }
+
+    function getFamilySearchTerms(family) {
+      const map = {
+        matafuegos: ["matafuego", "extintor", "incendio", "fuego", "proteccion contra incendios"],
+        luces_emergencia: ["luces de emergencia", "iluminacion de emergencia", "evacuacion"],
+        botiquines: ["botiquin", "primeros auxilios"],
+        senalizacion: ["senalizacion", "señalizacion", "carteleria", "señales"],
+        derrames: ["derrame", "contingencia", "antiderrame", "combustible"],
+        orden_limpieza: ["orden", "limpieza", "caidas", "condiciones inseguras"],
+        epp: ["epp", "elementos de proteccion", "proteccion personal"],
+        capacitacion: ["capacitacion", "formacion"],
+        asistencia_capacitacion: ["asistencia", "capacitacion"],
+        certificados: ["certificado", "vigencia", "vencimiento"],
+        simulacros: ["simulacro", "emergencia", "evacuacion"],
+        incidentes: ["incidente", "accidente", "investigacion"],
+        cumplimiento_legal: ["legal", "normativa", "cumplimiento"],
+        control_documental: ["documental", "documento", "informacion documentada"],
+        evaluacion_interna: ["evaluacion interna", "sistema sst", "eficacia"],
+        revision_direccion: ["revision", "direccion", "gerencia"]
+      };
+      return map[family] || [];
+    }
+
+    function findBestRowByTerms(rows, fields, terms) {
+      if (!Array.isArray(rows) || !rows.length || !Array.isArray(terms) || !terms.length) return null;
+      let best = null;
+      let bestScore = 0;
+      rows.forEach(row => {
+        const haystack = normalizeText(fields.map(f => row?.[f] || "").join(" "));
+        let score = 0;
+        terms.forEach(term => { if (haystack.includes(normalizeText(term))) score += 1; });
+        if (score > bestScore) { best = row; bestScore = score; }
+      });
+      return bestScore ? best : null;
+    }
+
+    function findIperForMonitoring(monitoring, family) {
+      const monitorText = `${monitoring?.item || ""} ${monitoring?.risk || ""} ${monitoring?.sector || ""}`;
+      const terms = [...getFamilySearchTerms(family), ...normalizeText(monitorText).split(/\s+/).filter(w => w.length > 5).slice(0, 8)];
+      return findBestRowByTerms(supabaseMatrizIper || [], ["proceso", "peligro", "riesgo", "control_existente", "accion_requerida"], terms);
+    }
+
+    function findLegalForMonitoring(monitoring, family) {
+      const monitorText = `${monitoring?.item || ""} ${monitoring?.legal || ""}`;
+      const terms = [...getFamilySearchTerms(family), ...normalizeText(monitorText).split(/\s+/).filter(w => w.length > 5).slice(0, 8)];
+      return findBestRowByTerms(supabaseMatrizLegal || [], ["norma", "articulo", "requisito", "evidencia", "responsable"], terms);
+    }
+
+    function getTraceabilityBundleFromRecord(record) {
+      const text = `${record.type || ""} ${record.finding || ""} ${record.risk || ""} ${record.sector || ""} ${record.action || ""} ${record.observations || ""}`;
+      const family = getSstKeywordFamily(text);
+      const monitoringName = getMonitoringNameByFamily(family) || inferMonitoreoNameFromRecord(record);
+      const monitoring = (typeof monitoringProgram !== "undefined" ? monitoringProgram : []).find(m => normalizeText(m.item || "") === normalizeText(monitoringName || ""));
+
+      let iper = record.iperId ? (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId)) : null;
+      let legal = record.legalId ? (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId)) : null;
+      if (!iper) iper = findIperForMonitoring(monitoring, family) || findBestRowByTerms(supabaseMatrizIper || [], ["proceso", "peligro", "riesgo", "control_existente", "accion_requerida"], getFamilySearchTerms(family));
+      if (!legal) legal = findLegalForMonitoring(monitoring, family) || findBestRowByTerms(supabaseMatrizLegal || [], ["norma", "articulo", "requisito", "evidencia", "responsable"], getFamilySearchTerms(family));
+
+      return {
+        family,
+        monitoringName,
+        monitoring,
+        iperId: iper?.id || "",
+        legalId: legal?.id || "",
+        iper,
+        legal,
+        riskText: monitoring?.risk || (iper ? sstIperLabel(iper) : ""),
+        legalText: monitoring?.legal || (legal ? sstLegalLabel(legal) : "")
+      };
     }
 
     function inferTraceabilityFromRecord(record) {
-      const text = normalizeText(`${record.type || ""} ${record.finding || ""} ${record.risk || ""} ${record.action || ""} ${record.observations || ""}`);
-      const iper = (supabaseMatrizIper || []).find(row => {
-        const haystack = normalizeText(`${row.proceso || ""} ${row.peligro || ""} ${row.riesgo || ""} ${row.control_existente || ""} ${row.accion_requerida || ""}`);
-        return haystack && (text.includes(haystack.slice(0, Math.min(20, haystack.length))) ||
-          (text.includes("matafuego") && haystack.includes("incendio")) ||
-          (text.includes("extintor") && haystack.includes("incendio")) ||
-          (text.includes("simulacro") && haystack.includes("emergencia")) ||
-          (text.includes("derrame") && haystack.includes("derrame")) ||
-          (text.includes("legal") && haystack.includes("legal")) ||
-          (text.includes("document") && haystack.includes("document")) ||
-          (text.includes("capacit") && haystack.includes("capacit")) ||
-          (text.includes("epp") && haystack.includes("epp")) ||
-          (text.includes("botiquin") && haystack.includes("primeros")) ||
-          (text.includes("incidente") && haystack.includes("incidente")));
+      const bundle = getTraceabilityBundleFromRecord(record);
+      return { iperId: bundle.iperId || "", legalId: bundle.legalId || "", monitoringName: bundle.monitoringName || "", riskText: bundle.riskText || "", legalText: bundle.legalText || "" };
+    }
+
+    function autoFillSstTraceability() {
+      const record = {
+        type: document.getElementById("sstRecordType")?.value || "",
+        sector: document.getElementById("sstRecordSector")?.value || "",
+        finding: document.getElementById("sstRecordFinding")?.value || "",
+        risk: document.getElementById("sstRecordRisk")?.value || "",
+        action: document.getElementById("sstRecordAction")?.value || "",
+        observations: document.getElementById("sstRecordObservations")?.value || "",
+        iperId: document.getElementById("sstRecordIperId")?.value || "",
+        legalId: document.getElementById("sstRecordLegalId")?.value || ""
+      };
+      const bundle = getTraceabilityBundleFromRecord(record);
+      const iperSelect = document.getElementById("sstRecordIperId");
+      const legalSelect = document.getElementById("sstRecordLegalId");
+      const riskInput = document.getElementById("sstRecordRisk");
+      if (iperSelect && !iperSelect.value && bundle.iperId && [...iperSelect.options].some(o => String(o.value) === String(bundle.iperId))) iperSelect.value = String(bundle.iperId);
+      if (legalSelect && !legalSelect.value && bundle.legalId && [...legalSelect.options].some(o => String(o.value) === String(bundle.legalId))) legalSelect.value = String(bundle.legalId);
+      if (riskInput && (!riskInput.value || normalizeText(riskInput.value).includes("riesgo asociado")) && bundle.riskText) riskInput.value = bundle.riskText;
+      const obs = document.getElementById("sstRecordObservations");
+      if (obs && bundle.legalText && !normalizeText(obs.value).includes("matriz legal asociada")) {
+        const sep = obs.value.trim() ? "\n" : "";
+        obs.value = `${obs.value.trim()}${sep}Matriz Legal asociada: ${bundle.legalText}`;
+      }
+    }
+
+    function bindSstTraceabilityAutofill() {
+      ["sstRecordType", "sstRecordSector", "sstRecordFinding", "sstRecordRisk", "sstRecordAction", "sstRecordObservations"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.dataset.traceabilityBound) {
+          el.addEventListener("input", autoFillSstTraceability);
+          el.addEventListener("change", autoFillSstTraceability);
+          el.dataset.traceabilityBound = "1";
+        }
       });
-      const legal = (supabaseMatrizLegal || []).find(row => {
-        const haystack = normalizeText(`${row.norma || ""} ${row.articulo || ""} ${row.requisito || ""} ${row.evidencia || ""}`);
-        return haystack && (
-          text.includes(normalizeText(row.norma || "__")) ||
-          (text.includes("matafuego") && haystack.includes("incendio")) ||
-          (text.includes("extintor") && haystack.includes("incendio")) ||
-          (text.includes("simulacro") && haystack.includes("emergencia")) ||
-          (text.includes("capacit") && haystack.includes("capacit")) ||
-          (text.includes("botiquin") && haystack.includes("primeros")) ||
-          (text.includes("legal") && haystack.includes("legal")) ||
-          (text.includes("document") && haystack.includes("document")) ||
-          (text.includes("incidente") && haystack.includes("accident")) ||
-          (text.includes("iper") && haystack.includes("45001"))
-        );
-      });
-      return { iperId: iper?.id || "", legalId: legal?.id || "" };
     }
 
     async function insertRegistroSstWithTraceability(record) {
@@ -9869,17 +9992,24 @@ const courseCounts = courses.slice(0, 7).map(course => {
         observations: document.getElementById("sstRecordObservations")?.value.trim() || "Sin observaciones adicionales."
       };
 
-      if (!record.iperId || !record.legalId) {
-        const inferredTrace = inferTraceabilityFromRecord(record);
-        if (!record.iperId && inferredTrace.iperId) record.iperId = String(inferredTrace.iperId);
-        if (!record.legalId && inferredTrace.legalId) record.legalId = String(inferredTrace.legalId);
+      const inferredTrace = inferTraceabilityFromRecord(record);
+      if (!record.iperId && inferredTrace.iperId) record.iperId = String(inferredTrace.iperId);
+      if (!record.legalId && inferredTrace.legalId) record.legalId = String(inferredTrace.legalId);
+      if ((!record.risk || normalizeText(record.risk).includes("riesgo asociado")) && inferredTrace.riskText) record.risk = inferredTrace.riskText;
+      if (inferredTrace.legalText && !normalizeText(record.observations).includes("matriz legal asociada")) {
+        record.observations += `
+Matriz Legal asociada: ${inferredTrace.legalText}`;
+      }
+      if (inferredTrace.monitoringName && !normalizeText(record.observations).includes("monitoreo asociado")) {
+        record.observations += `
+Monitoreo asociado: ${inferredTrace.monitoringName}`;
       }
       const iperRow = (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId));
       const legalRow = (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId));
-      if (iperRow && (!record.risk || record.risk === "Riesgo asociado según IPER")) record.risk = sstIperLabel(iperRow);
-      if (legalRow && !normalizeText(record.observations).includes("matriz legal")) {
+      if (iperRow && (!record.risk || normalizeText(record.risk).includes("riesgo asociado"))) record.risk = sstIperLabel(iperRow);
+      if (legalRow && !normalizeText(record.observations).includes("requisito legal")) {
         record.observations += `
-Matriz Legal asociada: ${sstLegalLabel(legalRow)}`;
+Requisito legal vinculado: ${sstLegalLabel(legalRow)}`;
       }
 
       // Evita doble guardado por click repetido y muestra estado real al usuario.
@@ -10427,12 +10557,14 @@ Matriz Legal asociada: ${sstLegalLabel(legalRow)}`;
 
     function getLatestSstRecordForMonitor(m) {
       if (typeof sstRecords === "undefined" || !Array.isArray(sstRecords)) return null;
-      const key = normalizeText(m.schedule || m.item || "");
+      const key = normalizeText(m.item || "");
+      const scheduleKey = normalizeText(m.schedule || "");
       const allowedTypes = monitorRecordTypeMap[m.item] || [];
       return sstRecords.find(r => {
         const typeOk = !allowedTypes.length || allowedTypes.includes(r.type);
         const text = normalizeText(`${r.code || ""} ${r.type || ""} ${r.sector || ""} ${r.finding || ""} ${r.risk || ""} ${r.action || ""} ${r.observations || ""}`);
-        const textOk = text.includes(key) || key.includes(normalizeText(r.finding || ""));
+        const familyName = getMonitoringNameByFamily(getSstKeywordFamily(text));
+        const textOk = text.includes(key) || key.includes(normalizeText(r.finding || "")) || normalizeText(familyName) === key || (scheduleKey && text.includes(scheduleKey) && !scheduleKey.includes("cronograma sst"));
         return typeOk && textOk;
       }) || null;
     }
