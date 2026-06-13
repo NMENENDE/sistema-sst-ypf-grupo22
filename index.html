@@ -6883,11 +6883,14 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
     function renderReports() {
       const list = document.getElementById("reportList");
-      list.innerHTML = reports.map(r => `
+      // En algunas versiones del módulo SST no existe la tarjeta de reportes.
+      // Antes esto rompía refreshAll() y dejaba el botón Guardar en "Guardando...".
+      if (!list) return;
+      list.innerHTML = (Array.isArray(reports) ? reports : []).map(r => `
         <div class="doc-card">
-          <strong>${r.type}</strong>
-          <span>${r.description}</span>
-          <small>Reportado por ${r.name} · ${formatDate(r.date)}</small>
+          <strong>${r.type || "Reporte"}</strong>
+          <span>${r.description || "Sin descripción."}</span>
+          <small>Reportado por ${r.name || "Responsable SST"} · ${formatDate(r.date)}</small>
         </div>
       `).join("");
     }
@@ -10378,10 +10381,10 @@ const courseCounts = courses.slice(0, 7).map(course => {
           }
         }
 
-        await cargarSstSupabase(true);
-        renderVerificationModule();
+        try { await cargarSstSupabase(true); } catch (refreshError) { console.warn("No se pudo recargar Supabase después de guardar:", refreshError); }
+        try { renderVerificationModule(); } catch (renderError) { console.warn("No se pudo refrescar verificación después de guardar:", renderError); }
         clearSstForm();
-        showVerificationTab("historial");
+        try { showVerificationTab("historial"); } catch (tabError) { console.warn("No se pudo cambiar a historial:", tabError); }
 
         traceMsg = `${record.iperId ? " · IPER vinculado" : ""}${record.legalId ? " · Legal vinculado" : ""}${generatedAction ? " · Acción correctiva generada" : ""}`;
         if (monitoreoRelacionado) showToast(`✅ Registro guardado. Impactó en: ${monitoreoRelacionado}${traceMsg}.`);
@@ -10393,7 +10396,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
           sstRecords = sstRecords.filter(r => r.code !== record.code);
           sstRecords.unshift(record);
           localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
-          refreshAll();
+          try { refreshAll(); } catch (refreshError) { console.warn("No se pudo refrescar la vista después del error de guardado:", refreshError); }
         }
         showToast(`⚠️ No se pudo guardar en Supabase: ${error.message || "revisar permisos/RLS"}. Se conserva localmente.`);
       } finally {
