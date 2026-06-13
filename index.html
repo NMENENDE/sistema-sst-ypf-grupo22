@@ -9430,49 +9430,41 @@ const courseCounts = courses.slice(0, 7).map(course => {
     };
 
     const sstSchedule = [
-      { activity: "Inspección SST", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
-      { activity: "Observaciones SST", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
-      { activity: "Verificación SST", frequency: "Bimestral", months: [2,4,6,8,10,12] },
-      { activity: "Auditoría Interna", frequency: "Anual", months: [9] },
+      { activity: "Cumplimiento del Plan Anual de Capacitación", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Control de Asistencia a Capacitaciones", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Vigencia de Certificados", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Estado de Matafuegos", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Estado de Luces de Emergencia", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Estado de Botiquines", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Estado de Señalización", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Orden y Limpieza", frequency: "Semanal", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Uso de Elementos de Protección Personal", frequency: "Semanal", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Control de Derrames y Contingencias", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
+      { activity: "Simulacros de Emergencia", frequency: "Semestral", months: [6,12] },
       { activity: "Investigación de Incidentes", frequency: "Según ocurrencia", months: [] },
-      { activity: "Revisión por Dirección", frequency: "Anual", months: [12] },
+      { activity: "Cumplimiento Legal", frequency: "Trimestral", months: [3,6,9,12] },
       { activity: "Control Documental", frequency: "Trimestral", months: [3,6,9,12] },
-      { activity: "Cumplimiento Legal", frequency: "Bimestral", months: [2,4,6,8,10,12] },
-      { activity: "EPP", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
-      { activity: "Matafuegos", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
-      { activity: "Luces de emergencia", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
-      { activity: "Botiquines", frequency: "Mensual", months: [1,2,3,4,5,6,7,8,9,10,11,12] },
-      { activity: "Iluminación / LUX", frequency: "Trimestral", months: [3,6,9,12] },
-      { activity: "Ruido laboral", frequency: "Semestral", months: [6,12] },
-      { activity: "Puesta a tierra", frequency: "Anual", months: [9] },
-      { activity: "Carga de fuego", frequency: "Anual", months: [8] },
-      { activity: "Estrés térmico", frequency: "Temporada estival", months: [1,2,12] },
-      { activity: "Ventilación", frequency: "Semestral", months: [4,10] },
-      { activity: "Gases y vapores", frequency: "Bimestral", months: [2,4,6,8,10,12] },
-      { activity: "Vibraciones", frequency: "Anual", months: [7] }
+      { activity: "Evaluación Interna del Sistema SST", frequency: "Anual", months: [11] },
+      { activity: "Revisión por la Dirección", frequency: "Anual", months: [12] }
     ];
 
     const monitoringProgram = [
-      { item: "Iluminación / LUX", toolType: "lux", risk: "Iluminación deficiente, fatiga visual, errores operativos y caída al mismo nivel", legal: "Ley 19.587 · Decreto 351/79 · Res. SRT 84/12 · IRAM AADL J 20-06", frequency: "Trimestral", schedule: "Iluminación / LUX", sector: "Playa, tienda, administración, sanitarios y depósito", status: "Programado" },
-      { item: "Ruido laboral", toolType: "ruido", risk: "Exposición a ruido por tránsito, compresores, equipos auxiliares y operación en playa", legal: "Ley 19.587 · Decreto 351/79 · Res. SRT 85/12 · Res. 295/03", frequency: "Semestral", schedule: "Ruido laboral", sector: "Playa, sala técnica, compresores y áreas operativas", status: "Programado" },
-      { item: "Puesta a tierra y continuidad", toolType: "pat", risk: "Electricidad estática, contacto eléctrico indirecto y fuente de ignición", legal: "Ley 19.587 · Decreto 351/79 · Res. SRT 900/15 · AEA 90364", frequency: "Anual / según criticidad", schedule: "Puesta a tierra", sector: "Tableros, surtidores, descarga de combustible, GNC y estructuras metálicas", status: "Programado" },
-      { item: "Carga de fuego", toolType: "fuego", risk: "Incendio, propagación de fuego y capacidad de respuesta insuficiente", legal: "Ley 19.587 · Decreto 351/79 Cap. 18 · normativa local aplicable", frequency: "Anual", schedule: "Carga de fuego", sector: "Tienda, depósito, administración y sectores con combustibles sólidos", status: "Programado" },
-      { item: "Estrés térmico", toolType: "termico", risk: "Carga térmica, golpe de calor, fatiga, deshidratación y reducción de atención", legal: "Ley 19.587 · Decreto 351/79 · Res. 295/03 · Res. SRT 30/23", frequency: "Temporada estival", schedule: "Estrés térmico", sector: "Playa de despacho, GNC y tareas exteriores", status: "Programado" },
-      { item: "Ventilación", toolType: "ventilacion", risk: "Ventilación deficiente, acumulación de contaminantes y renovación insuficiente", legal: "Ley 19.587 · Decreto 351/79 · Res. 295/03", frequency: "Semestral", schedule: "Ventilación", sector: "Tienda, sanitarios, depósito, sala técnica y áreas cerradas", status: "Programado" },
-      { item: "Gases y vapores", toolType: "gases", risk: "Exposición a vapores combustibles, LEL, atmósferas peligrosas, falta o exceso de oxígeno", legal: "Ley 19.587 · Decreto 351/79 · Res. 295/03 · Res. SRT 861/15 · NAG 418/420", frequency: "Bimestral / según operación", schedule: "Gases y vapores", sector: "Playa, descarga de combustibles, bocas de expendio, GNC y cámaras", status: "Programado" },
-      { item: "Vibraciones", toolType: "vibraciones", risk: "Exposición a vibraciones mano-brazo o cuerpo entero por equipos, herramientas o tránsito", legal: "Ley 19.587 · Decreto 351/79 · Res. 295/03", frequency: "Anual / según exposición", schedule: "Vibraciones", sector: "Equipos auxiliares, tareas de mantenimiento y operación con herramientas", status: "Programado" },
-      { item: "Derrames de combustible", risk: "Derrame, incendio, resbalones, contacto químico y contaminación", legal: "Ley 19.587 · Decreto 351/79 · Ley 24.051 · procedimientos internos YPF", frequency: "Mensual", schedule: "Inspección SST", sector: "Playa, descarga, tanques, rejillas y kit antiderrame", status: "Actualizado" },
-      { item: "Atropellamiento / circulación vehicular", risk: "Interacción persona-vehículo, maniobras inseguras y circulación en playa", legal: "Ley 24.449 · Decreto 351/79 · señalización vial interna", frequency: "Mensual", schedule: "Inspección SST", sector: "Ingresos, egresos, playa y sectores de circulación", status: "En seguimiento" },
-      { item: "Extintores y protección contra incendio", risk: "Incendio, respuesta inicial deficiente y equipos no disponibles", legal: "Ley 19.587 · Decreto 351/79 Cap. 18 · IRAM 3517", frequency: "Mensual", schedule: "Matafuegos", sector: "Playa, tienda, GNC, tableros, depósito y administración", status: "Actualizado" },
-      { item: "Señalización de seguridad", risk: "Falta de advertencia, evacuación deficiente e incumplimiento de obligaciones visuales", legal: "Decreto 351/79 Cap. 7 · IRAM 10005 · ISO 7010", frequency: "Mensual", schedule: "Inspección SST", sector: "Todo el establecimiento", status: "Actualizado" },
-      { item: "Capacitaciones SST", risk: "Falta de competencia preventiva, desconocimiento de procedimientos y respuesta deficiente", legal: "Decreto 351/79 Cap. 21 · Res. SRT 905/15 · ISO 45001", frequency: "Mensual", schedule: "Capacitaciones SST", sector: "Todo el personal", status: "Actualizado" },
-      { item: "Uso y estado de EPP", risk: "Contacto químico, lesiones, salpicaduras, golpes y exposición a tareas operativas", legal: "Res. SRT 299/11 · Ley 19.587 · Decreto 351/79", frequency: "Mensual", schedule: "EPP", sector: "Playa, GNC, descarga, mantenimiento y limpieza", status: "En seguimiento" },
-      { item: "Operación GNC", risk: "Fuga, sobrepresión, incendio, explosión y exposición a atmósferas peligrosas", legal: "NAG 418 · NAG 420 · ENARGAS · Ley 19.587 · Decreto 351/79", frequency: "Bimestral", schedule: "Gases y vapores", sector: "Isla GNC, compresores, válvulas y sectores asociados", status: "Actualizado" },
-      { item: "Orden y limpieza", risk: "Caídas, golpes, obstrucción de vías, derrames y falta de control operativo", legal: "Ley 19.587 · Decreto 351/79 · ISO 45001", frequency: "Mensual", schedule: "Inspección SST", sector: "Playa, tienda, depósito, sanitarios y circulación", status: "Actualizado" },
-      { item: "Botiquines", risk: "Respuesta inadecuada ante primeros auxilios y falta de recursos básicos", legal: "Decreto 351/79 · Res. SRT 905/15 · procedimientos internos", frequency: "Mensual", schedule: "Botiquines", sector: "Tienda / administración / punto de primeros auxilios", status: "Actualizado" },
-      { item: "Luces de emergencia", risk: "Evacuación deficiente ante corte eléctrico, baja visibilidad y demoras", legal: "Ley 19.587 · Decreto 351/79 · criterios de evacuación y emergencia", frequency: "Mensual", schedule: "Luces de emergencia", sector: "Salidas, rutas de evacuación, tienda, sanitarios y sectores críticos", status: "Actualizado" },
-      { item: "Control documental SST", risk: "Documentación desactualizada, falta de trazabilidad y pérdida de evidencia", legal: "ISO 45001:2018 · Ley 19.587 · Decreto 351/79", frequency: "Trimestral", schedule: "Control Documental", sector: "Administración SST", status: "Actualizado" },
-      { item: "Matriz Legal e IPER", risk: "Incumplimiento normativo, controles no actualizados y desvío del sistema de gestión", legal: "Ley 19.587 · Decreto 351/79 · SRT · ENARGAS/NAG · IRAM · ISO 45001", frequency: "Bimestral", schedule: "Cumplimiento Legal", sector: "Sistema de Gestión SST", status: "Actualizado" }
+      { item: "Cumplimiento del Plan Anual de Capacitación", risk: "Falta de competencia preventiva, incumplimiento del plan anual y desvíos en el desempeño SST", legal: "Ley 19.587 · Decreto 351/79 Cap. 21 · Res. SRT 905/15 · ISO 45001", frequency: "Mensual", schedule: "Cumplimiento del Plan Anual de Capacitación", sector: "Todo el personal", status: "Programado" },
+      { item: "Control de Asistencia a Capacitaciones", risk: "Personal sin participación registrada, falta de evidencia y brechas de formación", legal: "Decreto 351/79 Cap. 21 · Res. SRT 905/15 · ISO 45001", frequency: "Mensual", schedule: "Control de Asistencia a Capacitaciones", sector: "Todo el personal", status: "Programado" },
+      { item: "Vigencia de Certificados", risk: "Certificados vencidos, habilitaciones desactualizadas y falta de trazabilidad documental", legal: "Ley 19.587 · Decreto 351/79 · requisitos internos SST", frequency: "Mensual", schedule: "Vigencia de Certificados", sector: "Personal y registros SST", status: "Programado" },
+      { item: "Estado de Matafuegos", risk: "Incendio, respuesta inicial deficiente y equipos contra incendio no operativos", legal: "Ley 19.587 · Decreto 351/79 Cap. 18 · IRAM 3517", frequency: "Mensual", schedule: "Estado de Matafuegos", sector: "Playa, tienda, GNC, tableros y administración", status: "Programado" },
+      { item: "Estado de Luces de Emergencia", risk: "Evacuación deficiente ante corte eléctrico, baja visibilidad y demoras de respuesta", legal: "Ley 19.587 · Decreto 351/79 · criterios de evacuación y emergencia", frequency: "Mensual", schedule: "Estado de Luces de Emergencia", sector: "Salidas, rutas de evacuación, tienda, sanitarios y sectores críticos", status: "Programado" },
+      { item: "Estado de Botiquines", risk: "Respuesta inadecuada ante primeros auxilios y falta de insumos básicos", legal: "Decreto 351/79 · Res. SRT 905/15 · procedimientos internos SST", frequency: "Mensual", schedule: "Estado de Botiquines", sector: "Tienda, administración y punto de primeros auxilios", status: "Programado" },
+      { item: "Estado de Señalización", risk: "Falta de advertencia, evacuación deficiente e incumplimiento de obligaciones visuales", legal: "Decreto 351/79 Cap. 7 · IRAM 10005 · ISO 7010", frequency: "Mensual", schedule: "Estado de Señalización", sector: "Todo el establecimiento", status: "Programado" },
+      { item: "Orden y Limpieza", risk: "Caídas al mismo nivel, golpes, obstrucción de vías y condiciones inseguras", legal: "Ley 19.587 · Decreto 351/79 · buenas prácticas SST · ISO 45001", frequency: "Semanal", schedule: "Orden y Limpieza", sector: "Playa, tienda, sanitarios y circulación", status: "Programado" },
+      { item: "Uso de Elementos de Protección Personal", risk: "Contacto químico, salpicaduras, golpes y exposición a tareas operativas sin protección", legal: "Res. SRT 299/11 · Ley 19.587 · Decreto 351/79", frequency: "Semanal", schedule: "Uso de Elementos de Protección Personal", sector: "Playa, GNC, descarga, mantenimiento y limpieza", status: "Programado" },
+      { item: "Control de Derrames y Contingencias", risk: "Derrames, incendio, resbalones, contacto químico y contaminación", legal: "Ley 19.587 · Decreto 351/79 · Ley 24.051 · procedimientos internos YPF", frequency: "Mensual", schedule: "Control de Derrames y Contingencias", sector: "Playa, descarga, tanques, rejillas y kit antiderrame", status: "Programado" },
+      { item: "Simulacros de Emergencia", risk: "Respuesta deficiente ante emergencias, demoras de evacuación y fallas de coordinación", legal: "Ley 19.587 · Decreto 351/79 · Plan de Emergencias · ISO 45001", frequency: "Semestral", schedule: "Simulacros de Emergencia", sector: "Todo el establecimiento", status: "Programado" },
+      { item: "Investigación de Incidentes", risk: "Repetición de eventos, causas no tratadas y acciones correctivas insuficientes", legal: "Ley 19.587 · Decreto 351/79 · Res. SRT 905/15 · ISO 45001", frequency: "Según ocurrencia", schedule: "Investigación de Incidentes", sector: "Sectores involucrados", status: "Programado" },
+      { item: "Cumplimiento Legal", risk: "Incumplimiento normativo, requisitos legales no actualizados y exposición a sanciones", legal: "Ley 19.587 · Decreto 351/79 · SRT · ENARGAS/NAG · IRAM · normativa aplicable", frequency: "Trimestral", schedule: "Cumplimiento Legal", sector: "Sistema de Gestión SST", status: "Programado" },
+      { item: "Control Documental", risk: "Documentación desactualizada, pérdida de evidencia y falta de control de registros", legal: "ISO 45001:2018 · Ley 19.587 · Decreto 351/79", frequency: "Trimestral", schedule: "Control Documental", sector: "Administración SST", status: "Programado" },
+      { item: "Evaluación Interna del Sistema SST", risk: "Falta de evaluación de eficacia, oportunidades de mejora no detectadas y desvíos del sistema", legal: "ISO 45001 · Res. SRT 905/15 · mejora continua SST", frequency: "Anual", schedule: "Evaluación Interna del Sistema SST", sector: "Sistema de Gestión SST", status: "Programado" },
+      { item: "Revisión por la Dirección", risk: "Falta de análisis directivo, recursos insuficientes y decisiones de mejora no formalizadas", legal: "ISO 45001 · requisitos de revisión por la dirección · mejora continua", frequency: "Anual", schedule: "Revisión por la Dirección", sector: "Dirección / Responsable SST", status: "Programado" }
     ];
 
     let sstRecords = JSON.parse(localStorage.getItem("ypfSstRecords") || "null") || [
@@ -9545,13 +9537,14 @@ const courseCounts = courses.slice(0, 7).map(course => {
     function renderVerificationKpis() {
       const container = document.getElementById("verificationKpis");
       if (!container) return;
-      const totalMon = monitoringProgram.length;
-      const monOk = monitoringProgram.filter(m => m.status === "Actualizado").length;
+      const monStats = getMonitoringStats();
+      const totalMon = monStats.total;
+      const monOk = monStats.updated;
       const cerrados = sstRecords.filter(r => r.state === "Cerrado" || r.state === "Realizado").length;
       const nc = sstRecords.filter(r => r.type === "No Conformidad" && r.state !== "Cerrado").length;
       const acciones = sstRecords.filter(r => r.type === "Acción Correctiva");
       const accionesOk = acciones.length ? Math.round((acciones.filter(r => r.state === "Cerrado" || r.state === "Realizado").length / acciones.length) * 100) : 92;
-      const legalOk = Math.round((monOk / totalMon) * 100);
+      const legalOk = totalMon ? Math.round((monOk / totalMon) * 100) : 0;
       const cumplimientoSst = Math.round(((cerrados + monOk) / Math.max(1, sstRecords.length + totalMon)) * 100);
       container.innerHTML = `
         <div class="sst-kpi ok"><span>Cumplimiento SST</span><strong>${cumplimientoSst}%</strong><small>Registros cerrados + monitoreos actualizados.</small></div>
@@ -9559,26 +9552,29 @@ const courseCounts = courses.slice(0, 7).map(course => {
         <div class="sst-kpi ok"><span>Registros cerrados</span><strong>${cerrados}</strong><small>Historial consolidado.</small></div>
         <div class="sst-kpi bad"><span>No conformidades</span><strong>${nc}</strong><small>Pendientes de tratamiento.</small></div>
         <div class="sst-kpi warn"><span>Acciones correctivas</span><strong>${accionesOk}%</strong><small>Eficacia / cierre de acciones.</small></div>
-        <div class="sst-kpi legal"><span>Cumplimiento legal</span><strong>${legalOk}%</strong><small>Programa normativo bimestral.</small></div>`;
+        <div class="sst-kpi legal"><span>Cumplimiento legal</span><strong>${legalOk}%</strong><small>IPER + Matriz Legal + registros asociados.</small></div>`;
     }
 
     function getSstScheduleCellState(row, month) {
       if (!row.months.includes(month)) return "na";
       const currentMonth = today.getMonth() + 1;
-      const completedByDefault = month < currentMonth;
       const recordTypeByActivity = {
-        "Inspección SST": "Inspección",
-        "Observaciones SST": "Observación",
-        "Verificación SST": "Verificación",
-        "Auditoría Interna": "Auditoría Interna",
+        "Cumplimiento del Plan Anual de Capacitación": "Verificación",
+        "Control de Asistencia a Capacitaciones": "Verificación",
+        "Vigencia de Certificados": "Verificación",
+        "Estado de Matafuegos": "Inspección",
+        "Estado de Luces de Emergencia": "Inspección",
+        "Estado de Botiquines": "Inspección",
+        "Estado de Señalización": "Inspección",
+        "Orden y Limpieza": "Inspección",
+        "Uso de Elementos de Protección Personal": "Inspección",
+        "Control de Derrames y Contingencias": "Inspección",
+        "Simulacros de Emergencia": "Simulacro",
         "Investigación de Incidentes": "Investigación",
-        "Revisión por Dirección": "Revisión por la Dirección",
-        "Control Documental": "Verificación",
         "Cumplimiento Legal": "Verificación",
-        "EPP": "Inspección",
-        "Matafuegos": "Inspección",
-        "Luces de emergencia": "Inspección",
-        "Botiquines": "Inspección",
+        "Control Documental": "Verificación",
+        "Evaluación Interna del Sistema SST": "Auditoría Interna",
+        "Revisión por la Dirección": "Revisión por la Dirección",
         "Iluminación / LUX": "Verificación",
         "Ruido laboral": "Verificación",
         "Puesta a tierra": "Verificación",
@@ -9606,7 +9602,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
         const typeOk = r.type === expectedType || normalizeText(`${r.finding || ""} ${r.action || ""} ${r.observations || ""}`).includes(normalizeText(row.activity));
         return stateOk && typeOk;
       });
-      if (hasClosedRecord || completedByDefault) return "done";
+      if (hasClosedRecord) return "done";
       if (month < currentMonth) return "overdue";
       return "pending";
     }
@@ -9934,19 +9930,75 @@ const courseCounts = courses.slice(0, 7).map(course => {
       </tr>`).join("") : `<tr><td colspan="7">Sin registros para los filtros seleccionados.</td></tr>`;
     }
 
+    const monitorRecordTypeMap = {
+      "Cumplimiento del Plan Anual de Capacitación": ["Verificación"],
+      "Control de Asistencia a Capacitaciones": ["Verificación", "Observación"],
+      "Vigencia de Certificados": ["Verificación"],
+      "Estado de Matafuegos": ["Inspección", "Verificación"],
+      "Estado de Luces de Emergencia": ["Inspección", "Verificación"],
+      "Estado de Botiquines": ["Inspección", "Verificación"],
+      "Estado de Señalización": ["Inspección", "Verificación"],
+      "Orden y Limpieza": ["Inspección", "Observación"],
+      "Uso de Elementos de Protección Personal": ["Inspección", "Observación"],
+      "Control de Derrames y Contingencias": ["Inspección", "Simulacro", "Verificación"],
+      "Simulacros de Emergencia": ["Simulacro"],
+      "Investigación de Incidentes": ["Investigación"],
+      "Cumplimiento Legal": ["Verificación", "Auditoría Interna"],
+      "Control Documental": ["Verificación", "Auditoría Interna"],
+      "Evaluación Interna del Sistema SST": ["Auditoría Interna", "Verificación"],
+      "Revisión por la Dirección": ["Revisión por la Dirección"]
+    };
+
+    function isClosedSstState(state) {
+      return ["Cerrado", "Realizado"].includes(state);
+    }
+
     function getLatestHysRecordForMonitor(m) {
-      if (typeof hysToolsHistory === "undefined" || !Array.isArray(hysToolsHistory) || !m.toolType) return null;
-      return hysToolsHistory.find(r => r.type === m.toolType || normalizeText(r.schedule || r.tool || "").includes(normalizeText(m.schedule || m.item)));
+      if (typeof hysToolsHistory === "undefined" || !Array.isArray(hysToolsHistory)) return null;
+      const key = normalizeText(m.schedule || m.item || "");
+      return hysToolsHistory.find(r =>
+        (m.toolType && r.type === m.toolType) ||
+        normalizeText(`${r.schedule || ""} ${r.tool || ""} ${r.iper || ""} ${r.legal || ""}`).includes(key)
+      ) || null;
+    }
+
+    function getLatestSstRecordForMonitor(m) {
+      if (typeof sstRecords === "undefined" || !Array.isArray(sstRecords)) return null;
+      const key = normalizeText(m.schedule || m.item || "");
+      const allowedTypes = monitorRecordTypeMap[m.item] || [];
+      return sstRecords.find(r => {
+        const typeOk = !allowedTypes.length || allowedTypes.includes(r.type);
+        const text = normalizeText(`${r.code || ""} ${r.type || ""} ${r.sector || ""} ${r.finding || ""} ${r.risk || ""} ${r.action || ""} ${r.observations || ""}`);
+        const textOk = text.includes(key) || key.includes(normalizeText(r.finding || ""));
+        return typeOk && textOk;
+      }) || null;
     }
 
     function getMonitoringDynamicStatus(m) {
-      const rec = getLatestHysRecordForMonitor(m);
-      if (rec) {
-        if (rec.statusClass === "bad") return "No conforme";
-        if (rec.statusClass === "warn") return "Con observaciones";
+      const hysRec = getLatestHysRecordForMonitor(m);
+      if (hysRec) {
+        if (hysRec.statusClass === "bad") return "No conforme";
+        if (hysRec.statusClass === "warn") return "Con observaciones";
         return "Actualizado";
       }
+      const sstRec = getLatestSstRecordForMonitor(m);
+      if (sstRec) {
+        if (isClosedSstState(sstRec.state)) return "Actualizado";
+        if (sstRec.state === "En proceso") return "Con observaciones";
+        if (sstRec.state === "Pendiente") return "Programado";
+      }
       return m.status || "Programado";
+    }
+
+    function getMonitoringStats() {
+      const list = (typeof monitoringProgram !== "undefined" && Array.isArray(monitoringProgram)) ? monitoringProgram : [];
+      const total = list.length;
+      const updated = list.filter(m => getMonitoringDynamicStatus(m) === "Actualizado").length;
+      const observed = list.filter(m => getMonitoringDynamicStatus(m) === "Con observaciones").length;
+      const nonConforming = list.filter(m => getMonitoringDynamicStatus(m) === "No conforme").length;
+      const programado = Math.max(0, total - updated - observed - nonConforming);
+      const percent = total ? Math.round((updated / total) * 100) : 0;
+      return { total, updated, observed, nonConforming, programado, percent };
     }
 
     function renderMonitoringProgram() {
@@ -9955,14 +10007,19 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const toolCount = Object.keys(typeof hysToolCatalog !== "undefined" ? hysToolCatalog : {}).length || 8;
       const hysGenerated = (typeof hysToolsHistory !== "undefined" && Array.isArray(hysToolsHistory)) ? hysToolsHistory.length : 0;
       const toolCoverage = (typeof getHysToolsStats === "function" ? getHysToolsStats().coverage : 0);
+      const monStats = getMonitoringStats();
       const header = `
+        <div class="monitor-summary-card">
+          <strong>Programa de Monitoreo SST</strong>
+          <span>${monStats.updated}/${monStats.total} actualizados · ${monStats.observed} con observaciones · ${monStats.nonConforming} no conformes</span>
+        </div>
         <div class="monitor-summary-card">
           <strong>Monitoreos técnicos HyS integrados</strong>
           <span>${hysGenerated} informe/s generados · Cobertura herramientas: ${toolCoverage}% · ${toolCount} herramientas técnicas conectadas</span>
         </div>
         <div class="monitor-summary-card legal">
           <strong>Vinculación automática</strong>
-          <span>Cronograma SST ↔ Herramientas HyS ↔ IPER ↔ Matriz Legal ↔ Dashboard</span>
+          <span>Cronograma SST ↔ Registros SST ↔ Herramientas HyS ↔ IPER ↔ Matriz Legal ↔ Dashboard KPIs</span>
         </div>
       `;
       grid.innerHTML = header + monitoringProgram.map((m, i) => {
@@ -9970,8 +10027,9 @@ const courseCounts = courses.slice(0, 7).map(course => {
         const status = getMonitoringDynamicStatus(m);
         const cls = status === "Actualizado" ? "ok" : status === "No conforme" ? "bad" : "warn";
         const pillCls = cls === "ok" ? "vigente" : cls === "bad" ? "vencido" : "por-vencer";
-        const recordText = rec ? `${rec.code} · ${rec.fecha} · ${rec.compliance}` : "Sin informe HyS cargado";
-        const instrumentText = rec ? `${rec.instrument || "Instrumento"} · Serie ${rec.serial || "S/N"}` : (m.toolType ? "Pendiente de medición técnica" : "Control operativo / documental");
+        const sstRec = getLatestSstRecordForMonitor(m);
+        const recordText = rec ? `${rec.code} · ${rec.fecha} · ${rec.compliance}` : (sstRec ? `${sstRec.code} · ${formatDate(sstRec.date)} · ${sstRec.state}` : "Sin registro asociado cargado");
+        const instrumentText = rec ? `${rec.instrument || "Instrumento"} · Serie ${rec.serial || "S/N"}` : (m.toolType ? "Pendiente de medición técnica" : "Registro operativo / documental SST");
         return `<div class="monitor-card ${cls}">
           <div class="monitor-card-head">
             <strong>${String(i+1).padStart(2,"0")} · ${m.item}</strong>
@@ -10147,8 +10205,9 @@ const courseCounts = courses.slice(0, 7).map(course => {
     function renderDashboardSstExecutiveKpis() {
       const container = document.getElementById("dashboardSstExecutiveKpis");
       if (!container) return;
-      const totalMon = (typeof monitoringProgram !== "undefined" && Array.isArray(monitoringProgram)) ? monitoringProgram.length : 15;
-      const monOk = (typeof monitoringProgram !== "undefined" && Array.isArray(monitoringProgram)) ? monitoringProgram.filter(m => m.status === "Actualizado").length : 14;
+      const monStats = (typeof getMonitoringStats === "function") ? getMonitoringStats() : { total: 0, updated: 0, percent: 0 };
+      const totalMon = monStats.total;
+      const monOk = monStats.updated;
       const records = (typeof sstRecords !== "undefined" && Array.isArray(sstRecords)) ? sstRecords : [];
       const cerrados = records.filter(r => r.state === "Cerrado" || r.state === "Realizado").length;
       const abiertos = records.filter(r => r.state !== "Cerrado" && r.state !== "Realizado").length;
@@ -10160,7 +10219,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const vencidas = document.getElementById("expiredCount")?.textContent || "0";
       const cumplimientoSst = Math.round(((cerrados + monOk) / Math.max(1, records.length + totalMon)) * 100);
       const capNumber = parseInt(String(cap).replace(/[^0-9]/g, ""), 10) || 0;
-      const monPercent = Math.round((monOk / Math.max(1, totalMon)) * 100);
+      const monPercent = monStats.percent || Math.round((monOk / Math.max(1, totalMon)) * 100);
       const registrosPercent = records.length ? Math.round((cerrados / records.length) * 100) : 100;
       const hallazgosPercent = abiertos ? Math.max(8, Math.min(100, 100 - (abiertos * 12))) : 100;
       const ncPercent = nc ? Math.max(8, Math.min(100, 100 - (nc * 25))) : 100;
