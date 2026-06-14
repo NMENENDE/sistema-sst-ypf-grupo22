@@ -3475,6 +3475,48 @@
 
 
 
+
+
+    /* ===== Usabilidad Herramientas HyS: instrumento, limpieza y calibración ===== */
+    .hys-instrument-title{
+      grid-column:1 / -1;
+      margin-top:8px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--ypf-blue-light),#ffffff);
+      border:1px solid #cfe7ff;
+      color:var(--ypf-blue-dark);
+      font-weight:900;
+      text-transform:uppercase;
+      font-size:12px;
+      letter-spacing:.035em;
+    }
+    .hys-field-label{
+      display:grid;
+      gap:6px;
+      color:var(--gray-700);
+      font-size:12px;
+      font-weight:900;
+      line-height:1.25;
+    }
+    .hys-field-label input,
+    .hys-field-label select,
+    .hys-field-label textarea{width:100%;}
+    .hys-calibration-status{
+      grid-column:1 / -1;
+      border-radius:14px;
+      padding:10px 12px;
+      border:1px solid var(--gray-200);
+      background:var(--gray-50);
+      color:var(--gray-700);
+      font-weight:900;
+      font-size:12px;
+      line-height:1.35;
+    }
+    .hys-calibration-status.ok{background:#dcfce7;color:#166534;border-color:#bbf7d0;}
+    .hys-calibration-status.warn{background:#fef3c7;color:#92400e;border-color:#fde68a;}
+    .hys-calibration-status.bad{background:#fee2e2;color:#991b1b;border-color:#fecaca;}
+
     /* ===== Fase 3 HyS: integración documental, dashboard e IPER/Legal ===== */
     .hys-integration-panel {
       border-top: 6px solid var(--ypf-yellow);
@@ -4198,15 +4240,17 @@
           <div class="form-grid">
             <input id="luxResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="luxSector" placeholder="Sector / puesto evaluado" value="Playa de despacho" />
+            <div class="hys-instrument-title">DATOS DEL INSTRUMENTO</div>
             <select id="luxInstrument"><option>Luxómetro digital</option><option>Luxómetro datalogger</option><option>Medidor ambiental multifunción</option></select>
             <input id="luxSerial" placeholder="N° de serie del equipo" />
-            <input id="luxCalibration" type="date" title="Fecha de calibración" />
-            <input id="luxCalibrationDue" type="date" title="Vencimiento de calibración" />
+            <label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="luxCalibration" type="date" title="Fecha de Calibración del Instrumento" /></label>
+            <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="luxCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('lux')" oninput="updateHysCalibrationStatus('lux')" /></label>
+            <div id="luxCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <select id="luxTask"><option value="300">Despacho / tarea visual media · 300 lux</option><option value="200">Tienda / circulación operativa · 200 lux</option><option value="100">Depósito / sanitarios · 100 lux</option><option value="150">Circulación exterior / playa · 150 lux</option><option value="500">Administración / lectura detallada · 500 lux</option></select>
             <input id="luxPoints" placeholder="Mediciones separadas por coma. Ej: 320, 310, 295" />
             <textarea id="luxObs" placeholder="Observaciones, condiciones de medición, horario, ubicación de puntos, etc."></textarea>
           </div>
-          <div class="hys-form-actions"><button class="primary" onclick="calculateHysLux()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('lux')">Descargar informe</button></div>
+          <div class="hys-form-actions"><button class="primary" onclick="calculateHysLux()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('lux')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('lux')">🧹 Limpiar campos</button></div>
           <div id="luxResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Cargá las mediciones para evaluar cumplimiento.</small></div>
         </div>
 
@@ -4215,15 +4259,17 @@
           <div class="form-grid">
             <input id="ruidoResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="ruidoSector" placeholder="Sector / fuente evaluada" value="Playa / compresores / tránsito" />
+            <div class="hys-instrument-title">DATOS DEL INSTRUMENTO</div>
             <select id="ruidoInstrument"><option>Decibelímetro integrador clase 2</option><option>Decibelímetro integrador clase 1</option><option>Dosímetro de ruido</option><option>Calibrador acústico</option></select>
             <input id="ruidoSerial" placeholder="N° de serie del equipo" />
-            <input id="ruidoCalibration" type="date" title="Fecha de calibración" />
-            <input id="ruidoCalibrationDue" type="date" title="Vencimiento de calibración" />
+            <label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="ruidoCalibration" type="date" title="Fecha de Calibración del Instrumento" /></label>
+            <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="ruidoCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('ruido')" oninput="updateHysCalibrationStatus('ruido')" /></label>
+            <div id="ruidoCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <input id="ruidoLevel" type="number" step="0.1" placeholder="Nivel medido dB(A). Ej: 82.5" />
             <input id="ruidoHours" type="number" step="0.1" placeholder="Tiempo de exposición horas. Ej: 8" />
             <textarea id="ruidoObs" placeholder="Observaciones, puntos de medición, fuentes sonoras, condiciones operativas, etc."></textarea>
           </div>
-          <div class="hys-form-actions"><button class="primary" onclick="calculateHysRuido()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('ruido')">Descargar informe</button></div>
+          <div class="hys-form-actions"><button class="primary" onclick="calculateHysRuido()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('ruido')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('ruido')">🧹 Limpiar campos</button></div>
           <div id="ruidoResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Ingresá nivel y tiempo de exposición.</small></div>
         </div>
 
@@ -4232,15 +4278,17 @@
           <div class="form-grid">
             <input id="patResponsible" placeholder="Responsable de verificación" value="Responsable SST" />
             <input id="patSector" placeholder="Sector / tablero / surtidor" value="Tablero general / isla de despacho" />
+            <div class="hys-instrument-title">DATOS DEL INSTRUMENTO</div>
             <select id="patInstrument"><option>Telurómetro</option><option>Pinza telurimétrica</option><option>Megóhmetro / comprobador multifunción</option></select>
             <input id="patSerial" placeholder="N° de serie del equipo" />
-            <input id="patCalibration" type="date" title="Fecha de calibración" />
-            <input id="patCalibrationDue" type="date" title="Vencimiento de calibración" />
+            <label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="patCalibration" type="date" title="Fecha de Calibración del Instrumento" /></label>
+            <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="patCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('pat')" oninput="updateHysCalibrationStatus('pat')" /></label>
+            <div id="patCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <input id="patOhm" type="number" step="0.01" placeholder="Resistencia medida Ω. Ej: 8.5" />
             <select id="patContinuity"><option value="si">Continuidad de masas verificada</option><option value="no">Continuidad no verificada / deficiente</option></select>
             <textarea id="patObs" placeholder="Observaciones, condiciones de suelo, tablero o equipo evaluado."></textarea>
           </div>
-          <div class="hys-form-actions"><button class="primary" onclick="calculateHysPat()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('pat')">Descargar informe</button></div>
+          <div class="hys-form-actions"><button class="primary" onclick="calculateHysPat()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('pat')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('pat')">🧹 Limpiar campos</button></div>
           <div id="patResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Ingresá resistencia y continuidad.</small></div>
         </div>
 
@@ -4249,16 +4297,18 @@
           <div class="form-grid">
             <input id="fuegoResponsible" placeholder="Responsable del relevamiento" value="Responsable SST" />
             <input id="fuegoSector" placeholder="Sector evaluado" value="Tienda / depósito / playa" />
+            <div class="hys-instrument-title">DATOS DEL INSTRUMENTO</div>
             <select id="fuegoInstrument"><option>Planilla técnica / relevamiento documental</option><option>Relevamiento de materiales combustibles</option><option>Medidor láser / cinta métrica</option></select>
             <input id="fuegoSerial" placeholder="N° de serie / identificación del instrumento" />
-            <input id="fuegoCalibration" type="date" title="Fecha de calibración / verificación" />
-            <input id="fuegoCalibrationDue" type="date" title="Vencimiento de calibración / verificación" />
+            <label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="fuegoCalibration" type="date" title="Fecha de Calibración del Instrumento" /></label>
+            <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="fuegoCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('fuego')" oninput="updateHysCalibrationStatus('fuego')" /></label>
+            <div id="fuegoCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <input id="fuegoMass" type="number" step="0.1" placeholder="Masa combustible total kg. Ej: 120" />
             <input id="fuegoPc" type="number" step="0.1" placeholder="Poder calorífico MJ/kg. Ej: 18" />
             <input id="fuegoArea" type="number" step="0.1" placeholder="Superficie del sector m². Ej: 45" />
             <textarea id="fuegoObs" placeholder="Materiales considerados, criterio de relevamiento, observaciones."></textarea>
           </div>
-          <div class="hys-form-actions"><button class="primary" onclick="calculateHysFuego()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('fuego')">Descargar informe</button></div>
+          <div class="hys-form-actions"><button class="primary" onclick="calculateHysFuego()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('fuego')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('fuego')">🧹 Limpiar campos</button></div>
           <div id="fuegoResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Ingresá masa, poder calorífico y superficie.</small></div>
         </div>
 
@@ -4267,17 +4317,19 @@
           <div class="form-grid">
             <input id="termicoResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="termicoSector" placeholder="Sector / puesto evaluado" value="Playa de despacho / exterior" />
+            <div class="hys-instrument-title">DATOS DEL INSTRUMENTO</div>
             <select id="termicoInstrument"><option>Medidor WBGT</option><option>Termohigrómetro + globo térmico</option><option>Medidor ambiental multifunción</option></select>
             <input id="termicoSerial" placeholder="N° de serie del equipo" />
-            <input id="termicoCalibration" type="date" title="Fecha de calibración" />
-            <input id="termicoCalibrationDue" type="date" title="Vencimiento de calibración" />
+            <label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="termicoCalibration" type="date" title="Fecha de Calibración del Instrumento" /></label>
+            <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="termicoCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('termico')" oninput="updateHysCalibrationStatus('termico')" /></label>
+            <div id="termicoCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <input id="termicoTbs" type="number" step="0.1" placeholder="Bulbo seco °C" />
             <input id="termicoTbh" type="number" step="0.1" placeholder="Bulbo húmedo natural °C" />
             <input id="termicoTg" type="number" step="0.1" placeholder="Temperatura de globo °C" />
             <select id="termicoCarga"><option value="30">Trabajo liviano · referencia 30 °C WBGT</option><option value="28">Trabajo moderado · referencia 28 °C WBGT</option><option value="26">Trabajo pesado · referencia 26 °C WBGT</option></select>
             <textarea id="termicoObs" placeholder="Observaciones: sol/sombra, hidratación, pausas, EPP, condiciones climáticas."></textarea>
           </div>
-          <div class="hys-form-actions"><button class="primary" onclick="calculateHysTermico()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('termico')">Descargar informe</button></div>
+          <div class="hys-form-actions"><button class="primary" onclick="calculateHysTermico()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('termico')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('termico')">🧹 Limpiar campos</button></div>
           <div id="termicoResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Ingresá temperaturas para calcular WBGT.</small></div>
         </div>
 
@@ -4286,17 +4338,19 @@
           <div class="form-grid">
             <input id="ventilacionResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="ventilacionSector" placeholder="Sector / recinto evaluado" value="Tienda / oficina / depósito" />
+            <div class="hys-instrument-title">DATOS DEL INSTRUMENTO</div>
             <select id="ventilacionInstrument"><option>Anemómetro digital</option><option>Balómetro</option><option>Tubo Pitot + manómetro diferencial</option><option>Medidor multifunción ambiental</option></select>
             <input id="ventilacionSerial" placeholder="N° de serie del equipo" />
-            <input id="ventilacionCalibration" type="date" title="Fecha de calibración" />
-            <input id="ventilacionCalibrationDue" type="date" title="Vencimiento de calibración" />
+            <label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="ventilacionCalibration" type="date" title="Fecha de Calibración del Instrumento" /></label>
+            <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="ventilacionCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('ventilacion')" oninput="updateHysCalibrationStatus('ventilacion')" /></label>
+            <div id="ventilacionCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <input id="ventilacionVel" type="number" step="0.01" placeholder="Velocidad del aire m/s" />
             <input id="ventilacionArea" type="number" step="0.01" placeholder="Área de rejilla/ducto m²" />
             <input id="ventilacionVol" type="number" step="0.1" placeholder="Volumen del recinto m³" />
             <input id="ventilacionReq" type="number" step="0.1" placeholder="Renovaciones requeridas por hora. Ej: 6" value="6" />
             <textarea id="ventilacionObs" placeholder="Observaciones: aberturas, extracción, olores, ocupación, puntos de medición."></textarea>
           </div>
-          <div class="hys-form-actions"><button class="primary" onclick="calculateHysVentilacion()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('ventilacion')">Descargar informe</button></div>
+          <div class="hys-form-actions"><button class="primary" onclick="calculateHysVentilacion()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('ventilacion')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('ventilacion')">🧹 Limpiar campos</button></div>
           <div id="ventilacionResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Ingresá velocidad, área y volumen.</small></div>
         </div>
 
@@ -4305,10 +4359,12 @@
           <div class="form-grid">
             <input id="gasesResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="gasesSector" placeholder="Sector / fuente evaluada" value="Playa / GNC / zona descarga" />
+            <div class="hys-instrument-title">DATOS DEL INSTRUMENTO</div>
             <select id="gasesInstrument"><option>Detector multigás</option><option>PID para VOC</option><option>Bomba de muestreo personal</option><option>Tubos colorimétricos</option><option>Explosímetro</option></select>
             <input id="gasesSerial" placeholder="N° de serie del equipo" />
-            <input id="gasesCalibration" type="date" title="Fecha de calibración" />
-            <input id="gasesCalibrationDue" type="date" title="Vencimiento de calibración" />
+            <label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="gasesCalibration" type="date" title="Fecha de Calibración del Instrumento" /></label>
+            <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="gasesCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('gases')" oninput="updateHysCalibrationStatus('gases')" /></label>
+            <div id="gasesCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <input id="gasesLel" type="number" step="0.1" placeholder="LEL %" />
             <input id="gasesO2" type="number" step="0.1" placeholder="O₂ %" />
             <input id="gasesCo" type="number" step="0.1" placeholder="CO ppm" />
@@ -4316,7 +4372,7 @@
             <input id="gasesVoc" type="number" step="0.1" placeholder="VOC / vapores ppm" />
             <textarea id="gasesObs" placeholder="Observaciones: condición operativa, viento, fuente, descarga, GNC, alarma o lectura máxima."></textarea>
           </div>
-          <div class="hys-form-actions"><button class="primary" onclick="calculateHysGases()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('gases')">Descargar informe</button></div>
+          <div class="hys-form-actions"><button class="primary" onclick="calculateHysGases()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('gases')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('gases')">🧹 Limpiar campos</button></div>
           <div id="gasesResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Ingresá lecturas de gases/vapores.</small></div>
         </div>
 
@@ -4325,16 +4381,18 @@
           <div class="form-grid">
             <input id="vibracionesResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="vibracionesSector" placeholder="Sector / equipo evaluado" value="Playa / compresor / tareas de mantenimiento" />
+            <div class="hys-instrument-title">DATOS DEL INSTRUMENTO</div>
             <select id="vibracionesInstrument"><option>Vibrómetro triaxial</option><option>Acelerómetro</option><option>Dosímetro de vibraciones</option><option>Medidor de vibraciones mano-brazo</option></select>
             <input id="vibracionesSerial" placeholder="N° de serie del equipo" />
-            <input id="vibracionesCalibration" type="date" title="Fecha de calibración" />
-            <input id="vibracionesCalibrationDue" type="date" title="Vencimiento de calibración" />
+            <label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="vibracionesCalibration" type="date" title="Fecha de Calibración del Instrumento" /></label>
+            <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="vibracionesCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('vibraciones')" oninput="updateHysCalibrationStatus('vibraciones')" /></label>
+            <div id="vibracionesCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <select id="vibracionesTipo"><option value="mano">Mano-brazo</option><option value="cuerpo">Cuerpo entero</option></select>
             <input id="vibracionesA" type="number" step="0.01" placeholder="Aceleración medida m/s²" />
             <input id="vibracionesHoras" type="number" step="0.1" placeholder="Tiempo de exposición horas" />
             <textarea id="vibracionesObs" placeholder="Observaciones: equipo, superficie, postura, tarea, mantenimiento, puntos de medición."></textarea>
           </div>
-          <div class="hys-form-actions"><button class="primary" onclick="calculateHysVibraciones()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('vibraciones')">Descargar informe</button></div>
+          <div class="hys-form-actions"><button class="primary" onclick="calculateHysVibraciones()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('vibraciones')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('vibraciones')">🧹 Limpiar campos</button></div>
           <div id="vibracionesResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Ingresá aceleración y tiempo de exposición.</small></div>
         </div>
       </div>
@@ -4655,7 +4713,13 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+
+    document.addEventListener("DOMContentLoaded", () => {
+      ["lux","ruido","pat","fuego","termico","ventilacion","gases","vibraciones"].forEach(updateHysCalibrationStatus);
+    });
+
+</script>
 
 <script>
 
@@ -9249,6 +9313,45 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
     function getHysToolLabel(type) { return hysToolCatalog[type]?.label || "Herramienta HyS"; }
 
+
+    function getHysCalibrationStatus(dueValue) {
+      if (!dueValue) return { text: "Estado de calibración: sin vencimiento cargado.", cls: "" };
+      const due = new Date(dueValue + "T12:00:00");
+      const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+      if (diffDays < 0) return { text: "🔴 Calibración vencida", cls: "bad" };
+      if (diffDays <= 30) return { text: `🟡 Próxima a vencer (${diffDays} días)`, cls: "warn" };
+      return { text: "🟢 Calibración vigente", cls: "ok" };
+    }
+
+    function updateHysCalibrationStatus(type) {
+      const dueValue = document.getElementById(`${type}CalibrationDue`)?.value || "";
+      const box = document.getElementById(`${type}CalibrationStatus`);
+      if (!box) return;
+      const status = getHysCalibrationStatus(dueValue);
+      box.className = `hys-calibration-status ${status.cls}`.trim();
+      box.textContent = status.text;
+    }
+
+    function clearHysToolFields(type, options = {}) {
+      const panelId = hysToolCatalog[type]?.panel;
+      const panel = panelId ? document.getElementById(panelId) : null;
+      if (!panel) return;
+      panel.querySelectorAll("input, textarea").forEach(el => {
+        if (el.id && (el.id.endsWith("Responsible") || el.id.endsWith("Sector"))) return;
+        el.value = "";
+      });
+      panel.querySelectorAll("select").forEach(el => { el.selectedIndex = 0; });
+      updateHysCalibrationStatus(type);
+      if (!options.keepResult) {
+        const resultBox = document.getElementById(`${type}Result`);
+        if (resultBox) {
+          resultBox.className = "hys-result";
+          resultBox.innerHTML = "<strong>Resultado pendiente</strong><small>Cargá los datos para evaluar cumplimiento.</small>";
+        }
+        showToast("🧹 Campos de Herramientas HyS limpiados.");
+      }
+    }
+
     function showHysTool(type) {
       document.querySelectorAll(".hys-tab-btn").forEach(b => b.classList.remove("active"));
       document.querySelectorAll(".hys-panel").forEach(p => p.classList.remove("active"));
@@ -9275,8 +9378,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const calibrationDue = document.getElementById(`${type}CalibrationDue`)?.value || "No informado";
       let calibrationStatus = "No informado";
       if (calibrationDue && calibrationDue !== "No informado") {
-        const due = new Date(calibrationDue + "T12:00:00");
-        calibrationStatus = due < today ? "Calibración vencida" : "Calibración vigente";
+        calibrationStatus = getHysCalibrationStatus(calibrationDue).text.replace(/^🟢 |^🟡 |^🔴 /, "");
       }
       return { instrument, serial, calibration, calibrationDue, calibrationStatus };
     }
@@ -9292,6 +9394,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       renderHysIntegrationPanel();
       if (typeof renderVerificationModule === "function") renderVerificationModule();
       if (typeof renderDashboard === "function") renderDashboard();
+      clearHysToolFields(record.type, { keepResult: true });
       // Persistencia real en Supabase: mediciones_hys + equipos_hys + reportes_sst + cronograma_sst.
       guardarHysToolRecordSupabase(record).catch(error => {
         console.warn("No se pudo guardar Herramienta HyS en Supabase:", error);
@@ -11450,7 +11553,13 @@ Legal: ${record.legal}`,
     inicializarApp();
     setTimeout(() => { hydrateDashboardBars(); renderInspectionChecklist(); renderSstSchedule(); renderHysIntegrationPanel(); }, 150);
     setTimeout(() => { hydrateDashboardBars(); renderInspectionChecklist(); renderSstSchedule(); renderHysIntegrationPanel(); }, 900);
-  </script>
+  
+
+    document.addEventListener("DOMContentLoaded", () => {
+      ["lux","ruido","pat","fuego","termico","ventilacion","gases","vibraciones"].forEach(updateHysCalibrationStatus);
+    });
+
+</script>
 <script>
 /* ===== TRAZABILIDAD SST 01-16: Monitoreo -> IPER -> Legal -> Cronograma ===== */
 (function(){
@@ -11555,6 +11664,12 @@ Legal: ${record.legal}`,
   setTimeout(initTraceability, 500);
   setTimeout(initTraceability, 1500);
 })();
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      ["lux","ruido","pat","fuego","termico","ventilacion","gases","vibraciones"].forEach(updateHysCalibrationStatus);
+    });
+
 </script>
 </body>
 </html>
