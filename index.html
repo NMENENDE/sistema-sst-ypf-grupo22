@@ -5034,7 +5034,6 @@ function registroLocalToSupabaseRow(record) {
     observaciones: record.observations || null,
     iper_id: record.iperId ? Number(record.iperId) : null,
     legal_id: record.legalId ? Number(record.legalId) : null,
-    accion_correctiva_id: record.accionCorrectivaId ? Number(record.accionCorrectivaId) : null,
     monitoreo_nombre: record.monitoreoNombre || record.monitoringName || record.finding || null,
     alcance: record.alcance || record.sector || null,
     iper_asociado: record.iperAsociado || record.risk || null,
@@ -5202,26 +5201,74 @@ async function obtenerCodigoRegistroSstDesdeSupabase(tipo) {
 }
 
 async function actualizarCronogramaSupabasePorNombre(nombre, estado = "Realizado", fechaRealizada = null, observaciones = "") {
-  if (!nombre) return false;
+  if (!nombre || typeof supabaseClient === "undefined" || !supabaseClient) return false;
+
   const fecha = fechaRealizada || today.toISOString().slice(0, 10);
-  const payloadBase = { estado, fecha_realizada: fecha, observaciones: observaciones || "Actualizado desde Registro SST" };
-  const attempts = [
-    { col: "actividad", value: nombre, payload: payloadBase },
-    { col: "monitoreo", value: nombre, payload: payloadBase },
-    { col: "tarea", value: nombre, payload: payloadBase },
-    { col: "nombre", value: nombre, payload: payloadBase },
-    { col: "cronograma", value: nombre, payload: payloadBase }
-  ];
-  for (const a of attempts) {
+  const mes = (() => {
+    const d = new Date(fecha + "T12:00:00");
+    return Number.isFinite(d.getTime()) ? d.getMonth() + 1 : (today.getMonth() + 1);
+  })();
+
+  const nombreNorm = normalizeText(nombre);
+  const trace = (typeof supabaseMonitoreoTrazabilidadSst !== "undefined" && Array.isArray(supabaseMonitoreoTrazabilidadSst))
+    ? supabaseMonitoreoTrazabilidadSst.find(t =>
+        normalizeText(t.monitoreo || "") === nombreNorm ||
+        normalizeText(t.cronograma || "") === nombreNorm
+      )
+    : null;
+
+  const nombresPosibles = Array.from(new Set([
+    nombre,
+    trace?.cronograma,
+    trace?.monitoreo
+  ].filter(Boolean)));
+
+  const payload = {
+    estado,
+    fecha_realizacion: fecha,
+    observaciones: observaciones || "Actualizado desde Registro SST"
+  };
+
+  for (const actividad of nombresPosibles) {
     try {
-      const { error, data } = await supabaseClient.from("cronograma_sst").update(a.payload).eq(a.col, a.value).select("id");
-      if (!error && Array.isArray(data) && data.length > 0) return true;
-      if (!error && Array.isArray(data) && data.length === 0) continue;
-      if (error && !/column|schema cache|does not exist/i.test(error.message || "")) console.warn("No se pudo actualizar cronograma_sst:", error);
+      // Estructura real de cronograma_sst:
+      // actividad, frecuencia, mes, estado, fecha_realizacion, observaciones
+      let { data, error } = await supabaseClient
+        .from("cronograma_sst")
+        .update(payload)
+        .eq("actividad", actividad)
+        .eq("mes", mes)
+        .select("id");
+
+      if (error) {
+        console.warn("No se pudo actualizar cronograma_sst:", error);
+        continue;
+      }
+
+      if (Array.isArray(data) && data.length > 0) return true;
+
+      // Si no existe la fila del mes/actividad, se crea para que el cronograma pueda marcarse.
+      const insertPayload = {
+        actividad,
+        frecuencia: trace?.frecuencia || "",
+        mes,
+        estado,
+        fecha_realizacion: fecha,
+        observaciones: observaciones || "Creado desde Registro SST"
+      };
+
+      const insertRes = await supabaseClient
+        .from("cronograma_sst")
+        .insert([insertPayload])
+        .select("id");
+
+      if (!insertRes.error && Array.isArray(insertRes.data) && insertRes.data.length > 0) return true;
+      if (insertRes.error) console.warn("No se pudo crear fila en cronograma_sst:", insertRes.error);
     } catch (err) {
       console.warn("Error actualizando cronograma_sst:", err);
     }
   }
+
   return false;
 }
 
@@ -10098,7 +10145,20 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const selectedName = selectedMonitoring?.item || selectedMonitoring?.activity || record.finding || "";
       const family = getFamilyByMonitoringName(selectedName) || getSstKeywordFamily(`${record.type || ""} ${record.finding || ""} ${record.risk || ""} ${record.sector || ""} ${record.action || ""} ${record.observations || ""}`);
       const monitoringName = selectedName || getMonitoringNameByFamily(family) || inferMonitoreoNameFromRecord(record);
-      const monitoring = selectedMonitoring || (typeof monitoringProgram !== "undefined" ? monitoringProgram : []).find(m => normalizeText(m.item || "") === normalizeText(monitoringName || ""));
+
+      const traceRow = (typeof supabaseMonitoreoTrazabilidadSst !== "undefined" && Array.isArray(supabaseMonitoreoTrazabilidadSst))
+        ? supabaseMonitoreoTrazabilidadSst.find(t =>
+            normalizeText(t.monitoreo || "") === normalizeText(monitoringName || "") ||
+            normalizeText(t.cronograma || "") === normalizeText(monitoringName || "") ||
+            normalizeText(t.monitoreo || "") === normalizeText(selectedName || "") ||
+            normalizeText(t.cronograma || "") === normalizeText(selectedName || "")
+          )
+        : null;
+
+      const monitoring =
+        (traceRow ? trazabilidadSupabaseToProgram(traceRow) : null) ||
+        selectedMonitoring ||
+        (typeof monitoringProgram !== "undefined" ? monitoringProgram : []).find(m => normalizeText(m.item || "") === normalizeText(monitoringName || ""));
 
       let iper = record.iperId ? (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId)) : null;
       let legal = record.legalId ? (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId)) : null;
@@ -10107,14 +10167,15 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
       return {
         family,
-        monitoringName,
+        monitoringName: traceRow?.monitoreo || monitoringName,
         monitoring,
+        traceRow,
         iperId: iper?.id || "",
         legalId: legal?.id || "",
         iper,
         legal,
-        riskText: iper ? sstIperLabel(iper) : (monitoring?.risk || ""),
-        legalText: legal ? sstLegalLabel(legal) : (monitoring?.legal || "")
+        riskText: iper ? sstIperLabel(iper) : (traceRow?.iper_asociado || monitoring?.risk || ""),
+        legalText: legal ? sstLegalLabel(legal) : (traceRow?.legal_asociado || monitoring?.legal || "")
       };
     }
 
@@ -10201,19 +10262,20 @@ const courseCounts = courses.slice(0, 7).map(course => {
         data = result.data;
         error = result.error;
 
-        // Si la base todavía no tiene algún campo nuevo, reintenta sin esos campos.
-        if (error && /column|schema cache|iper_id|legal_id|accion_correctiva_id/i.test(error.message || "")) {
-          delete payload.iper_id;
-          delete payload.legal_id;
-          delete payload.accion_correctiva_id;
-          delete payload.monitoreo_nombre;
-          delete payload.alcance;
-          delete payload.iper_asociado;
-          delete payload.legal_asociado;
-          delete payload.frecuencia_cronograma;
-          delete payload.registro_asociado;
-          delete payload.instrumental;
-          continue;
+        // Si la base informa una columna inexistente, elimina SOLO esa columna y reintenta.
+        // Importante: no borrar trazabilidad completa (monitoreo_nombre, IPER, legal, etc.)
+        // porque esas columnas ya existen y son necesarias para cronograma/KPIs.
+        if (error && /column|schema cache|does not exist/i.test(error.message || "")) {
+          const msg = error.message || "";
+          const missingColumn =
+            (msg.match(/'([^']+)' column/) || [])[1] ||
+            (msg.match(/column "([^"]+)"/) || [])[1] ||
+            "";
+          if (missingColumn && Object.prototype.hasOwnProperty.call(payload, missingColumn)) {
+            delete payload[missingColumn];
+            console.warn("Se reintenta guardar Registro SST sin columna no disponible:", missingColumn);
+            continue;
+          }
         }
 
         // Si el código está duplicado, pide/calcula otro y reintenta sin guardar localmente el duplicado.
@@ -10328,13 +10390,13 @@ const courseCounts = courses.slice(0, 7).map(course => {
         if (codeEl) codeEl.value = record.code;
 
         const traceBundle = getTraceabilityBundleFromRecord(record);
-        record.monitoreoNombre = traceBundle.monitoringName || record.finding;
-        record.alcance = traceBundle.monitoring?.sector || record.sector;
-        record.iperAsociado = traceBundle.iper ? sstIperLabel(traceBundle.iper) : (traceBundle.riskText || record.risk);
-        record.legalAsociado = traceBundle.legal ? sstLegalLabel(traceBundle.legal) : (traceBundle.legalText || "");
-        record.frecuenciaCronograma = `${traceBundle.monitoring?.frequency || ""}${traceBundle.monitoring?.schedule ? " · " + traceBundle.monitoring.schedule : ""}`.trim();
-        record.registroAsociado = traceBundle.monitoring?.registroAsociado || "Registro SST";
-        record.instrumental = traceBundle.monitoring?.instrumental || "Registro operativo / documental SST";
+        record.monitoreoNombre = traceBundle.traceRow?.monitoreo || traceBundle.monitoringName || record.finding;
+        record.alcance = traceBundle.traceRow?.alcance || traceBundle.monitoring?.sector || record.sector;
+        record.iperAsociado = traceBundle.traceRow?.iper_asociado || (traceBundle.iper ? sstIperLabel(traceBundle.iper) : (traceBundle.riskText || record.risk));
+        record.legalAsociado = traceBundle.traceRow?.legal_asociado || (traceBundle.legal ? sstLegalLabel(traceBundle.legal) : (traceBundle.legalText || ""));
+        record.frecuenciaCronograma = `${traceBundle.traceRow?.frecuencia || traceBundle.monitoring?.frequency || ""}${(traceBundle.traceRow?.cronograma || traceBundle.monitoring?.schedule) ? " · " + (traceBundle.traceRow?.cronograma || traceBundle.monitoring?.schedule) : ""}`.trim();
+        record.registroAsociado = traceBundle.traceRow?.registro_asociado || traceBundle.monitoring?.registroAsociado || "Registro SST";
+        record.instrumental = traceBundle.traceRow?.instrumental || traceBundle.monitoring?.instrumental || "Registro operativo / documental SST";
         record.generaAccionCorrectiva = document.getElementById("sstRecordGenerateAction")?.value === "si";
 
         const inferredTrace = inferTraceabilityFromRecord(record);
@@ -10351,7 +10413,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
           record.observations += `\nRequisito legal vinculado: ${sstLegalLabel(legalRow)}`;
         }
 
-        monitoreoRelacionado = inferMonitoreoNameFromRecord(record);
+        monitoreoRelacionado = record.monitoreoNombre || inferMonitoreoNameFromRecord(record);
 
         // Inserta en Supabase con reintentos por código duplicado.
         const data = await insertRegistroSstWithTraceability(record);
@@ -10592,7 +10654,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
           if (state === "overdue") return `<td><span class="month-dot overdue">!</span></td>`;
           return `<td><span class="month-dot pending">•</span></td>`;
         }).join("");
-        const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : (states.includes("done") && states.includes("pending")) ? { txt:"Al día", cls:"vigente" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
+        const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : (states.includes("done") && states.includes("pending")) ? { txt:"Realizado", cls:"vigente" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
         return `<tr><td><strong>${row.activity}</strong><br><small>${row.frequency}</small></td>${cells}<td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
       }).join("") + `</tbody>`;
     }
