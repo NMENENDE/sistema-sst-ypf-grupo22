@@ -5034,6 +5034,7 @@ function registroLocalToSupabaseRow(record) {
     observaciones: record.observations || null,
     iper_id: record.iperId ? Number(record.iperId) : null,
     legal_id: record.legalId ? Number(record.legalId) : null,
+    accion_correctiva_id: record.accionCorrectivaId ? Number(record.accionCorrectivaId) : null,
     monitoreo_nombre: record.monitoreoNombre || record.monitoringName || record.finding || null,
     alcance: record.alcance || record.sector || null,
     iper_asociado: record.iperAsociado || record.risk || null,
@@ -5201,74 +5202,26 @@ async function obtenerCodigoRegistroSstDesdeSupabase(tipo) {
 }
 
 async function actualizarCronogramaSupabasePorNombre(nombre, estado = "Realizado", fechaRealizada = null, observaciones = "") {
-  if (!nombre || typeof supabaseClient === "undefined" || !supabaseClient) return false;
-
+  if (!nombre) return false;
   const fecha = fechaRealizada || today.toISOString().slice(0, 10);
-  const mes = (() => {
-    const d = new Date(fecha + "T12:00:00");
-    return Number.isFinite(d.getTime()) ? d.getMonth() + 1 : (today.getMonth() + 1);
-  })();
-
-  const nombreNorm = normalizeText(nombre);
-  const trace = (typeof supabaseMonitoreoTrazabilidadSst !== "undefined" && Array.isArray(supabaseMonitoreoTrazabilidadSst))
-    ? supabaseMonitoreoTrazabilidadSst.find(t =>
-        normalizeText(t.monitoreo || "") === nombreNorm ||
-        normalizeText(t.cronograma || "") === nombreNorm
-      )
-    : null;
-
-  const nombresPosibles = Array.from(new Set([
-    nombre,
-    trace?.cronograma,
-    trace?.monitoreo
-  ].filter(Boolean)));
-
-  const payload = {
-    estado,
-    fecha_realizacion: fecha,
-    observaciones: observaciones || "Actualizado desde Registro SST"
-  };
-
-  for (const actividad of nombresPosibles) {
+  const payloadBase = { estado, fecha_realizada: fecha, observaciones: observaciones || "Actualizado desde Registro SST" };
+  const attempts = [
+    { col: "actividad", value: nombre, payload: payloadBase },
+    { col: "monitoreo", value: nombre, payload: payloadBase },
+    { col: "tarea", value: nombre, payload: payloadBase },
+    { col: "nombre", value: nombre, payload: payloadBase },
+    { col: "cronograma", value: nombre, payload: payloadBase }
+  ];
+  for (const a of attempts) {
     try {
-      // Estructura real de cronograma_sst:
-      // actividad, frecuencia, mes, estado, fecha_realizacion, observaciones
-      let { data, error } = await supabaseClient
-        .from("cronograma_sst")
-        .update(payload)
-        .eq("actividad", actividad)
-        .eq("mes", mes)
-        .select("id");
-
-      if (error) {
-        console.warn("No se pudo actualizar cronograma_sst:", error);
-        continue;
-      }
-
-      if (Array.isArray(data) && data.length > 0) return true;
-
-      // Si no existe la fila del mes/actividad, se crea para que el cronograma pueda marcarse.
-      const insertPayload = {
-        actividad,
-        frecuencia: trace?.frecuencia || "",
-        mes,
-        estado,
-        fecha_realizacion: fecha,
-        observaciones: observaciones || "Creado desde Registro SST"
-      };
-
-      const insertRes = await supabaseClient
-        .from("cronograma_sst")
-        .insert([insertPayload])
-        .select("id");
-
-      if (!insertRes.error && Array.isArray(insertRes.data) && insertRes.data.length > 0) return true;
-      if (insertRes.error) console.warn("No se pudo crear fila en cronograma_sst:", insertRes.error);
+      const { error, data } = await supabaseClient.from("cronograma_sst").update(a.payload).eq(a.col, a.value).select("id");
+      if (!error && Array.isArray(data) && data.length > 0) return true;
+      if (!error && Array.isArray(data) && data.length === 0) continue;
+      if (error && !/column|schema cache|does not exist/i.test(error.message || "")) console.warn("No se pudo actualizar cronograma_sst:", error);
     } catch (err) {
       console.warn("Error actualizando cronograma_sst:", err);
     }
   }
-
   return false;
 }
 
@@ -9329,6 +9282,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
     }
 
     function saveHysToolRecord(record) {
+      hysToolsHistory = hysToolsHistory.filter(r => r.code !== record.code);
       hysToolsHistory.unshift(record);
       localStorage.setItem("ypfHysToolsHistory", JSON.stringify(hysToolsHistory));
       lastHysToolByType[record.type] = record;
@@ -9338,6 +9292,185 @@ const courseCounts = courses.slice(0, 7).map(course => {
       renderHysIntegrationPanel();
       if (typeof renderVerificationModule === "function") renderVerificationModule();
       if (typeof renderDashboard === "function") renderDashboard();
+      // Persistencia real en Supabase: mediciones_hys + equipos_hys + reportes_sst + cronograma_sst.
+      guardarHysToolRecordSupabase(record).catch(error => {
+        console.warn("No se pudo guardar Herramienta HyS en Supabase:", error);
+        if (typeof showToast === "function") showToast(`⚠️ Registro HyS guardado localmente, pero no subió a Supabase: ${error.message || "revisar permisos/RLS"}`);
+      });
+    }
+
+    function hysRecordToSupabaseRow(record) {
+      return {
+        codigo: record.code,
+        tipo: record.type,
+        herramienta: record.tool,
+        fecha: record.date,
+        hora: record.hora || null,
+        responsable: record.responsible || null,
+        sector: record.sector || null,
+        instrumento: record.instrument || null,
+        numero_serie: record.serial || null,
+        calibracion: record.calibration || null,
+        vencimiento_calibracion: record.calibrationDue && record.calibrationDue !== "No informado" ? record.calibrationDue : null,
+        estado_calibracion: record.calibrationStatus || null,
+        medicion: record.measurement || null,
+        resultado: record.result || null,
+        cumplimiento: record.compliance || null,
+        estado: record.statusClass === "bad" ? "No cumple" : record.statusClass === "warn" ? "Con observaciones" : "Cumple",
+        estado_clase: record.statusClass || null,
+        observaciones: record.observations || null,
+        iper_asociado: record.iper || null,
+        legal_asociado: record.legal || null,
+        cronograma_asociado: record.schedule || null,
+        registro_sst_codigo: record.code
+      };
+    }
+
+    function hysInstrumentToSupabaseRow(record) {
+      return {
+        codigo: `${record.type || "hys"}-${normalizeText(record.serial || record.instrument || record.tool || record.code).slice(0, 40) || record.code}`,
+        tipo: record.type,
+        nombre: record.instrument || record.tool || "Instrumental HyS",
+        numero_serie: record.serial || null,
+        ubicacion: record.sector || null,
+        responsable: record.responsible || null,
+        fecha_calibracion: record.calibration || null,
+        vencimiento_calibracion: record.calibrationDue && record.calibrationDue !== "No informado" ? record.calibrationDue : null,
+        estado_calibracion: record.calibrationStatus || null,
+        ultimo_registro_codigo: record.code,
+        observaciones: `${record.tool} · ${record.compliance} · ${record.result}`
+      };
+    }
+
+    function hysReportToSupabaseRow(record) {
+      return {
+        codigo: `REP-${record.code}`,
+        tipo: "Informe técnico HyS",
+        titulo: `Informe técnico · ${record.tool}`,
+        fecha: record.date,
+        responsable: record.responsible || null,
+        sector: record.sector || null,
+        estado: record.statusClass === "bad" ? "Con observaciones" : "Emitido",
+        contenido: `${record.result}
+Medición: ${record.measurement}
+Cumplimiento: ${record.compliance}
+IPER: ${record.iper}
+Legal: ${record.legal}`,
+        registro_asociado: record.code,
+        observaciones: record.observations || null
+      };
+    }
+
+    function supabaseRowToHysRecord(row) {
+      return {
+        type: row.tipo || "hys",
+        code: row.codigo || `HYS-${row.id || Date.now()}`,
+        tool: row.herramienta || getHysToolLabel(row.tipo),
+        date: row.fecha || (row.created_at ? String(row.created_at).slice(0,10) : today.toISOString().slice(0,10)),
+        fecha: row.fecha ? new Date(row.fecha + "T12:00:00").toLocaleDateString("es-AR") : "Sin fecha",
+        hora: row.hora || "--:--",
+        responsible: row.responsable || "Responsable SST",
+        sector: row.sector || "Sector operativo",
+        measurement: row.medicion || "Medición no informada",
+        compliance: row.cumplimiento || row.estado || "Sin evaluar",
+        statusClass: row.estado_clase || (normalizeText(row.estado || row.cumplimiento || "").includes("no cumple") ? "bad" : normalizeText(row.estado || row.cumplimiento || "").includes("observ") ? "warn" : "ok"),
+        result: row.resultado || "Resultado no informado",
+        observations: row.observaciones || "Sin observaciones adicionales.",
+        legal: row.legal_asociado || hysToolCatalog[row.tipo]?.legal || "Requisito legal según matriz aplicable.",
+        iper: row.iper_asociado || hysToolCatalog[row.tipo]?.iper || "Riesgo asociado según IPER",
+        schedule: row.cronograma_asociado || hysToolCatalog[row.tipo]?.schedule || row.herramienta || "Monitoreo HyS",
+        instrument: row.instrumento || "Instrumento no especificado",
+        serial: row.numero_serie || "S/N no informado",
+        calibration: row.calibracion || "No informada",
+        calibrationDue: row.vencimiento_calibracion || "No informado",
+        calibrationStatus: row.estado_calibracion || "No informado"
+      };
+    }
+
+    async function upsertHysCronogramaSupabase(record) {
+      if (typeof supabaseClient === "undefined" || !supabaseClient?.from) return false;
+      const actividad = record.schedule || record.tool || "Monitoreo HyS";
+      const mes = Number((record.date || today.toISOString().slice(0,10)).slice(5,7));
+      const payload = {
+        actividad,
+        frecuencia: "Según programa HyS",
+        mes,
+        estado: record.statusClass === "bad" ? "Con observaciones" : "Realizado",
+        fecha_realizacion: record.date,
+        observaciones: `${record.tool} · ${record.compliance}. ${record.result}`
+      };
+      try {
+        const { data, error } = await supabaseClient
+          .from("cronograma_sst")
+          .update(payload)
+          .eq("actividad", actividad)
+          .eq("mes", mes)
+          .select("id");
+        if (!error && Array.isArray(data) && data.length) return true;
+        const { error: insertError } = await supabaseClient.from("cronograma_sst").insert([payload]);
+        if (insertError) throw insertError;
+        return true;
+      } catch (error) {
+        console.warn("No se pudo impactar cronograma_sst desde Herramientas HyS:", error);
+        return false;
+      }
+    }
+
+    async function guardarHysToolRecordSupabase(record) {
+      if (typeof supabaseClient === "undefined" || !supabaseClient?.from) return false;
+      let medicionRow = hysRecordToSupabaseRow(record);
+      let { error } = await supabaseClient.from("mediciones_hys").insert([medicionRow]);
+      if (error && /duplicate|unique/i.test(error.message || "")) {
+        const uniqueCode = `${record.code}-${String(Date.now()).slice(-5)}`;
+        record.code = uniqueCode;
+        medicionRow = hysRecordToSupabaseRow(record);
+        const retry = await supabaseClient.from("mediciones_hys").insert([medicionRow]);
+        error = retry.error;
+      }
+      if (error) throw error;
+
+      try {
+        const instrumento = hysInstrumentToSupabaseRow(record);
+        let updated = false;
+        if (instrumento.numero_serie && instrumento.numero_serie !== "S/N no informado") {
+          const { data: existing } = await supabaseClient.from("equipos_hys").select("id").eq("numero_serie", instrumento.numero_serie).limit(1);
+          if (Array.isArray(existing) && existing[0]?.id) {
+            const { error: updateError } = await supabaseClient.from("equipos_hys").update(instrumento).eq("id", existing[0].id);
+            if (!updateError) updated = true;
+          }
+        }
+        if (!updated) await supabaseClient.from("equipos_hys").insert([instrumento]);
+      } catch (equipError) {
+        console.warn("No se pudo actualizar equipos_hys:", equipError);
+      }
+
+      try { await supabaseClient.from("reportes_sst").insert([hysReportToSupabaseRow(record)]); } catch (repError) { console.warn("No se pudo guardar reporte HyS:", repError); }
+      await upsertHysCronogramaSupabase(record);
+      if (typeof showToast === "function") showToast(`✅ ${record.tool} guardado en Supabase e integrado al cronograma.`);
+      return true;
+    }
+
+    async function cargarHysSupabase(silent = false) {
+      if (typeof supabaseClient === "undefined" || !supabaseClient?.from) return false;
+      const { data, error } = await supabaseClient
+        .from("mediciones_hys")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) {
+        console.warn("No se pudo leer mediciones_hys:", error);
+        if (!silent && typeof showToast === "function") showToast("No se pudo leer mediciones_hys. Se mantiene historial local.");
+        return false;
+      }
+      if (Array.isArray(data) && data.length) {
+        hysToolsHistory = data.map(supabaseRowToHysRecord);
+        localStorage.setItem("ypfHysToolsHistory", JSON.stringify(hysToolsHistory));
+        lastHysToolByType = {};
+        hysToolsHistory.forEach(r => { if (!lastHysToolByType[r.type]) lastHysToolByType[r.type] = r; });
+        renderHysToolsHistory();
+        renderHysInstrumentInventory();
+        renderHysIntegrationPanel();
+      }
+      return true;
     }
 
     function integrateHysWithSst(record) {
@@ -9770,6 +9903,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       await cargarAsignacionesSupabase(true);
       await cargarDashboardKpisSupabase(true);
       await cargarSstSupabase(true);
+      await cargarHysSupabase(true);
       refreshAll();
     }
 
@@ -10145,20 +10279,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
       const selectedName = selectedMonitoring?.item || selectedMonitoring?.activity || record.finding || "";
       const family = getFamilyByMonitoringName(selectedName) || getSstKeywordFamily(`${record.type || ""} ${record.finding || ""} ${record.risk || ""} ${record.sector || ""} ${record.action || ""} ${record.observations || ""}`);
       const monitoringName = selectedName || getMonitoringNameByFamily(family) || inferMonitoreoNameFromRecord(record);
-
-      const traceRow = (typeof supabaseMonitoreoTrazabilidadSst !== "undefined" && Array.isArray(supabaseMonitoreoTrazabilidadSst))
-        ? supabaseMonitoreoTrazabilidadSst.find(t =>
-            normalizeText(t.monitoreo || "") === normalizeText(monitoringName || "") ||
-            normalizeText(t.cronograma || "") === normalizeText(monitoringName || "") ||
-            normalizeText(t.monitoreo || "") === normalizeText(selectedName || "") ||
-            normalizeText(t.cronograma || "") === normalizeText(selectedName || "")
-          )
-        : null;
-
-      const monitoring =
-        (traceRow ? trazabilidadSupabaseToProgram(traceRow) : null) ||
-        selectedMonitoring ||
-        (typeof monitoringProgram !== "undefined" ? monitoringProgram : []).find(m => normalizeText(m.item || "") === normalizeText(monitoringName || ""));
+      const monitoring = selectedMonitoring || (typeof monitoringProgram !== "undefined" ? monitoringProgram : []).find(m => normalizeText(m.item || "") === normalizeText(monitoringName || ""));
 
       let iper = record.iperId ? (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId)) : null;
       let legal = record.legalId ? (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId)) : null;
@@ -10167,15 +10288,14 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
       return {
         family,
-        monitoringName: traceRow?.monitoreo || monitoringName,
+        monitoringName,
         monitoring,
-        traceRow,
         iperId: iper?.id || "",
         legalId: legal?.id || "",
         iper,
         legal,
-        riskText: iper ? sstIperLabel(iper) : (traceRow?.iper_asociado || monitoring?.risk || ""),
-        legalText: legal ? sstLegalLabel(legal) : (traceRow?.legal_asociado || monitoring?.legal || "")
+        riskText: iper ? sstIperLabel(iper) : (monitoring?.risk || ""),
+        legalText: legal ? sstLegalLabel(legal) : (monitoring?.legal || "")
       };
     }
 
@@ -10262,20 +10382,19 @@ const courseCounts = courses.slice(0, 7).map(course => {
         data = result.data;
         error = result.error;
 
-        // Si la base informa una columna inexistente, elimina SOLO esa columna y reintenta.
-        // Importante: no borrar trazabilidad completa (monitoreo_nombre, IPER, legal, etc.)
-        // porque esas columnas ya existen y son necesarias para cronograma/KPIs.
-        if (error && /column|schema cache|does not exist/i.test(error.message || "")) {
-          const msg = error.message || "";
-          const missingColumn =
-            (msg.match(/'([^']+)' column/) || [])[1] ||
-            (msg.match(/column "([^"]+)"/) || [])[1] ||
-            "";
-          if (missingColumn && Object.prototype.hasOwnProperty.call(payload, missingColumn)) {
-            delete payload[missingColumn];
-            console.warn("Se reintenta guardar Registro SST sin columna no disponible:", missingColumn);
-            continue;
-          }
+        // Si la base todavía no tiene algún campo nuevo, reintenta sin esos campos.
+        if (error && /column|schema cache|iper_id|legal_id|accion_correctiva_id/i.test(error.message || "")) {
+          delete payload.iper_id;
+          delete payload.legal_id;
+          delete payload.accion_correctiva_id;
+          delete payload.monitoreo_nombre;
+          delete payload.alcance;
+          delete payload.iper_asociado;
+          delete payload.legal_asociado;
+          delete payload.frecuencia_cronograma;
+          delete payload.registro_asociado;
+          delete payload.instrumental;
+          continue;
         }
 
         // Si el código está duplicado, pide/calcula otro y reintenta sin guardar localmente el duplicado.
@@ -10390,13 +10509,13 @@ const courseCounts = courses.slice(0, 7).map(course => {
         if (codeEl) codeEl.value = record.code;
 
         const traceBundle = getTraceabilityBundleFromRecord(record);
-        record.monitoreoNombre = traceBundle.traceRow?.monitoreo || traceBundle.monitoringName || record.finding;
-        record.alcance = traceBundle.traceRow?.alcance || traceBundle.monitoring?.sector || record.sector;
-        record.iperAsociado = traceBundle.traceRow?.iper_asociado || (traceBundle.iper ? sstIperLabel(traceBundle.iper) : (traceBundle.riskText || record.risk));
-        record.legalAsociado = traceBundle.traceRow?.legal_asociado || (traceBundle.legal ? sstLegalLabel(traceBundle.legal) : (traceBundle.legalText || ""));
-        record.frecuenciaCronograma = `${traceBundle.traceRow?.frecuencia || traceBundle.monitoring?.frequency || ""}${(traceBundle.traceRow?.cronograma || traceBundle.monitoring?.schedule) ? " · " + (traceBundle.traceRow?.cronograma || traceBundle.monitoring?.schedule) : ""}`.trim();
-        record.registroAsociado = traceBundle.traceRow?.registro_asociado || traceBundle.monitoring?.registroAsociado || "Registro SST";
-        record.instrumental = traceBundle.traceRow?.instrumental || traceBundle.monitoring?.instrumental || "Registro operativo / documental SST";
+        record.monitoreoNombre = traceBundle.monitoringName || record.finding;
+        record.alcance = traceBundle.monitoring?.sector || record.sector;
+        record.iperAsociado = traceBundle.iper ? sstIperLabel(traceBundle.iper) : (traceBundle.riskText || record.risk);
+        record.legalAsociado = traceBundle.legal ? sstLegalLabel(traceBundle.legal) : (traceBundle.legalText || "");
+        record.frecuenciaCronograma = `${traceBundle.monitoring?.frequency || ""}${traceBundle.monitoring?.schedule ? " · " + traceBundle.monitoring.schedule : ""}`.trim();
+        record.registroAsociado = traceBundle.monitoring?.registroAsociado || "Registro SST";
+        record.instrumental = traceBundle.monitoring?.instrumental || "Registro operativo / documental SST";
         record.generaAccionCorrectiva = document.getElementById("sstRecordGenerateAction")?.value === "si";
 
         const inferredTrace = inferTraceabilityFromRecord(record);
@@ -10413,7 +10532,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
           record.observations += `\nRequisito legal vinculado: ${sstLegalLabel(legalRow)}`;
         }
 
-        monitoreoRelacionado = record.monitoreoNombre || inferMonitoreoNameFromRecord(record);
+        monitoreoRelacionado = inferMonitoreoNameFromRecord(record);
 
         // Inserta en Supabase con reintentos por código duplicado.
         const data = await insertRegistroSstWithTraceability(record);
@@ -10654,7 +10773,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
           if (state === "overdue") return `<td><span class="month-dot overdue">!</span></td>`;
           return `<td><span class="month-dot pending">•</span></td>`;
         }).join("");
-        const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : (states.includes("done") && states.includes("pending")) ? { txt:"Realizado", cls:"vigente" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
+        const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : (states.includes("done") && states.includes("pending")) ? { txt:"Al día", cls:"vigente" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
         return `<tr><td><strong>${row.activity}</strong><br><small>${row.frequency}</small></td>${cells}<td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
       }).join("") + `</tbody>`;
     }
