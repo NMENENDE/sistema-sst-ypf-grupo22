@@ -9299,24 +9299,67 @@ const courseCounts = courses.slice(0, 7).map(course => {
       });
     }
 
+    function hysComplianceToBoolean(compliance, statusClass) {
+      if (statusClass === "ok") return true;
+      if (statusClass === "warn" || statusClass === "bad") return false;
+      const txt = normalizeText(compliance || "");
+      if (!txt) return null;
+      if (txt.includes("cumple") && !txt.includes("no cumple")) return true;
+      if (txt.includes("aceptable") || txt.includes("vigente")) return true;
+      if (txt.includes("no cumple") || txt.includes("requiere") || txt.includes("observ")) return false;
+      return null;
+    }
+
+    function hysEstadoTexto(record) {
+      if (record?.statusClass === "bad") return "No cumple";
+      if (record?.statusClass === "warn") return "Con observaciones";
+      if (record?.statusClass === "ok") return "Cumple";
+      return record?.compliance || "Sin evaluar";
+    }
+
+    function hysExtractNumeric(value) {
+      const raw = typeof value === "object"
+        ? `${value.measurement || ""} ${value.result || ""}`
+        : String(value || "");
+      const match = raw.replace(/,/g, ".").match(/-?\d+(?:\.\d+)?/);
+      return match ? Number(match[0]) : null;
+    }
+
+    function hysInferUnidad(record) {
+      const text = normalizeText(`${record?.measurement || ""} ${record?.result || ""}`);
+      if (text.includes("lux")) return "lux";
+      if (text.includes("db")) return "dB(A)";
+      if (text.includes("ohm") || text.includes("ω")) return "Ω";
+      if (text.includes("mj")) return "MJ/m²";
+      if (text.includes("wbgt") || text.includes("°c")) return "°C";
+      if (text.includes("m3") || text.includes("m³")) return "m³/h";
+      if (text.includes("ppm")) return "ppm";
+      if (text.includes("m/s")) return "m/s²";
+      return null;
+    }
+
     function hysRecordToSupabaseRow(record) {
+      const estadoTexto = hysEstadoTexto(record);
       return {
         codigo: record.code,
+        tipo_medicion: record.tool || hysToolCatalog[record.type]?.label || "Herramienta HyS",
         tipo: record.type,
         herramienta: record.tool,
         fecha: record.date,
         hora: record.hora || null,
         responsable: record.responsible || null,
         sector: record.sector || null,
+        equipo: record.tool || null,
         instrumento: record.instrument || null,
         numero_serie: record.serial || null,
         calibracion: record.calibration || null,
         vencimiento_calibracion: record.calibrationDue && record.calibrationDue !== "No informado" ? record.calibrationDue : null,
         estado_calibracion: record.calibrationStatus || null,
         medicion: record.measurement || null,
-        resultado: record.result || null,
-        cumplimiento: record.compliance || null,
-        estado: record.statusClass === "bad" ? "No cumple" : record.statusClass === "warn" ? "Con observaciones" : "Cumple",
+        resultado: hysExtractNumeric(record),
+        unidad: hysInferUnidad(record),
+        cumplimiento: hysComplianceToBoolean(record.compliance, record.statusClass),
+        estado: estadoTexto,
         estado_clase: record.statusClass || null,
         observaciones: record.observations || null,
         iper_asociado: record.iper || null,
@@ -9372,9 +9415,9 @@ Legal: ${record.legal}`,
         responsible: row.responsable || "Responsable SST",
         sector: row.sector || "Sector operativo",
         measurement: row.medicion || "Medición no informada",
-        compliance: row.cumplimiento || row.estado || "Sin evaluar",
-        statusClass: row.estado_clase || (normalizeText(row.estado || row.cumplimiento || "").includes("no cumple") ? "bad" : normalizeText(row.estado || row.cumplimiento || "").includes("observ") ? "warn" : "ok"),
-        result: row.resultado || "Resultado no informado",
+        compliance: row.cumplimiento === true ? "Cumple" : row.cumplimiento === false ? (row.estado || "No cumple") : (row.estado || "Sin evaluar"),
+        statusClass: row.estado_clase || (row.cumplimiento === true ? "ok" : normalizeText(row.estado || "").includes("no cumple") ? "bad" : normalizeText(row.estado || "").includes("observ") ? "warn" : "ok"),
+        result: row.resultado !== null && row.resultado !== undefined ? `${row.resultado}${row.unidad ? " " + row.unidad : ""}` : "Resultado no informado",
         observations: row.observaciones || "Sin observaciones adicionales.",
         legal: row.legal_asociado || hysToolCatalog[row.tipo]?.legal || "Requisito legal según matriz aplicable.",
         iper: row.iper_asociado || hysToolCatalog[row.tipo]?.iper || "Riesgo asociado según IPER",
