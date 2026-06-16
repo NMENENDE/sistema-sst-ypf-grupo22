@@ -1240,7 +1240,9 @@
         font-size: 28px;
       }
 
-      .institutional-summary {
+      .grid {
+    gap: 18px;
+}
         min-height: auto;
       }
     }
@@ -1517,7 +1519,7 @@
       overflow-x: auto;
     }
 
-    .institutional-summary {
+  .institutional-summary {
       min-height: 230px;
       display: flex;
       flex-direction: column;
@@ -4014,7 +4016,280 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
   body:not(.login-locked) aside .brand { min-width: 0 !important; max-width: none !important; flex: 0 0 auto !important; }
   body:not(.login-locked) aside nav { width: 100% !important; }
 }
-</style>
+
+
+    /* =========================================================
+       CORRECCIÓN FINAL DE ESPACIADOS UNIFORMES - V21
+       Objetivo: igualar separación de boxes, paneles, tarjetas,
+       formularios y módulos sin tocar lógica ni Supabase.
+       ========================================================= */
+
+    :root {
+      --ui-gap-xs: 8px;
+      --ui-gap-sm: 10px;
+      --ui-gap-md: 14px;
+      --ui-gap-lg: 16px;
+      --ui-gap-xl: 20px;
+      --ui-card-padding: 16px;
+      --ui-card-radius: 22px;
+    }
+
+    main {
+      padding: 24px !important;
+    }
+
+    .topbar {
+      margin-bottom: var(--ui-gap-xl) !important;
+      padding: 18px 20px !important;
+    }
+
+    .section.active {
+      display: grid !important;
+      gap: var(--ui-gap-lg) !important;
+    }
+
+    .grid,
+    .grid.cards,
+    .grid.two,
+    .grid.three,
+    .kpi-grid,
+    .risk-matrix,
+    .personnel-grid,
+    .employee-training-grid,
+    .training-layout,
+    .training-dashboard-strip,
+    .training-calendar-grid,
+    .phva-grid,
+    .dashboard-detail-grid,
+    .inspection-history,
+    .improvement-timeline,
+    .norm-list,
+    .checklist,
+    .training-groups-wrap,
+    .month-course-list,
+    .modal-list,
+    .sst-type-guide,
+    .sst-dynamic-fields,
+    .sst-evidence-preview,
+    .multi-assign-list {
+      gap: var(--ui-gap-lg) !important;
+    }
+
+    .card,
+    .kpi-card,
+    .risk-card,
+    .person-card,
+    .phva-card,
+    .training-summary-card,
+    .training-item,
+    .month-course,
+    .doc-card,
+    .course-card,
+    .history-item,
+    .dashboard-detail-card,
+    .academic-card,
+    .norm-item,
+    .improvement-item,
+    .check-item,
+    .training-mini-stat,
+    .month-card,
+    .training-note,
+    .training-control-note,
+    .traceability-card,
+    .footer-note,
+    .modal-list-item,
+    .multi-assign-item,
+    .sst-field-note,
+    .sst-evidence-box {
+      padding: var(--ui-card-padding) !important;
+      border-radius: var(--ui-card-radius) !important;
+    }
+
+    .card,
+    .kpi-card,
+    .risk-card,
+    .person-card,
+    .employee-profile-card,
+    .employee-detail-panel,
+    .employee-list-card,
+    .institutional-summary,
+    .training-summary-card,
+    .training-item,
+    .dashboard-detail-card,
+    .history-item,
+    .month-card,
+    .month-course,
+    .phva-card,
+    .doc-card,
+    .course-card,
+    .academic-card,
+    .norm-item,
+    .improvement-item,
+    .check-item {
+      min-height: auto !important;
+    }
+
+    .card h3,
+    .card h4,
+    .kpi-intro h3,
+    .training-group h4,
+    .calendar-header h3,
+    .risk-card h4,
+    .phva-card h4 {
+      margin-top: 0 !important;
+      margin-bottom: 12px !important;
+    }
+
+    .card p:first-child,
+    .card h3 + p,
+    .card h4 + p {
+      margin-top: 0 !important;
+    }
+
+    .card p:last-child,
+    .kpi-intro p:last-child,
+    .training-hero p:last-child,
+    .personnel-hero p:last-child,
+    .employee-detail-header p:last-child,
+    .training-note p:last-child,
+    .footer-note p:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    .toolbar,
+    .training-controls,
+    .personnel-controls,
+    .institutional-actions,
+    .inspection-actions,
+    .person-actions,
+    .training-action-row,
+    .calendar-action-row,
+    .training-quick-actions,
+    .history-meta,
+    .employee-profile-top,
+    .person-head,
+    .bar-title-row {
+      gap: var(--ui-gap-sm) !important;
+    }
+
+    .toolbar,
+    .training-controls,
+    .personnel-controls,
+    .institutional-actions,
+    .inspection-actions,
+    .training-table-card,
+    .traceability-card,
+    .footer-note,
+    .training-summary,
+    .training-group,
+    .training-groups-wrap,
+    .employee-training-grid,
+    .personnel-grid,
+    .inspection-history,
+    .dashboard-detail-grid,
+    .phva-grid,
+    .kpi-grid,
+    .risk-matrix,
+    .norm-list,
+    .checklist,
+    .sst-type-guide,
+    .multi-assign-list {
+      margin-top: var(--ui-gap-lg) !important;
+    }
+
+    .toolbar {
+      margin-bottom: var(--ui-gap-lg) !important;
+    }
+
+    .institutional-summary {
+      min-height: auto !important;
+      height: auto !important;
+      display: grid !important;
+      align-content: start !important;
+      justify-content: stretch !important;
+      gap: var(--ui-gap-lg) !important;
+      padding: var(--ui-card-padding) !important;
+    }
+
+    .institutional-summary > * {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    .training-hero,
+    .personnel-hero,
+    .employee-detail-header,
+    .kpi-intro,
+    .emergency-hero {
+      padding: 20px !important;
+      border-radius: 24px !important;
+    }
+
+    .employee-profile-card {
+      padding: var(--ui-card-padding) !important;
+      border-radius: var(--ui-card-radius) !important;
+      gap: var(--ui-gap-sm) !important;
+    }
+
+    .employee-kpis,
+    .employee-summary,
+    .person-meta,
+    .person-kpi-row,
+    .training-summary,
+    .employee-kpi,
+    .person-kpi {
+      gap: var(--ui-gap-sm) !important;
+    }
+
+    .form-grid,
+    .sst-dynamic-fields {
+      gap: var(--ui-gap-md) !important;
+    }
+
+    input,
+    select,
+    textarea,
+    button.primary,
+    button.secondary,
+    button.danger {
+      border-radius: 14px !important;
+    }
+
+    table th,
+    table td {
+      padding: 12px 12px !important;
+    }
+
+    .section > .card:first-child,
+    .section > .grid:first-child,
+    .section > .training-module:first-child,
+    .section > .personnel-hero:first-child,
+    .section > .training-hero:first-child {
+      margin-top: 0 !important;
+    }
+
+    @media (max-width: 1050px) {
+      main {
+        padding: 18px !important;
+      }
+
+      .section.active {
+        gap: var(--ui-gap-md) !important;
+      }
+
+      .grid,
+      .grid.cards,
+      .grid.two,
+      .grid.three,
+      .training-layout,
+      .personnel-grid,
+      .employee-training-grid,
+      .training-calendar-grid {
+        gap: var(--ui-gap-md) !important;
+      }
+    }
+
+  </style>
 
 
 <!-- ===== V19: ajuste visual estable sin tocar login ===== -->
@@ -4331,143 +4606,48 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
 </style>
 
 
+<style id="fix-docs-institucional-espacio-final">
+  /* Corrección final: Documentación e Institucional sin espacios vacíos */
+  body:not(.login-locked) main {
+    display: block !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
 
-<!-- ===== FIX FINAL: Documentación e Institucional sin espacios vacíos - NO TOCAR LOGIN/JS ===== -->
-<style id="fix-final-docs-institucional-compacto">
-  /* Mantiene el login intacto: reglas solo para la app ya desbloqueada */
   body:not(.login-locked) #documentos,
   body:not(.login-locked) #institucional {
+    display: none !important;
     margin: 0 !important;
     padding: 0 !important;
     min-height: 0 !important;
     height: auto !important;
-    align-content: start !important;
   }
 
-  /* Separación pareja entre paneles */
+  body:not(.login-locked) #documentos.active,
+  body:not(.login-locked) #institucional.active {
+    display: block !important;
+  }
+
   body:not(.login-locked) #documentos > .grid.two,
   body:not(.login-locked) #institucional > .grid.two {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
-    gap: 16px !important;
-    align-items: start !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* Cards compactas y sin alturas heredadas */
-  body:not(.login-locked) #documentos .card,
-  body:not(.login-locked) #institucional .card {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    margin: 0 !important;
-    padding: 16px !important;
-    border-radius: 18px !important;
-    align-self: start !important;
-    overflow: visible !important;
-  }
-
-  /* Quita el hueco grande entre texto y botón en Institucional */
-  body:not(.login-locked) #institucional .institutional-summary {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-    justify-content: start !important;
-    align-content: start !important;
-    justify-items: start !important;
-    min-height: 0 !important;
-    height: auto !important;
-  }
-
-  body:not(.login-locked) #institucional .institutional-summary > div {
-    margin: 0 !important;
-  }
-
-  body:not(.login-locked) #institucional .institutional-actions {
     margin-top: 0 !important;
     padding-top: 0 !important;
-    gap: 10px !important;
+    gap: 14px !important;
+    align-items: start !important;
   }
 
-  /* PHVA con la misma separación que el resto */
-  body:not(.login-locked) #institucional .phva-section {
-    margin-top: 16px !important;
+  body:not(.login-locked) .topbar {
+    margin-bottom: 12px !important;
   }
 
-  body:not(.login-locked) #institucional .phva-grid {
-    gap: 16px !important;
-    margin-top: 12px !important;
-  }
-
-  body:not(.login-locked) #institucional .phva-card {
-    height: auto !important;
-    min-height: 0 !important;
-    padding: 14px !important;
-  }
-
-  /* Documentación: contenido ordenado, sin márgenes gigantes */
-  body:not(.login-locked) #documentos .card {
-    display: grid !important;
-    gap: 12px !important;
-    align-content: start !important;
-  }
-
-  body:not(.login-locked) #documentos .card h3,
-  body:not(.login-locked) #institucional .card h3 {
-    margin: 0 0 6px 0 !important;
-    line-height: 1.25 !important;
-  }
-
-  body:not(.login-locked) #documentos .card p,
-  body:not(.login-locked) #institucional .card p {
-    margin: 0 !important;
-    line-height: 1.4 !important;
-  }
-
-  body:not(.login-locked) #documentos #docList {
-    gap: 10px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  body:not(.login-locked) #documentos .doc-card {
+  body:not(.login-locked) #documentos .card,
+  body:not(.login-locked) #institucional .card {
     margin-top: 0 !important;
-    padding: 13px !important;
-    gap: 6px !important;
-    height: auto !important;
-    min-height: 0 !important;
+    min-height: auto !important;
   }
 
-  body:not(.login-locked) #documentos .footer-note {
-    margin-top: 0 !important;
-    padding: 13px 14px !important;
-    line-height: 1.4 !important;
-  }
-
-  body:not(.login-locked) #documentos img[alt="QR Sistema SST"] {
-    width: 150px !important;
-    max-width: 100% !important;
-    padding: 10px !important;
-    border-radius: 16px !important;
-  }
-
-  body:not(.login-locked) #documentos img[alt="QR Sistema SST"]
-    + * {
-    margin-top: 0 !important;
-  }
-
-  body:not(.login-locked) #documentos .card div[style*="justify-content:center"] {
-    margin-top: 4px !important;
-    margin-bottom: 0 !important;
-  }
-
-  /* Anula reglas viejas que metían altura fija de 210/230px */
-  body:not(.login-locked) .institutional-summary,
-  body:not(.login-locked) .academic-summary,
-  body:not(.login-locked) .normative-summary,
-  body:not(.login-locked) .supervision-summary {
-    min-height: 0 !important;
+  body:not(.login-locked) .institutional-summary {
+    min-height: auto !important;
     height: auto !important;
   }
 </style>
@@ -5336,6 +5516,30 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
 
     </main>
   </div>
+
+  <script id="fix-docs-institucional-dom">
+    /* FIX real de espacios vacíos:
+       En algunas versiones, Documentación e Institucional quedan fuera de <main>
+       por reparsing del navegador. Al quedar después de main, aparecen debajo
+       de un bloque vacío equivalente al alto de main. Esto los reubica dentro
+       de main sin tocar login, Supabase ni la lógica existente. */
+    (function fixDocsInstitucionalDom(){
+      function moveSectionsInsideMain(){
+        var main = document.querySelector("main");
+        if (!main) return;
+        ["documentos", "institucional"].forEach(function(id){
+          var section = document.getElementById(id);
+          if (section && section.parentElement !== main) {
+            main.appendChild(section);
+          }
+        });
+      }
+      moveSectionsInsideMain();
+      document.addEventListener("DOMContentLoaded", moveSectionsInsideMain);
+      window.addEventListener("load", moveSectionsInsideMain);
+    })();
+  </script>
+
 
   <div class="modal" id="trainingModal">
     <div class="modal-content">
@@ -13064,7 +13268,7 @@ Legal: ${record.legal}`,
     .title h2 { font-size: clamp(21px, 2.35vw, 30px) !important; }
     .title p { font-size: 12.2px !important; }
     .card { padding: 15px !important; border-radius: 18px !important; }
-    .grid { gap: 13px !important; }
+    .grid { gap: 18px !important; }
     input, select, textarea { padding: 9px 10px !important; border-radius: 11px !important; font-size: 13px !important; }
     button.primary, button.secondary, button.danger { padding: 9px 12px !important; border-radius: 11px !important; font-size: 12.6px !important; }
     th, td { padding: 9px 8px !important; font-size: 12.5px !important; }
