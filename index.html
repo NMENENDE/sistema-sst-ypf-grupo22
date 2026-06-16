@@ -573,6 +573,19 @@
 
     textarea { min-height: 105px; resize: vertical; }
 
+    /* ===== Mejora Registros SST v7: formularios por tipo, texto multilínea y evidencias ===== */
+    .sst-type-guide { display:grid; gap:10px; margin-top:14px; }
+    .sst-dynamic-fields { grid-column:1 / -1; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+    .sst-dynamic-fields textarea { grid-column:1 / -1; min-height:118px; white-space:pre-wrap; }
+    .sst-field-note { grid-column:1 / -1; border-radius:14px; padding:11px 13px; background:var(--ypf-blue-light); border:1px solid #cfe7ff; color:var(--ypf-blue-dark); font-weight:800; font-size:12.5px; line-height:1.4; }
+    .sst-evidence-box { grid-column:1 / -1; border:1px dashed var(--gray-300); background:var(--gray-50); border-radius:16px; padding:13px; display:grid; gap:9px; }
+    .sst-evidence-box small { color:var(--gray-500); font-weight:800; line-height:1.35; }
+    .sst-evidence-preview { display:flex; flex-wrap:wrap; gap:8px; }
+    .sst-evidence-preview span { border-radius:999px; padding:7px 10px; background:white; border:1px solid var(--gray-200); color:var(--ypf-blue-dark); font-weight:900; font-size:12px; }
+    .sst-help-text { color:var(--gray-500); font-size:12px; font-weight:800; line-height:1.35; }
+    textarea.multiline-friendly { min-height:130px; line-height:1.45; white-space:pre-wrap; }
+
+
     .footer-note {
       margin-top: 22px;
       padding: 15px 18px;
@@ -3471,7 +3484,7 @@
 
 
     /* ===== Herramientas de Trabajo HyS ===== */
-    .hys-tools-home{display:grid;gap:18px}.hys-tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.hys-tool-card{background:linear-gradient(135deg,#fff,var(--ypf-blue-light));border:1px solid #cfe7ff;border-radius:20px;padding:16px;border-left:6px solid var(--ypf-blue);box-shadow:0 10px 22px rgba(15,23,42,.06);display:grid;gap:8px}.hys-tool-card.pending{opacity:.88;border-left-color:var(--orange);background:linear-gradient(135deg,#fff7ed,#fff)}.hys-tool-card strong{color:var(--ypf-blue-dark);font-size:16px}.hys-tool-card small{color:var(--gray-700);font-weight:700;line-height:1.35}.hys-tool-layout{display:grid;grid-template-columns:minmax(310px,.82fr) minmax(420px,1.18fr);gap:18px;align-items:start}.hys-tool-tabs{display:grid;gap:10px}.hys-tab-btn{border:1px solid var(--gray-200);border-radius:16px;background:white;color:var(--ypf-blue-dark);padding:12px;text-align:left;font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(15,23,42,.04)}.hys-tab-btn.active{background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark));color:white;border-color:var(--ypf-blue);border-bottom:4px solid var(--ypf-yellow)}.hys-panel{display:none}.hys-panel.active{display:block}.hys-result{border-radius:18px;padding:14px;background:var(--gray-50);border:1px solid var(--gray-200);display:grid;gap:8px}.hys-result.ok{background:linear-gradient(135deg,#dcfce7,#fff);border-left:6px solid var(--green)}.hys-result.warn{background:linear-gradient(135deg,#fef3c7,#fff);border-left:6px solid var(--orange)}.hys-result.bad{background:linear-gradient(135deg,#fee2e2,#fff);border-left:6px solid var(--ypf-red)}.hys-history{display:grid;gap:10px}.hys-history-item{border:1px solid var(--gray-200);border-radius:16px;background:white;padding:12px;display:grid;gap:5px}.hys-history-item strong{color:var(--ypf-blue-dark)}.hys-form-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.hys-phase-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.hys-mini{border:1px solid var(--gray-200);background:white;border-radius:16px;padding:12px;border-left:5px solid var(--orange)}.hys-mini strong{display:block;color:var(--ypf-blue-dark);margin-bottom:4px}.hys-mini small{color:var(--gray-500);font-weight:800;line-height:1.35}.hys-legal-note{border-radius:16px;background:linear-gradient(135deg,#fff,#fff7cc);border:1px solid #fde68a;color:#7c5a00;padding:12px;font-weight:800;font-size:12px;line-height:1.4}@media(max-width:1050px){.hys-tool-layout{grid-template-columns:1fr}}
+    .hys-tools-home{display:grid;gap:18px}.hys-tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.hys-tool-card{background:linear-gradient(135deg,#fff,var(--ypf-blue-light));border:1px solid #cfe7ff;border-radius:20px;padding:16px;border-left:6px solid var(--ypf-blue);box-shadow:0 10px 22px rgba(15,23,42,.06);display:grid;gap:8px}.hys-tool-card.pending{opacity:.88;border-left-color:var(--orange);background:linear-gradient(135deg,#fff7ed,#fff)}.hys-tool-card strong{color:var(--ypf-blue-dark);font-size:16px}.hys-tool-card small{color:var(--gray-700);font-weight:700;line-height:1.35}.hys-tool-layout{display:grid;grid-template-columns:minmax(310px,.82fr) minmax(420px,1.18fr);gap:18px;align-items:start}.hys-tool-tabs{display:grid;gap:10px}.hys-tab-btn{border:1px solid var(--gray-200);border-radius:16px;background:white;color:var(--ypf-blue-dark);padding:12px;text-align:left;font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(15,23,42,.04)}.hys-tab-btn.active{background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark));color:white;border-color:var(--ypf-blue);border-bottom:4px solid var(--ypf-yellow)}.hys-panel{display:none}.hys-panel.active{display:block}.hys-result{border-radius:18px;padding:14px;background:var(--gray-50);border:1px solid var(--gray-200);display:grid;gap:8px}.hys-result.ok{background:linear-gradient(135deg,#dcfce7,#fff);border-left:6px solid var(--green)}.hys-result.warn{background:linear-gradient(135deg,#fef3c7,#fff);border-left:6px solid var(--orange)}.hys-result.bad{background:linear-gradient(135deg,#fee2e2,#fff);border-left:6px solid var(--ypf-red)}.hys-history{display:grid;gap:10px}.hys-history-item{border:1px solid var(--gray-200);border-radius:16px;background:white;padding:12px;display:grid;gap:5px}.hys-history-item strong{color:var(--ypf-blue-dark)}.hys-form-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.hys-phase-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.hys-mini{border:1px solid var(--gray-200);background:white;border-radius:16px;padding:12px;border-left:5px solid var(--orange)}.hys-mini strong{display:block;color:var(--ypf-blue-dark);margin-bottom:4px}.hys-mini small{color:var(--gray-500);font-weight:800;line-height:1.35}.hys-legal-note{border-radius:16px;background:linear-gradient(135deg,#fff,#fff7cc);border:1px solid #fde68a;color:#7c5a00;padding:12px;font-weight:800;font-size:12px;line-height:1.4}.hys-formula-note{margin:10px 0 14px;padding:12px 13px;border-radius:16px;background:linear-gradient(135deg,#ffffff,#f1f8ff);border:1px solid #cfe7ff;color:#334155;font-size:12px;font-weight:750;line-height:1.45;box-shadow:0 8px 18px rgba(15,23,42,.045);position:relative;overflow:hidden}.hys-formula-note::before{content:"📘";position:absolute;right:12px;top:10px;font-size:18px;opacity:.45}.hys-formula-note b{display:block;color:#003f7d;font-size:12px;text-transform:uppercase;letter-spacing:.035em;margin-bottom:6px}.hys-formula-note code{display:inline-block;font-family:Consolas,Monaco,monospace;background:#ffffff;border:1px solid #dbeafe;border-radius:10px;padding:3px 7px;margin:2px 2px;color:#003f7d;font-weight:900;box-shadow:inset 0 -2px 0 rgba(0,86,166,.06)}.hys-formula-note small{display:block;margin-top:7px;color:#64748b;font-weight:800;line-height:1.35}.hys-formula-note .formula-line{display:block;margin:4px 0}.hys-formula-note .formula-meaning{display:grid;gap:3px;margin-top:7px;padding-top:7px;border-top:1px solid #e2e8f0;color:#475569;font-size:11.5px}@media print{.hys-formula-note{display:none!important}}@media(max-width:1050px){.hys-tool-layout{grid-template-columns:1fr}}
 
 
 
@@ -3731,7 +3744,734 @@
       .topbar::before { right: 14px !important; font-size: 42px !important; }
     }
 
-  </style>
+
+
+    /* ===== V14: checklist compacto por etapas + paneles estables ===== */
+    #verificationPanelChecklist .grid.two {
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr) !important;
+      align-items:start !important;
+    }
+    #verificationPanelChecklist .card { overflow: visible; }
+    #checklistSST.checklist-compact { display:grid; gap:10px !important; }
+    .checklist-stage-compact {
+      border:1px solid var(--gray-200) !important;
+      border-radius:16px !important;
+      overflow:hidden !important;
+      background:white !important;
+      box-shadow:0 6px 16px rgba(15,23,42,.04) !important;
+    }
+    .checklist-stage-compact summary {
+      list-style:none;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:11px 13px;
+      background:linear-gradient(135deg,var(--ypf-blue),var(--ypf-blue-dark));
+      color:white;
+      font-weight:900;
+      border-bottom:3px solid var(--ypf-yellow);
+    }
+    .checklist-stage-compact summary::-webkit-details-marker { display:none; }
+    .checklist-stage-compact summary small { color:rgba(255,255,255,.88); font-weight:800; font-size:11px; white-space:nowrap; }
+    .checklist-stage-body { padding:10px; display:grid; gap:7px; }
+    .checklist-row-compact {
+      display:grid;
+      grid-template-columns: minmax(0,1fr) 170px;
+      gap:10px;
+      align-items:center;
+      padding:8px 9px;
+      border:1px solid var(--gray-200);
+      border-radius:12px;
+      background:var(--gray-50);
+      font-size:12.5px;
+      line-height:1.32;
+      font-weight:750;
+    }
+    .checklist-row-compact select { padding:8px 9px !important; border-radius:10px !important; font-size:12px !important; }
+    .checklist-general-box {
+      margin-top:12px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .checklist-general-box textarea { min-height:78px !important; font-size:13px; }
+    .checklist-general-box input[type="file"] { background:white; }
+    .checklist-evidence-compact { grid-column:1 / -1; }
+    #documentos .topbar, #institucional .topbar { min-height:auto !important; }
+    #documentos .card, #institucional .card { max-width:100%; overflow:visible; }
+    #documentos .grid.two, #institucional .grid.two { grid-template-columns:repeat(auto-fit,minmax(320px,1fr)) !important; }
+    #documentos, #institucional { overflow:visible !important; }
+    @media (max-width: 1050px) {
+      #verificationPanelChecklist .grid.two { grid-template-columns:1fr !important; }
+      .checklist-general-box { grid-template-columns:1fr; }
+    }
+    @media (max-width: 650px) {
+      .checklist-row-compact { grid-template-columns:1fr; }
+      .checklist-stage-compact summary { align-items:flex-start; flex-direction:column; }
+    }
+
+
+    /* ===== V15: corrección definitiva de header, documentación/institucional y checklist por etapa ===== */
+    body:not(.login-locked) .app { grid-template-columns: 1fr !important; }
+    body:not(.login-locked) aside {
+      position: sticky !important;
+      top: 0 !important;
+      height: 78px !important;
+      min-height: 78px !important;
+      max-height: 78px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 16px !important;
+      padding: 8px 18px !important;
+      overflow: hidden !important;
+      border-right: 0 !important;
+      border-bottom: 5px solid var(--ypf-yellow) !important;
+      z-index: 90 !important;
+    }
+    body:not(.login-locked) aside .brand {
+      margin: 0 !important;
+      flex: 0 0 auto !important;
+      gap: 10px !important;
+      min-width: 235px !important;
+    }
+    body:not(.login-locked) aside .brand .logo { width: 62px !important; height: 40px !important; font-size: 21px !important; border-radius: 9px !important; }
+    body:not(.login-locked) aside .brand h1 { font-size: 14px !important; line-height: 1.15 !important; }
+    body:not(.login-locked) aside .brand small { font-size: 11px !important; }
+    body:not(.login-locked) aside nav {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      gap: 7px !important;
+      margin: 0 !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding-bottom: 3px !important;
+      scrollbar-width: thin !important;
+      flex: 1 1 auto !important;
+    }
+    body:not(.login-locked) .nav-btn {
+      flex: 0 0 auto !important;
+      padding: 8px 11px !important;
+      border-radius: 12px !important;
+      font-size: 12.3px !important;
+      min-height: 37px !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+    }
+    body:not(.login-locked) aside .side-card { display: none !important; }
+    body:not(.login-locked) main { padding: 18px 24px 32px !important; }
+
+    #documentos .topbar,
+    #institucional .topbar {
+      min-height: 105px !important;
+      max-height: 128px !important;
+      display: grid !important;
+      grid-template-columns: minmax(0,1fr) auto !important;
+      align-items: center !important;
+      margin-bottom: 16px !important;
+      overflow: hidden !important;
+    }
+    #documentos .topbar::before,
+    #institucional .topbar::before { font-size: clamp(42px, 7vw, 86px) !important; right: 155px !important; }
+    #documentos .topbar .title h2,
+    #institucional .topbar .title h2 { font-size: clamp(25px, 3vw, 38px) !important; }
+    #documentos .grid.two,
+    #institucional .grid.two,
+    #documentos .grid.three,
+    #institucional .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+      gap: 14px !important;
+      align-items: start !important;
+    }
+    #documentos .card,
+    #institucional .card { padding: 16px !important; border-radius: 18px !important; }
+
+    .checklist-stage-selector {
+      display: grid !important;
+      grid-template-columns: 170px minmax(220px, 1fr) auto !important;
+      gap: 10px !important;
+      align-items: center !important;
+      margin: 10px 0 12px !important;
+      padding: 10px 12px !important;
+      border: 1px solid #cfe7ff !important;
+      background: linear-gradient(135deg, var(--ypf-blue-light), #ffffff) !important;
+      border-radius: 14px !important;
+    }
+    .checklist-stage-selector label { color: var(--ypf-blue-dark) !important; font-size: 12px !important; font-weight: 900 !important; text-transform: uppercase !important; }
+    .checklist-stage-selector select { padding: 9px 10px !important; border-radius: 11px !important; font-size: 13px !important; }
+    .checklist-stage-selector small { color: var(--gray-500) !important; font-weight: 800 !important; font-size: 11.5px !important; line-height: 1.3 !important; }
+    .checklist-row-compact { grid-template-columns: minmax(0,1fr) 145px !important; }
+
+    @media (max-width: 900px) {
+      body:not(.login-locked) aside { height: auto !important; max-height: none !important; align-items: flex-start !important; flex-direction: column !important; }
+      body:not(.login-locked) aside .brand { min-width: 0 !important; }
+      .checklist-stage-selector { grid-template-columns: 1fr !important; }
+    }
+
+  
+
+/* ===== V17: corrección estable login + layout compacto 80% ===== */
+html, body { max-width: 100%; overflow-x: hidden; }
+body:not(.login-locked) .app {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  min-height: 100vh !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+body:not(.login-locked) aside {
+  position: sticky !important;
+  top: 0 !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  max-height: 64px !important;
+  padding: 7px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  border-right: 0 !important;
+  border-bottom: 4px solid var(--ypf-yellow) !important;
+  z-index: 200 !important;
+}
+body:not(.login-locked) aside .brand {
+  margin: 0 !important;
+  min-width: 220px !important;
+  max-width: 220px !important;
+  flex: 0 0 220px !important;
+  gap: 9px !important;
+}
+body:not(.login-locked) aside .brand .logo { width: 54px !important; height: 35px !important; font-size: 20px !important; border-radius: 8px !important; }
+body:not(.login-locked) aside .brand h1 { font-size: 13px !important; line-height: 1.08 !important; margin: 0 !important; }
+body:not(.login-locked) aside .brand small { font-size: 10.5px !important; margin-top: 3px !important; }
+body:not(.login-locked) aside nav {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  flex: 1 1 auto !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  padding-bottom: 0 !important;
+}
+body:not(.login-locked) aside nav::-webkit-scrollbar { display: none !important; }
+body:not(.login-locked) .nav-btn {
+  flex: 0 0 auto !important;
+  padding: 8px 12px !important;
+  border-radius: 12px !important;
+  font-size: 12.5px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+body:not(.login-locked) aside .side-card { display: none !important; }
+body:not(.login-locked) main {
+  padding: 14px 20px 28px !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+body:not(.login-locked) .topbar {
+  margin: 0 0 14px !important;
+  padding: 14px 16px !important;
+  min-height: 88px !important;
+  border-radius: 18px !important;
+}
+body:not(.login-locked) .title h2 {
+  font-size: clamp(24px, 3vw, 34px) !important;
+  line-height: 1.05 !important;
+}
+body:not(.login-locked) .title p { font-size: 12.5px !important; margin-top: 5px !important; }
+body:not(.login-locked) .section,
+body:not(.login-locked) #documentos,
+body:not(.login-locked) #institucional {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  min-height: 0 !important;
+}
+body:not(.login-locked) #documentos .topbar,
+body:not(.login-locked) #institucional .topbar { margin-top: 0 !important; }
+body:not(.login-locked) #documentos .grid.two,
+body:not(.login-locked) #institucional .grid.two {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  gap: 14px !important;
+  align-items: start !important;
+}
+body:not(.login-locked) #documentos .card,
+body:not(.login-locked) #institucional .card {
+  padding: 16px !important;
+  border-radius: 18px !important;
+  min-height: auto !important;
+}
+body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px !important; height: auto !important; }
+@media (max-width: 1050px) {
+  body:not(.login-locked) aside { height: auto !important; max-height: none !important; align-items: flex-start !important; flex-direction: column !important; }
+  body:not(.login-locked) aside .brand { min-width: 0 !important; max-width: none !important; flex: 0 0 auto !important; }
+  body:not(.login-locked) aside nav { width: 100% !important; }
+}
+</style>
+
+
+<!-- ===== V19: ajuste visual estable sin tocar login ===== -->
+<style id="v19-layout-fix">
+  html, body { max-width:100% !important; overflow-x:hidden !important; }
+  body:not(.login-locked) { zoom: .80; }
+  body:not(.login-locked) .app { grid-template-columns: 1fr !important; max-width:100% !important; overflow-x:hidden !important; }
+  body:not(.login-locked) aside {
+    position: sticky !important;
+    top: 0 !important;
+    height: auto !important;
+    min-height: 60px !important;
+    max-height: none !important;
+    padding: 8px 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+    border-right: 0 !important;
+    border-bottom: 5px solid var(--ypf-yellow) !important;
+    z-index: 50 !important;
+  }
+  body:not(.login-locked) aside .brand {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    gap: 8px !important;
+    min-width: 190px !important;
+  }
+  body:not(.login-locked) aside .brand .logo {
+    width: 54px !important;
+    height: 36px !important;
+    font-size: 20px !important;
+    border-radius: 8px !important;
+  }
+  body:not(.login-locked) aside .brand h1 { font-size: 13px !important; line-height: 1.08 !important; margin: 0 !important; }
+  body:not(.login-locked) aside .brand small { font-size: 10px !important; margin-top: 3px !important; }
+  body:not(.login-locked) aside .side-card { display:none !important; }
+  body:not(.login-locked) aside nav {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    align-items: center !important;
+    overflow: visible !important;
+    scrollbar-width: none !important;
+  }
+  body:not(.login-locked) aside nav::-webkit-scrollbar { display:none !important; }
+  body:not(.login-locked) .nav-btn {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 8px 10px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    transform: none !important;
+  }
+  body:not(.login-locked) main {
+    padding: 12px 18px 24px !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+  }
+  body:not(.login-locked) .topbar {
+    margin: 0 0 12px !important;
+    padding: 12px 14px !important;
+    min-height: 70px !important;
+    max-height: 112px !important;
+    border-radius: 18px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  body:not(.login-locked) .title h2 { font-size: clamp(23px, 2.8vw, 32px) !important; line-height: 1.04 !important; margin:0 !important; }
+  body:not(.login-locked) .title p { font-size: 12px !important; margin: 4px 0 0 !important; }
+  body:not(.login-locked) .section,
+  body:not(.login-locked) .section.active,
+  body:not(.login-locked) #documentos,
+  body:not(.login-locked) #institucional {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    align-content: start !important;
+  }
+  body:not(.login-locked) #documentos > .grid.two,
+  body:not(.login-locked) #institucional > .grid.two,
+  body:not(.login-locked) #documentos .grid.two,
+  body:not(.login-locked) #institucional .grid.two {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 14px !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    align-items: start !important;
+  }
+  body:not(.login-locked) #documentos .card,
+  body:not(.login-locked) #institucional .card {
+    padding: 16px !important;
+    border-radius: 18px !important;
+    min-height: auto !important;
+  }
+  body:not(.login-locked) .institutional-summary { min-height: auto !important; }
+  body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { width: 125px !important; max-width: 100% !important; padding: 10px !important; border-radius: 16px !important; }
+  @media (max-width: 1100px) {
+    body:not(.login-locked) aside { flex-wrap: wrap !important; align-items:flex-start !important; }
+    body:not(.login-locked) aside nav { width:100% !important; }
+    body:not(.login-locked) .nav-btn { flex:1 1 150px !important; }
+  }
+</style>
+
+
+
+<!-- ===== V20: reparación definitiva layout Documentación/Institucional + menú compacto ===== -->
+<style id="v20-layout-repair">
+  html, body { max-width: 100% !important; overflow-x: hidden !important; }
+  body.login-locked .app { display: none !important; }
+  body:not(.login-locked) .login-screen { display: none !important; }
+
+  /* Escala compacta estable */
+  body:not(.login-locked) { zoom: .80 !important; }
+
+  /* Estructura general: menú superior fijo y bajo */
+  body:not(.login-locked) .app {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    min-height: 100vh !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  body:not(.login-locked) aside {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+    padding: 8px 14px !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    border-right: 0 !important;
+    border-bottom: 5px solid var(--ypf-yellow) !important;
+    z-index: 999 !important;
+    box-shadow: 0 8px 22px rgba(15,23,42,.10) !important;
+  }
+
+  body:not(.login-locked) aside .brand {
+    flex: 0 0 230px !important;
+    min-width: 230px !important;
+    max-width: 230px !important;
+    margin: 0 !important;
+    gap: 9px !important;
+    align-items: center !important;
+  }
+  body:not(.login-locked) aside .brand .logo {
+    width: 58px !important;
+    height: 38px !important;
+    font-size: 21px !important;
+    border-radius: 8px !important;
+  }
+  body:not(.login-locked) aside .brand h1 {
+    font-size: 13.5px !important;
+    line-height: 1.05 !important;
+    margin: 0 !important;
+  }
+  body:not(.login-locked) aside .brand small {
+    font-size: 10.5px !important;
+    margin-top: 3px !important;
+    line-height: 1 !important;
+  }
+  body:not(.login-locked) aside .side-card { display: none !important; }
+
+  body:not(.login-locked) aside nav {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+  }
+  body:not(.login-locked) aside nav::-webkit-scrollbar { display: none !important; }
+
+  body:not(.login-locked) .nav-btn {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 8px 10px !important;
+    border-radius: 12px !important;
+    font-size: 11.8px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* El contenido arranca debajo del menú, sin espacios muertos */
+  body:not(.login-locked) main {
+    padding: 86px 18px 24px !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  body:not(.login-locked) .topbar {
+    margin: 0 0 12px 0 !important;
+    padding: 12px 16px !important;
+    min-height: 74px !important;
+    max-height: 98px !important;
+    height: auto !important;
+    border-radius: 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  body:not(.login-locked) .title h2 {
+    font-size: clamp(22px, 2.5vw, 32px) !important;
+    line-height: 1.05 !important;
+    margin: 0 !important;
+  }
+  body:not(.login-locked) .title p {
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+    margin: 4px 0 0 !important;
+  }
+
+  body:not(.login-locked) .section,
+  body:not(.login-locked) .section.active,
+  body:not(.login-locked) #documentos,
+  body:not(.login-locked) #institucional {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    align-content: start !important;
+  }
+
+  /* Documentación e Institucional: misma separación que el resto */
+  body:not(.login-locked) #documentos > .grid.two,
+  body:not(.login-locked) #institucional > .grid.two {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 14px !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    align-items: start !important;
+  }
+  body:not(.login-locked) #documentos .card,
+  body:not(.login-locked) #institucional .card {
+    margin-top: 0 !important;
+    padding: 16px !important;
+    border-radius: 18px !important;
+    min-height: auto !important;
+  }
+  body:not(.login-locked) .institutional-summary { min-height: auto !important; }
+  body:not(.login-locked) #institucional .phva-section { margin-top: 14px !important; }
+  body:not(.login-locked) #documentos img[alt="QR Sistema SST"] {
+    width: 125px !important;
+    max-width: 100% !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Notebook / pantallas medianas: dos filas si no entra, pero sin barra horizontal */
+  @media (max-width: 1250px) {
+    body:not(.login-locked) aside {
+      height: auto !important;
+      min-height: 70px !important;
+      max-height: 112px !important;
+      align-items: flex-start !important;
+      flex-wrap: wrap !important;
+      padding-bottom: 8px !important;
+    }
+    body:not(.login-locked) aside .brand { flex: 0 0 210px !important; min-width: 210px !important; }
+    body:not(.login-locked) aside nav {
+      flex: 1 1 calc(100% - 230px) !important;
+      flex-wrap: wrap !important;
+      gap: 5px !important;
+    }
+    body:not(.login-locked) .nav-btn { font-size: 11.2px !important; padding: 7px 8px !important; }
+    body:not(.login-locked) main { padding-top: 118px !important; }
+  }
+
+  @media (max-width: 760px) {
+    body:not(.login-locked) aside {
+      position: relative !important;
+      height: auto !important;
+      max-height: none !important;
+    }
+    body:not(.login-locked) aside .brand { flex: 1 1 100% !important; min-width: 0 !important; max-width: none !important; }
+    body:not(.login-locked) aside nav { flex: 1 1 100% !important; }
+    body:not(.login-locked) .nav-btn { flex: 1 1 140px !important; }
+    body:not(.login-locked) main { padding-top: 14px !important; }
+  }
+</style>
+
+
+
+<!-- ===== FIX FINAL: Documentación e Institucional sin espacios vacíos - NO TOCAR LOGIN/JS ===== -->
+<style id="fix-final-docs-institucional-compacto">
+  /* Mantiene el login intacto: reglas solo para la app ya desbloqueada */
+  body:not(.login-locked) #documentos,
+  body:not(.login-locked) #institucional {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    align-content: start !important;
+  }
+
+  /* Separación pareja entre paneles */
+  body:not(.login-locked) #documentos > .grid.two,
+  body:not(.login-locked) #institucional > .grid.two {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+    gap: 16px !important;
+    align-items: start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Cards compactas y sin alturas heredadas */
+  body:not(.login-locked) #documentos .card,
+  body:not(.login-locked) #institucional .card {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    border-radius: 18px !important;
+    align-self: start !important;
+    overflow: visible !important;
+  }
+
+  /* Quita el hueco grande entre texto y botón en Institucional */
+  body:not(.login-locked) #institucional .institutional-summary {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    justify-content: start !important;
+    align-content: start !important;
+    justify-items: start !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  body:not(.login-locked) #institucional .institutional-summary > div {
+    margin: 0 !important;
+  }
+
+  body:not(.login-locked) #institucional .institutional-actions {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 10px !important;
+  }
+
+  /* PHVA con la misma separación que el resto */
+  body:not(.login-locked) #institucional .phva-section {
+    margin-top: 16px !important;
+  }
+
+  body:not(.login-locked) #institucional .phva-grid {
+    gap: 16px !important;
+    margin-top: 12px !important;
+  }
+
+  body:not(.login-locked) #institucional .phva-card {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 14px !important;
+  }
+
+  /* Documentación: contenido ordenado, sin márgenes gigantes */
+  body:not(.login-locked) #documentos .card {
+    display: grid !important;
+    gap: 12px !important;
+    align-content: start !important;
+  }
+
+  body:not(.login-locked) #documentos .card h3,
+  body:not(.login-locked) #institucional .card h3 {
+    margin: 0 0 6px 0 !important;
+    line-height: 1.25 !important;
+  }
+
+  body:not(.login-locked) #documentos .card p,
+  body:not(.login-locked) #institucional .card p {
+    margin: 0 !important;
+    line-height: 1.4 !important;
+  }
+
+  body:not(.login-locked) #documentos #docList {
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body:not(.login-locked) #documentos .doc-card {
+    margin-top: 0 !important;
+    padding: 13px !important;
+    gap: 6px !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  body:not(.login-locked) #documentos .footer-note {
+    margin-top: 0 !important;
+    padding: 13px 14px !important;
+    line-height: 1.4 !important;
+  }
+
+  body:not(.login-locked) #documentos img[alt="QR Sistema SST"] {
+    width: 150px !important;
+    max-width: 100% !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  body:not(.login-locked) #documentos img[alt="QR Sistema SST"]
+    + * {
+    margin-top: 0 !important;
+  }
+
+  body:not(.login-locked) #documentos .card div[style*="justify-content:center"] {
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Anula reglas viejas que metían altura fija de 210/230px */
+  body:not(.login-locked) .institutional-summary,
+  body:not(.login-locked) .academic-summary,
+  body:not(.login-locked) .normative-summary,
+  body:not(.login-locked) .supervision-summary {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+</style>
+
 </head>
 <body class="login-locked">
 
@@ -4026,7 +4766,7 @@
     <div class="grid two">
       <div class="card sst-form-card">
         <h3>Nuevo Registro SST</h3>
-        <p>Todos los registros mantienen formato documental: código, fecha, responsable, sector, estado, observaciones, firma y evidencia.</p>
+        <p>El formulario cambia según el tipo de registro para que cada acta tenga los campos reales que corresponden.</p>
         <div class="form-grid">
           <select id="sstRecordType" onchange="updateSstRecordCode()">
             <option value="Inspección">Registro de Inspección SST</option>
@@ -4041,8 +4781,8 @@
           </select>
           <input id="sstRecordCode" placeholder="Código" readonly />
           <input id="sstRecordDate" type="date" />
-          <input id="sstRecordResponsible" placeholder="Responsable" />
-          <input id="sstRecordSector" placeholder="Sector" />
+          <input id="sstRecordResponsible" placeholder="Responsable / emisor del registro" />
+          <input id="sstRecordSector" placeholder="Sector / área / proceso" />
           <select id="sstRecordState">
             <option>Pendiente</option>
             <option>En proceso</option>
@@ -4052,7 +4792,7 @@
           <select id="sstRecordFinding" title="Monitoreo / hallazgo del Programa de Monitoreo SST" onchange="onSstMonitoringSelectionChange()">
             <option value="">Seleccionar monitoreo / hallazgo del Programa SST</option>
           </select>
-          <input id="sstRecordRisk" placeholder="Riesgo asociado / IPER" />
+          <input id="sstRecordRisk" placeholder="Matriz legal / requisito asociado" />
           <select id="sstRecordIperId" title="Riesgo IPER asociado">
             <option value="">Vincular riesgo IPER asociado</option>
           </select>
@@ -4065,7 +4805,14 @@
           </select>
           <input id="sstRecordAction" placeholder="Acción requerida / correctiva" />
           <input id="sstRecordDue" type="date" title="Fecha compromiso" />
-          <textarea id="sstRecordObservations" placeholder="Observaciones, evidencia, participantes, 5 porqués, decisiones o recursos asignados según corresponda..."></textarea>
+          <div id="sstDynamicFields" class="sst-dynamic-fields"></div>
+          <div class="sst-evidence-box">
+            <strong>Evidencia fotográfica / documental</strong>
+            <input id="sstRecordEvidence" type="file" accept="image/*,.pdf" multiple onchange="previewSstEvidenceFiles()" />
+            <small>Usar en registros que lo ameritan: Investigación, Simulacro, Inspección con desvíos, Auditoría Interna, No Conformidad y Acción Correctiva.</small>
+            <div id="sstEvidencePreview" class="sst-evidence-preview"></div>
+          </div>
+          <textarea id="sstRecordObservations" class="multiline-friendly" placeholder="Observaciones generales. Podés usar Enter para bajar renglón y escribir viñetas con - o •."></textarea>
         </div>
         <div class="footer-note">Firma digital: Responsable SST / Encargado de turno / Dirección. Adjuntos: evidencia fotográfica, acta, checklist, planilla o informe.</div>
         <br>
@@ -4080,6 +4827,7 @@
           <small>Flujo correcto: Registro SST → Monitoreo SST → IPER → Matriz Legal → Cronograma → KPI / Dashboard.</small>
           <small id="sstTraceabilityPreview">Sin monitoreo seleccionado.</small>
         </div>
+        <div id="sstTypeGuide" class="sst-type-guide"></div>
       </div>
     </div>
   </div>
@@ -4126,7 +4874,7 @@
       <h3>Checklist digital de inspección SST</h3>
 
       <p>
-        Control legal-operativo para recorridas en playa, tienda, GNC, combustibles, emergencias y gestión documental.
+        Checklist SST por etapas desplegables. Elegí una etapa específica o el checklist completo. Marcá cada control como Conforme o No Conforme y dejá una observación general al final.
       </p>
 
       <div class="checklist-meta-grid">
@@ -4135,7 +4883,21 @@
         <input id="inspectionShift" placeholder="Turno / horario" value="Turno operativo" />
       </div>
 
+      <div class="checklist-stage-selector">
+        <label for="inspectionStageSelect">Etapa a inspeccionar</label>
+        <select id="inspectionStageSelect" onchange="renderInspectionChecklist()">
+          <option value="all">Checklist completo</option>
+        </select>
+        <small>Podés completar solo una etapa, sin marcar “No aplica” en las demás.</small>
+      </div>
+
       <div class="checklist" id="checklistSST"></div>
+
+      <div class="checklist-general-box">
+        <textarea id="inspectionGeneralObservations" class="multiline-friendly" placeholder="Observaciones generales del checklist..."></textarea>
+        <textarea id="inspectionGeneralActions" class="multiline-friendly" placeholder="Acciones correctivas / preventivas generales..."></textarea>
+        <input id="inspectionGeneralEvidence" class="checklist-evidence-compact" type="file" accept="image/*,.pdf" multiple />
+      </div>
 
       <div class="inspection-actions">
         <button class="primary" onclick="completeInspection()">Finalizar inspección</button>
@@ -4231,12 +4993,13 @@
           <button class="hys-tab-btn" onclick="showHysTool('gases')">🧪 Gases y vapores</button>
           <button class="hys-tab-btn" onclick="showHysTool('vibraciones')">〰️ Vibraciones</button>
         </div>
-        <div class="hys-legal-note" style="margin-top:14px;">Cada registro incluye código, fecha, hora, responsable, sector, equipo, número de serie, calibración, medición, resultado, cumplimiento, observaciones, IPER, requisito legal e informe con firmas.</div>
+        <div class="hys-legal-note" style="margin-top:14px;">Cada registro incluye código, fecha, hora, responsable, sector, equipo, número de serie, calibración, medición, resultado, cumplimiento, observaciones, requisito legal e informe con firmas.</div>
       </div>
 
       <div class="card">
         <div class="hys-panel active" id="hysToolLux">
           <h3>💡 Herramienta de Medición de LUX</h3>
+          <div class="hys-formula-note"><b>Aprendizaje rápido · Iluminación</b><span class="formula-line">Índice del local: <code>K = (L × A) / [h × (L + A)]</code></span><div class="formula-meaning"><span><b>L</b> largo del local · <b>A</b> ancho · <b>h</b> altura útil</span><span>Con K y la superficie, la herramienta sugiere la grilla mínima de medición.</span></div></div>
           <div class="form-grid">
             <input id="luxResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="luxSector" placeholder="Sector / puesto evaluado" value="Playa de despacho" />
@@ -4247,7 +5010,12 @@
             <label class="hys-field-label">⏳ Vencimiento de Calibración<input id="luxCalibrationDue" type="date" title="Vencimiento de Calibración" onchange="updateHysCalibrationStatus('lux')" oninput="updateHysCalibrationStatus('lux')" /></label>
             <div id="luxCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div>
             <select id="luxTask"><option value="300">Despacho / tarea visual media · 300 lux</option><option value="200">Tienda / circulación operativa · 200 lux</option><option value="100">Depósito / sanitarios · 100 lux</option><option value="150">Circulación exterior / playa · 150 lux</option><option value="500">Administración / lectura detallada · 500 lux</option></select>
-            <input id="luxPoints" placeholder="Mediciones separadas por coma. Ej: 320, 310, 295" />
+            <input id="luxArea" type="number" step="0.01" min="0" placeholder="Superficie del sector m². Ej: 42" oninput="updateLuxPointGuide()" />
+            <input id="luxHeight" type="number" step="0.01" min="0" placeholder="Altura útil entre luminaria y plano de trabajo m. Ej: 2.5" oninput="updateLuxPointGuide()" />
+            <div id="luxPointGuide" class="hys-calibration-status">Puntos mínimos: cargá m² y altura útil para estimar la grilla.</div>
+            <textarea id="luxPoints" placeholder="Mediciones separadas por coma o por renglón. Ej:
+320, 310, 295
+305, 298, 315"></textarea>
             <textarea id="luxObs" placeholder="Observaciones, condiciones de medición, horario, ubicación de puntos, etc."></textarea>
           </div>
           <div class="hys-form-actions"><button class="primary" onclick="calculateHysLux()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('lux')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('lux')">🧹 Limpiar campos</button></div>
@@ -4256,6 +5024,7 @@
 
         <div class="hys-panel" id="hysToolRuido">
           <h3>🔊 Herramienta de Ruido Laboral</h3>
+          <div class="hys-formula-note"><b>Aprendizaje rápido · Ruido</b><span class="formula-line">Dosis simplificada: <code>D = C / T × 100</code></span><div class="formula-meaning"><span><b>C</b> tiempo de exposición real · <b>T</b> tiempo máximo permitido.</span><span>Referencia operativa: 85 dB(A) para jornada de 8 h.</span></div></div>
           <div class="form-grid">
             <input id="ruidoResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="ruidoSector" placeholder="Sector / fuente evaluada" value="Playa / compresores / tránsito" />
@@ -4275,6 +5044,7 @@
 
         <div class="hys-panel" id="hysToolPat">
           <h3>⚡ Herramienta de Puesta a Tierra</h3>
+          <div class="hys-formula-note"><b>Aprendizaje rápido · Puesta a tierra</b><span class="formula-line">Criterio operativo: <code>R ≤ 10 Ω</code> + continuidad de masas conforme</span><div class="formula-meaning"><span>La resistencia debe ser baja y la continuidad debe verificar que las masas estén correctamente vinculadas.</span></div></div>
           <div class="form-grid">
             <input id="patResponsible" placeholder="Responsable de verificación" value="Responsable SST" />
             <input id="patSector" placeholder="Sector / tablero / surtidor" value="Tablero general / isla de despacho" />
@@ -4294,6 +5064,7 @@
 
         <div class="hys-panel" id="hysToolFuego">
           <h3>🔥 Herramienta de Carga de Fuego</h3>
+          <div class="hys-formula-note"><b>Aprendizaje rápido · Carga de fuego</b><span class="formula-line">Carga de fuego específica: <code>Q = (masa combustible × poder calorífico) / superficie</code></span><div class="formula-meaning"><span>Permite estimar la energía combustible disponible por m² del sector evaluado.</span></div></div>
           <div class="form-grid">
             <input id="fuegoResponsible" placeholder="Responsable del relevamiento" value="Responsable SST" />
             <input id="fuegoSector" placeholder="Sector evaluado" value="Tienda / depósito / playa" />
@@ -4314,6 +5085,7 @@
 
         <div class="hys-panel" id="hysToolTermico">
           <h3>🌡️ Herramienta de Estrés Térmico</h3>
+          <div class="hys-formula-note"><b>Aprendizaje rápido · Estrés térmico</b><span class="formula-line">Exterior con sol: <code>WBGT = 0,7 Tbh + 0,2 Tg + 0,1 Tbs</code></span><span class="formula-line">Interior/sombra: <code>WBGT = 0,7 Tbh + 0,3 Tg</code></span><div class="formula-meaning"><span><b>Tbh</b> bulbo húmedo natural · <b>Tg</b> globo · <b>Tbs</b> bulbo seco.</span></div></div>
           <div class="form-grid">
             <input id="termicoResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="termicoSector" placeholder="Sector / puesto evaluado" value="Playa de despacho / exterior" />
@@ -4335,6 +5107,7 @@
 
         <div class="hys-panel" id="hysToolVentilacion">
           <h3>🌬️ Herramienta de Ventilación</h3>
+          <div class="hys-formula-note"><b>Aprendizaje rápido · Ventilación</b><span class="formula-line">Caudal: <code>Q = V × A × 3600</code> m³/h</span><span class="formula-line">Renovaciones: <code>ACH = Q / Volumen</code></span><div class="formula-meaning"><span><b>V</b> velocidad del aire · <b>A</b> área de paso · <b>ACH</b> renovaciones por hora.</span></div></div>
           <div class="form-grid">
             <input id="ventilacionResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="ventilacionSector" placeholder="Sector / recinto evaluado" value="Tienda / oficina / depósito" />
@@ -4356,6 +5129,7 @@
 
         <div class="hys-panel" id="hysToolGases">
           <h3>🧪 Herramienta de Gases y Vapores</h3>
+          <div class="hys-formula-note"><b>Aprendizaje rápido · Gases y vapores</b><span class="formula-line">Atmósfera segura típica: <code>O₂ 19,5% a 23,5%</code> · <code>LEL &lt; 10%</code></span><div class="formula-meaning"><span>Los contaminantes deben estar por debajo del valor de referencia aplicable al agente evaluado.</span></div></div>
           <div class="form-grid">
             <input id="gasesResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="gasesSector" placeholder="Sector / fuente evaluada" value="Playa / GNC / zona descarga" />
@@ -4378,6 +5152,7 @@
 
         <div class="hys-panel" id="hysToolVibraciones">
           <h3>〰️ Herramienta de Vibraciones</h3>
+          <div class="hys-formula-note"><b>Aprendizaje rápido · Vibraciones</b><span class="formula-line">Exposición normalizada: <code>A(8) = a × √(T/8)</code></span><div class="formula-meaning"><span><b>a</b> aceleración medida · <b>T</b> horas de exposición durante la jornada.</span></div></div>
           <div class="form-grid">
             <input id="vibracionesResponsible" placeholder="Responsable de medición" value="Responsable SST" />
             <input id="vibracionesSector" placeholder="Sector / equipo evaluado" value="Playa / compresor / tareas de mantenimiento" />
@@ -4394,6 +5169,10 @@
           </div>
           <div class="hys-form-actions"><button class="primary" onclick="calculateHysVibraciones()">Calcular y guardar</button><button class="secondary" onclick="downloadLastHysReport('vibraciones')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields('vibraciones')">🧹 Limpiar campos</button></div>
           <div id="vibracionesResult" class="hys-result" style="margin-top:14px;"><strong>Resultado pendiente</strong><small>Ingresá aceleración y tiempo de exposición.</small></div>
+
+
+        </div>
+
         </div>
       </div>
     </div>
@@ -7931,6 +8710,106 @@ const courseCounts = courses.slice(0, 7).map(course => {
       .topbar::before { right: 14px !important; font-size: 42px !important; }
     }
 
+
+    /* ===== V15: corrección definitiva de header, documentación/institucional y checklist por etapa ===== */
+    body:not(.login-locked) .app { grid-template-columns: 1fr !important; }
+    body:not(.login-locked) aside {
+      position: sticky !important;
+      top: 0 !important;
+      height: 78px !important;
+      min-height: 78px !important;
+      max-height: 78px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 16px !important;
+      padding: 8px 18px !important;
+      overflow: hidden !important;
+      border-right: 0 !important;
+      border-bottom: 5px solid var(--ypf-yellow) !important;
+      z-index: 90 !important;
+    }
+    body:not(.login-locked) aside .brand {
+      margin: 0 !important;
+      flex: 0 0 auto !important;
+      gap: 10px !important;
+      min-width: 235px !important;
+    }
+    body:not(.login-locked) aside .brand .logo { width: 62px !important; height: 40px !important; font-size: 21px !important; border-radius: 9px !important; }
+    body:not(.login-locked) aside .brand h1 { font-size: 14px !important; line-height: 1.15 !important; }
+    body:not(.login-locked) aside .brand small { font-size: 11px !important; }
+    body:not(.login-locked) aside nav {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      gap: 7px !important;
+      margin: 0 !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding-bottom: 3px !important;
+      scrollbar-width: thin !important;
+      flex: 1 1 auto !important;
+    }
+    body:not(.login-locked) .nav-btn {
+      flex: 0 0 auto !important;
+      padding: 8px 11px !important;
+      border-radius: 12px !important;
+      font-size: 12.3px !important;
+      min-height: 37px !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+    }
+    body:not(.login-locked) aside .side-card { display: none !important; }
+    body:not(.login-locked) main { padding: 18px 24px 32px !important; }
+
+    #documentos .topbar,
+    #institucional .topbar {
+      min-height: 105px !important;
+      max-height: 128px !important;
+      display: grid !important;
+      grid-template-columns: minmax(0,1fr) auto !important;
+      align-items: center !important;
+      margin-bottom: 16px !important;
+      overflow: hidden !important;
+    }
+    #documentos .topbar::before,
+    #institucional .topbar::before { font-size: clamp(42px, 7vw, 86px) !important; right: 155px !important; }
+    #documentos .topbar .title h2,
+    #institucional .topbar .title h2 { font-size: clamp(25px, 3vw, 38px) !important; }
+    #documentos .grid.two,
+    #institucional .grid.two,
+    #documentos .grid.three,
+    #institucional .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+      gap: 14px !important;
+      align-items: start !important;
+    }
+    #documentos .card,
+    #institucional .card { padding: 16px !important; border-radius: 18px !important; }
+
+    .checklist-stage-selector {
+      display: grid !important;
+      grid-template-columns: 170px minmax(220px, 1fr) auto !important;
+      gap: 10px !important;
+      align-items: center !important;
+      margin: 10px 0 12px !important;
+      padding: 10px 12px !important;
+      border: 1px solid #cfe7ff !important;
+      background: linear-gradient(135deg, var(--ypf-blue-light), #ffffff) !important;
+      border-radius: 14px !important;
+    }
+    .checklist-stage-selector label { color: var(--ypf-blue-dark) !important; font-size: 12px !important; font-weight: 900 !important; text-transform: uppercase !important; }
+    .checklist-stage-selector select { padding: 9px 10px !important; border-radius: 11px !important; font-size: 13px !important; }
+    .checklist-stage-selector small { color: var(--gray-500) !important; font-weight: 800 !important; font-size: 11.5px !important; line-height: 1.3 !important; }
+    .checklist-row-compact { grid-template-columns: minmax(0,1fr) 145px !important; }
+
+    @media (max-width: 900px) {
+      body:not(.login-locked) aside { height: auto !important; max-height: none !important; align-items: flex-start !important; flex-direction: column !important; }
+      body:not(.login-locked) aside .brand { min-width: 0 !important; }
+      .checklist-stage-selector { grid-template-columns: 1fr !important; }
+    }
+
   </style>
         </head>
         <body>
@@ -8679,6 +9558,106 @@ const courseCounts = courses.slice(0, 7).map(course => {
       .topbar::before { right: 14px !important; font-size: 42px !important; }
     }
 
+
+    /* ===== V15: corrección definitiva de header, documentación/institucional y checklist por etapa ===== */
+    body:not(.login-locked) .app { grid-template-columns: 1fr !important; }
+    body:not(.login-locked) aside {
+      position: sticky !important;
+      top: 0 !important;
+      height: 78px !important;
+      min-height: 78px !important;
+      max-height: 78px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 16px !important;
+      padding: 8px 18px !important;
+      overflow: hidden !important;
+      border-right: 0 !important;
+      border-bottom: 5px solid var(--ypf-yellow) !important;
+      z-index: 90 !important;
+    }
+    body:not(.login-locked) aside .brand {
+      margin: 0 !important;
+      flex: 0 0 auto !important;
+      gap: 10px !important;
+      min-width: 235px !important;
+    }
+    body:not(.login-locked) aside .brand .logo { width: 62px !important; height: 40px !important; font-size: 21px !important; border-radius: 9px !important; }
+    body:not(.login-locked) aside .brand h1 { font-size: 14px !important; line-height: 1.15 !important; }
+    body:not(.login-locked) aside .brand small { font-size: 11px !important; }
+    body:not(.login-locked) aside nav {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      gap: 7px !important;
+      margin: 0 !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding-bottom: 3px !important;
+      scrollbar-width: thin !important;
+      flex: 1 1 auto !important;
+    }
+    body:not(.login-locked) .nav-btn {
+      flex: 0 0 auto !important;
+      padding: 8px 11px !important;
+      border-radius: 12px !important;
+      font-size: 12.3px !important;
+      min-height: 37px !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+    }
+    body:not(.login-locked) aside .side-card { display: none !important; }
+    body:not(.login-locked) main { padding: 18px 24px 32px !important; }
+
+    #documentos .topbar,
+    #institucional .topbar {
+      min-height: 105px !important;
+      max-height: 128px !important;
+      display: grid !important;
+      grid-template-columns: minmax(0,1fr) auto !important;
+      align-items: center !important;
+      margin-bottom: 16px !important;
+      overflow: hidden !important;
+    }
+    #documentos .topbar::before,
+    #institucional .topbar::before { font-size: clamp(42px, 7vw, 86px) !important; right: 155px !important; }
+    #documentos .topbar .title h2,
+    #institucional .topbar .title h2 { font-size: clamp(25px, 3vw, 38px) !important; }
+    #documentos .grid.two,
+    #institucional .grid.two,
+    #documentos .grid.three,
+    #institucional .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+      gap: 14px !important;
+      align-items: start !important;
+    }
+    #documentos .card,
+    #institucional .card { padding: 16px !important; border-radius: 18px !important; }
+
+    .checklist-stage-selector {
+      display: grid !important;
+      grid-template-columns: 170px minmax(220px, 1fr) auto !important;
+      gap: 10px !important;
+      align-items: center !important;
+      margin: 10px 0 12px !important;
+      padding: 10px 12px !important;
+      border: 1px solid #cfe7ff !important;
+      background: linear-gradient(135deg, var(--ypf-blue-light), #ffffff) !important;
+      border-radius: 14px !important;
+    }
+    .checklist-stage-selector label { color: var(--ypf-blue-dark) !important; font-size: 12px !important; font-weight: 900 !important; text-transform: uppercase !important; }
+    .checklist-stage-selector select { padding: 9px 10px !important; border-radius: 11px !important; font-size: 13px !important; }
+    .checklist-stage-selector small { color: var(--gray-500) !important; font-weight: 800 !important; font-size: 11.5px !important; line-height: 1.3 !important; }
+    .checklist-row-compact { grid-template-columns: minmax(0,1fr) 145px !important; }
+
+    @media (max-width: 900px) {
+      body:not(.login-locked) aside { height: auto !important; max-height: none !important; align-items: flex-start !important; flex-direction: column !important; }
+      body:not(.login-locked) aside .brand { min-width: 0 !important; }
+      .checklist-stage-selector { grid-template-columns: 1fr !important; }
+    }
+
   </style>
         </head>
         <body>
@@ -9098,40 +10077,87 @@ const courseCounts = courses.slice(0, 7).map(course => {
     function renderInspectionChecklist() {
       const container = document.getElementById("checklistSST");
       if (!container) return;
-      container.classList.add("checklist-advanced");
+      container.classList.remove("checklist-advanced");
+      container.classList.add("checklist-compact");
+
       const groups = Array.isArray(inspectionItems) ? inspectionItems : [];
-      container.innerHTML = groups.map((group) => `
-        <div class="checklist-category">
-          <div class="checklist-category-title">
+      const selector = document.getElementById("inspectionStageSelect");
+
+      if (selector && selector.options.length <= 1) {
+        selector.innerHTML = `<option value="all">Checklist completo</option>` + groups.map((group, idx) =>
+          `<option value="${idx}">${escapeHtml(group.category || "Etapa SST")}</option>`
+        ).join("");
+      }
+
+      const selectedValue = selector?.value || "all";
+      const visibleGroups = selectedValue === "all"
+        ? groups
+        : groups.filter((_, idx) => String(idx) === String(selectedValue));
+
+      container.innerHTML = visibleGroups.map((group, groupIdx) => `
+        <details class="checklist-stage-compact" open>
+          <summary>
             <span>${escapeHtml(group.category || "Control SST")}</span>
-            <small>${Array.isArray(group.items) ? group.items.length : 0} controles</small>
+            <small>${Array.isArray(group.items) ? group.items.length : 0} controles ▼</small>
+          </summary>
+          <div class="checklist-stage-body">
+            ${(group.items || []).map((item, itemIdx) => `
+              <div class="checklist-row-compact" data-category="${escapeHtml(group.category || "Control SST")}" data-item="${escapeHtml(item)}">
+                <span>${itemIdx + 1}. ${escapeHtml(item)}</span>
+                <select class="inspection-status" aria-label="Estado del control">
+                  <option value="Conforme">Conforme</option>
+                  <option value="No Conforme">No Conforme</option>
+                </select>
+              </div>
+            `).join("")}
           </div>
-          ${(group.items || []).map(item => `
-            <label class="check-item">
-              <span>${escapeHtml(item)}</span>
-              <input type="checkbox" class="inspection-check">
-            </label>
-          `).join("")}
-        </div>
+        </details>
       `).join("");
     }
 
     function getInspectionCheckedItems() {
-      return Array.from(document.querySelectorAll("#checklistSST .check-item")).map(label => ({
-        text: label.querySelector("span")?.textContent || "",
-        checked: !!label.querySelector("input")?.checked
-      }));
+      return Array.from(document.querySelectorAll("#checklistSST .checklist-row-compact")).map(row => {
+        const status = row.querySelector(".inspection-status")?.value || "Conforme";
+        return {
+          category: row.dataset.category || "Control SST",
+          text: row.dataset.item || row.querySelector("span")?.textContent || "",
+          status,
+          checked: status === "Conforme"
+        };
+      });
+    }
+
+    function getChecklistStats(items) {
+      const applicable = items.filter(i => i.status !== "No Aplica");
+      const completed = applicable.filter(i => i.status === "Conforme").length;
+      const notOk = applicable.filter(i => i.status === "No Conforme").length;
+      const notApplicable = items.filter(i => i.status === "No Aplica").length;
+      const total = applicable.length;
+      const percent = total ? Math.round((completed / total) * 100) : 100;
+      const stages = {};
+      items.forEach(i => {
+        if (!stages[i.category]) stages[i.category] = { category: i.category, total: 0, ok: 0, no: 0, na: 0, percent: 100 };
+        if (i.status === "No Aplica") stages[i.category].na += 1;
+        else {
+          stages[i.category].total += 1;
+          if (i.status === "Conforme") stages[i.category].ok += 1;
+          if (i.status === "No Conforme") stages[i.category].no += 1;
+        }
+      });
+      Object.values(stages).forEach(s => { s.percent = s.total ? Math.round((s.ok / s.total) * 100) : 100; });
+      return { applicable, completed, notOk, notApplicable, total, percent, stages: Object.values(stages) };
     }
 
     function completeInspection() {
-      const checks = Array.from(document.querySelectorAll("#checklistSST .inspection-check"));
-      if (!checks.length) {
-        renderInspectionChecklist();
-      }
-      const refreshedChecks = Array.from(document.querySelectorAll("#checklistSST .inspection-check"));
-      const completed = refreshedChecks.filter(c => c.checked).length;
-      const total = refreshedChecks.length;
-      const percent = total ? Math.round((completed / total) * 100) : 0;
+      if (!document.querySelectorAll("#checklistSST .checklist-row-compact").length) renderInspectionChecklist();
+      const checkedItems = getInspectionCheckedItems();
+      const stats = getChecklistStats(checkedItems);
+      const completed = stats.completed;
+      const total = stats.total;
+      const percent = stats.percent;
+      const generalObservations = document.getElementById("inspectionGeneralObservations")?.value.trim() || "";
+      const generalActions = document.getElementById("inspectionGeneralActions")?.value.trim() || "";
+      const evidenceNames = Array.from(document.getElementById("inspectionGeneralEvidence")?.files || []).map(f => f.name);
       const result = document.getElementById("inspectionResult");
       const now = new Date();
       const fecha = now.toLocaleDateString("es-AR");
@@ -9163,7 +10189,9 @@ const courseCounts = courses.slice(0, 7).map(course => {
           <strong>${status}</strong>
           <span><b>Fecha:</b> ${fecha} · <b>Hora:</b> ${hora}</span>
           <span><b>Responsable:</b> ${escapeHtml(responsible)} · <b>Sector:</b> ${escapeHtml(sector)} · <b>Turno:</b> ${escapeHtml(shift)}</span>
-          <span>Se verificaron ${completed} de ${total} ítems preventivos.</span>
+          <span>Se verificaron ${completed} controles conformes sobre ${total} aplicables. No conformes: ${stats.notOk}.</span>
+          ${generalObservations ? `<small><b>Observaciones:</b> ${escapeHtml(generalObservations)}</small>` : ""}
+          ${generalActions ? `<small><b>Acciones:</b> ${escapeHtml(generalActions)}</small>` : ""}
           <span class="pill ${cls}">${percent}% de cumplimiento</span>
           <small><b>Criterio:</b> 90-100% satisfactorio · 70-89% con observaciones · menor a 70% con desvíos.</small>
           <small>${recommendation}</small>
@@ -9183,7 +10211,13 @@ const courseCounts = courses.slice(0, 7).map(course => {
         status,
         cls,
         recommendation,
-        items: getInspectionCheckedItems()
+        notOk: stats.notOk,
+        notApplicable: stats.notApplicable,
+        observations: generalObservations,
+        actions: generalActions,
+        evidence: evidenceNames,
+        stages: stats.stages,
+        items: checkedItems
       };
 
       inspectionHistory.unshift(newRecord);
@@ -9200,9 +10234,9 @@ const courseCounts = courses.slice(0, 7).map(course => {
           state: percent >= 90 ? "Cerrado" : "En proceso",
           finding: status,
           risk: percent >= 90 ? "Control preventivo sin desvíos críticos" : "Desvíos detectados en recorrida SST",
-          action: recommendation,
+          action: generalActions || recommendation,
           due: "",
-          observations: `Checklist legal-operativo: ${completed}/${total} controles conformes (${percent}%). Turno: ${shift}.`
+          observations: `Checklist SST por 5 etapas: ${completed}/${total} controles conformes (${percent}%). No conformes: ${stats.notOk}. Turno: ${shift}. ${generalObservations ? "Observaciones: " + generalObservations : ""}`
         });
         localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
       }
@@ -9221,20 +10255,23 @@ const courseCounts = courses.slice(0, 7).map(course => {
         responsible: document.getElementById("inspectionResponsible")?.value || "Responsable SST",
         sector: document.getElementById("inspectionSector")?.value || "Playa / Tienda / GNC",
         shift: document.getElementById("inspectionShift")?.value || "Turno operativo",
-        completed: getInspectionCheckedItems().filter(i => i.checked).length,
-        total: getInspectionCheckedItems().length,
-        percent: getInspectionCheckedItems().length ? Math.round((getInspectionCheckedItems().filter(i => i.checked).length / getInspectionCheckedItems().length) * 100) : 0,
+        completed: getChecklistStats(getInspectionCheckedItems()).completed,
+        total: getChecklistStats(getInspectionCheckedItems()).total,
+        percent: getChecklistStats(getInspectionCheckedItems()).percent,
         status: "Inspección preliminar",
         recommendation: "Documento generado desde checklist digital SST.",
+        observations: document.getElementById("inspectionGeneralObservations")?.value.trim() || "",
+        actions: document.getElementById("inspectionGeneralActions")?.value.trim() || "",
+        stages: getChecklistStats(getInspectionCheckedItems()).stages,
         items: getInspectionCheckedItems()
       };
       const r = last || fallback;
       const rows = (r.items || []).map((item, idx) => `
-        <tr><td>${idx + 1}</td><td>${escapeHtml(item.text)}</td><td>${item.checked ? "Conforme" : "No conforme / pendiente"}</td></tr>
+        <tr><td>${idx + 1}</td><td>${escapeHtml(item.category || "")}</td><td>${escapeHtml(item.text)}</td><td>${escapeHtml(item.status || (item.checked ? "Conforme" : "No Conforme"))}</td></tr>
       `).join("");
       const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Checklist SST</title><style>
         body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:24px;color:#0f172a;background:#f8fafc}.doc{max-width:1100px;margin:0 auto;background:white;border:1px solid #cbd5e1;border-top:8px solid #0056a6;border-radius:22px;padding:28px;box-shadow:0 18px 45px rgba(15,23,42,.12)}.head{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #ffcc00;padding-bottom:16px}.logo{background:#0056a6;color:white;border-bottom:7px solid #00a3e0;border-radius:12px;width:105px;height:64px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900}.meta{text-align:right;color:#475569;font-size:13px;font-weight:700}h1{color:#003f7d;margin:24px 0 6px}.subtitle{color:#64748b;font-weight:800}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.box{border:1px solid #e2e8f0;border-radius:14px;padding:12px;background:#f8fafc}.box b{display:block;color:#003f7d;font-size:12px;text-transform:uppercase;margin-bottom:4px}table{width:100%;border-collapse:collapse;margin-top:18px}th,td{border:1px solid #e2e8f0;padding:9px;text-align:left;font-size:13px}th{background:#e7f2ff;color:#003f7d;text-transform:uppercase;font-size:11px}.pill{display:inline-block;border-radius:999px;padding:8px 12px;background:#dcfce7;color:#166534;font-weight:900}.sign{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:42px}.line{border-top:2px solid #334155;text-align:center;padding-top:8px;font-weight:800;color:#334155}@media print{button{display:none}.doc{box-shadow:none}}
-      </style></head><body><div class="doc"><div class="head"><div class="logo">YPF</div><div class="meta"><b>CHECKLIST LEGAL SST</b><br>Estación de Servicio YPF<br>Grupo 22 · UTN BA<br>Fecha de emisión: ${r.fecha} ${r.hora}</div></div><h1>Acta de Inspección / Checklist SST</h1><div class="subtitle">Verificación operativa documentada · ISO 45001 · IPER · Matriz Legal</div><div class="grid"><div class="box"><b>Fecha</b>${r.fecha}</div><div class="box"><b>Hora</b>${r.hora}</div><div class="box"><b>Responsable</b>${escapeHtml(r.responsible || "Responsable SST")}</div><div class="box"><b>Sector</b>${escapeHtml(r.sector || "Sector operativo")}</div><div class="box"><b>Turno</b>${escapeHtml(r.shift || "Turno operativo")}</div><div class="box"><b>Resultado</b>${escapeHtml(r.status)}</div><div class="box"><b>Cumplimiento</b><span class="pill">${r.percent}%</span></div><div class="box"><b>Controles</b>${r.completed}/${r.total}</div></div><div class="box"><b>Recomendación / acción</b>${escapeHtml(r.recommendation)}</div><table><thead><tr><th>N°</th><th>Ítem verificado</th><th>Resultado</th></tr></thead><tbody>${rows}</tbody></table><div class="sign"><div class="line">Responsable SST</div><div class="line">Encargado / Dirección</div></div></div><div style="text-align:center;margin-top:16px"><button onclick="window.print()">Imprimir / Guardar PDF</button></div></body></html>`;
+      </style></head><body><div class="doc"><div class="head"><div class="logo">YPF</div><div class="meta"><b>CHECKLIST LEGAL SST</b><br>Estación de Servicio YPF<br>Grupo 22 · UTN BA<br>Fecha de emisión: ${r.fecha} ${r.hora}</div></div><h1>Acta de Inspección / Checklist SST</h1><div class="subtitle">Verificación operativa documentada · ISO 45001 · IPER · Matriz Legal</div><div class="grid"><div class="box"><b>Fecha</b>${r.fecha}</div><div class="box"><b>Hora</b>${r.hora}</div><div class="box"><b>Responsable</b>${escapeHtml(r.responsible || "Responsable SST")}</div><div class="box"><b>Sector</b>${escapeHtml(r.sector || "Sector operativo")}</div><div class="box"><b>Turno</b>${escapeHtml(r.shift || "Turno operativo")}</div><div class="box"><b>Resultado</b>${escapeHtml(r.status)}</div><div class="box"><b>Cumplimiento</b><span class="pill">${r.percent}%</span></div><div class="box"><b>Controles</b>${r.completed}/${r.total}</div></div><div class="box"><b>Observaciones generales</b>${escapeHtml(r.observations || "Sin observaciones")}</div><div class="box"><b>Acciones correctivas / preventivas</b>${escapeHtml(r.actions || r.recommendation || "Sin acciones adicionales")}</div><table><thead><tr><th>N°</th><th>Etapa</th><th>Ítem verificado</th><th>Resultado</th></tr></thead><tbody>${rows}</tbody></table><div class="sign"><div class="line">Responsable SST</div><div class="line">Encargado / Dirección</div></div></div><div style="text-align:center;margin-top:16px"><button onclick="window.print()">Imprimir / Guardar PDF</button></div></body></html>`;
       const w = window.open("", "_blank");
       if (!w) { showToast("El navegador bloqueó la ventana emergente. Permití pop-ups para descargar el acta."); return; }
       w.document.write(html);
@@ -9243,7 +10280,10 @@ const courseCounts = courses.slice(0, 7).map(course => {
     }
 
     function resetInspection() {
-      document.querySelectorAll("#checklistSST .inspection-check").forEach(check => check.checked = false);
+      document.querySelectorAll("#checklistSST .inspection-status").forEach(select => select.value = "Conforme");
+      const obs = document.getElementById("inspectionGeneralObservations"); if (obs) obs.value = "";
+      const act = document.getElementById("inspectionGeneralActions"); if (act) act.value = "";
+      const ev = document.getElementById("inspectionGeneralEvidence"); if (ev) ev.value = "";
 
       const result = document.getElementById("inspectionResult");
       result.className = "doc-card";
@@ -9648,14 +10688,47 @@ Legal: ${record.legal}`,
       };
     }
 
+
+    function getLuxRequiredPoints(area, height) {
+      if (!Number.isFinite(area) || area <= 0 || !Number.isFinite(height) || height <= 0) return { points: 0, k: 0 };
+      const side = Math.sqrt(area);
+      const k = area / (height * (side + side));
+      let points = 4;
+      if (k >= 3) points = 25;
+      else if (k >= 2) points = 16;
+      else if (k >= 1) points = 9;
+      return { points, k };
+    }
+
+    function updateLuxPointGuide() {
+      const area = Number(document.getElementById("luxArea")?.value);
+      const height = Number(document.getElementById("luxHeight")?.value);
+      const box = document.getElementById("luxPointGuide");
+      if (!box) return;
+      const info = getLuxRequiredPoints(area, height);
+      if (!info.points) {
+        box.className = "hys-calibration-status";
+        box.textContent = "Puntos mínimos: cargá m² y altura útil para estimar la grilla.";
+        return;
+      }
+      box.className = "hys-calibration-status ok";
+      box.textContent = `Puntos mínimos sugeridos según índice del local: ${info.points} mediciones · K=${info.k.toFixed(2)}.`;
+    }
+
     function calculateHysLux() {
       const values = parseNumbersList(document.getElementById("luxPoints")?.value);
       const required = Number(document.getElementById("luxTask")?.value || 0);
+      const area = Number(document.getElementById("luxArea")?.value || 0);
+      const height = Number(document.getElementById("luxHeight")?.value || 0);
+      const guide = getLuxRequiredPoints(area, height);
       if (!values.length || !required) { showToast("Cargá al menos una medición de LUX y el nivel requerido."); return; }
       const avg = values.reduce((a,b)=>a+b,0) / values.length;
       const min = Math.min(...values), max = Math.max(...values);
-      const cumple = avg >= required;
-      const rec = buildHysRecord("lux", document.getElementById("luxResponsible").value, document.getElementById("luxSector").value, `${avg.toFixed(1)} lux promedio`, cumple ? "Cumple" : "No cumple", cumple ? "ok" : "bad", `Promedio: ${avg.toFixed(1)} lux · Mín.: ${min} lux · Máx.: ${max} lux · Requerido: ${required} lux`, document.getElementById("luxObs").value, hysToolCatalog.lux.legal);
+      const enoughPoints = !guide.points || values.length >= guide.points;
+      const cumple = avg >= required && enoughPoints;
+      const cls = cumple ? "ok" : (avg >= required && !enoughPoints ? "warn" : "bad");
+      const pointText = guide.points ? ` · Superficie: ${area} m² · Altura útil: ${height} m · K=${guide.k.toFixed(2)} · Puntos mínimos: ${guide.points} · Puntos cargados: ${values.length}` : ` · Puntos cargados: ${values.length}`;
+      const rec = buildHysRecord("lux", document.getElementById("luxResponsible").value, document.getElementById("luxSector").value, `${avg.toFixed(1)} lux promedio`, cumple ? "Cumple" : (avg >= required ? "Cumple nivel con grilla incompleta" : "No cumple"), cls, `Promedio: ${avg.toFixed(1)} lux · Mín.: ${min} lux · Máx.: ${max} lux · Requerido: ${required} lux${pointText}`, document.getElementById("luxObs").value, hysToolCatalog.lux.legal);
       saveHysToolRecord(rec);
       setHysResult("luxResult", rec.statusClass, `<strong>${rec.compliance}</strong><small>${rec.result}</small><small>${rec.measurement}</small>`);
       showToast("✅ Medición de LUX guardada e integrada al Cronograma SST.");
@@ -9762,6 +10835,8 @@ Legal: ${record.legal}`,
       setHysResult("vibracionesResult", rec.statusClass, `<strong>${rec.compliance}</strong><small>${rec.result}</small><small>${rec.measurement}</small>`);
       showToast("✅ Evaluación de vibraciones guardada.");
     }
+
+
 
     function renderHysToolsHistory() {
       const c = document.getElementById("hysToolsHistory");
@@ -10044,15 +11119,88 @@ Legal: ${record.legal}`,
     };
 
     const sstRecordGuides = {
-      "Inspección": ["Inspector", "Sector", "Elemento inspeccionado", "Hallazgo", "Riesgo", "Acción requerida", "Responsable", "Fecha compromiso"],
-      "Observación": ["Acto inseguro", "Condición insegura", "Lugar", "Riesgo asociado", "Acción inmediata", "Responsable"],
-      "Verificación": ["Requisito verificado", "Resultado", "Cumple / No cumple", "Evidencia"],
-      "Auditoría Interna": ["Alcance", "Auditor", "Criterios", "Hallazgos", "No conformidades", "Observaciones", "Oportunidades de mejora"],
-      "Investigación": ["Fecha", "Lugar", "Descripción", "Personas involucradas", "Causa inmediata", "Causa básica", "5 Porqués", "Acción correctiva"],
-      "Revisión por la Dirección": ["Participantes", "KPIs SST", "Cumplimiento legal", "Hallazgos", "Recursos", "Objetivos", "Decisiones"],
-      "No Conformidad": ["Requisito incumplido", "Evidencia", "Causa", "Responsable", "Tratamiento"],
-      "Acción Correctiva": ["Origen", "Causa raíz", "Acción", "Responsable", "Fecha compromiso", "Verificación de eficacia"],
-      "Simulacro": ["Escenario", "Participantes", "Tiempo de respuesta", "Desvíos", "Acciones correctivas", "Lecciones aprendidas"]
+      "Inspección": ["Datos del inspector y sector", "Elemento/área inspeccionada", "Condición observada", "Resultado conforme/no conforme", "Evidencia si corresponde", "Acción y responsable"],
+      "Observación": ["Acto o condición observada", "Lugar exacto", "Clasificación preventiva", "Acción inmediata", "Responsable de seguimiento"],
+      "Verificación": ["Requisito o control verificado", "Criterio de aceptación", "Resultado", "Evidencia objetiva", "Conclusión"],
+      "Auditoría Interna": ["Objetivo, alcance y criterios", "Equipo auditor", "Hallazgos", "No conformidades", "Oportunidades de mejora", "Conclusión"],
+      "Investigación": ["Datos del incidente", "Descripción cronológica", "Personas involucradas", "Daños o consecuencias", "Causas inmediatas y básicas", "5 porqués", "Evidencia fotográfica", "Acciones correctivas"],
+      "Revisión por la Dirección": ["Participantes", "Entradas revisadas", "Indicadores y cumplimiento legal", "Decisiones", "Recursos", "Objetivos y mejora"],
+      "No Conformidad": ["Requisito incumplido", "Evidencia objetiva", "Análisis de causa", "Tratamiento", "Responsable y plazo"],
+      "Acción Correctiva": ["Origen", "Causa raíz", "Acción definida", "Responsable", "Fecha compromiso", "Verificación de eficacia"],
+      "Simulacro": ["Escenario", "Objetivo", "Participantes y roles", "Horario de inicio/fin", "Tiempo de respuesta", "Evacuación/punto de encuentro", "Recursos utilizados", "Desvíos", "Acciones de mejora", "Lecciones aprendidas"]
+    };
+
+    const sstRecordFieldConfig = {
+      "Inspección": [
+        {id:"elemento", label:"Elemento / área inspeccionada", type:"input", placeholder:"Ej: matafuegos, luces de emergencia, botiquín, playa"},
+        {id:"criterio", label:"Criterio de inspección", type:"textarea", placeholder:"Checklist o criterio utilizado.\n- Accesibilidad\n- Estado\n- Señalización"},
+        {id:"resultado", label:"Resultado", type:"select", options:["Conforme","Con observaciones","No conforme"]},
+        {id:"desvios", label:"Desvíos detectados", type:"textarea", placeholder:"Describir desvíos puntuales, ubicación y evidencia."}
+      ],
+      "Observación": [
+        {id:"clasificacion", label:"Clasificación", type:"select", options:["Acto inseguro","Condición insegura","Oportunidad de mejora","Conducta segura destacada"]},
+        {id:"descripcion", label:"Descripción de la observación", type:"textarea", placeholder:"Qué se observó, dónde y en qué condiciones."},
+        {id:"accion_inmediata", label:"Acción inmediata tomada", type:"textarea", placeholder:"Medida aplicada en el momento o recomendación preventiva."}
+      ],
+      "Verificación": [
+        {id:"requisito", label:"Requisito / control verificado", type:"input", placeholder:"Ej: matriz legal, control documental, capacitación"},
+        {id:"criterio", label:"Criterio de aceptación", type:"textarea", placeholder:"Norma, procedimiento o criterio interno usado."},
+        {id:"resultado", label:"Resultado de verificación", type:"select", options:["Cumple","Cumple con observaciones","No cumple","No aplica"]},
+        {id:"evidencia", label:"Evidencia objetiva", type:"textarea", placeholder:"Registro, documento, foto, informe, medición o comprobante."}
+      ],
+      "Auditoría Interna": [
+        {id:"objetivo", label:"Objetivo de auditoría", type:"textarea", placeholder:"Objetivo del control interno SST."},
+        {id:"alcance", label:"Alcance", type:"textarea", placeholder:"Sectores, procesos y turnos auditados."},
+        {id:"criterios", label:"Criterios", type:"textarea", placeholder:"ISO 45001, matriz legal, procedimientos internos, IPER."},
+        {id:"hallazgos", label:"Hallazgos / no conformidades", type:"textarea", placeholder:"- Hallazgo 1\n- Hallazgo 2"},
+        {id:"conclusion", label:"Conclusión de auditoría", type:"textarea", placeholder:"Resultado general y oportunidades de mejora."}
+      ],
+      "Investigación": [
+        {id:"evento", label:"Tipo de evento", type:"select", options:["Incidente","Accidente","Casi accidente","Condición peligrosa"]},
+        {id:"lugar", label:"Lugar exacto", type:"input", placeholder:"Ej: área de despacho con camión cisterna"},
+        {id:"hora", label:"Hora del evento", type:"time"},
+        {id:"descripcion", label:"Descripción cronológica del hecho", type:"textarea", placeholder:"Describir qué ocurrió, cómo, cuándo y durante qué tarea."},
+        {id:"personas", label:"Personas involucradas / testigos", type:"textarea", placeholder:"Nombre, rol, turno, testigos."},
+        {id:"consecuencias", label:"Consecuencias / daños", type:"textarea", placeholder:"Lesiones, daños materiales, derrame, interrupción, exposición."},
+        {id:"causa_inmediata", label:"Causa inmediata", type:"textarea", placeholder:"Condición o acto que originó directamente el evento."},
+        {id:"causa_basica", label:"Causa básica / raíz", type:"textarea", placeholder:"Falla de procedimiento, capacitación, mantenimiento, supervisión, diseño, etc."},
+        {id:"cinco_porques", label:"Análisis 5 porqués", type:"textarea", placeholder:"1. ¿Por qué...?\n2. ¿Por qué...?\n3. ¿Por qué...?"},
+        {id:"acciones", label:"Acciones correctivas / preventivas", type:"textarea", placeholder:"Acción · Responsable · Plazo · Verificación de eficacia."}
+      ],
+      "Revisión por la Dirección": [
+        {id:"participantes", label:"Participantes", type:"textarea", placeholder:"Gerencia, Responsable SST, Encargado, representantes."},
+        {id:"entradas", label:"Entradas revisadas", type:"textarea", placeholder:"Indicadores SST, auditorías, incidentes, cumplimiento legal, acciones, recursos."},
+        {id:"desempeno", label:"Desempeño del sistema", type:"select", options:["Adecuado y eficaz","Adecuado con oportunidades de mejora","Requiere mejora"]},
+        {id:"decisiones", label:"Decisiones adoptadas", type:"textarea", placeholder:"Decisiones de gestión, prioridades y responsables."},
+        {id:"recursos", label:"Recursos asignados / necesidades", type:"textarea", placeholder:"Recursos humanos, técnicos, capacitación, compras, mantenimiento."},
+        {id:"objetivos", label:"Objetivos futuros y mejora", type:"textarea", placeholder:"Objetivos SST, metas y acciones de mejora."}
+      ],
+      "No Conformidad": [
+        {id:"requisito", label:"Requisito incumplido", type:"textarea", placeholder:"Norma, procedimiento o criterio incumplido."},
+        {id:"evidencia", label:"Evidencia objetiva", type:"textarea", placeholder:"Hecho verificable que demuestra la no conformidad."},
+        {id:"causa", label:"Análisis de causa", type:"textarea", placeholder:"Causa inmediata y causa raíz."},
+        {id:"tratamiento", label:"Tratamiento / contención", type:"textarea", placeholder:"Acción inmediata para controlar el desvío."}
+      ],
+      "Acción Correctiva": [
+        {id:"origen", label:"Origen de la acción", type:"input", placeholder:"NC, auditoría, incidente, simulacro, inspección"},
+        {id:"causa", label:"Causa raíz", type:"textarea", placeholder:"Causa que se busca eliminar."},
+        {id:"plan", label:"Plan de acción", type:"textarea", placeholder:"Acción · Responsable · Fecha · Recursos"},
+        {id:"eficacia", label:"Verificación de eficacia", type:"textarea", placeholder:"Cómo se comprobará que la acción fue efectiva."}
+      ],
+      "Simulacro": [
+        {id:"escenario", label:"Escenario simulado", type:"select", options:["Derrame de combustible","Incendio en playa","Evacuación general","Emergencia en descarga con camión cisterna","Emergencia médica","Fuga / atmósfera peligrosa"]},
+        {id:"objetivo", label:"Objetivo del simulacro", type:"textarea", placeholder:"Evaluar roles, comunicación, evacuación, uso de recursos y tiempos de respuesta."},
+        {id:"inicio", label:"Horario de inicio", type:"time"},
+        {id:"fin", label:"Horario de finalización", type:"time"},
+        {id:"participantes", label:"Participantes", type:"textarea", placeholder:"Personal, encargados, clientes simulados, observadores, externos."},
+        {id:"roles", label:"Roles evaluados", type:"textarea", placeholder:"RE, PAE, encargado de turno, brigada, comunicación, primeros auxilios."},
+        {id:"punto_encuentro", label:"Punto de encuentro / zona segura", type:"input", placeholder:"Ej: plaza frente a la estación sobre Cortada de la Paz"},
+        {id:"recursos", label:"Recursos utilizados", type:"textarea", placeholder:"Matafuegos, kit antiderrame, balizas, conos, comunicaciones, botiquín."},
+        {id:"tiempos", label:"Tiempos registrados", type:"textarea", placeholder:"- Detección:\n- Alarma/comunicación:\n- Evacuación:\n- Recuento:\n- Cierre:"},
+        {id:"desvios", label:"Desvíos / dificultades", type:"textarea", placeholder:"Demoras, fallas de comunicación, roles no comprendidos, obstrucciones."},
+        {id:"mejoras", label:"Acciones de mejora", type:"textarea", placeholder:"Acción · Responsable · Plazo · Verificación."},
+        {id:"conclusion", label:"Conclusión / lecciones aprendidas", type:"textarea", placeholder:"Resultado general del simulacro y aprendizaje obtenido."}
+      ]
     };
 
     const sstSchedule = [
@@ -10108,10 +11256,61 @@ Legal: ${record.legal}`,
       return `${prefix}-${year}-${String(count).padStart(3,"0")}`;
     }
 
+
+    function renderSstDynamicFields() {
+      const type = document.getElementById("sstRecordType")?.value || "Inspección";
+      const box = document.getElementById("sstDynamicFields");
+      if (!box) return;
+      const fields = sstRecordFieldConfig[type] || [];
+      box.innerHTML = `<div class="sst-field-note">Campos específicos para: ${escapeHtml(type)}. Estos datos se guardan dentro del registro y aparecen en el informe impreso.</div>` + fields.map(f => {
+        const id = `sstExtra_${f.id}`;
+        if (f.type === "textarea") return `<label class="hys-field-label">${escapeHtml(f.label)}<textarea id="${id}" class="multiline-friendly" data-sst-extra="1" data-label="${escapeHtml(f.label)}" placeholder="${escapeHtml(f.placeholder || '')}"></textarea></label>`;
+        if (f.type === "select") return `<label class="hys-field-label">${escapeHtml(f.label)}<select id="${id}" data-sst-extra="1" data-label="${escapeHtml(f.label)}">${(f.options || []).map(o => `<option>${escapeHtml(o)}</option>`).join("")}</select></label>`;
+        return `<label class="hys-field-label">${escapeHtml(f.label)}<input id="${id}" type="${f.type || 'text'}" data-sst-extra="1" data-label="${escapeHtml(f.label)}" placeholder="${escapeHtml(f.placeholder || '')}" /></label>`;
+      }).join("");
+    }
+
+    function collectSstExtraFields() {
+      return Array.from(document.querySelectorAll("[data-sst-extra='1']")).map(el => ({
+        label: el.dataset.label || el.id,
+        value: String(el.value || "").trim()
+      })).filter(x => x.value);
+    }
+
+    function clearSstExtraFields() {
+      document.querySelectorAll("[data-sst-extra='1']").forEach(el => { el.value = ""; });
+    }
+
+    function getSstEvidenceNames() {
+      const files = document.getElementById("sstRecordEvidence")?.files || [];
+      return Array.from(files).map(f => f.name);
+    }
+
+    function previewSstEvidenceFiles() {
+      const preview = document.getElementById("sstEvidencePreview");
+      if (!preview) return;
+      const names = getSstEvidenceNames();
+      preview.innerHTML = names.length ? names.map(n => `<span>📎 ${escapeHtml(n)}</span>`).join("") : "";
+    }
+
+    function formatExtraFieldsForObservations(extraFields, evidenceNames) {
+      const parts = [];
+      if (extraFields?.length) {
+        parts.push("\n\n--- Campos específicos del registro ---");
+        extraFields.forEach(f => parts.push(`${f.label}: ${f.value}`));
+      }
+      if (evidenceNames?.length) {
+        parts.push("\n--- Evidencias adjuntas ---");
+        evidenceNames.forEach(n => parts.push(`- ${n}`));
+      }
+      return parts.join("\n");
+    }
+
     function updateSstRecordCode() {
       const type = document.getElementById("sstRecordType")?.value || "Inspección";
       const code = document.getElementById("sstRecordCode");
       if (code) code.value = nextSstCode(type);
+      renderSstDynamicFields();
       renderSstTypeGuide();
       bindSstTraceabilityAutofill();
     }
@@ -10161,6 +11360,9 @@ Legal: ${record.legal}`,
     function clearSstForm() {
       ["sstRecordResponsible","sstRecordSector","sstRecordFinding","sstRecordRisk","sstRecordAction","sstRecordDue","sstRecordObservations"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
       ["sstRecordIperId","sstRecordLegalId"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+      clearSstExtraFields();
+      const ev = document.getElementById("sstRecordEvidence"); if (ev) ev.value = "";
+      const evp = document.getElementById("sstEvidencePreview"); if (evp) evp.innerHTML = "";
       const gen = document.getElementById("sstRecordGenerateAction"); if (gen) gen.value = "no";
       const date = document.getElementById("sstRecordDate"); if (date) date.value = today.toISOString().slice(0,10);
       const state = document.getElementById("sstRecordState"); if (state) state.value = "Pendiente";
@@ -10442,7 +11644,7 @@ Legal: ${record.legal}`,
       const riskInput = document.getElementById("sstRecordRisk");
       if (iperSelect && (force || !iperSelect.value) && bundle.iperId && [...iperSelect.options].some(o => String(o.value) === String(bundle.iperId))) iperSelect.value = String(bundle.iperId);
       if (legalSelect && (force || !legalSelect.value) && bundle.legalId && [...legalSelect.options].some(o => String(o.value) === String(bundle.legalId))) legalSelect.value = String(bundle.legalId);
-      if (riskInput && (force || !riskInput.value || normalizeText(riskInput.value).includes("riesgo asociado")) && bundle.riskText) riskInput.value = bundle.riskText;
+      if (riskInput && (force || !riskInput.value || normalizeText(riskInput.value).includes("riesgo asociado") || normalizeText(riskInput.value).includes("matriz legal")) && bundle.legalText) riskInput.value = bundle.legalText;
       const preview = document.getElementById("sstTraceabilityPreview");
       if (preview) {
         if (bundle.monitoringName) {
@@ -10625,6 +11827,10 @@ Legal: ${record.legal}`,
           due: document.getElementById("sstRecordDue")?.value || "",
           observations: document.getElementById("sstRecordObservations")?.value.trim() || "Sin observaciones adicionales."
         };
+        record.extraFields = collectSstExtraFields();
+        record.evidenceFiles = getSstEvidenceNames();
+        const extraText = formatExtraFieldsForObservations(record.extraFields, record.evidenceFiles);
+        if (extraText && !record.observations.includes("--- Campos específicos")) record.observations += extraText;
 
         const codeEl = document.getElementById("sstRecordCode");
         if (codeEl) codeEl.value = record.code;
@@ -10648,7 +11854,8 @@ Legal: ${record.legal}`,
         }
         const iperRow = (supabaseMatrizIper || []).find(r => String(r.id) === String(record.iperId));
         const legalRow = (supabaseMatrizLegal || []).find(r => String(r.id) === String(record.legalId));
-        if (iperRow) record.risk = sstIperLabel(iperRow);
+        if (legalRow) record.risk = sstLegalLabel(legalRow);
+        else if (iperRow && !record.risk) record.risk = sstIperLabel(iperRow);
         if (legalRow && !normalizeText(record.observations).includes("requisito legal vinculado")) {
           record.observations += `\nRequisito legal vinculado: ${sstLegalLabel(legalRow)}`;
         }
@@ -10827,57 +12034,49 @@ Legal: ${record.legal}`,
       return false;
     }
 
+
+    function requiredSstRecordsForFrequency(freq) {
+      const f = normalizeText(freq || "");
+      if (f.includes("semanal")) return 4;
+      if (f.includes("quincenal")) return 2;
+      if (f.includes("mensual")) return 1;
+      if (f.includes("trimestral")) return 1;
+      if (f.includes("semestral")) return 1;
+      if (f.includes("anual")) return 1;
+      return 1;
+    }
+
+    function countClosedSstRecordsForSchedule(row, month) {
+      return sstRecords.filter(r => {
+        const d = r.date ? new Date(r.date + "T12:00:00") : null;
+        if (!d || d.getFullYear() !== 2026 || d.getMonth() + 1 !== month) return false;
+        if (!isClosedSstState(r.state)) return false;
+        return recordMatchesSstScheduleActivity(r, row.activity);
+      }).length;
+    }
+
+    function countClosedHysRecordsForSchedule(row, month) {
+      if (typeof hysToolsHistory === "undefined" || !Array.isArray(hysToolsHistory)) return 0;
+      return hysToolsHistory.filter(r => {
+        const d = r.date ? new Date(r.date + "T12:00:00") : null;
+        if (!d || d.getFullYear() !== 2026 || d.getMonth() + 1 !== month) return false;
+        if (r.statusClass === "bad") return false;
+        return normalizeText(`${r.schedule || ""} ${r.tool || ""} ${r.observations || ""}`).includes(normalizeText(row.activity));
+      }).length;
+    }
+
     function getSstScheduleCellState(row, month) {
       if (!row.months.includes(month)) return "na";
       if (isTrainingMonitoringActivity(row.activity)) return getTrainingScheduleCellStateForMonth(row.activity, month);
       const currentMonth = today.getMonth() + 1;
-      const recordTypeByActivity = {
-        "Cumplimiento del Plan Anual de Capacitación": "Verificación",
-        "Control de Asistencia a Capacitaciones": "Verificación",
-        "Vigencia de Certificados": "Verificación",
-        "Estado de Matafuegos": "Inspección",
-        "Estado de Luces de Emergencia": "Inspección",
-        "Estado de Botiquines": "Inspección",
-        "Estado de Señalización": "Inspección",
-        "Orden y Limpieza": "Inspección",
-        "Uso de Elementos de Protección Personal": "Inspección",
-        "Control de Derrames y Contingencias": "Inspección",
-        "Simulacros de Emergencia": "Simulacro",
-        "Investigación de Incidentes": "Investigación",
-        "Cumplimiento Legal": "Verificación",
-        "Control Documental": "Verificación",
-        "Evaluación Interna del Sistema SST": "Auditoría Interna",
-        "Revisión por la Dirección": "Revisión por la Dirección",
-        "Iluminación / LUX": "Verificación",
-        "Ruido laboral": "Verificación",
-        "Puesta a tierra": "Verificación",
-        "Carga de fuego": "Verificación",
-        "Estrés térmico": "Verificación",
-        "Ventilación": "Verificación",
-        "Gases y vapores": "Verificación",
-        "Vibraciones": "Verificación"
-      };
-      const expectedType = recordTypeByActivity[row.activity] || "Verificación";
-      const hasHysRecord = (typeof hysToolsHistory !== "undefined" && Array.isArray(hysToolsHistory)) && hysToolsHistory.some(r => {
-        const d = r.date ? new Date(r.date + "T12:00:00") : null;
-        return d && d.getFullYear() === 2026 && d.getMonth() + 1 === month && normalizeText(r.schedule || r.tool || "").includes(normalizeText(row.activity)) && r.statusClass !== "bad";
-      });
-      if (hasHysRecord) return "done";
+      const required = requiredSstRecordsForFrequency(row.frequency);
+      const closedCount = countClosedSstRecordsForSchedule(row, month) + countClosedHysRecordsForSchedule(row, month);
+      if (closedCount >= required) return "done";
       const hasHysBad = (typeof hysToolsHistory !== "undefined" && Array.isArray(hysToolsHistory)) && hysToolsHistory.some(r => {
         const d = r.date ? new Date(r.date + "T12:00:00") : null;
         return d && d.getFullYear() === 2026 && d.getMonth() + 1 === month && normalizeText(r.schedule || r.tool || "").includes(normalizeText(row.activity)) && r.statusClass === "bad";
       });
       if (hasHysBad) return "overdue";
-      const hasClosedRecord = sstRecords.some(r => {
-        const d = r.date ? new Date(r.date + "T12:00:00") : null;
-        if (!d || d.getFullYear() !== 2026 || d.getMonth() + 1 !== month) return false;
-        const stateOk = ["Cerrado", "Realizado"].includes(r.state);
-        if (!stateOk) return false;
-        const typeOk = r.type === expectedType || recordMatchesSstScheduleActivity(r, row.activity);
-        const monitoringOk = recordMatchesSstScheduleActivity(r, row.activity);
-        return typeOk && monitoringOk;
-      });
-      if (hasClosedRecord) return "done";
       if (month < currentMonth) return "overdue";
       return "pending";
     }
@@ -10890,9 +12089,9 @@ Legal: ${record.legal}`,
         const states = months.map((m, idx) => getSstScheduleCellState(row, idx + 1));
         const cells = states.map(state => {
           if (state === "na") return `<td><span class="month-dot na">—</span></td>`;
-          if (state === "done") return `<td><span class="month-dot done">✓</span></td>`;
+          if (state === "done") return `<td><span class="month-dot done" title="Objetivo cumplido según frecuencia">✓</span></td>`;
           if (state === "overdue") return `<td><span class="month-dot overdue">!</span></td>`;
-          return `<td><span class="month-dot pending">•</span></td>`;
+          return `<td><span class="month-dot pending" title="Faltan registros para cumplir la frecuencia del período">•</span></td>`;
         }).join("");
         const estado = states.includes("overdue") ? { txt:"Vencido", cls:"vencido" } : (states.includes("done") && states.includes("pending")) ? { txt:"Realizado", cls:"vigente" } : states.includes("pending") ? { txt:"Programado", cls:"por-vencer" } : row.months.length ? { txt:"Realizado", cls:"vigente" } : { txt:"Según ocurrencia", cls:"programado" };
         return `<tr><td><strong>${row.activity}</strong><br><small>${row.frequency}</small></td>${cells}<td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
@@ -11463,11 +12662,14 @@ Legal: ${record.legal}`,
 
     function printSstRecord(code) {
       const r = sstRecords.find(x => x.code === code); if (!r) return;
-      const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${r.code}</title><style>body{font-family:Arial,sans-serif;margin:0;padding:28px;background:#f1f5f9;color:#0f172a}.sheet{max-width:900px;margin:auto;background:white;border:3px solid #0056a6;border-radius:22px;padding:28px}.head{display:flex;justify-content:space-between;gap:16px;border-bottom:5px solid #ffcc00;padding-bottom:14px}.logo{background:#0056a6;color:white;border-bottom:7px solid #00a3e0;border-radius:12px;padding:14px 18px;font-size:32px;font-weight:900}h1{color:#003f7d;margin:22px 0 6px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{border:1px solid #cbd5e1;border-radius:14px;padding:12px;background:#f8fafc}.field b{display:block;color:#003f7d;font-size:12px;text-transform:uppercase;margin-bottom:5px}.full{grid-column:1/-1}.sign{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}.line{border-top:1px solid #334155;text-align:center;padding-top:8px;font-weight:700}@media print{body{background:white}.sheet{border:2px solid #0056a6}}</style></head><body><div class="sheet"><div class="head"><div class="logo">YPF</div><div><b>UTN BA · Grupo 22</b><br>Sistema Digital SST<br>Registro documental ISO 45001</div></div><h1>${r.type}</h1><p><b>Código:</b> ${r.code}</p><div class="grid"><div class="field"><b>Fecha</b>${formatDate(r.date)}</div><div class="field"><b>Estado</b>${r.state}</div><div class="field"><b>Responsable</b>${escapeHtml(r.responsible)}</div><div class="field"><b>Sector</b>${escapeHtml(r.sector)}</div><div class="field full"><b>Hallazgo / evento / requisito</b>${escapeHtml(r.finding)}</div><div class="field"><b>Riesgo IPER</b>${escapeHtml(r.risk)}</div><div class="field"><b>Fecha compromiso</b>${r.due ? formatDate(r.due) : "No aplica"}</div><div class="field full"><b>Acción requerida / correctiva</b>${escapeHtml(r.action)}</div><div class="field full"><b>Observaciones / evidencia</b>${escapeHtml(r.observations)}</div></div><div class="sign"><div class="line">Responsable SST</div><div class="line">Dirección / Encargado</div></div></div><script>window.print()<\/script></body></html>`;
+      const fmt = v => escapeHtml(v || "").replace(/\n/g,"<br>");
+      const extraRows = Array.isArray(r.extraFields) && r.extraFields.length ? r.extraFields.map(f => `<div class="field full"><b>${escapeHtml(f.label)}</b><div class="pre">${fmt(f.value)}</div></div>`).join("") : "";
+      const evidenceRows = Array.isArray(r.evidenceFiles) && r.evidenceFiles.length ? `<div class="field full"><b>Evidencias adjuntas</b><div class="pre">${r.evidenceFiles.map(n => `📎 ${escapeHtml(n)}`).join("<br>")}</div></div>` : "";
+      const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${r.code}</title><style>body{font-family:Arial,sans-serif;margin:0;padding:28px;background:#f1f5f9;color:#0f172a}.sheet{max-width:900px;margin:auto;background:white;border:3px solid #0056a6;border-radius:22px;padding:28px}.head{display:flex;justify-content:space-between;gap:16px;border-bottom:5px solid #ffcc00;padding-bottom:14px}.logo{background:#0056a6;color:white;border-bottom:7px solid #00a3e0;border-radius:12px;padding:14px 18px;font-size:32px;font-weight:900}h1{color:#003f7d;margin:22px 0 6px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{border:1px solid #cbd5e1;border-radius:14px;padding:12px;background:#f8fafc}.field b{display:block;color:#003f7d;font-size:12px;text-transform:uppercase;margin-bottom:5px}.full{grid-column:1/-1}.pre{white-space:pre-wrap;line-height:1.45}.sign{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}.line{border-top:1px solid #334155;text-align:center;padding-top:8px;font-weight:700}@media print{body{background:white}.sheet{border:2px solid #0056a6}}</style></head><body><div class="sheet"><div class="head"><div class="logo">YPF</div><div><b>UTN BA · Grupo 22</b><br>Sistema Digital SST<br>Registro documental ISO 45001</div></div><h1>${r.type}</h1><p><b>Código:</b> ${r.code}</p><div class="grid"><div class="field"><b>Fecha</b>${formatDate(r.date)}</div><div class="field"><b>Estado</b>${r.state}</div><div class="field"><b>Responsable</b>${escapeHtml(r.responsible)}</div><div class="field"><b>Sector</b>${escapeHtml(r.sector)}</div><div class="field full"><b>Monitoreo / hallazgo / evento</b><div class="pre">${fmt(r.finding)}</div></div><div class="field full"><b>Matriz legal / requisito</b><div class="pre">${fmt(r.legalAsociado || r.risk)}</div></div><div class="field"><b>Fecha compromiso</b>${r.due ? formatDate(r.due) : "No aplica"}</div>${extraRows}${evidenceRows}<div class="field full"><b>Acción requerida / correctiva</b><div class="pre">${fmt(r.action)}</div></div><div class="field full"><b>Observaciones / evidencia</b><div class="pre">${fmt(r.observations)}</div></div></div><div class="sign"><div class="line">Responsable SST</div><div class="line">Dirección / Encargado</div></div></div><script>window.print()<\/script></body></html>`;
       const w = window.open("", "_blank"); w.document.write(html); w.document.close();
     }
 
-    function deleteSstRecord(code) {
+        function deleteSstRecord(code) {
       if (!confirm("¿Eliminar el registro " + code + "?")) return;
       sstRecords = sstRecords.filter(r => r.code !== code);
       localStorage.setItem("ypfSstRecords", JSON.stringify(sstRecords));
@@ -11549,6 +12751,185 @@ Legal: ${record.legal}`,
       renderVerificationModule();
       showToast("✅ Simulacro guardado y sincronizado con Supabase.");
     }
+
+
+    /* ===== V11 · Integración Supabase campos nuevos Registros + HyS ===== */
+    (function(){
+      const normV11 = s => String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+      const escV11 = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+
+      function extraMap(record){
+        const map = {};
+        (record?.extraFields || []).forEach(f => {
+          const key = normV11(f.label).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+          map[key] = f.value;
+        });
+        return map;
+      }
+      function firstVal(map, keys){
+        for (const k of keys){ if (map[k]) return map[k]; }
+        return null;
+      }
+      function toNumberOrNull(v){
+        if (v === null || v === undefined || v === '') return null;
+        const m = String(v).replace(',', '.').match(/-?\d+(?:\.\d+)?/);
+        return m ? Number(m[0]) : null;
+      }
+
+      const prevRegistroToRowV11 = registroLocalToSupabaseRow;
+      registroLocalToSupabaseRow = function(record){
+        const base = (typeof prevRegistroToRowV11 === 'function') ? prevRegistroToRowV11(record) : {};
+        const m = extraMap(record);
+        const tipo = normV11(record?.type || '');
+        const evidencia = Array.isArray(record?.evidenceFiles) ? record.evidenceFiles : [];
+        const row = {
+          ...base,
+          cronograma_asociado: record?.monitoreoNombre || record?.monitoringName || record?.finding || base.monitoreo_nombre || null,
+          matriz_legal_id: record?.legalId ? Number(record.legalId) : null,
+          matriz_legal_texto: record?.legalAsociado || record?.risk || base.legal_asociado || null,
+          usar_iper_kpi: !!record?.iperId,
+          usar_legal_kpi: !!record?.legalId,
+          evidencia_foto_1: evidencia[0] || record?.evidenciaFoto1 || null,
+          evidencia_foto_2: evidencia[1] || record?.evidenciaFoto2 || null,
+          evidencia_foto_3: evidencia[2] || record?.evidenciaFoto3 || null
+        };
+
+        if (tipo.includes('simulacro')) {
+          row.escenario_simulacro = firstVal(m, ['escenario_simulado','escenario']) || record.finding || null;
+          row.objetivo_simulacro = firstVal(m, ['objetivo_del_simulacro','objetivo']) || null;
+          row.tipo_emergencia = row.escenario_simulacro;
+          row.hora_inicio = firstVal(m, ['horario_de_inicio','inicio']) || null;
+          row.hora_fin = firstVal(m, ['horario_de_finalizacion','fin']) || null;
+          row.cantidad_participantes = toNumberOrNull(firstVal(m, ['participantes','cantidad_participantes'])) || null;
+          row.cantidad_evacuados = toNumberOrNull(firstVal(m, ['cantidad_evacuados','evacuados'])) || null;
+          row.punto_encuentro = firstVal(m, ['punto_de_encuentro_zona_segura','punto_encuentro']) || null;
+          row.recursos_utilizados = firstVal(m, ['recursos_utilizados','recursos']) || null;
+          row.roles_intervinientes = firstVal(m, ['roles_evaluados','roles']) || null;
+          row.observadores = firstVal(m, ['observadores']) || null;
+          row.desvio_detectado = firstVal(m, ['desvios_dificultades','desvios']) || null;
+          row.acciones_mejora = firstVal(m, ['acciones_de_mejora','mejoras']) || null;
+          row.lecciones_aprendidas = firstVal(m, ['conclusion_lecciones_aprendidas','conclusion']) || null;
+          const tiempos = firstVal(m, ['tiempos_registrados','tiempos']);
+          row.tiempo_respuesta_min = toNumberOrNull(tiempos);
+          row.tiempo_evacuacion_min = toNumberOrNull((String(tiempos||'').match(/evacuaci[oó]n[^\d]*(\d+(?:[\.,]\d+)?)/i)||[])[1]) || null;
+        }
+        if (tipo.includes('investigacion')) {
+          row.descripcion_incidente = firstVal(m, ['descripcion_cronologica_del_hecho','descripcion']) || record.finding || null;
+          row.consecuencias = firstVal(m, ['consecuencias_danos','consecuencias']) || null;
+          row.causas_inmediatas = firstVal(m, ['causa_inmediata']) || null;
+          row.causas_basicas = firstVal(m, ['causa_basica_raiz','causa_basica']) || null;
+          row.medidas_correctivas = firstVal(m, ['acciones_correctivas_preventivas','acciones']) || record.action || null;
+          row.medidas_preventivas = firstVal(m, ['acciones_correctivas_preventivas','acciones']) || null;
+        }
+        if (tipo.includes('auditoria')) {
+          row.alcance_auditoria = firstVal(m, ['alcance']) || null;
+          row.criterio_auditoria = firstVal(m, ['criterios','criterio']) || null;
+          row.hallazgos_auditoria = firstVal(m, ['hallazgos_no_conformidades','hallazgos']) || null;
+          row.conclusiones_auditoria = firstVal(m, ['conclusion_de_auditoria','conclusion']) || null;
+        }
+        if (tipo.includes('revision') && tipo.includes('direccion')) {
+          row.temas_revision_direccion = firstVal(m, ['entradas_revisadas','participantes']) || null;
+          row.indicadores_revisados = firstVal(m, ['entradas_revisadas']) || null;
+          row.decisiones_adoptadas = firstVal(m, ['decisiones_adoptadas','decisiones']) || null;
+          row.recursos_asignados = firstVal(m, ['recursos_asignados_necesidades','recursos']) || null;
+          row.oportunidades_mejora = firstVal(m, ['objetivos_futuros_y_mejora','objetivos']) || null;
+        }
+        return row;
+      };
+
+      const prevHysToRowV11 = hysRecordToSupabaseRow;
+      hysRecordToSupabaseRow = function(record){
+        const row = (typeof prevHysToRowV11 === 'function') ? prevHysToRowV11(record) : {};
+        return {
+          ...row,
+          largo_m: record?.largo_m ?? null,
+          ancho_m: record?.ancho_m ?? null,
+          superficie_m2: record?.superficie_m2 ?? null,
+          altura_util_m: record?.altura_util_m ?? null,
+          indice_local_k: record?.indice_local_k ?? null,
+          puntos_minimos: record?.puntos_minimos ?? null,
+          puntos_cargados: record?.puntos_cargados ?? null,
+          formula_referencia: record?.formula_referencia || null,
+          criterio_calculo: record?.criterio_calculo || null,
+          evidencia_foto_1: record?.evidencia_foto_1 || null,
+          evidencia_foto_2: record?.evidencia_foto_2 || null,
+          evidencia_foto_3: record?.evidencia_foto_3 || null
+        };
+      };
+
+      const prevSupabaseRowToHysV11 = supabaseRowToHysRecord;
+      supabaseRowToHysRecord = function(row){
+        const r = (typeof prevSupabaseRowToHysV11 === 'function') ? prevSupabaseRowToHysV11(row) : {};
+        return { ...r,
+          largo_m: row.largo_m, ancho_m: row.ancho_m, superficie_m2: row.superficie_m2,
+          altura_util_m: row.altura_util_m, indice_local_k: row.indice_local_k,
+          puntos_minimos: row.puntos_minimos, puntos_cargados: row.puntos_cargados,
+          formula_referencia: row.formula_referencia, criterio_calculo: row.criterio_calculo
+        };
+      };
+
+      const prevCalculateHysLuxV11 = calculateHysLux;
+      calculateHysLux = function(){
+        const values = parseNumbersList(document.getElementById('luxPoints')?.value);
+        const required = Number(document.getElementById('luxTask')?.value || 0);
+        const area = Number(document.getElementById('luxArea')?.value || 0);
+        const height = Number(document.getElementById('luxHeight')?.value || 0);
+        const guide = getLuxRequiredPoints(area, height);
+        if (!values.length || !required) { showToast('Cargá al menos una medición de LUX y el nivel requerido.'); return; }
+        const avg = values.reduce((a,b)=>a+b,0) / values.length;
+        const min = Math.min(...values), max = Math.max(...values);
+        const enoughPoints = !guide.points || values.length >= guide.points;
+        const cumple = avg >= required && enoughPoints;
+        const cls = cumple ? 'ok' : (avg >= required && !enoughPoints ? 'warn' : 'bad');
+        const pointText = guide.points ? (' · Superficie: ' + area + ' m² · Altura útil: ' + height + ' m · K=' + guide.k.toFixed(2) + ' · Puntos mínimos: ' + guide.points + ' · Puntos cargados: ' + values.length) : (' · Puntos cargados: ' + values.length);
+        const rec = buildHysRecord('lux', document.getElementById('luxResponsible').value, document.getElementById('luxSector').value, avg.toFixed(1) + ' lux promedio', cumple ? 'Cumple' : (avg >= required ? 'Cumple nivel con grilla incompleta' : 'No cumple'), cls, 'Promedio: ' + avg.toFixed(1) + ' lux · Mín.: ' + min + ' lux · Máx.: ' + max + ' lux · Requerido: ' + required + ' lux' + pointText, document.getElementById('luxObs').value, hysToolCatalog.lux.legal);
+        Object.assign(rec, {
+          superficie_m2: Number.isFinite(area) && area > 0 ? area : null,
+          altura_util_m: Number.isFinite(height) && height > 0 ? height : null,
+          indice_local_k: guide.k ? Number(guide.k.toFixed(3)) : null,
+          puntos_minimos: guide.points || null,
+          puntos_cargados: values.length,
+          formula_referencia: 'K = (L × A) / [h × (L + A)]',
+          criterio_calculo: 'Nivel requerido ' + required + ' lux. Promedio calculado sobre ' + values.length + ' punto(s). ' + (guide.points ? 'Grilla mínima sugerida: ' + guide.points + ' punto(s).' : 'Sin grilla mínima calculada por falta de datos de superficie/altura.')
+        });
+        saveHysToolRecord(rec);
+        setHysResult('luxResult', rec.statusClass, '<strong>' + escV11(rec.compliance) + '</strong><small>' + escV11(rec.result) + '</small><small>' + escV11(rec.measurement) + '</small>');
+        showToast('✅ Medición de LUX guardada en Supabase con m², K y puntos de grilla.');
+      };
+
+      const prevUpsertCronoV11 = upsertHysCronogramaSupabase;
+      upsertHysCronogramaSupabase = async function(record){
+        if (typeof supabaseClient === 'undefined' || !supabaseClient?.from) return false;
+        const actividad = record.schedule || record.tool || 'Monitoreo HyS';
+        const mes = Number((record.date || new Date().toISOString().slice(0,10)).slice(5,7));
+        const req = (typeof requiredSstRecordsForFrequency === 'function') ? requiredSstRecordsForFrequency(record.frequency || 'Mensual') : 1;
+        const payload = {
+          actividad,
+          frecuencia: record.frequency || 'Según programa HyS',
+          mes,
+          estado: record.statusClass === 'bad' ? 'Con observaciones' : 'Realizado',
+          fecha_realizacion: record.date,
+          requeridos_mes: req,
+          realizados_mes: 1,
+          porcentaje_cumplimiento: Math.min(100, Math.round((1/Math.max(1, req))*100)),
+          tooltip_avance: '1 de ' + req + ' realizados',
+          requiere_multiples_registros: req > 1,
+          observaciones: (record.tool || 'Herramienta HyS') + ' · ' + (record.compliance || '') + '. ' + (record.result || '')
+        };
+        try {
+          const { data, error } = await supabaseClient.from('cronograma_sst').update(payload).eq('actividad', actividad).eq('mes', mes).select('id');
+          if (!error && Array.isArray(data) && data.length) return true;
+          const { error: insertError } = await supabaseClient.from('cronograma_sst').insert([payload]);
+          if (insertError) throw insertError;
+          return true;
+        } catch(error) {
+          console.warn('No se pudo impactar cronograma_sst desde V11:', error);
+          if (typeof prevUpsertCronoV11 === 'function') return prevUpsertCronoV11(record);
+          return false;
+        }
+      };
+    })();
+
 
     initLoginDemo();
     inicializarApp();
@@ -11670,6 +13051,179 @@ Legal: ${record.legal}`,
     document.addEventListener("DOMContentLoaded", () => {
       ["lux","ruido","pat","fuego","termico","ventilacion","gases","vibraciones"].forEach(updateHysCalibrationStatus);
     });
+
+
+/* ===== AJUSTE V8 NICOLÁS: compactación 80%, trazabilidad sin ruido, cronograma por cantidad y simulación visible ===== */
+(function(){
+  const style = document.createElement('style');
+  style.textContent = `
+    html { font-size: 14px !important; }
+    body { font-size: 13.2px !important; }
+    main { padding: 18px 22px 28px !important; }
+    .topbar { padding: 13px 16px !important; margin-bottom: 16px !important; border-radius: 19px !important; }
+    .title h2 { font-size: clamp(21px, 2.35vw, 30px) !important; }
+    .title p { font-size: 12.2px !important; }
+    .card { padding: 15px !important; border-radius: 18px !important; }
+    .grid { gap: 13px !important; }
+    input, select, textarea { padding: 9px 10px !important; border-radius: 11px !important; font-size: 13px !important; }
+    button.primary, button.secondary, button.danger { padding: 9px 12px !important; border-radius: 11px !important; font-size: 12.6px !important; }
+    th, td { padding: 9px 8px !important; font-size: 12.5px !important; }
+    .badge, .pill { padding: 6px 9px !important; font-size: 11.2px !important; }
+    .form-grid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important; gap: 9px !important; }
+    textarea.multiline-friendly, .sst-dynamic-fields textarea { min-height: 76px !important; line-height: 1.42 !important; white-space: pre-wrap !important; }
+    #sstRecordObservations { min-height: 86px !important; }
+    .sst-dynamic-fields { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 9px; align-items: start; }
+    .sst-field-note { grid-column: 1 / -1; padding: 10px 12px; border-radius: 14px; background: linear-gradient(135deg, var(--ypf-blue-light), #fff); color: var(--ypf-blue-dark); border: 1px solid #cfe7ff; font-weight: 800; font-size: 12px; }
+    .hys-field-label { display: grid; gap: 5px; font-weight: 850; color: var(--ypf-blue-dark); font-size: 12px; }
+    .sst-dynamic-fields .hys-field-label { border: 1px solid var(--gray-200); background: #fff; border-radius: 14px; padding: 9px; }
+    .sst-dynamic-fields .hys-field-label textarea { min-height: 70px !important; }
+    .sst-evidence-box { grid-column: 1 / -1; padding: 12px !important; border-radius: 15px !important; background: #fff; border: 1px dashed var(--gray-300); }
+    #sstRecordIperId, #sstRecordLegalId { display:none !important; }
+    .sst-trace-checks { grid-column: 1 / -1; display:flex; gap:10px; flex-wrap:wrap; padding:10px 12px; border-radius:14px; background:#f8fafc; border:1px solid var(--gray-200); color:var(--gray-700); font-weight:800; }
+    .sst-trace-checks label { display:inline-flex; align-items:center; gap:7px; }
+    .sst-trace-checks input { width:auto !important; transform:none !important; }
+    .traceability-card small { font-size:11.8px !important; }
+    .month-dot { cursor: help; position: relative; }
+    .month-dot.done::after, .month-dot.pending::after, .month-dot.overdue::after { content: attr(data-progress); position:absolute; left:50%; bottom:calc(100% + 8px); transform:translateX(-50%) translateY(5px); opacity:0; pointer-events:none; white-space:nowrap; background:#0f172a; color:#fff; border-radius:10px; padding:7px 9px; font-size:11px; font-weight:800; z-index:50; box-shadow:0 12px 24px rgba(15,23,42,.18); transition:.16s ease; }
+    .month-dot:hover::after { opacity:1; transform:translateX(-50%) translateY(0); }
+    .hys-panel#hysToolSimulacion { min-height: 240px; }
+    .hys-sim-info { grid-column:1/-1; padding:11px 12px; border-radius:14px; background:linear-gradient(135deg,#fff7cc,#fff); border:1px solid #fde68a; color:#7c5a00; font-weight:800; line-height:1.35; }
+    .hys-tool-layout { grid-template-columns:minmax(250px,.72fr) minmax(420px,1.28fr) !important; }
+    .hys-tab-btn { padding:9px 10px !important; border-radius:13px !important; }
+    @media(max-width:1050px){ .hys-tool-layout{grid-template-columns:1fr !important;} }
+  `;
+  document.head.appendChild(style);
+
+  function esc(v){ return (typeof escapeHtml === 'function') ? escapeHtml(v || '') : String(v || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+  function norm(v){ return (typeof normalizeText === 'function') ? normalizeText(v || '') : String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+  function getMonItemByName(name){
+    const src = (typeof getMonitoringOptionsSource === 'function') ? getMonitoringOptionsSource() : (typeof monitoringProgram !== 'undefined' ? monitoringProgram : []);
+    return src.find(m => norm(m.item || m.activity || '') === norm(name || '')) || null;
+  }
+
+  window.ensureSstTraceChecks = function(){
+    const iper = document.getElementById('sstRecordIperId');
+    const legal = document.getElementById('sstRecordLegalId');
+    if (!iper || document.getElementById('sstTraceChecks')) return;
+    const box = document.createElement('div');
+    box.id = 'sstTraceChecks';
+    box.className = 'sst-trace-checks';
+    box.innerHTML = `<label style="display:none"><input id="sstTraceIperCheck" type="checkbox" checked disabled></label><label><input id="sstTraceLegalCheck" type="checkbox" checked disabled> Matriz Legal vinculada</label>`;
+    legal.insertAdjacentElement('afterend', box);
+  };
+
+  const oldRenderDyn = window.renderSstDynamicFields;
+  window.renderSstDynamicFields = function(){
+    if (typeof oldRenderDyn === 'function') oldRenderDyn();
+    window.ensureSstTraceChecks();
+    const type = document.getElementById('sstRecordType')?.value || '';
+    const note = document.querySelector('.sst-field-note');
+    if (note) note.textContent = `Campos específicos de ${type}. Diseño compacto: completar solo lo aplicable; Enter y viñetas quedan respetados en el informe.`;
+  };
+
+  window.onSstMonitoringSelectionChange = function(){
+    const selectedName = document.getElementById('sstRecordFinding')?.value || '';
+    const m = getMonItemByName(selectedName);
+    if (!m) return;
+    const sector = document.getElementById('sstRecordSector');
+    const legalVisible = document.getElementById('sstRecordRisk');
+    const action = document.getElementById('sstRecordAction');
+    const iper = document.getElementById('sstRecordIperId');
+    const legal = document.getElementById('sstRecordLegalId');
+    if (sector) sector.value = m.sector || sector.value || 'Estación de servicio';
+    if (legalVisible) legalVisible.value = m.legal || 'Matriz Legal vinculada';
+    if (action && !action.value) action.value = m.action || 'Definir acción de seguimiento';
+    if (iper) iper.value = m.id || m.order || '';
+    if (legal) legal.value = m.id || m.order || '';
+    const preview = document.getElementById('sstTraceabilityPreview');
+    if (preview) preview.innerHTML = `<b>Monitoreo:</b> ${esc(m.item || m.activity || selectedName)}<br><b>Sector / alcance:</b> ${esc(m.sector || '')}<br><b>Matriz legal / requisito:</b> ${esc(m.legal || '')}<br><b>Frecuencia:</b> ${esc(m.frequency || '')}<br><b>Vinculación KPI:</b> IPER y Matriz Legal quedan asociados internamente, sin traer el texto completo a la planilla.`;
+    const c1 = document.getElementById('sstTraceIperCheck'); if (c1) c1.checked = !!(iper && iper.value);
+    const c2 = document.getElementById('sstTraceLegalCheck'); if (c2) c2.checked = !!(legal && legal.value);
+  };
+
+  window.requiredSstRecordsForFrequency = function(freq){
+    const f = norm(freq || '');
+    if (f.includes('semanal')) return 4;
+    if (f.includes('quincenal')) return 2;
+    if (f.includes('mensual')) return 1;
+    if (f.includes('bimestral')) return 1;
+    if (f.includes('trimestral')) return 1;
+    if (f.includes('semestral')) return 1;
+    if (f.includes('anual')) return 1;
+    return 1;
+  };
+  window.getScheduleProgressForMonth = function(row, month){
+    const req = window.requiredSstRecordsForFrequency(row.frequency);
+    const a = (typeof countClosedSstRecordsForSchedule === 'function') ? countClosedSstRecordsForSchedule(row, month) : 0;
+    const b = (typeof countClosedHysRecordsForSchedule === 'function') ? countClosedHysRecordsForSchedule(row, month) : 0;
+    const done = Math.min(req, a + b);
+    return {done, req, text:`${done} de ${req} realizado${req>1?'s':''}`};
+  };
+  window.getSstScheduleCellState = function(row, month){
+    if (!row.months.includes(month)) return 'na';
+    if (typeof isTrainingMonitoringActivity === 'function' && isTrainingMonitoringActivity(row.activity)) return getTrainingScheduleCellStateForMonth(row.activity, month);
+    const p = window.getScheduleProgressForMonth(row, month);
+    if (p.done >= p.req) return 'done';
+    const currentMonth = today.getMonth() + 1;
+    if (month < currentMonth) return 'overdue';
+    return 'pending';
+  };
+  window.renderSstSchedule = function(){
+    const table = document.getElementById('sstScheduleTable');
+    if (!table || typeof sstSchedule === 'undefined') return;
+    const months = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+    table.innerHTML = `<thead><tr><th>Actividad / Frecuencia</th>${months.map(m=>`<th>${m}</th>`).join('')}<th>Estado</th></tr></thead><tbody>` + sstSchedule.map(row => {
+      const states = months.map((_, idx) => window.getSstScheduleCellState(row, idx+1));
+      const cells = states.map((state, idx) => {
+        if (state === 'na') return `<td><span class="month-dot na">—</span></td>`;
+        const prog = window.getScheduleProgressForMonth(row, idx+1);
+        const title = `${row.activity} · ${months[idx]}: ${prog.text}`;
+        if (state === 'done') return `<td><span class="month-dot done" title="${esc(title)}" data-progress="${esc(title)}">✓</span></td>`;
+        if (state === 'overdue') return `<td><span class="month-dot overdue" title="${esc(title)}" data-progress="${esc(title)}">!</span></td>`;
+        return `<td><span class="month-dot pending" title="${esc(title)}" data-progress="${esc(title)}">•</span></td>`;
+      }).join('');
+      const estado = states.includes('overdue') ? {txt:'Vencido',cls:'vencido'} : states.includes('pending') ? {txt:'Programado',cls:'por-vencer'} : row.months.length ? {txt:'Realizado',cls:'vigente'} : {txt:'Según ocurrencia',cls:'programado'};
+      return `<tr><td><strong>${esc(row.activity)}</strong><br><small>${esc(row.frequency)} · objetivo por período: ${window.requiredSstRecordsForFrequency(row.frequency)}</small></td>${cells}<td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
+    }).join('') + '</tbody>';
+  };
+
+  const oldShowHys = window.showHysTool;
+  window.showHysTool = function(type){
+    if (typeof oldShowHys === 'function') oldShowHys(type);
+    if (type === 'simulacion') setTimeout(window.enhanceSimulacionPanel, 30);
+  };
+  window.enhanceSimulacionPanel = function(){
+    const panel = document.getElementById('hysToolSimulacion');
+    if (!panel) return;
+    panel.classList.add('active');
+    if (!panel.querySelector('.hys-sim-info')) {
+      const info = document.createElement('div');
+      info.className = 'hys-sim-info';
+      info.innerHTML = 'Esta herramienta sirve para cronometrar y documentar pruebas operativas: evacuación, derrame, descarga con camión cisterna, comunicación interna, uso de recursos y tiempos de respuesta. Al guardar, impacta en historial HyS, cronograma y KPIs.';
+      const grid = panel.querySelector('.form-grid');
+      if (grid) grid.insertBefore(info, grid.firstChild);
+    }
+  };
+
+  window.printSstRecord = function(code){
+    const r = (typeof sstRecords !== 'undefined' ? sstRecords : []).find(x => x.code === code); if (!r) return;
+    const fmt = v => esc(v || '').replace(/\n/g,'<br>');
+    const extraRows = Array.isArray(r.extraFields) && r.extraFields.length ? r.extraFields.map(f => `<div class="field full"><b>${esc(f.label)}</b><div class="pre">${fmt(f.value)}</div></div>`).join('') : '';
+    const evidenceRows = Array.isArray(r.evidenceFiles) && r.evidenceFiles.length ? `<div class="field full"><b>Evidencias adjuntas</b><div class="pre">${r.evidenceFiles.map(n => `📎 ${esc(n)}`).join('<br>')}</div></div>` : '';
+    const legalText = r.legalAsociado || r.risk || 'Vinculado internamente';
+    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${esc(r.code)}</title><style>@page{size:A4 portrait;margin:10mm}body{font-family:Arial,sans-serif;margin:0;padding:18px;background:#f1f5f9;color:#0f172a}.sheet{max-width:900px;margin:auto;background:white;border:2px solid #0056a6;border-radius:18px;padding:20px}.head{display:flex;justify-content:space-between;gap:16px;border-bottom:4px solid #ffcc00;padding-bottom:12px}.logo{background:#0056a6;color:white;border-bottom:6px solid #00a3e0;border-radius:10px;padding:10px 16px;font-size:28px;font-weight:900}h1{color:#003f7d;margin:16px 0 4px;font-size:22px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field{border:1px solid #cbd5e1;border-radius:11px;padding:9px;background:#f8fafc;min-height:46px}.field b{display:block;color:#003f7d;font-size:10.5px;text-transform:uppercase;margin-bottom:4px}.full{grid-column:1/-1}.pre{white-space:pre-wrap;line-height:1.38}.check{display:inline-flex;align-items:center;gap:6px;font-weight:800}.sign{display:grid;grid-template-columns:1fr 1fr;gap:35px;margin-top:34px}.line{border-top:1px solid #334155;text-align:center;padding-top:8px;font-weight:700}@media print{body{background:white;padding:0}.sheet{border:2px solid #0056a6}}</style></head><body><div class="sheet"><div class="head"><div class="logo">YPF</div><div><b>UTN BA · Grupo 22</b><br>Sistema Digital SST<br>Registro documental ISO 45001</div></div><h1>${esc(r.type)}</h1><p><b>Código:</b> ${esc(r.code)}</p><div class="grid"><div class="field"><b>Fecha</b>${formatDate(r.date)}</div><div class="field"><b>Estado</b>${esc(r.state)}</div><div class="field"><b>Responsable</b>${esc(r.responsible)}</div><div class="field"><b>Sector</b>${esc(r.sector)}</div><div class="field full"><b>Monitoreo / hallazgo / evento</b><div class="pre">${fmt(r.finding)}</div></div><div class="field full"><b>Matriz legal / requisito asociado</b><div class="pre">${fmt(legalText)}</div></div><div class="field"><b>Fecha compromiso</b>${r.due ? formatDate(r.due) : 'No aplica'}</div>${extraRows}${evidenceRows}<div class="field full"><b>Acción requerida / correctiva</b><div class="pre">${fmt(r.action)}</div></div><div class="field full"><b>Observaciones / evidencia</b><div class="pre">${fmt(r.observations)}</div></div></div><div class="sign"><div class="line">Responsable SST</div><div class="line">Dirección / Encargado</div></div></div><script>window.print()<\/script></body></html>`;
+    const w = window.open('', '_blank'); w.document.write(html); w.document.close();
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    window.ensureSstTraceChecks();
+    if (typeof updateSstRecordCode === 'function') updateSstRecordCode();
+    window.enhanceSimulacionPanel();
+    try { if (typeof renderSstSchedule === 'function') renderSstSchedule(); } catch(e){ console.warn(e); }
+    ['lux','ruido','pat','fuego','termico','ventilacion','gases','vibraciones'].forEach(t => { try { if (typeof updateHysCalibrationStatus==='function') updateHysCalibrationStatus(t); } catch(e){} });
+  });
+  setTimeout(function(){ window.ensureSstTraceChecks(); window.enhanceSimulacionPanel(); try{ renderSstSchedule(); }catch(e){} }, 500);
+})();
 
 </script>
 </body>
