@@ -13431,180 +13431,276 @@ Legal: ${record.legal}`,
 
 </script>
 
-<!-- ===== V23: Cronograma SST actualizado con frecuencias reales, marco legal y estado al 17/06/2026 ===== -->
-<style id="v23-cronograma-sst-legal-real">
-  .sst-schedule { min-width: 1380px !important; }
-  .sst-schedule .legal-cell { text-align:left !important; min-width: 240px; max-width: 310px; color:#334155; font-weight:700; line-height:1.28; font-size:11px; }
-  .sst-schedule .activity-cell { text-align:left !important; min-width: 235px; }
-  .sst-schedule th.legal-head { min-width: 260px; }
-  @media print { .sst-schedule .legal-cell { font-size: 8px !important; } }
+
+<!-- ===== V22: Cronograma SST completo con Marco Legal y estados al día ===== -->
+<style id="v22-cronograma-legal">
+  .sst-schedule { min-width: 1320px !important; }
+  .sst-schedule th.sst-legal-col,
+  .sst-schedule td.sst-legal-col {
+    min-width: 260px !important;
+    max-width: 320px !important;
+    text-align: left !important;
+    white-space: normal !important;
+    line-height: 1.28 !important;
+    font-size: 11.2px !important;
+    color: var(--gray-700) !important;
+  }
+  .sst-schedule td.sst-legal-col small {
+    display:block;
+    font-weight:800;
+    color: var(--ypf-blue-dark);
+  }
+  .sst-schedule td.sst-legal-col span {
+    display:block;
+    margin-top:3px;
+    color: var(--gray-700);
+    font-weight:700;
+  }
+  .sst-schedule th:first-child, .sst-schedule td:first-child { min-width: 230px !important; }
+  .month-dot.done { background:#92d050 !important; color:#166534 !important; border-color:#70ad47 !important; }
+  .month-dot.pending { background:#ffcc00 !important; color:#7c5a00 !important; border-color:#d6a900 !important; }
+  .month-dot.overdue { background:#e30613 !important; color:white !important; border-color:#b91c1c !important; }
 </style>
-<script>
+<script id="v22-cronograma-legal-script">
 (function(){
-  const esc = (typeof escapeHtml === 'function') ? escapeHtml : (v => String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])));
-  const updatedSchedule = [
-    { activity:'Capacitación SST', frequency:'Trimestral', months:[3,6,9,12], legal:'Ley 19.587 Art. 9 · Dec. 351/79 Art. 208 · ISO 45001 Cláusula 7.2' },
-    { activity:'Inspección SST', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 · ISO 45001 Cláusula 9.1' },
-    { activity:'Observaciones SST', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'ISO 45001 Cláusula 9.1' },
-    { activity:'Verificación SST', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 9.1' },
-    { activity:'Auditoría Interna SST', frequency:'Anual', months:[11], legal:'ISO 45001 Cláusula 9.2' },
-    { activity:'Investigación de Incidentes', frequency:'Según ocurrencia', months:[], legal:'Ley 24.557 · ISO 45001 Cláusula 10.2' },
-    { activity:'Revisión por la Dirección', frequency:'Anual', months:[12], legal:'ISO 45001 Cláusula 9.3' },
-    { activity:'Control Documental', frequency:'Trimestral', months:[3,6,9,12], legal:'ISO 45001 Cláusula 7.5' },
-    { activity:'Cumplimiento Legal', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 6.1.3' },
-    { activity:'Actualización IPER', frequency:'Anual', months:[6], legal:'ISO 45001 Cláusulas 6.1 y 8.1' },
-    { activity:'Actualización Matriz Legal', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 6.1.3' },
-    { activity:'Análisis bacteriológico y físico-químico de agua potable', frequency:'Semestral', months:[6,12], legal:'Ley 19.587 · Dec. 351/79 Art. 57 y 58' },
-    { activity:'Monitoreos SST', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'Ley 19.587 · Dec. 351/79 · Res. SRT aplicables' },
-    { activity:'Medición de Niveles Lumínicos', frequency:'Anual', months:[6], legal:'Res. SRT 84/12' },
-    { activity:'Medición de Ruido', frequency:'Anual', months:[6], legal:'Dec. 351/79 Anexo V · Res. SRT 85/12' },
-    { activity:'Estrés Térmico', frequency:'Semestral', months:[1,12], legal:'Res. SRT 30/23' },
-    { activity:'Monitoreo de Condiciones de Ventilación', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 11' },
-    { activity:'Gases y Vapores', frequency:'Anual', months:[6], legal:'Res. SRT 295/03' },
-    { activity:'Vibraciones', frequency:'Anual', months:[6], legal:'Dec. 351/79 Anexo V' },
-    { activity:'Puesta a Tierra y Continuidad de Masas', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 14 · AEA 90364' },
-    { activity:'Carga de Fuego', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 18' },
-    { activity:'Mantenimiento de Equipos Eléctricos', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 14' },
-    { activity:'Simulacros de Evacuación', frequency:'Semestral', months:[6,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18 · ISO 45001 Cláusula 8.2' },
-    { activity:'Inspección de Matafuegos', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18 · IRAM 3517' },
-    { activity:'Inspección de Luces de Emergencia', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18' },
-    { activity:'Control de Botiquines', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Art. 210' },
-    { activity:'Revisión de EPP', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 19 · Res. SRT 299/11' },
-    { activity:'Señalización de Seguridad', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Dec. 351/79 Cap. 18' },
-    { activity:'Orden y Limpieza', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79' },
-    { activity:'Control de Derrames y Contingencias', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 · Ley 24.051 · Procedimientos internos YPF' }
-  ];
-
-  const risks = {
-    'Capacitación SST':'Falta de competencia preventiva y desvíos operativos por capacitación insuficiente.',
-    'Inspección SST':'Condiciones inseguras no detectadas oportunamente.',
-    'Observaciones SST':'Actos o condiciones inseguras sin registro preventivo.',
-    'Verificación SST':'Controles operativos sin seguimiento documentado.',
-    'Auditoría Interna SST':'Desvíos del sistema no detectados.',
-    'Investigación de Incidentes':'Repetición de eventos por causas no tratadas.',
-    'Revisión por la Dirección':'Falta de decisiones, recursos y mejora continua.',
-    'Control Documental':'Documentación desactualizada o sin trazabilidad.',
-    'Cumplimiento Legal':'Incumplimiento normativo y exposición a sanciones.',
-    'Actualización IPER':'Riesgos no evaluados o controles desactualizados.',
-    'Actualización Matriz Legal':'Requisitos legales no identificados o vencidos.',
-    'Análisis bacteriológico y físico-químico de agua potable':'Exposición a agua no apta para consumo humano.',
-    'Monitoreos SST':'Exposiciones higiénicas o controles críticos sin medición.',
-    'Medición de Niveles Lumínicos':'Iluminación deficiente y errores operativos.',
-    'Medición de Ruido':'Exposición a ruido laboral.',
-    'Estrés Térmico':'Golpe de calor, fatiga térmica y deshidratación.',
-    'Monitoreo de Condiciones de Ventilación':'Ventilación insuficiente y acumulación de contaminantes.',
-    'Gases y Vapores':'Exposición a vapores combustibles o atmósferas peligrosas.',
-    'Vibraciones':'Exposición a vibraciones mano-brazo o cuerpo entero.',
-    'Puesta a Tierra y Continuidad de Masas':'Contacto eléctrico, descarga y electricidad estática.',
-    'Carga de Fuego':'Riesgo de incendio por carga combustible.',
-    'Mantenimiento de Equipos Eléctricos':'Fallas eléctricas, cortocircuitos y contactos indirectos.',
-    'Simulacros de Evacuación':'Respuesta deficiente ante emergencias y demoras de evacuación.',
-    'Inspección de Matafuegos':'Respuesta inicial deficiente ante incendio.',
-    'Inspección de Luces de Emergencia':'Evacuación deficiente por baja visibilidad.',
-    'Control de Botiquines':'Respuesta inadecuada ante primeros auxilios.',
-    'Revisión de EPP':'Uso inadecuado o falta de protección personal.',
-    'Señalización de Seguridad':'Falta de advertencia e identificación de riesgos.',
-    'Orden y Limpieza':'Caídas, golpes y obstrucción de vías de circulación.',
-    'Control de Derrames y Contingencias':'Derrames, incendio, resbalones y contaminación.'
-  };
-  const sectors = {
-    'Análisis bacteriológico y físico-químico de agua potable':'Sanitarios, consumo, limpieza y servicios generales',
-    'Puesta a Tierra y Continuidad de Masas':'Tableros, surtidores, instalaciones eléctricas y equipos',
-    'Mantenimiento de Equipos Eléctricos':'Tableros, equipos eléctricos, surtidores, iluminación y bombas',
-    'Simulacros de Evacuación':'Todo el establecimiento',
-    'Estrés Térmico':'Playa, exterior, descarga y tareas a la intemperie',
-    'Orden y Limpieza':'Playa, tienda, sanitarios y circulación',
-    'Señalización de Seguridad':'Todo el establecimiento',
-    'Revisión de EPP':'Playa, GNC, descarga, mantenimiento y limpieza'
+  const mesesTodos = [1,2,3,4,5,6,7,8,9,10,11,12];
+  const cronogramaLegal = {
+    "Inspección SST": "Ley 19.587, Dec. 351/79, ISO 45001 Cláusula 9.1",
+    "Observaciones SST": "ISO 45001 Cláusula 9.1",
+    "Verificación SST": "ISO 45001 Cláusula 9.1",
+    "Auditoría Interna SST": "ISO 45001 Cláusula 9.2",
+    "Investigación de Incidentes": "Ley 24.557, ISO 45001 Cláusula 10.2",
+    "Revisión por la Dirección": "ISO 45001 Cláusula 9.3",
+    "Control Documental": "ISO 45001 Cláusula 7.5",
+    "Cumplimiento Legal": "ISO 45001 Cláusula 6.1.3",
+    "Monitoreos SST": "Ley 19.587, Dec. 351/79, Res. SRT aplicables",
+    "Simulacros de Emergencia": "Ley 19.587, Dec. 351/79 Cap. 18, ISO 45001 Cláusula 8.2",
+    "Inspección de Matafuegos": "Ley 19.587, Dec. 351/79 Cap. 18, IRAM 3517",
+    "Inspección de Luces de Emergencia": "Ley 19.587, Dec. 351/79 Cap. 18",
+    "Control de Botiquines": "Ley 19.587, Dec. 351/79 Art. 210",
+    "Verificación de EPP": "Ley 19.587, Dec. 351/79 Cap. 19, Res. SRT 299/11",
+    "Capacitación SST": "Ley 19.587 Art. 9, Dec. 351/79 Art. 208, ISO 45001 Cláusula 7.2",
+    "Actualización IPER": "ISO 45001 Cláusulas 6.1 y 8.1",
+    "Actualización Matriz Legal": "ISO 45001 Cláusula 6.1.3",
+    "Medición de Iluminación": "Res. SRT 84/12",
+    "Medición de Ruido": "Dec. 351/79 Anexo V, Res. SRT 85/12",
+    "Estrés Térmico": "Res. SRT 30/23",
+    "Puesta a Tierra": "Dec. 351/79 Cap. 14, AEA 90364",
+    "Carga de Fuego": "Dec. 351/79 Cap. 18",
+    "Ventilación": "Dec. 351/79 Cap. 11",
+    "Gases y Vapores": "Res. SRT 295/03",
+    "Vibraciones": "Dec. 351/79 Anexo V",
+    "Señalización de Seguridad": "Dec. 351/79 Cap. 18",
+    "Orden y Limpieza": "Ley 19.587, Dec. 351/79"
   };
 
-  function applyCronogramaV23(){
-    try {
-      if (typeof sstSchedule !== 'undefined' && Array.isArray(sstSchedule)) {
-        sstSchedule.splice(0, sstSchedule.length, ...updatedSchedule.map(x => ({...x})));
-      }
-      if (typeof monitoringProgram !== 'undefined' && Array.isArray(monitoringProgram)) {
-        monitoringProgram.splice(0, monitoringProgram.length, ...updatedSchedule.map((x, idx) => ({
-          item:x.activity,
-          activity:x.activity,
-          risk: risks[x.activity] || 'Riesgo asociado según IPER del establecimiento.',
-          legal: x.legal,
-          frequency: x.frequency,
-          schedule:x.activity,
-          sector: sectors[x.activity] || 'Estación de servicio YPF',
-          status:'Programado',
-          order:idx+1
-        })));
-      }
-    } catch(e) { console.warn('No se pudo aplicar Cronograma SST V23:', e); }
+  function mesesPorFrecuencia(frecuencia, actividad){
+    const f = String(frecuencia || '').toLowerCase();
+    if (f.includes('mensual') || f.includes('semanal')) return mesesTodos;
+    if (f.includes('bimestral')) return [2,4,6,8,10,12];
+    if (f.includes('trimestral')) return [3,6,9,12];
+    if (f.includes('semestral')) return [6,12];
+    if (f.includes('estacional')) return [1,12];
+    if (f.includes('según')) return [];
+    if (f.includes('anual')) {
+      if (["Medición de Iluminación","Medición de Ruido","Ventilación","Gases y Vapores","Vibraciones","Puesta a Tierra","Carga de Fuego","Actualización IPER"].includes(actividad)) return [6];
+      if (["Auditoría Interna SST"].includes(actividad)) return [11];
+      if (["Revisión por la Dirección"].includes(actividad)) return [12];
+      return [12];
+    }
+    return [];
   }
 
-  function currentScheduleMonth(){ return 6; } // Corte definido para la entrega: 17/06/2026.
+  const cronogramaCompleto = [
+    { activity: "Capacitación SST", frequency: "Mensual" },
+    { activity: "Inspección SST", frequency: "Mensual" },
+    { activity: "Observaciones SST", frequency: "Mensual" },
+    { activity: "Verificación SST", frequency: "Bimestral" },
+    { activity: "Auditoría Interna SST", frequency: "Anual" },
+    { activity: "Investigación de Incidentes", frequency: "Según ocurrencia" },
+    { activity: "Revisión por la Dirección", frequency: "Anual" },
+    { activity: "Control Documental", frequency: "Trimestral" },
+    { activity: "Cumplimiento Legal", frequency: "Bimestral" },
+    { activity: "Actualización IPER", frequency: "Anual" },
+    { activity: "Actualización Matriz Legal", frequency: "Bimestral" },
+    { activity: "Monitoreos SST", frequency: "Bimestral" },
+    { activity: "Medición de Iluminación", frequency: "Anual" },
+    { activity: "Medición de Ruido", frequency: "Anual" },
+    { activity: "Estrés Térmico", frequency: "Estacional" },
+    { activity: "Ventilación", frequency: "Anual" },
+    { activity: "Gases y Vapores", frequency: "Anual" },
+    { activity: "Vibraciones", frequency: "Anual" },
+    { activity: "Puesta a Tierra", frequency: "Anual" },
+    { activity: "Carga de Fuego", frequency: "Anual" },
+    { activity: "Simulacros de Emergencia", frequency: "Semestral" },
+    { activity: "Inspección de Matafuegos", frequency: "Mensual" },
+    { activity: "Inspección de Luces de Emergencia", frequency: "Mensual" },
+    { activity: "Control de Botiquines", frequency: "Mensual" },
+    { activity: "Verificación de EPP", frequency: "Mensual" },
+    { activity: "Señalización de Seguridad", frequency: "Mensual" },
+    { activity: "Orden y Limpieza", frequency: "Mensual" }
+  ].map(x => ({...x, months: mesesPorFrecuencia(x.frequency, x.activity), legal: cronogramaLegal[x.activity] || ""}));
+
+  window.cronogramaLegalSstYPF = cronogramaLegal;
+  if (typeof window.sstSchedule !== 'undefined' || typeof sstSchedule !== 'undefined') {
+    try { sstSchedule.splice(0, sstSchedule.length, ...cronogramaCompleto); } catch(e) { window.sstSchedule = cronogramaCompleto; }
+  } else {
+    window.sstSchedule = cronogramaCompleto;
+  }
+
+  function currentMonth2026(){
+    const now = new Date();
+    if (now.getFullYear() > 2026) return 12;
+    if (now.getFullYear() < 2026) return 0;
+    return now.getMonth() + 1;
+  }
+
   window.getSstScheduleCellState = function(row, month){
-    if (!row || !Array.isArray(row.months) || !row.months.includes(month)) return 'na';
-    return month <= currentScheduleMonth() ? 'done' : 'pending';
-  };
-  window.requiredSstRecordsForFrequency = function(freq){
-    const f = (typeof normalizeText === 'function' ? normalizeText(freq || '') : String(freq || '').toLowerCase());
-    if (f.includes('mensual')) return 1;
-    if (f.includes('bimestral')) return 1;
-    if (f.includes('trimestral')) return 1;
-    if (f.includes('semestral')) return 1;
-    if (f.includes('anual')) return 1;
-    return 1;
-  };
-  window.getScheduleProgressForMonth = function(row, month){
-    if (!row || !row.months || !row.months.includes(month)) return {done:0, req:0, text:'No aplica'};
-    const done = month <= currentScheduleMonth() ? 1 : 0;
-    return {done, req:1, text: done ? '1 de 1 realizado' : '0 de 1 programado'};
+    if (!row.months || !row.months.includes(month)) return 'na';
+    const currentMonth = currentMonth2026();
+    if (month <= currentMonth) return 'done';
+    return 'pending';
   };
 
   window.renderSstSchedule = function(){
-    applyCronogramaV23();
     const table = document.getElementById('sstScheduleTable');
     if (!table) return;
     const months = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
-    table.innerHTML = `<thead><tr><th>Actividad / Frecuencia</th>${months.map(m=>`<th>${m}</th>`).join('')}<th class="legal-head">Marco legal</th><th>Estado</th></tr></thead><tbody>` +
-      updatedSchedule.map(row => {
-        const states = months.map((_, idx) => window.getSstScheduleCellState(row, idx+1));
-        const cells = states.map((state, idx) => {
-          if (state === 'na') return `<td><span class="month-dot na">—</span></td>`;
-          const title = `${row.activity} · ${months[idx]} · ${state === 'done' ? 'Realizado' : 'Programado'}`;
-          if (state === 'done') return `<td><span class="month-dot done" title="${esc(title)}" data-progress="${esc(title)}">✓</span></td>`;
-          if (state === 'overdue') return `<td><span class="month-dot overdue" title="${esc(title)}" data-progress="${esc(title)}">!</span></td>`;
-          return `<td><span class="month-dot pending" title="${esc(title)}" data-progress="${esc(title)}">•</span></td>`;
-        }).join('');
-        const estado = states.includes('overdue') ? {txt:'Vencido',cls:'vencido'} : states.includes('pending') ? {txt:'Programado',cls:'por-vencer'} : row.months.length ? {txt:'Realizado',cls:'vigente'} : {txt:'Según ocurrencia',cls:'programado'};
-        return `<tr><td class="activity-cell"><strong>${esc(row.activity)}</strong><br><small>${esc(row.frequency)}</small></td>${cells}<td class="legal-cell">${esc(row.legal)}</td><td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
-      }).join('') + '</tbody>';
+    const rows = (typeof sstSchedule !== 'undefined' ? sstSchedule : window.sstSchedule) || cronogramaCompleto;
+    table.innerHTML = `<thead><tr><th>Actividad / Frecuencia</th>${months.map(m=>`<th>${m}</th>`).join('')}<th class="sst-legal-col">Marco Legal / Observaciones</th><th>Estado</th></tr></thead><tbody>` + rows.map(row => {
+      const states = months.map((_, idx) => window.getSstScheduleCellState(row, idx+1));
+      const cells = states.map((state, idx) => {
+        if (state === 'na') return `<td><span class="month-dot na">—</span></td>`;
+        if (state === 'done') return `<td><span class="month-dot done" title="Realizado al ${new Date().toLocaleDateString('es-AR')}">✓</span></td>`;
+        if (state === 'overdue') return `<td><span class="month-dot overdue" title="Vencido">!</span></td>`;
+        return `<td><span class="month-dot pending" title="Programado">•</span></td>`;
+      }).join('');
+      const estado = states.includes('overdue') ? {txt:'Vencido',cls:'vencido'} : states.includes('pending') ? {txt:'Programado',cls:'por-vencer'} : row.months.length ? {txt:'Realizado',cls:'vigente'} : {txt:'Según ocurrencia',cls:'programado'};
+      const legal = row.legal || cronogramaLegal[row.activity] || '';
+      return `<tr><td><strong>${esc(row.activity)}</strong><br><small>${esc(row.frequency)}</small></td>${cells}<td class="sst-legal-col"><small>Marco legal</small><span>${esc(legal)}</span></td><td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
+    }).join('') + '</tbody>';
   };
 
   window.downloadSstSchedule = function(){
-    applyCronogramaV23();
     const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-    const rows = updatedSchedule.map((row, idx) => {
-      const cells = months.map((_, i) => {
-        const state = window.getSstScheduleCellState(row, i+1);
-        if (state === 'na') return '<td class="m empty"></td>';
-        if (state === 'done') return '<td class="m done">✓</td>';
-        if (state === 'overdue') return '<td class="m overdue">!</td>';
-        return '<td class="m pending">•</td>';
+    const rows = (typeof sstSchedule !== 'undefined' ? sstSchedule : window.sstSchedule) || cronogramaCompleto;
+    const todayText = new Date().toLocaleDateString('es-AR');
+    const bodyRows = rows.map((row, idx) => {
+      const cells = months.map((_, monthIndex) => {
+        const state = window.getSstScheduleCellState(row, monthIndex + 1);
+        if (state === 'na') return `<td class="m empty"></td>`;
+        if (state === 'done') return `<td class="m done">✓</td>`;
+        if (state === 'overdue') return `<td class="m overdue">!</td>`;
+        return `<td class="m pending">•</td>`;
       }).join('');
-      const states = months.map((_, i) => window.getSstScheduleCellState(row, i+1));
+      const states = months.map((_, i) => window.getSstScheduleCellState(row, i + 1));
       const estado = states.includes('overdue') ? 'Vencido' : states.includes('pending') ? 'Programado' : row.months.length ? 'Realizado' : 'Según ocurrencia';
-      return `<tr><td class="num">${idx+1}</td><td class="activity">${esc(row.activity)}<span>${esc(row.frequency)}</span></td>${cells}<td class="legal">${esc(row.legal)}</td><td class="obs">${estado}</td></tr>`;
+      const legal = row.legal || cronogramaLegal[row.activity] || '';
+      return `<tr><td class="num">${idx + 1}</td><td class="activity">${esc(row.activity)}<span>${esc(row.frequency)}</span></td>${cells}<td class="legal">${esc(legal)}</td><td class="obs">${estado}</td></tr>`;
     }).join('');
-    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cronograma SST 2026 Rev. 1</title><style>
-      @page{size:A4 landscape;margin:6mm}*{box-sizing:border-box}body{margin:0;padding:8px;font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:#111827;-webkit-print-color-adjust:exact;print-color-adjust:exact}.actions{display:flex;gap:8px;justify-content:center;margin:0 0 8px}button{border:0;border-radius:10px;padding:9px 13px;font-weight:900;cursor:pointer;background:#0056a6;color:white}.sheet{width:100%;max-width:1360px;margin:0 auto;background:white;border:2px solid #003f7d;overflow:hidden}.top{display:grid;grid-template-columns:95px 1fr 178px;align-items:stretch;border-bottom:4px solid #ffcc00;min-height:58px}.logo{background:#003f7d;color:white;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;letter-spacing:-2px;border:2px solid #ffcc00;margin:6px 8px;line-height:1}.title{padding:9px 12px;text-align:center;display:flex;flex-direction:column;justify-content:center}.title h1{margin:0;color:#003f7d;font-size:16px;text-transform:uppercase;letter-spacing:.02em;line-height:1.1}.title p{margin:4px 0 0;color:#475569;font-size:8px;font-weight:800;line-height:1.2}.meta{border-left:1px solid #003f7d;display:grid;grid-template-rows:repeat(4,1fr);background:#f8fafc}.meta div{padding:3px 6px;border-bottom:1px solid #003f7d;font-size:8px;font-weight:800;color:#003f7d;line-height:1.15;display:flex;align-items:center}.meta div:last-child{border-bottom:0}.section{padding:7px 8px 8px}.block-title{background:#003f7d;color:white;padding:5px 8px;font-weight:900;text-transform:uppercase;font-size:9.5px;letter-spacing:.04em;margin:0 0 6px;border-left:8px solid #ffcc00}.legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px;font-size:8px;font-weight:900}.legend span{display:inline-flex;align-items:center;gap:4px}.sq{width:10px;height:10px;display:inline-block;border:1px solid #334155}.sq.done{background:#92d050}.sq.pending{background:#ffcc00}.sq.overdue{background:#e30613}table.schedule{width:100%;border-collapse:collapse;table-layout:fixed}.schedule th,.schedule td{border:1px solid #003f7d;text-align:center;vertical-align:middle;overflow:hidden}.schedule th{background:#003f7d;color:white;font-size:7.6px;padding:3px 2px;line-height:1.1}.schedule td{font-size:7.2px;padding:2px 2px;line-height:1.1}.schedule .num{width:22px;font-weight:900;background:#f8fafc;color:#003f7d}.schedule .activity{width:172px;text-align:left;font-weight:900;color:#003f7d;padding:4px}.schedule .activity span{display:block;color:#475569;font-size:6.6px;margin-top:2px;font-weight:800}.schedule .m{width:22px;height:18px;font-weight:900}.schedule .done{background:#92d050;color:#166534}.schedule .pending{background:#ffcc00;color:#7c5a00}.schedule .overdue{background:#e30613;color:#fff}.schedule .empty{background:#fff}.schedule .legal{width:230px;text-align:left;font-size:6.2px;color:#1f2937;font-weight:800;line-height:1.12;padding:3px 4px;background:#fbfdff}.schedule .obs{width:72px;font-size:6.8px;font-weight:900}.footer{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:2px solid #003f7d;background:#f8fafc}.footer div{padding:5px 7px;border-right:1px solid #003f7d;font-size:7px;font-weight:800;color:#334155}.footer div:last-child{border-right:0}@media print{body{background:white;padding:0}.actions{display:none}.sheet{border:2px solid #003f7d;max-width:none}.schedule th{font-size:7.2px}.schedule td{font-size:6.7px}.schedule .legal{font-size:5.9px}}
-    </style></head><body><div class="actions"><button onclick="window.print()">Imprimir / Guardar PDF</button></div><div class="sheet"><div class="top"><div class="logo">YPF</div><div class="title"><h1>Cronograma SST</h1><p>Estación de Servicio YPF · Sistema Digital SST · Grupo 22 UTN BA</p></div><div class="meta"><div>Código: CRON-SST-2026</div><div>Rev. 1</div><div>Año: 2026</div><div>Fecha de emisión: 17/06/2026</div></div></div><div class="section"><div class="block-title">Programa / Cronograma SST 2026</div><div class="legend"><span><b class="sq done"></b> Realizado</span><span><b class="sq pending"></b> Programado</span><span><b class="sq overdue"></b> Vencido</span></div><table class="schedule"><thead><tr><th>N°</th><th>Actividad / Frecuencia</th>${months.map(m=>`<th>${m}</th>`).join('')}<th>Marco legal / observaciones</th><th>Estado</th></tr></thead><tbody>${rows}</tbody></table></div><div class="footer"><div>Documento sin firma · Uso académico / demostrativo</div><div>Responsable: Sistema Digital SST YPF</div><div>Control: Rev. 1 · 2026</div></div></div><script>window.print()<\/script></body></html>`;
+    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cronograma SST 2026</title><style>
+      @page{size:A4 portrait;margin:6mm}*{box-sizing:border-box}body{margin:0;padding:8px;background:#eef2f7;font-family:Arial,Helvetica,sans-serif;color:#111827;-webkit-print-color-adjust:exact;print-color-adjust:exact}.actions{margin:0 auto 8px;display:flex;gap:8px;justify-content:center}button{border:0;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer;background:#0056a6;color:#fff}.sheet{width:100%;max-width:1120px;margin:0 auto;background:#fff;border:2px solid #0056a6;border-radius:14px;overflow:hidden}.head{display:grid;grid-template-columns:90px 1fr 120px;gap:10px;align-items:center;padding:10px 12px;border-bottom:5px solid #ffcc00}.logo{background:#0056a6;color:#fff;border-radius:8px;padding:8px 10px;font-size:26px;font-weight:900;text-align:center;border-bottom:5px solid #00a3e0}.title h1{margin:0;color:#003f7d;font-size:18px;letter-spacing:.02em}.title p{margin:3px 0 0;font-size:10.5px;font-weight:700;color:#334155}.meta{font-size:10.5px;font-weight:800;color:#334155;text-align:right}.legend{display:flex;gap:8px;flex-wrap:wrap;padding:7px 12px;background:#f8fafc;border-bottom:1px solid #cbd5e1;font-size:10px;font-weight:900}.legend span{display:inline-flex;gap:5px;align-items:center}.box{width:10px;height:10px;border-radius:2px;border:1px solid #94a3b8;display:inline-block}.donebox{background:#92d050}.pendingbox{background:#ffcc00}.overduebox{background:#e30613}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #cbd5e1;padding:4px 3px;font-size:8.2px;vertical-align:middle;text-align:center;line-height:1.15}th{background:#003f7d;color:#fff;text-transform:uppercase;font-size:7.4px;letter-spacing:.02em}.num{width:22px;font-weight:900}.activity{width:118px;text-align:left;font-weight:900;color:#003f7d}.activity span{display:block;color:#64748b;font-size:7.2px;margin-top:2px}.m{width:21px;height:18px;font-weight:900}.m.done{background:#92d050;color:#166534}.m.pending{background:#ffcc00;color:#7c5a00}.m.overdue{background:#e30613;color:#fff}.m.empty{background:#f8fafc;color:#94a3b8}.legal{width:155px;text-align:left;font-size:7.2px;color:#334155;font-weight:700}.obs{width:58px;font-weight:900}.foot{padding:7px 12px;background:#f8fafc;border-top:1px solid #cbd5e1;font-size:9px;color:#334155;font-weight:700}@media print{body{background:#fff;padding:0}.actions{display:none}.sheet{border:2px solid #0056a6;border-radius:0}}
+    </style></head><body><div class="actions"><button onclick="window.print()">Imprimir / guardar PDF</button><button onclick="window.close()">Cerrar</button></div><div class="sheet"><div class="head"><div class="logo">YPF</div><div class="title"><h1>PROGRAMA / CRONOGRAMA SST</h1><p>Estación de Servicio YPF · San Nicolás de los Arroyos · Sistema Digital SST</p></div><div class="meta">Rev. 1<br>Año 2026<br>Fecha: ${todayText}</div></div><div class="legend"><span><i class="box donebox"></i>Realizado</span><span><i class="box pendingbox"></i>Programado</span><span><i class="box overduebox"></i>Vencido</span></div><table><thead><tr><th>N°</th><th>Actividad</th>${months.map(m=>`<th>${m}</th>`).join('')}<th>Marco Legal / Observaciones</th><th>Estado</th></tr></thead><tbody>${bodyRows}</tbody></table><div class="foot">Documento generado sin firmas. El cronograma vincula actividades preventivas, monitoreos, herramientas HyS, registros SST, IPER, Matriz Legal y Dashboard Ejecutivo.</div></div><script>window.print()<\/script></body></html>`;
     const w = window.open('', '_blank');
-    if (w) { w.document.write(html); w.document.close(); }
+    if (!w) return alert('El navegador bloqueó la ventana emergente. Habilitá pop-ups para descargar/imprimir el cronograma.');
+    w.document.write(html); w.document.close();
   };
 
-  applyCronogramaV23();
-  document.addEventListener('DOMContentLoaded', () => { applyCronogramaV23(); try { window.renderSstSchedule(); } catch(e) { console.warn(e); } });
-  setTimeout(() => { applyCronogramaV23(); try { window.renderSstSchedule(); } catch(e) { console.warn(e); } }, 600);
-  setTimeout(() => { applyCronogramaV23(); try { window.renderSstSchedule(); } catch(e) { console.warn(e); } }, 1600);
+  const oldRenderMonitoring = window.renderMonitoringProgram;
+  if (typeof oldRenderMonitoring === 'function') {
+    // Mantener compatibilidad sin tocar monitoreos.
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    try { window.renderSstSchedule(); } catch(e) { console.warn('Cronograma SST v22:', e); }
+  });
+  setTimeout(() => { try { window.renderSstSchedule(); } catch(e){} }, 500);
+})();
+</script>
+
+<!-- ===== V25: Cronograma con herramienta/registro + Agua Potable + Matriz trimestral imprimible ===== -->
+<style id="v25-final-fixes-css">
+  .sst-schedule{min-width:1540px!important}.sst-schedule .legal-cell,.sst-schedule .obs-cell{text-align:left!important;min-width:250px;max-width:340px;color:#334155;font-size:11px;line-height:1.28;font-weight:700}.sst-schedule .obs-cell{min-width:300px}.v25-print-matrix-btn{padding:9px 12px!important;border-radius:999px!important;font-size:12px!important;white-space:nowrap}.hys-water-box{display:grid;gap:12px}.hys-water-params{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.hys-water-note{border-radius:16px;background:linear-gradient(135deg,#fff,#e7f2ff);border:1px solid #cfe7ff;color:#003f7d;padding:12px;font-size:12px;font-weight:800;line-height:1.4}
+  @media print{.v25-print-matrix-btn{display:none!important}.sst-schedule .legal-cell,.sst-schedule .obs-cell{font-size:8px!important}}
+</style>
+<script id="v25-final-fixes-js">
+(function(){
+  const esc=function(v){return String(v==null?'':v).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];});};
+  const MONTHS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const TODAY_CUT=6;
+  const SCHEDULE_V25=[
+    {activity:'Capacitación SST', frequency:'Trimestral', months:[3,6,9,12], legal:'Ley 19.587 Art. 9 · Dec. 351/79 Art. 208 · ISO 45001 Cláusula 7.2', tool:'Capacitaciones', registro:'Registro de Capacitación / Planilla de Asistencia'},
+    {activity:'Inspección SST', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 · ISO 45001 Cláusula 9.1', tool:'Checklist SST', registro:'Registro de Inspección SST'},
+    {activity:'Observaciones SST', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'ISO 45001 Cláusula 9.1', tool:'Registro SST', registro:'Registro de Observación SST'},
+    {activity:'Verificación SST', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 9.1', tool:'Registro SST', registro:'Registro de Verificación SST'},
+    {activity:'Auditoría Interna SST', frequency:'Anual', months:[11], legal:'ISO 45001 Cláusula 9.2', tool:'Registro SST', registro:'Informe de Auditoría Interna'},
+    {activity:'Investigación de Incidentes', frequency:'Según ocurrencia', months:[], legal:'Ley 24.557 · ISO 45001 Cláusula 10.2', tool:'Registro SST', registro:'Informe de Investigación'},
+    {activity:'Revisión por la Dirección', frequency:'Anual', months:[12], legal:'ISO 45001 Cláusula 9.3', tool:'Registro SST', registro:'Acta de Revisión por la Dirección'},
+    {activity:'Control Documental', frequency:'Trimestral', months:[3,6,9,12], legal:'ISO 45001 Cláusula 7.5', tool:'Documentación', registro:'Registro de Control Documental'},
+    {activity:'Cumplimiento Legal', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 6.1.3', tool:'Matriz Legal', registro:'Registro de Verificación SST'},
+    {activity:'Actualización IPER', frequency:'Anual', months:[6], legal:'ISO 45001 Cláusulas 6.1 y 8.1', tool:'Matriz IPER', registro:'Registro de Verificación SST'},
+    {activity:'Actualización Matriz Legal', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 6.1.3', tool:'Matriz Legal', registro:'Registro de Verificación SST'},
+    {activity:'Análisis bacteriológico y físico-químico de agua potable', frequency:'Semestral', months:[6,12], legal:'Ley 19.587 · Dec. 351/79 Arts. 57 y 58 · Código Alimentario Argentino', tool:'Herramientas HyS → Agua Potable', registro:'Informe técnico HyS / Registro de Verificación'},
+    {activity:'Medición de Niveles Lumínicos', frequency:'Anual', months:[6], legal:'Res. SRT 84/12', tool:'Herramientas HyS → LUX', registro:'Informe técnico HyS'},
+    {activity:'Medición de Ruido', frequency:'Anual', months:[8], legal:'Dec. 351/79 Anexo V · Res. SRT 85/12', tool:'Herramientas HyS → Ruido', registro:'Informe técnico HyS'},
+    {activity:'Estrés Térmico', frequency:'Semestral', months:[1,7], legal:'Res. SRT 30/23', tool:'Herramientas HyS → Estrés térmico', registro:'Informe técnico HyS'},
+    {activity:'Monitoreo de Condiciones de Ventilación', frequency:'Anual', months:[9], legal:'Dec. 351/79 Cap. 11', tool:'Herramientas HyS → Ventilación', registro:'Informe técnico HyS'},
+    {activity:'Gases y Vapores', frequency:'Anual', months:[10], legal:'Res. SRT 295/03', tool:'Herramientas HyS → Gases y vapores', registro:'Informe técnico HyS'},
+    {activity:'Vibraciones', frequency:'Anual', months:[11], legal:'Dec. 351/79 Anexo V', tool:'Herramientas HyS → Vibraciones', registro:'Informe técnico HyS'},
+    {activity:'Puesta a Tierra y Continuidad de Masas', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 14 · AEA 90364', tool:'Herramientas HyS → Puesta a tierra', registro:'Informe técnico HyS'},
+    {activity:'Carga de Fuego', frequency:'Anual', months:[5], legal:'Dec. 351/79 Cap. 18', tool:'Herramientas HyS → Carga de fuego', registro:'Informe técnico HyS'},
+    {activity:'Mantenimiento de Equipos Eléctricos', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 14', tool:'Registro SST / Mantenimiento externo', registro:'Registro de Verificación SST'},
+    {activity:'Simulacros de Evacuación', frequency:'Semestral', months:[6,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18 · ISO 45001 Cláusula 8.2', tool:'Emergencias / Registro SST', registro:'Simulacro'},
+    {activity:'Inspección de Matafuegos', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18 · IRAM 3517', tool:'Checklist SST', registro:'Registro de Inspección SST'},
+    {activity:'Inspección de Luces de Emergencia', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18', tool:'Checklist SST', registro:'Registro de Inspección SST'},
+    {activity:'Control de Botiquines', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Art. 210', tool:'Checklist SST', registro:'Registro de Inspección SST'},
+    {activity:'Revisión de EPP', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 19 · Res. SRT 299/11', tool:'Checklist SST / Personal', registro:'Registro de Inspección / Verificación de EPP'},
+    {activity:'Señalización de Seguridad', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Dec. 351/79 Cap. 18', tool:'Checklist SST', registro:'Registro de Inspección SST'},
+    {activity:'Orden y Limpieza', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79', tool:'Checklist SST', registro:'Registro de Inspección / Observación SST'}
+  ];
+  window.cronogramaSstV25=SCHEDULE_V25;
+  function cell(row,m){ if(!row.months||row.months.indexOf(m)<0) return 'na'; return m<=TODAY_CUT?'done':'pending'; }
+  function estado(row){ if(!row.months||!row.months.length) return ['Según ocurrencia','programado']; for(let i=0;i<row.months.length;i++){ if(row.months[i]>TODAY_CUT) return ['Programado','por-vencer']; } return ['Realizado','vigente']; }
+  window.renderSstSchedule=function(){
+    const table=document.getElementById('sstScheduleTable'); if(!table) return;
+    table.innerHTML='<thead><tr><th>Actividad / Frecuencia</th>'+MONTHS.map(m=>'<th>'+m+'</th>').join('')+'<th>Marco legal</th><th>Observaciones / Resolución</th><th>Estado</th></tr></thead><tbody>'+SCHEDULE_V25.map(function(row){
+      const e=estado(row); return '<tr><td class="activity-cell"><strong>'+esc(row.activity)+'</strong><br><small>'+esc(row.frequency)+'</small></td>'+MONTHS.map(function(_,i){const s=cell(row,i+1); return '<td><span class="month-dot '+s+'">'+(s==='done'?'✓':s==='pending'?'•':'')+'</span></td>';}).join('')+'<td class="legal-cell">'+esc(row.legal)+'</td><td class="obs-cell"><b>Herramienta:</b> '+esc(row.tool)+'<br><b>Tipo de Registro:</b> '+esc(row.registro)+'</td><td><span class="pill '+e[1]+'">'+e[0]+'</span></td></tr>';
+    }).join('')+'</tbody>';
+  };
+  window.downloadSstSchedule=function(){
+    const rows=SCHEDULE_V25.map(function(row,idx){const e=estado(row); return '<tr><td>'+String(idx+1)+'</td><td class="act">'+esc(row.activity)+'<span>'+esc(row.frequency)+'</span></td>'+MONTHS.map(function(_,i){const s=cell(row,i+1); return '<td class="m '+s+'">'+(s==='done'?'✓':s==='pending'?'•':'')+'</td>';}).join('')+'<td class="obs"><b>Marco legal:</b> '+esc(row.legal)+'<br><b>Herramienta:</b> '+esc(row.tool)+'<br><b>Tipo de Registro:</b> '+esc(row.registro)+'</td><td>'+e[0]+'</td></tr>';}).join('');
+    const doc='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cronograma SST</title><style>@page{size:A4 landscape;margin:6mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;padding:8px;background:#eef2f7;color:#111827;-webkit-print-color-adjust:exact;print-color-adjust:exact}.actions{text-align:center;margin-bottom:8px}button{border:0;border-radius:10px;padding:9px 13px;font-weight:900;background:#0056a6;color:white}.sheet{background:white;border:2px solid #003f7d}.top{display:grid;grid-template-columns:95px 1fr 178px;border-bottom:4px solid #ffcc00;min-height:58px}.logo{background:#003f7d;color:white;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;letter-spacing:-2px;border:2px solid #ffcc00;margin:6px 8px}.title{text-align:center;padding:9px}.title h1{margin:0;color:#003f7d;font-size:16px;text-transform:uppercase}.title p{margin:4px 0 0;color:#475569;font-size:8px;font-weight:800}.meta{border-left:1px solid #003f7d;background:#f8fafc}.meta div{padding:3px 6px;border-bottom:1px solid #003f7d;font-size:8px;font-weight:800;color:#003f7d}.block-title{background:#003f7d;color:white;padding:5px 8px;font-weight:900;text-transform:uppercase;font-size:9.5px;margin:7px 8px 6px;border-left:8px solid #ffcc00}.legend{display:flex;gap:8px;margin:0 8px 6px;font-size:8px;font-weight:900}.sq{width:10px;height:10px;display:inline-block;border:1px solid #334155}.done{background:#92d050}.pending{background:#ffcc00}.overdue{background:#e30613;color:white}.schedule{width:calc(100% - 16px);margin:0 8px 8px;border-collapse:collapse;table-layout:fixed}.schedule th,.schedule td{border:1px solid #003f7d;text-align:center;vertical-align:middle;overflow:hidden;font-size:6.5px;line-height:1.1;padding:2px}.schedule th{background:#003f7d;color:white;font-size:7px}.schedule .act{width:145px;text-align:left;font-weight:900;color:#003f7d;padding:4px}.schedule .act span{display:block;color:#475569;font-size:6px;margin-top:2px}.schedule .m{width:20px;height:17px;font-weight:900}.schedule .na{background:#fff}.schedule .obs{width:300px;text-align:left;font-size:5.8px;font-weight:800;line-height:1.15;background:#fbfdff;padding:3px}.footer{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:2px solid #003f7d;background:#f8fafc}.footer div{padding:5px 7px;border-right:1px solid #003f7d;font-size:7px;font-weight:800;color:#334155}@media print{body{background:white;padding:0}.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Imprimir / Guardar PDF</button></div><div class="sheet"><div class="top"><div class="logo">YPF</div><div class="title"><h1>Cronograma SST</h1><p>Estación de Servicio YPF · Sistema Digital SST · Grupo 22 UTN BA</p></div><div class="meta"><div>Código: CRON-SST-2026</div><div>Rev. 1</div><div>Año: 2026</div><div>Sin firma</div></div></div><div class="block-title">Programa / Cronograma SST 2026</div><div class="legend"><span><b class="sq done"></b> Realizado</span><span><b class="sq pending"></b> Programado</span><span><b class="sq overdue"></b> Vencido</span></div><table class="schedule"><thead><tr><th>N°</th><th>Actividad</th>'+MONTHS.map(m=>'<th>'+m+'</th>').join('')+'<th>Marco legal / Herramienta / Registro</th><th>Estado</th></tr></thead><tbody>'+rows+'</tbody></table><div class="footer"><div>Documento sin firma · Uso académico / demostrativo</div><div>Responsable: Sistema Digital SST YPF</div><div>Control: Rev. 1 · 2026</div></div></div><script>window.print()<\/script></body></html>';
+    const w=window.open('','_blank'); if(w){w.document.write(doc);w.document.close();} else alert('Permití ventanas emergentes para imprimir.');
+  };
+  window.imprimirMatrizTrimestral=function(){
+    const matrix=document.getElementById('quarterTrainingMatrix');
+    const generated=new Date().toLocaleString('es-AR');
+    const doc='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Matriz trimestral capacitación</title><style>@page{size:A4 landscape;margin:8mm}body{font-family:Arial,sans-serif;background:#eef2f7;margin:0;padding:12px;color:#0f172a;-webkit-print-color-adjust:exact;print-color-adjust:exact}.page{background:white;border:2px solid #003f7d;padding:14px}.top{display:grid;grid-template-columns:100px 1fr 190px;border-bottom:5px solid #ffcc00}.logo{background:#003f7d;color:white;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;border-bottom:6px solid #00a3e0;margin:0 12px 12px 0}.title{text-align:center}.title h1{margin:4px 0;color:#003f7d;text-transform:uppercase;font-size:22px}.title p{margin:0;color:#64748b;font-weight:800;font-size:11px}.meta{font-size:10px;color:#003f7d;font-weight:800}.meta div{border-bottom:1px solid #cbd5e1;padding:4px}.legend{display:flex;gap:10px;margin:12px 0;font-size:10px;font-weight:900}.quarter-grid{display:grid;gap:10px}.quarter-block{border:1px solid #003f7d;border-radius:8px;overflow:hidden;break-inside:avoid}.quarter-title{background:#003f7d;color:white;padding:7px 9px;border-bottom:4px solid #ffcc00;display:flex;justify-content:space-between;font-weight:900}.quarter-table{width:100%;border-collapse:collapse}.quarter-table th,.quarter-table td{border:1px solid #cbd5e1;padding:5px;text-align:center;font-size:9px}.quarter-table th:first-child,.quarter-table td:first-child{text-align:left;color:#003f7d;font-weight:900}.quarter-status{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;border:1px solid #cbd5e1;font-weight:900}.quarter-status.ok{background:#dcfce7;color:#166534}.quarter-status.warn{background:#fef3c7;color:#92400e}.quarter-status.bad{background:#fee2e2;color:#991b1b}.quarter-status.future{background:#dbeafe;color:#1e40af}.quarter-status.empty{background:#f8fafc;color:#94a3b8}.actions{text-align:center;margin-bottom:8px}button{background:#0056a6;color:white;border:0;border-radius:999px;padding:10px 14px;font-weight:900}@media print{body{background:white;padding:0}.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Imprimir / Guardar PDF</button></div><div class="page"><div class="top"><div class="logo">YPF</div><div class="title"><h1>Matriz trimestral compacta de capacitación SST</h1><p>Estación de Servicio YPF · San Nicolás de los Arroyos · Grupo 22 UTN BA</p></div><div class="meta"><div>Código: MAT-CAP-2026-001</div><div>Rev. 1</div><div>Año: 2026</div><div>Generado: '+esc(generated)+'</div></div></div><div class="legend"><span>✅ Realizada</span><span>⚠️ Pendiente</span><span>❌ Vencida</span><span>📅 Programada</span><span>— Sin asignar</span></div><div class="quarter-grid">'+(matrix?matrix.innerHTML:'')+'</div></div><script>window.print()<\/script></body></html>';
+    const w=window.open('','_blank'); if(w){w.document.write(doc);w.document.close();} else alert('Permití ventanas emergentes para imprimir.');
+  };
+  function addTrainingMatrixButton(){
+    const header=document.querySelector('.training-quarter-matrix-card .quarter-matrix-header'); if(!header || document.getElementById('btnPrintQuarterMatrixV25')) return;
+    const btn=document.createElement('button'); btn.id='btnPrintQuarterMatrixV25'; btn.className='secondary v25-print-matrix-btn'; btn.type='button'; btn.textContent='⬇ Imprimir Matriz Trimestral'; btn.onclick=window.imprimirMatrizTrimestral;
+    const legend=header.querySelector('.quarter-legend') || header; legend.appendChild(btn);
+  }
+  function addWaterTool(){
+    try{ if(typeof hysToolCatalog!=='undefined' && !hysToolCatalog.agua){ hysToolCatalog.agua={label:'Agua Potable',prefix:'HYS-AGUA',panel:'hysToolAgua',iper:'Exposición a agua no apta para consumo humano.',legal:'Ley 19.587 · Dec. 351/79 Arts. 57 y 58 · Código Alimentario Argentino',schedule:'Análisis bacteriológico y físico-químico de agua potable'}; } }catch(e){}
+    const tabs=document.querySelector('.hys-tool-tabs'); if(tabs && !document.getElementById('hysTabAguaV25')){ const b=document.createElement('button'); b.id='hysTabAguaV25'; b.className='hys-tab-btn'; b.type='button'; b.textContent='💧 Agua Potable'; b.onclick=function(){ if(typeof showHysTool==='function') showHysTool('agua'); }; tabs.appendChild(b); }
+    const host=document.querySelector('.hys-tool-layout .card:nth-child(2)'); if(host && !document.getElementById('hysToolAgua')){ const p=document.createElement('div'); p.className='hys-panel'; p.id='hysToolAgua'; p.innerHTML='<h3>💧 Herramienta HyS · Agua Potable</h3><div class="hys-water-note">Análisis bacteriológico y físico-químico semestral. Puede registrar informe externo de laboratorio o control interno de parámetros básicos.</div><div class="form-grid hys-water-box"><input id="aguaResponsible" placeholder="Responsable" value="Responsable SST"><input id="aguaSector" placeholder="Sector / punto" value="Sanitarios / consumo"><input id="aguaMuestreo" placeholder="Punto de muestreo"><input id="aguaLab" placeholder="Laboratorio / proveedor"><select id="aguaTipo"><option>Bacteriológico y físico-químico</option><option>Bacteriológico</option><option>Físico-químico</option></select><div class="hys-instrument-title">Parámetros / Instrumental</div><select id="aguaInstrument"><option>Informe de laboratorio externo</option><option>Kit colorimétrico de cloro residual</option><option>Medidor de pH portátil</option><option>Conductímetro</option><option>Turbidímetro</option></select><input id="aguaSerial" placeholder="N° de serie / informe"><label class="hys-field-label">🔧 Fecha de Calibración del Instrumento<input id="aguaCalibration" type="date"></label><label class="hys-field-label">⏳ Vencimiento de Calibración<input id="aguaCalibrationDue" type="date" onchange="updateHysCalibrationStatus(\'agua\')" oninput="updateHysCalibrationStatus(\'agua\')"></label><div id="aguaCalibrationStatus" class="hys-calibration-status">Estado de calibración: sin vencimiento cargado.</div><div class="hys-water-params"><input id="aguaPh" placeholder="pH"><input id="aguaCloro" placeholder="Cloro residual"><input id="aguaConductividad" placeholder="Conductividad"><input id="aguaTurbidez" placeholder="Turbidez"><input id="aguaColiformes" placeholder="Coliformes totales"><input id="aguaEcoli" placeholder="E. coli"></div><select id="aguaCumple"><option value="ok">Cumple</option><option value="warn">Con observaciones</option><option value="bad">No cumple</option></select><textarea id="aguaObservations" class="multiline-friendly" placeholder="Observaciones / acciones recomendadas"></textarea></div><div id="aguaResult" class="hys-result"><strong>Resultado pendiente</strong><small>Cargá los datos para evaluar cumplimiento.</small></div><div class="hys-form-actions"><button class="primary" onclick="saveAguaTool()">Guardar informe Agua Potable</button><button class="secondary certificate-btn" onclick="downloadLastHysReport(\'agua\')">Descargar informe</button><button class="secondary" onclick="clearHysToolFields(\'agua\')">Limpiar campos</button></div>'; host.appendChild(p); }
+  }
+  window.saveAguaTool=function(){
+    const st=document.getElementById('aguaCumple')?document.getElementById('aguaCumple').value:'ok';
+    const statusText=st==='bad'?'No cumple':st==='warn'?'Con observaciones':'Cumple';
+    const inst=(typeof getHysInstrumentData==='function')?getHysInstrumentData('agua'):{instrument:(document.getElementById('aguaInstrument')||{}).value||'Informe de laboratorio externo',serial:(document.getElementById('aguaSerial')||{}).value||'S/N',calibration:'No informada',calibrationDue:'No informado',calibrationStatus:'No informado'};
+    const vals=['pH '+((document.getElementById('aguaPh')||{}).value||'s/d'),'Cloro '+((document.getElementById('aguaCloro')||{}).value||'s/d'),'Conductividad '+((document.getElementById('aguaConductividad')||{}).value||'s/d'),'Turbidez '+((document.getElementById('aguaTurbidez')||{}).value||'s/d'),'Coliformes '+((document.getElementById('aguaColiformes')||{}).value||'s/d'),'E. coli '+((document.getElementById('aguaEcoli')||{}).value||'s/d')].join(' · ');
+    const rec={type:'agua',code:(typeof hysNextCode==='function'?hysNextCode('agua'):'HYS-AGUA-2026-'+Date.now()),tool:'Agua Potable',date:new Date().toISOString().slice(0,10),fecha:new Date().toLocaleDateString('es-AR'),hora:new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}),responsible:(document.getElementById('aguaResponsible')||{}).value||'Responsable SST',sector:(document.getElementById('aguaSector')||{}).value||'Sanitarios / consumo',measurement:(document.getElementById('aguaTipo')||{}).value||'Bacteriológico y físico-químico',result:vals,compliance:statusText,statusClass:st,observations:(document.getElementById('aguaObservations')||{}).value||'Sin observaciones adicionales.',iper:'Exposición a agua no apta para consumo humano.',legal:'Ley 19.587 · Dec. 351/79 Arts. 57 y 58 · Código Alimentario Argentino',schedule:'Análisis bacteriológico y físico-químico de agua potable',instrument:inst.instrument,serial:inst.serial,calibration:inst.calibration,calibrationDue:inst.calibrationDue,calibrationStatus:inst.calibrationStatus};
+    const res=document.getElementById('aguaResult'); if(res){res.className='hys-result '+st; res.innerHTML='<strong>'+statusText+'</strong><small>'+esc(vals)+'</small>';}
+    if(typeof saveHysToolRecord==='function') saveHysToolRecord(rec); else alert('Informe Agua Potable registrado.');
+  };
+  const oldShow=window.showHysTool;
+  window.showHysTool=function(type){ if(type==='agua'){ document.querySelectorAll('.hys-tab-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.hys-panel').forEach(p=>p.classList.remove('active')); const b=document.getElementById('hysTabAguaV25'); if(b)b.classList.add('active'); const p=document.getElementById('hysToolAgua'); if(p)p.classList.add('active'); return; } if(typeof oldShow==='function') return oldShow(type); };
+  function initV25(){ addTrainingMatrixButton(); addWaterTool(); try{window.renderSstSchedule();}catch(e){console.warn(e);} try{ if(typeof updateHysCalibrationStatus==='function') updateHysCalibrationStatus('agua'); }catch(e){} }
+  document.addEventListener('DOMContentLoaded',initV25); setTimeout(initV25,400); setTimeout(initV25,1300);
 })();
 </script>
 
