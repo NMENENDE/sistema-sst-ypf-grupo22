@@ -516,7 +516,7 @@
       height: 160px;
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      gap: 10px;
       padding: 10px;
       border-radius: 18px;
       background: white;
@@ -13430,5 +13430,183 @@ Legal: ${record.legal}`,
 })();
 
 </script>
+
+<!-- ===== V23: Cronograma SST actualizado con frecuencias reales, marco legal y estado al 17/06/2026 ===== -->
+<style id="v23-cronograma-sst-legal-real">
+  .sst-schedule { min-width: 1380px !important; }
+  .sst-schedule .legal-cell { text-align:left !important; min-width: 240px; max-width: 310px; color:#334155; font-weight:700; line-height:1.28; font-size:11px; }
+  .sst-schedule .activity-cell { text-align:left !important; min-width: 235px; }
+  .sst-schedule th.legal-head { min-width: 260px; }
+  @media print { .sst-schedule .legal-cell { font-size: 8px !important; } }
+</style>
+<script>
+(function(){
+  const esc = (typeof escapeHtml === 'function') ? escapeHtml : (v => String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])));
+  const updatedSchedule = [
+    { activity:'Capacitación SST', frequency:'Trimestral', months:[3,6,9,12], legal:'Ley 19.587 Art. 9 · Dec. 351/79 Art. 208 · ISO 45001 Cláusula 7.2' },
+    { activity:'Inspección SST', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 · ISO 45001 Cláusula 9.1' },
+    { activity:'Observaciones SST', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'ISO 45001 Cláusula 9.1' },
+    { activity:'Verificación SST', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 9.1' },
+    { activity:'Auditoría Interna SST', frequency:'Anual', months:[11], legal:'ISO 45001 Cláusula 9.2' },
+    { activity:'Investigación de Incidentes', frequency:'Según ocurrencia', months:[], legal:'Ley 24.557 · ISO 45001 Cláusula 10.2' },
+    { activity:'Revisión por la Dirección', frequency:'Anual', months:[12], legal:'ISO 45001 Cláusula 9.3' },
+    { activity:'Control Documental', frequency:'Trimestral', months:[3,6,9,12], legal:'ISO 45001 Cláusula 7.5' },
+    { activity:'Cumplimiento Legal', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 6.1.3' },
+    { activity:'Actualización IPER', frequency:'Anual', months:[6], legal:'ISO 45001 Cláusulas 6.1 y 8.1' },
+    { activity:'Actualización Matriz Legal', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'ISO 45001 Cláusula 6.1.3' },
+    { activity:'Análisis bacteriológico y físico-químico de agua potable', frequency:'Semestral', months:[6,12], legal:'Ley 19.587 · Dec. 351/79 Art. 57 y 58' },
+    { activity:'Monitoreos SST', frequency:'Bimestral', months:[2,4,6,8,10,12], legal:'Ley 19.587 · Dec. 351/79 · Res. SRT aplicables' },
+    { activity:'Medición de Niveles Lumínicos', frequency:'Anual', months:[6], legal:'Res. SRT 84/12' },
+    { activity:'Medición de Ruido', frequency:'Anual', months:[6], legal:'Dec. 351/79 Anexo V · Res. SRT 85/12' },
+    { activity:'Estrés Térmico', frequency:'Semestral', months:[1,12], legal:'Res. SRT 30/23' },
+    { activity:'Monitoreo de Condiciones de Ventilación', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 11' },
+    { activity:'Gases y Vapores', frequency:'Anual', months:[6], legal:'Res. SRT 295/03' },
+    { activity:'Vibraciones', frequency:'Anual', months:[6], legal:'Dec. 351/79 Anexo V' },
+    { activity:'Puesta a Tierra y Continuidad de Masas', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 14 · AEA 90364' },
+    { activity:'Carga de Fuego', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 18' },
+    { activity:'Mantenimiento de Equipos Eléctricos', frequency:'Anual', months:[6], legal:'Dec. 351/79 Cap. 14' },
+    { activity:'Simulacros de Evacuación', frequency:'Semestral', months:[6,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18 · ISO 45001 Cláusula 8.2' },
+    { activity:'Inspección de Matafuegos', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18 · IRAM 3517' },
+    { activity:'Inspección de Luces de Emergencia', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 18' },
+    { activity:'Control de Botiquines', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Art. 210' },
+    { activity:'Revisión de EPP', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 Cap. 19 · Res. SRT 299/11' },
+    { activity:'Señalización de Seguridad', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Dec. 351/79 Cap. 18' },
+    { activity:'Orden y Limpieza', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79' },
+    { activity:'Control de Derrames y Contingencias', frequency:'Mensual', months:[1,2,3,4,5,6,7,8,9,10,11,12], legal:'Ley 19.587 · Dec. 351/79 · Ley 24.051 · Procedimientos internos YPF' }
+  ];
+
+  const risks = {
+    'Capacitación SST':'Falta de competencia preventiva y desvíos operativos por capacitación insuficiente.',
+    'Inspección SST':'Condiciones inseguras no detectadas oportunamente.',
+    'Observaciones SST':'Actos o condiciones inseguras sin registro preventivo.',
+    'Verificación SST':'Controles operativos sin seguimiento documentado.',
+    'Auditoría Interna SST':'Desvíos del sistema no detectados.',
+    'Investigación de Incidentes':'Repetición de eventos por causas no tratadas.',
+    'Revisión por la Dirección':'Falta de decisiones, recursos y mejora continua.',
+    'Control Documental':'Documentación desactualizada o sin trazabilidad.',
+    'Cumplimiento Legal':'Incumplimiento normativo y exposición a sanciones.',
+    'Actualización IPER':'Riesgos no evaluados o controles desactualizados.',
+    'Actualización Matriz Legal':'Requisitos legales no identificados o vencidos.',
+    'Análisis bacteriológico y físico-químico de agua potable':'Exposición a agua no apta para consumo humano.',
+    'Monitoreos SST':'Exposiciones higiénicas o controles críticos sin medición.',
+    'Medición de Niveles Lumínicos':'Iluminación deficiente y errores operativos.',
+    'Medición de Ruido':'Exposición a ruido laboral.',
+    'Estrés Térmico':'Golpe de calor, fatiga térmica y deshidratación.',
+    'Monitoreo de Condiciones de Ventilación':'Ventilación insuficiente y acumulación de contaminantes.',
+    'Gases y Vapores':'Exposición a vapores combustibles o atmósferas peligrosas.',
+    'Vibraciones':'Exposición a vibraciones mano-brazo o cuerpo entero.',
+    'Puesta a Tierra y Continuidad de Masas':'Contacto eléctrico, descarga y electricidad estática.',
+    'Carga de Fuego':'Riesgo de incendio por carga combustible.',
+    'Mantenimiento de Equipos Eléctricos':'Fallas eléctricas, cortocircuitos y contactos indirectos.',
+    'Simulacros de Evacuación':'Respuesta deficiente ante emergencias y demoras de evacuación.',
+    'Inspección de Matafuegos':'Respuesta inicial deficiente ante incendio.',
+    'Inspección de Luces de Emergencia':'Evacuación deficiente por baja visibilidad.',
+    'Control de Botiquines':'Respuesta inadecuada ante primeros auxilios.',
+    'Revisión de EPP':'Uso inadecuado o falta de protección personal.',
+    'Señalización de Seguridad':'Falta de advertencia e identificación de riesgos.',
+    'Orden y Limpieza':'Caídas, golpes y obstrucción de vías de circulación.',
+    'Control de Derrames y Contingencias':'Derrames, incendio, resbalones y contaminación.'
+  };
+  const sectors = {
+    'Análisis bacteriológico y físico-químico de agua potable':'Sanitarios, consumo, limpieza y servicios generales',
+    'Puesta a Tierra y Continuidad de Masas':'Tableros, surtidores, instalaciones eléctricas y equipos',
+    'Mantenimiento de Equipos Eléctricos':'Tableros, equipos eléctricos, surtidores, iluminación y bombas',
+    'Simulacros de Evacuación':'Todo el establecimiento',
+    'Estrés Térmico':'Playa, exterior, descarga y tareas a la intemperie',
+    'Orden y Limpieza':'Playa, tienda, sanitarios y circulación',
+    'Señalización de Seguridad':'Todo el establecimiento',
+    'Revisión de EPP':'Playa, GNC, descarga, mantenimiento y limpieza'
+  };
+
+  function applyCronogramaV23(){
+    try {
+      if (typeof sstSchedule !== 'undefined' && Array.isArray(sstSchedule)) {
+        sstSchedule.splice(0, sstSchedule.length, ...updatedSchedule.map(x => ({...x})));
+      }
+      if (typeof monitoringProgram !== 'undefined' && Array.isArray(monitoringProgram)) {
+        monitoringProgram.splice(0, monitoringProgram.length, ...updatedSchedule.map((x, idx) => ({
+          item:x.activity,
+          activity:x.activity,
+          risk: risks[x.activity] || 'Riesgo asociado según IPER del establecimiento.',
+          legal: x.legal,
+          frequency: x.frequency,
+          schedule:x.activity,
+          sector: sectors[x.activity] || 'Estación de servicio YPF',
+          status:'Programado',
+          order:idx+1
+        })));
+      }
+    } catch(e) { console.warn('No se pudo aplicar Cronograma SST V23:', e); }
+  }
+
+  function currentScheduleMonth(){ return 6; } // Corte definido para la entrega: 17/06/2026.
+  window.getSstScheduleCellState = function(row, month){
+    if (!row || !Array.isArray(row.months) || !row.months.includes(month)) return 'na';
+    return month <= currentScheduleMonth() ? 'done' : 'pending';
+  };
+  window.requiredSstRecordsForFrequency = function(freq){
+    const f = (typeof normalizeText === 'function' ? normalizeText(freq || '') : String(freq || '').toLowerCase());
+    if (f.includes('mensual')) return 1;
+    if (f.includes('bimestral')) return 1;
+    if (f.includes('trimestral')) return 1;
+    if (f.includes('semestral')) return 1;
+    if (f.includes('anual')) return 1;
+    return 1;
+  };
+  window.getScheduleProgressForMonth = function(row, month){
+    if (!row || !row.months || !row.months.includes(month)) return {done:0, req:0, text:'No aplica'};
+    const done = month <= currentScheduleMonth() ? 1 : 0;
+    return {done, req:1, text: done ? '1 de 1 realizado' : '0 de 1 programado'};
+  };
+
+  window.renderSstSchedule = function(){
+    applyCronogramaV23();
+    const table = document.getElementById('sstScheduleTable');
+    if (!table) return;
+    const months = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+    table.innerHTML = `<thead><tr><th>Actividad / Frecuencia</th>${months.map(m=>`<th>${m}</th>`).join('')}<th class="legal-head">Marco legal</th><th>Estado</th></tr></thead><tbody>` +
+      updatedSchedule.map(row => {
+        const states = months.map((_, idx) => window.getSstScheduleCellState(row, idx+1));
+        const cells = states.map((state, idx) => {
+          if (state === 'na') return `<td><span class="month-dot na">—</span></td>`;
+          const title = `${row.activity} · ${months[idx]} · ${state === 'done' ? 'Realizado' : 'Programado'}`;
+          if (state === 'done') return `<td><span class="month-dot done" title="${esc(title)}" data-progress="${esc(title)}">✓</span></td>`;
+          if (state === 'overdue') return `<td><span class="month-dot overdue" title="${esc(title)}" data-progress="${esc(title)}">!</span></td>`;
+          return `<td><span class="month-dot pending" title="${esc(title)}" data-progress="${esc(title)}">•</span></td>`;
+        }).join('');
+        const estado = states.includes('overdue') ? {txt:'Vencido',cls:'vencido'} : states.includes('pending') ? {txt:'Programado',cls:'por-vencer'} : row.months.length ? {txt:'Realizado',cls:'vigente'} : {txt:'Según ocurrencia',cls:'programado'};
+        return `<tr><td class="activity-cell"><strong>${esc(row.activity)}</strong><br><small>${esc(row.frequency)}</small></td>${cells}<td class="legal-cell">${esc(row.legal)}</td><td><span class="pill ${estado.cls}">${estado.txt}</span></td></tr>`;
+      }).join('') + '</tbody>';
+  };
+
+  window.downloadSstSchedule = function(){
+    applyCronogramaV23();
+    const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const rows = updatedSchedule.map((row, idx) => {
+      const cells = months.map((_, i) => {
+        const state = window.getSstScheduleCellState(row, i+1);
+        if (state === 'na') return '<td class="m empty"></td>';
+        if (state === 'done') return '<td class="m done">✓</td>';
+        if (state === 'overdue') return '<td class="m overdue">!</td>';
+        return '<td class="m pending">•</td>';
+      }).join('');
+      const states = months.map((_, i) => window.getSstScheduleCellState(row, i+1));
+      const estado = states.includes('overdue') ? 'Vencido' : states.includes('pending') ? 'Programado' : row.months.length ? 'Realizado' : 'Según ocurrencia';
+      return `<tr><td class="num">${idx+1}</td><td class="activity">${esc(row.activity)}<span>${esc(row.frequency)}</span></td>${cells}<td class="legal">${esc(row.legal)}</td><td class="obs">${estado}</td></tr>`;
+    }).join('');
+    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cronograma SST 2026 Rev. 1</title><style>
+      @page{size:A4 landscape;margin:6mm}*{box-sizing:border-box}body{margin:0;padding:8px;font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:#111827;-webkit-print-color-adjust:exact;print-color-adjust:exact}.actions{display:flex;gap:8px;justify-content:center;margin:0 0 8px}button{border:0;border-radius:10px;padding:9px 13px;font-weight:900;cursor:pointer;background:#0056a6;color:white}.sheet{width:100%;max-width:1360px;margin:0 auto;background:white;border:2px solid #003f7d;overflow:hidden}.top{display:grid;grid-template-columns:95px 1fr 178px;align-items:stretch;border-bottom:4px solid #ffcc00;min-height:58px}.logo{background:#003f7d;color:white;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;letter-spacing:-2px;border:2px solid #ffcc00;margin:6px 8px;line-height:1}.title{padding:9px 12px;text-align:center;display:flex;flex-direction:column;justify-content:center}.title h1{margin:0;color:#003f7d;font-size:16px;text-transform:uppercase;letter-spacing:.02em;line-height:1.1}.title p{margin:4px 0 0;color:#475569;font-size:8px;font-weight:800;line-height:1.2}.meta{border-left:1px solid #003f7d;display:grid;grid-template-rows:repeat(4,1fr);background:#f8fafc}.meta div{padding:3px 6px;border-bottom:1px solid #003f7d;font-size:8px;font-weight:800;color:#003f7d;line-height:1.15;display:flex;align-items:center}.meta div:last-child{border-bottom:0}.section{padding:7px 8px 8px}.block-title{background:#003f7d;color:white;padding:5px 8px;font-weight:900;text-transform:uppercase;font-size:9.5px;letter-spacing:.04em;margin:0 0 6px;border-left:8px solid #ffcc00}.legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px;font-size:8px;font-weight:900}.legend span{display:inline-flex;align-items:center;gap:4px}.sq{width:10px;height:10px;display:inline-block;border:1px solid #334155}.sq.done{background:#92d050}.sq.pending{background:#ffcc00}.sq.overdue{background:#e30613}table.schedule{width:100%;border-collapse:collapse;table-layout:fixed}.schedule th,.schedule td{border:1px solid #003f7d;text-align:center;vertical-align:middle;overflow:hidden}.schedule th{background:#003f7d;color:white;font-size:7.6px;padding:3px 2px;line-height:1.1}.schedule td{font-size:7.2px;padding:2px 2px;line-height:1.1}.schedule .num{width:22px;font-weight:900;background:#f8fafc;color:#003f7d}.schedule .activity{width:172px;text-align:left;font-weight:900;color:#003f7d;padding:4px}.schedule .activity span{display:block;color:#475569;font-size:6.6px;margin-top:2px;font-weight:800}.schedule .m{width:22px;height:18px;font-weight:900}.schedule .done{background:#92d050;color:#166534}.schedule .pending{background:#ffcc00;color:#7c5a00}.schedule .overdue{background:#e30613;color:#fff}.schedule .empty{background:#fff}.schedule .legal{width:230px;text-align:left;font-size:6.2px;color:#1f2937;font-weight:800;line-height:1.12;padding:3px 4px;background:#fbfdff}.schedule .obs{width:72px;font-size:6.8px;font-weight:900}.footer{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:2px solid #003f7d;background:#f8fafc}.footer div{padding:5px 7px;border-right:1px solid #003f7d;font-size:7px;font-weight:800;color:#334155}.footer div:last-child{border-right:0}@media print{body{background:white;padding:0}.actions{display:none}.sheet{border:2px solid #003f7d;max-width:none}.schedule th{font-size:7.2px}.schedule td{font-size:6.7px}.schedule .legal{font-size:5.9px}}
+    </style></head><body><div class="actions"><button onclick="window.print()">Imprimir / Guardar PDF</button></div><div class="sheet"><div class="top"><div class="logo">YPF</div><div class="title"><h1>Cronograma SST</h1><p>Estación de Servicio YPF · Sistema Digital SST · Grupo 22 UTN BA</p></div><div class="meta"><div>Código: CRON-SST-2026</div><div>Rev. 1</div><div>Año: 2026</div><div>Fecha de emisión: 17/06/2026</div></div></div><div class="section"><div class="block-title">Programa / Cronograma SST 2026</div><div class="legend"><span><b class="sq done"></b> Realizado</span><span><b class="sq pending"></b> Programado</span><span><b class="sq overdue"></b> Vencido</span></div><table class="schedule"><thead><tr><th>N°</th><th>Actividad / Frecuencia</th>${months.map(m=>`<th>${m}</th>`).join('')}<th>Marco legal / observaciones</th><th>Estado</th></tr></thead><tbody>${rows}</tbody></table></div><div class="footer"><div>Documento sin firma · Uso académico / demostrativo</div><div>Responsable: Sistema Digital SST YPF</div><div>Control: Rev. 1 · 2026</div></div></div><script>window.print()<\/script></body></html>`;
+    const w = window.open('', '_blank');
+    if (w) { w.document.write(html); w.document.close(); }
+  };
+
+  applyCronogramaV23();
+  document.addEventListener('DOMContentLoaded', () => { applyCronogramaV23(); try { window.renderSstSchedule(); } catch(e) { console.warn(e); } });
+  setTimeout(() => { applyCronogramaV23(); try { window.renderSstSchedule(); } catch(e) { console.warn(e); } }, 600);
+  setTimeout(() => { applyCronogramaV23(); try { window.renderSstSchedule(); } catch(e) { console.warn(e); } }, 1600);
+})();
+</script>
+
 </body>
 </html>
