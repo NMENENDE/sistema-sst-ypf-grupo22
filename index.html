@@ -4930,7 +4930,7 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
           <div class="schedule-legend-inline">
             <span class="schedule-legend-pill done"><b></b> Realizado</span>
             <span class="schedule-legend-pill pending"><b></b> Programado</span>
-            <span class="schedule-legend-pill overdue"><b></b> Vencido</span>
+            <span class="schedule-legend-pill overdue"><b></b> No Realizado</span>
           </div>
         </div>
         <div class="calendar-actions-row">
@@ -6747,8 +6747,7 @@ async function guardarRealizacionSupabase(training) {
 
     const academicSupervisors = [
       { name: "Martín Bruno", function: "Seguimiento académico y criterios preventivos" },
-      { name: "Maria Valeria Salvatore", function: "Seguimiento académico y criterios preventivos" },
-      { name: "José Navío", function: "Supervisión técnica y operativa del proyecto" },
+      { name: "Valeria Salvatore", function: "Seguimiento académico y criterios preventivos" },
       { name: "Víctor Morera", function: "Evaluación de riesgos, controles y mejora continua" },
       { name: "Sebastián Ezpeleta", function: "Gestión SST, documentación y enfoque preventivo" }
     ];
@@ -9062,7 +9061,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
 
             <div class="signatures">
               <div class="sig">Martín Bruno<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
-              <div class="sig">José Navío<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
+              <div class="sig">Valeria Salvatore<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
               <div class="sig">Víctor Morera<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
               <div class="sig">Sebastián Ezpeleta<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
             </div>
@@ -13704,5 +13703,1197 @@ Legal: ${record.legal}`,
 })();
 </script>
 
+
+<style id="hoja6-cronograma-sst-final-css">
+  .sst-schedule.hoja6-schedule { min-width: 1480px !important; table-layout: fixed !important; }
+  .sst-schedule.hoja6-schedule th,
+  .sst-schedule.hoja6-schedule td { padding: 8px 7px !important; font-size: 11.2px !important; vertical-align: middle !important; }
+  .sst-schedule.hoja6-schedule th:first-child,
+  .sst-schedule.hoja6-schedule td:first-child { position: static !important; left: auto !important; min-width: 0 !important; width: 44px !important; text-align: center !important; background: #fbfdff !important; color: var(--ypf-blue-dark) !important; }
+  .sst-schedule.hoja6-schedule .desc-cell { text-align: left !important; width: 300px !important; min-width: 300px !important; color: var(--ypf-blue-dark) !important; font-weight: 850 !important; line-height: 1.25 !important; }
+  .sst-schedule.hoja6-schedule .resp-cell { width: 96px !important; min-width: 96px !important; font-weight: 900 !important; color: var(--gray-700) !important; text-align: center !important; }
+  .sst-schedule.hoja6-schedule .month-head,
+  .sst-schedule.hoja6-schedule .month-cell { width: 42px !important; min-width: 42px !important; text-align: center !important; padding-left: 3px !important; padding-right: 3px !important; }
+  .sst-schedule.hoja6-schedule .state-cell { width: 122px !important; min-width: 122px !important; text-align: center !important; }
+  .sst-schedule.hoja6-schedule .obs-cell { width: 390px !important; min-width: 390px !important; max-width: 430px !important; text-align: left !important; white-space: normal !important; line-height: 1.28 !important; color: var(--gray-700) !important; font-weight: 750 !important; }
+  .month-dot.done { background:#A3D133 !important; color:#166534 !important; border-color:#70ad47 !important; }
+  .month-dot.pending { background:#F8D921 !important; color:#7c5a00 !important; border-color:#d6a900 !important; }
+  .month-dot.overdue { background:#D01C1F !important; color:white !important; border-color:#991b1b !important; }
+  .month-dot.scheduled { background:#F4F6F8 !important; color:#64748b !important; border-color:#cbd5e1 !important; }
+  .schedule-legend-pill.scheduled b { background:#F4F6F8; }
+  .hoja6-stats-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:10px; margin:12px 0 14px; }
+  .hoja6-stat { border:1px solid var(--gray-200); border-radius:16px; padding:11px 12px; background:white; border-left:5px solid var(--ypf-blue); box-shadow:0 8px 18px rgba(15,23,42,.045); }
+  .hoja6-stat.done { border-left-color:#70ad47; } .hoja6-stat.pending { border-left-color:#d6a900; } .hoja6-stat.overdue { border-left-color:#D01C1F; } .hoja6-stat.scheduled { border-left-color:#cbd5e1; }
+  .hoja6-stat span { display:block; color:var(--gray-500); font-size:10.5px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; }
+  .hoja6-stat strong { display:block; color:var(--ypf-blue-dark); font-size:24px; line-height:1; margin-top:5px; }
+  @media print { .sst-schedule.hoja6-schedule { min-width: 0 !important; } }
+</style>
+
+
+<script id="hoja6-cronograma-sst-final-js">
+(function(){
+  const HOJA6_SST_SCHEDULE = [
+  {
+    "id": "PM-01",
+    "no": 1,
+    "activity": "Medición de Resistencia a la puesta a tierra y continuidad de las masas",
+    "responsible": "SST",
+    "frequency": "Anual",
+    "months": [
+      1
+    ],
+    "states": {
+      "1": "done"
+    },
+    "observation": "Se realiza anualmente con un profesional matriculado y equipo cerificado. Según Dec. 351/79. Cap 14.Res SRT 900/15 AEA 90364",
+    "risk": "Riesgo eléctrico, electricidad estática y falta de continuidad de masas.",
+    "legal": "Se realiza anualmente con un profesional matriculado y equipo cerificado. Según Dec. 351/79. Cap 14.Res SRT 900/15 AEA 90364",
+    "sector": "Instalación eléctrica, surtidores, tableros y masas metálicas",
+    "toolType": "pat",
+    "registroAsociado": "Informe técnico HyS · Puesta a tierra",
+    "instrumental": "Informe técnico HyS · Puesta a tierra",
+    "family": "puesta"
+  },
+  {
+    "id": "PM-02",
+    "no": 2,
+    "activity": "Medición de Nivel Sonoro",
+    "responsible": "SST",
+    "frequency": "Anual",
+    "months": [
+      8
+    ],
+    "states": {
+      "8": "overdue"
+    },
+    "observation": "Se realizara en forma anual, los parametros normativos Ley 19587 Dec.351/79. Anexo V. SRT 85/12",
+    "risk": "Exposición a ruido laboral y ausencia de control de niveles sonoros.",
+    "legal": "Se realizara en forma anual, los parametros normativos Ley 19587 Dec.351/79. Anexo V. SRT 85/12",
+    "sector": "Playa, compresores, GNC y sectores operativos",
+    "toolType": "ruido",
+    "registroAsociado": "Informe técnico HyS · Ruido laboral",
+    "instrumental": "Informe técnico HyS · Ruido laboral",
+    "family": "sonoro"
+  },
+  {
+    "id": "PM-03",
+    "no": 3,
+    "activity": "Medicion de carga por estrés termico",
+    "responsible": "SST",
+    "frequency": "Semestral",
+    "months": [
+      1,
+      7
+    ],
+    "states": {
+      "1": "done",
+      "7": "overdue"
+    },
+    "observation": "Debe realizarse dos veces al año en cambio de temporada Res SRT 30/23 Dec. 351/79 Res 295/03",
+    "risk": "Exposición a carga térmica, estrés térmico y fatiga por cambios de temporada.",
+    "legal": "Debe realizarse dos veces al año en cambio de temporada Res SRT 30/23 Dec. 351/79 Res 295/03",
+    "sector": "Playa de despacho y puestos expuestos a temperatura ambiente",
+    "toolType": "termico",
+    "registroAsociado": "Informe técnico HyS · Estrés térmico",
+    "instrumental": "Informe técnico HyS · Estrés térmico",
+    "family": "termico"
+  },
+  {
+    "id": "PM-04",
+    "no": 4,
+    "activity": "calculo de carga de de fuego y control de extintores",
+    "responsible": "SST",
+    "frequency": "Trimestral / anual de oblea",
+    "months": [
+      3,
+      4,
+      6,
+      9,
+      12
+    ],
+    "states": {
+      "3": "done",
+      "4": "scheduled",
+      "6": "pending",
+      "9": "overdue",
+      "12": "overdue"
+    },
+    "observation": "Se realizara un seguimiento trimestral, con renovacion de oblea anual (Septiembre).Según la normativa (IRAN 3517, Ley 24457 Ley19587\nDec 351/79 - Cap 18)",
+    "risk": "Riesgo de incendio, carga combustible y equipos extintores sin control suficiente.",
+    "legal": "Se realizara un seguimiento trimestral, con renovacion de oblea anual (Septiembre).Según la normativa (IRAN 3517, Ley 24457 Ley19587\nDec 351/79 - Cap 18)",
+    "sector": "Playa, tienda, GNC, tableros y sectores con carga combustible",
+    "toolType": "fuego",
+    "registroAsociado": "Informe técnico HyS · Carga de fuego / control de extintores",
+    "instrumental": "Informe técnico HyS · Carga de fuego / control de extintores",
+    "family": "fuego"
+  },
+  {
+    "id": "PM-05",
+    "no": 5,
+    "activity": "Revision de matriz de cumplimiento legal",
+    "responsible": "SST / HYS",
+    "frequency": "Mensual",
+    "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "states": {
+      "1": "done",
+      "2": "done",
+      "3": "done",
+      "4": "done",
+      "5": "done",
+      "6": "pending",
+      "7": "overdue",
+      "8": "overdue",
+      "9": "overdue",
+      "10": "overdue",
+      "11": "overdue",
+      "12": "overdue"
+    },
+    "observation": "Empresa certificada con inspeeccion periodica. En caso de ser usado se efectuara el cambio de inmediato.",
+    "risk": "Incumplimiento normativo y falta de evidencia de actualización legal.",
+    "legal": "Empresa certificada con inspeeccion periodica. En caso de ser usado se efectuara el cambio de inmediato.",
+    "sector": "Sistema de Gestión SST",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST / Matriz Legal",
+    "instrumental": "Registro de Verificación SST / Matriz Legal",
+    "family": "legal"
+  },
+  {
+    "id": "PM-06",
+    "no": 6,
+    "activity": "Medición de nivel de luminosidad",
+    "responsible": "SST",
+    "frequency": "Anual",
+    "months": [
+      4
+    ],
+    "states": {
+      "4": "done"
+    },
+    "observation": "Se realiza en forma anual o ante una modificacion edilicia según Dec 351/79 Anexo IV Res. SRT 84/12 y Res SRT 295/03",
+    "risk": "Iluminación insuficiente o inadecuada para tareas operativas.",
+    "legal": "Se realiza en forma anual o ante una modificacion edilicia según Dec 351/79 Anexo IV Res. SRT 84/12 y Res SRT 295/03",
+    "sector": "Playa, tienda, circulación y puestos operativos",
+    "toolType": "lux",
+    "registroAsociado": "Informe técnico HyS · LUX",
+    "instrumental": "Informe técnico HyS · LUX",
+    "family": "luminosidad"
+  },
+  {
+    "id": "PM-07",
+    "no": 7,
+    "activity": "Revisión del protocolo de ergonomia",
+    "responsible": "SST",
+    "frequency": "Anual",
+    "months": [
+      5
+    ],
+    "states": {
+      "5": "done"
+    },
+    "observation": "Se realizara anualmente según parametros de la Res. SRT 886/15",
+    "risk": "Riesgos ergonómicos no evaluados o protocolo desactualizado.",
+    "legal": "Se realizara anualmente según parametros de la Res. SRT 886/15",
+    "sector": "Puestos de trabajo, playa, tienda y administración",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST · Protocolo de ergonomía",
+    "instrumental": "Registro de Verificación SST · Protocolo de ergonomía",
+    "family": "ergonomia"
+  },
+  {
+    "id": "PM-08",
+    "no": 8,
+    "activity": "Revisión de matriz IPER",
+    "responsible": "SST / HYS",
+    "frequency": "Anual / ante nuevo riesgo",
+    "months": [
+      9
+    ],
+    "states": {
+      "9": "overdue"
+    },
+    "observation": "Se realizara anualmente según ISO 45001 Res SRT 295/03 y la Res SRT 886/15 o ante la identificacion de un nuevo riesgo",
+    "risk": "Peligros no identificados, valoración de riesgos desactualizada o controles insuficientes.",
+    "legal": "Se realizara anualmente según ISO 45001 Res SRT 295/03 y la Res SRT 886/15 o ante la identificacion de un nuevo riesgo",
+    "sector": "Todos los sectores y tareas de la estación",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST · Matriz IPER",
+    "instrumental": "Registro de Verificación SST · Matriz IPER",
+    "family": "iper"
+  },
+  {
+    "id": "PM-09",
+    "no": 9,
+    "activity": "Revisión de plan de emergencia",
+    "responsible": "SST / HYS",
+    "frequency": "Anual",
+    "months": [
+      2
+    ],
+    "states": {
+      "2": "done"
+    },
+    "observation": "Se realizara una revision anual siguiendo su cronograma de aplicación en busqueda de insuficiencias.",
+    "risk": "Respuesta deficiente ante emergencias y plan de actuación no actualizado.",
+    "legal": "Se realizara una revision anual siguiendo su cronograma de aplicación en busqueda de insuficiencias.",
+    "sector": "Toda la estación, rutas de evacuación y punto de encuentro",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST · Plan de emergencia",
+    "instrumental": "Registro de Verificación SST · Plan de emergencia",
+    "family": "emergencia"
+  },
+  {
+    "id": "PM-10",
+    "no": 10,
+    "activity": "Medición de contaminantes quimicos (hidrocarburos)",
+    "responsible": "SST",
+    "frequency": "Anual / ante incidente",
+    "months": [
+      6
+    ],
+    "states": {
+      "6": "pending"
+    },
+    "observation": "Se realizara anualmente y ante la deteccion de incidente / exposicion ocacional se adelantara la medicion. Res SRT 295/03 y Res SRT 861/15",
+    "risk": "Exposición a vapores, hidrocarburos y contaminantes químicos.",
+    "legal": "Se realizara anualmente y ante la deteccion de incidente / exposicion ocacional se adelantara la medicion. Res SRT 295/03 y Res SRT 861/15",
+    "sector": "Playa, descarga, tanques, GNC y sectores con vapores",
+    "toolType": "gases",
+    "registroAsociado": "Informe técnico HyS · Gases y vapores",
+    "instrumental": "Informe técnico HyS · Gases y vapores",
+    "family": "quimicos"
+  },
+  {
+    "id": "PM-11",
+    "no": 11,
+    "activity": "Inspeccion de kit anti derrames",
+    "responsible": "Encargado",
+    "frequency": "Mensual",
+    "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "states": {
+      "1": "done",
+      "2": "done",
+      "3": "done",
+      "4": "done",
+      "5": "done",
+      "6": "pending",
+      "7": "overdue",
+      "8": "overdue",
+      "9": "overdue",
+      "10": "overdue",
+      "11": "overdue",
+      "12": "overdue"
+    },
+    "observation": "Se realiza mensualmente en formato Checklist y ante su uso se reemplazara inmediatamente.",
+    "risk": "Derrames sin contención inmediata o kit antiderrame incompleto.",
+    "legal": "Se realiza mensualmente en formato Checklist y ante su uso se reemplazara inmediatamente.",
+    "sector": "Playa de combustibles, descarga y kit antiderrame",
+    "toolType": "",
+    "registroAsociado": "Checklist SST · Kit antiderrame",
+    "instrumental": "Checklist SST · Kit antiderrame",
+    "family": "derrames"
+  },
+  {
+    "id": "PM-12",
+    "no": 12,
+    "activity": "Análisis bacteriológico y químico de agua potable",
+    "responsible": "SST",
+    "frequency": "Semestral",
+    "months": [
+      3,
+      7,
+      8,
+      9
+    ],
+    "states": {
+      "3": "done",
+      "7": "scheduled",
+      "8": "scheduled",
+      "9": "overdue"
+    },
+    "observation": "Se realizara semestralmente según Ley 19,587 Dec. 351/79 Art. 57 y 58 Codigo Alimentario Argenttino",
+    "risk": "Exposición a vapores, hidrocarburos y contaminantes químicos.",
+    "legal": "Se realizara semestralmente según Ley 19,587 Dec. 351/79 Art. 57 y 58 Codigo Alimentario Argenttino",
+    "sector": "Playa, descarga, tanques, GNC y sectores con vapores",
+    "toolType": "gases",
+    "registroAsociado": "Informe técnico HyS · Gases y vapores",
+    "instrumental": "Informe técnico HyS · Gases y vapores",
+    "family": "quimicos"
+  },
+  {
+    "id": "PM-13",
+    "no": 13,
+    "activity": "Estado, uso y cumplimiento de EPP",
+    "responsible": "SST",
+    "frequency": "Mensual",
+    "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "states": {
+      "1": "done",
+      "2": "done",
+      "3": "done",
+      "4": "done",
+      "5": "done",
+      "6": "pending",
+      "7": "overdue",
+      "8": "overdue",
+      "9": "overdue",
+      "10": "overdue",
+      "11": "overdue",
+      "12": "overdue"
+    },
+    "observation": "Se realizara mensualmente en formato Checklist, según SRT 299/11 Dec. 351/79",
+    "risk": "Uso deficiente o incumplimiento en elementos de protección personal.",
+    "legal": "Se realizara mensualmente en formato Checklist, según SRT 299/11 Dec. 351/79",
+    "sector": "Personal operativo, playa, descarga, limpieza y mantenimiento",
+    "toolType": "",
+    "registroAsociado": "Checklist SST · Estado y uso de EPP",
+    "instrumental": "Checklist SST · Estado y uso de EPP",
+    "family": "epp"
+  },
+  {
+    "id": "PM-14",
+    "no": 14,
+    "activity": "Estado de señalizaciones",
+    "responsible": "Encargado de Turno",
+    "frequency": "Mensual",
+    "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "states": {
+      "1": "done",
+      "2": "done",
+      "3": "done",
+      "4": "done",
+      "5": "done",
+      "6": "pending",
+      "7": "overdue",
+      "8": "overdue",
+      "9": "overdue",
+      "10": "overdue",
+      "11": "overdue",
+      "12": "overdue"
+    },
+    "observation": "Se realizara mensualmente en formato Checklist según Dec, 351/79 IRAM 10005",
+    "risk": "Señalización insuficiente, poco visible o deteriorada.",
+    "legal": "Se realizara mensualmente en formato Checklist según Dec, 351/79 IRAM 10005",
+    "sector": "Toda la estación y sectores señalizados",
+    "toolType": "",
+    "registroAsociado": "Checklist SST · Señalización",
+    "instrumental": "Checklist SST · Señalización",
+    "family": "senal"
+  },
+  {
+    "id": "PM-POL",
+    "no": "15",
+    "activity": "Revision de la Políticas de revisión de SST",
+    "responsible": "SST / HYS",
+    "frequency": "Anual",
+    "months": [
+      4
+    ],
+    "states": {
+      "4": "done"
+    },
+    "observation": "Se realizara en forma anual, Según la Res SRT 103/05, iso 45001",
+    "risk": "Política SST desactualizada o sin revisión anual.",
+    "legal": "Se realizara en forma anual, Según la Res SRT 103/05, iso 45001",
+    "sector": "Dirección / Responsable SST / Sistema de gestión",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST · Política SST",
+    "instrumental": "Registro de Verificación SST · Política SST",
+    "family": "politica"
+  },
+  {
+    "id": "PM-15",
+    "no": 16,
+    "activity": "Cumplimiento del programa de Capacitación",
+    "responsible": "SST / HYS",
+    "frequency": "Trimestral",
+    "months": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "states": {
+      "1": "scheduled",
+      "2": "scheduled",
+      "3": "done",
+      "5": "scheduled",
+      "6": "pending",
+      "7": "scheduled",
+      "8": "scheduled",
+      "9": "overdue",
+      "10": "scheduled",
+      "11": "scheduled",
+      "12": "overdue"
+    },
+    "observation": "Se realizara en forma trimestral. Chequeo de planilla de asistencia y certificiacion de cursos  Decreto 359/79. Cap 21",
+    "risk": "Incumplimiento del programa de capacitación y falta de evidencias formativas.",
+    "legal": "Se realizara en forma trimestral. Chequeo de planilla de asistencia y certificiacion de cursos  Decreto 359/79. Cap 21",
+    "sector": "Todo el personal de la estación",
+    "toolType": "",
+    "registroAsociado": "Registro de capacitación / Planilla de asistencia",
+    "instrumental": "Registro de capacitación / Planilla de asistencia",
+    "family": "capacitacion"
+  }
+];
+  const HOJA6_MONITORING = [
+  {
+    "id": "PM-01",
+    "order": 1,
+    "item": "Medición de Resistencia a la puesta a tierra y continuidad de las masas",
+    "activity": "Medición de Resistencia a la puesta a tierra y continuidad de las masas",
+    "risk": "Riesgo eléctrico, electricidad estática y falta de continuidad de masas.",
+    "legal": "Se realiza anualmente con un profesional matriculado y equipo cerificado. Según Dec. 351/79. Cap 14.Res SRT 900/15 AEA 90364",
+    "frequency": "Anual",
+    "schedule": "Medición de Resistencia a la puesta a tierra y continuidad de las masas",
+    "sector": "Instalación eléctrica, surtidores, tableros y masas metálicas",
+    "status": "Actualizado",
+    "toolType": "pat",
+    "registroAsociado": "Informe técnico HyS · Puesta a tierra",
+    "instrumental": "Informe técnico HyS · Puesta a tierra",
+    "observation": "Se realiza anualmente con un profesional matriculado y equipo cerificado. Según Dec. 351/79. Cap 14.Res SRT 900/15 AEA 90364",
+    "no": 1,
+    "family": "puesta"
+  },
+  {
+    "id": "PM-02",
+    "order": 2,
+    "item": "Medición de Nivel Sonoro",
+    "activity": "Medición de Nivel Sonoro",
+    "risk": "Exposición a ruido laboral y ausencia de control de niveles sonoros.",
+    "legal": "Se realizara en forma anual, los parametros normativos Ley 19587 Dec.351/79. Anexo V. SRT 85/12",
+    "frequency": "Anual",
+    "schedule": "Medición de Nivel Sonoro",
+    "sector": "Playa, compresores, GNC y sectores operativos",
+    "status": "No conforme",
+    "toolType": "ruido",
+    "registroAsociado": "Informe técnico HyS · Ruido laboral",
+    "instrumental": "Informe técnico HyS · Ruido laboral",
+    "observation": "Se realizara en forma anual, los parametros normativos Ley 19587 Dec.351/79. Anexo V. SRT 85/12",
+    "no": 2,
+    "family": "sonoro"
+  },
+  {
+    "id": "PM-03",
+    "order": 3,
+    "item": "Medicion de carga por estrés termico",
+    "activity": "Medicion de carga por estrés termico",
+    "risk": "Exposición a carga térmica, estrés térmico y fatiga por cambios de temporada.",
+    "legal": "Debe realizarse dos veces al año en cambio de temporada Res SRT 30/23 Dec. 351/79 Res 295/03",
+    "frequency": "Semestral",
+    "schedule": "Medicion de carga por estrés termico",
+    "sector": "Playa de despacho y puestos expuestos a temperatura ambiente",
+    "status": "No conforme",
+    "toolType": "termico",
+    "registroAsociado": "Informe técnico HyS · Estrés térmico",
+    "instrumental": "Informe técnico HyS · Estrés térmico",
+    "observation": "Debe realizarse dos veces al año en cambio de temporada Res SRT 30/23 Dec. 351/79 Res 295/03",
+    "no": 3,
+    "family": "termico"
+  },
+  {
+    "id": "PM-04",
+    "order": 4,
+    "item": "calculo de carga de de fuego y control de extintores",
+    "activity": "calculo de carga de de fuego y control de extintores",
+    "risk": "Riesgo de incendio, carga combustible y equipos extintores sin control suficiente.",
+    "legal": "Se realizara un seguimiento trimestral, con renovacion de oblea anual (Septiembre).Según la normativa (IRAN 3517, Ley 24457 Ley19587\nDec 351/79 - Cap 18)",
+    "frequency": "Trimestral / anual de oblea",
+    "schedule": "calculo de carga de de fuego y control de extintores",
+    "sector": "Playa, tienda, GNC, tableros y sectores con carga combustible",
+    "status": "No conforme",
+    "toolType": "fuego",
+    "registroAsociado": "Informe técnico HyS · Carga de fuego / control de extintores",
+    "instrumental": "Informe técnico HyS · Carga de fuego / control de extintores",
+    "observation": "Se realizara un seguimiento trimestral, con renovacion de oblea anual (Septiembre).Según la normativa (IRAN 3517, Ley 24457 Ley19587\nDec 351/79 - Cap 18)",
+    "no": 4,
+    "family": "fuego"
+  },
+  {
+    "id": "PM-05",
+    "order": 5,
+    "item": "Revision de matriz de cumplimiento legal",
+    "activity": "Revision de matriz de cumplimiento legal",
+    "risk": "Incumplimiento normativo y falta de evidencia de actualización legal.",
+    "legal": "Empresa certificada con inspeeccion periodica. En caso de ser usado se efectuara el cambio de inmediato.",
+    "frequency": "Mensual",
+    "schedule": "Revision de matriz de cumplimiento legal",
+    "sector": "Sistema de Gestión SST",
+    "status": "No conforme",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST / Matriz Legal",
+    "instrumental": "Registro de Verificación SST / Matriz Legal",
+    "observation": "Empresa certificada con inspeeccion periodica. En caso de ser usado se efectuara el cambio de inmediato.",
+    "no": 5,
+    "family": "legal"
+  },
+  {
+    "id": "PM-06",
+    "order": 6,
+    "item": "Medición de nivel de luminosidad",
+    "activity": "Medición de nivel de luminosidad",
+    "risk": "Iluminación insuficiente o inadecuada para tareas operativas.",
+    "legal": "Se realiza en forma anual o ante una modificacion edilicia según Dec 351/79 Anexo IV Res. SRT 84/12 y Res SRT 295/03",
+    "frequency": "Anual",
+    "schedule": "Medición de nivel de luminosidad",
+    "sector": "Playa, tienda, circulación y puestos operativos",
+    "status": "Actualizado",
+    "toolType": "lux",
+    "registroAsociado": "Informe técnico HyS · LUX",
+    "instrumental": "Informe técnico HyS · LUX",
+    "observation": "Se realiza en forma anual o ante una modificacion edilicia según Dec 351/79 Anexo IV Res. SRT 84/12 y Res SRT 295/03",
+    "no": 6,
+    "family": "luminosidad"
+  },
+  {
+    "id": "PM-07",
+    "order": 7,
+    "item": "Revisión del protocolo de ergonomia",
+    "activity": "Revisión del protocolo de ergonomia",
+    "risk": "Riesgos ergonómicos no evaluados o protocolo desactualizado.",
+    "legal": "Se realizara anualmente según parametros de la Res. SRT 886/15",
+    "frequency": "Anual",
+    "schedule": "Revisión del protocolo de ergonomia",
+    "sector": "Puestos de trabajo, playa, tienda y administración",
+    "status": "Actualizado",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST · Protocolo de ergonomía",
+    "instrumental": "Registro de Verificación SST · Protocolo de ergonomía",
+    "observation": "Se realizara anualmente según parametros de la Res. SRT 886/15",
+    "no": 7,
+    "family": "ergonomia"
+  },
+  {
+    "id": "PM-08",
+    "order": 8,
+    "item": "Revisión de matriz IPER",
+    "activity": "Revisión de matriz IPER",
+    "risk": "Peligros no identificados, valoración de riesgos desactualizada o controles insuficientes.",
+    "legal": "Se realizara anualmente según ISO 45001 Res SRT 295/03 y la Res SRT 886/15 o ante la identificacion de un nuevo riesgo",
+    "frequency": "Anual / ante nuevo riesgo",
+    "schedule": "Revisión de matriz IPER",
+    "sector": "Todos los sectores y tareas de la estación",
+    "status": "No conforme",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST · Matriz IPER",
+    "instrumental": "Registro de Verificación SST · Matriz IPER",
+    "observation": "Se realizara anualmente según ISO 45001 Res SRT 295/03 y la Res SRT 886/15 o ante la identificacion de un nuevo riesgo",
+    "no": 8,
+    "family": "iper"
+  },
+  {
+    "id": "PM-09",
+    "order": 9,
+    "item": "Revisión de plan de emergencia",
+    "activity": "Revisión de plan de emergencia",
+    "risk": "Respuesta deficiente ante emergencias y plan de actuación no actualizado.",
+    "legal": "Se realizara una revision anual siguiendo su cronograma de aplicación en busqueda de insuficiencias.",
+    "frequency": "Anual",
+    "schedule": "Revisión de plan de emergencia",
+    "sector": "Toda la estación, rutas de evacuación y punto de encuentro",
+    "status": "Actualizado",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST · Plan de emergencia",
+    "instrumental": "Registro de Verificación SST · Plan de emergencia",
+    "observation": "Se realizara una revision anual siguiendo su cronograma de aplicación en busqueda de insuficiencias.",
+    "no": 9,
+    "family": "emergencia"
+  },
+  {
+    "id": "PM-10",
+    "order": 10,
+    "item": "Medición de contaminantes quimicos (hidrocarburos)",
+    "activity": "Medición de contaminantes quimicos (hidrocarburos)",
+    "risk": "Exposición a vapores, hidrocarburos y contaminantes químicos.",
+    "legal": "Se realizara anualmente y ante la deteccion de incidente / exposicion ocacional se adelantara la medicion. Res SRT 295/03 y Res SRT 861/15",
+    "frequency": "Anual / ante incidente",
+    "schedule": "Medición de contaminantes quimicos (hidrocarburos)",
+    "sector": "Playa, descarga, tanques, GNC y sectores con vapores",
+    "status": "Programado",
+    "toolType": "gases",
+    "registroAsociado": "Informe técnico HyS · Gases y vapores",
+    "instrumental": "Informe técnico HyS · Gases y vapores",
+    "observation": "Se realizara anualmente y ante la deteccion de incidente / exposicion ocacional se adelantara la medicion. Res SRT 295/03 y Res SRT 861/15",
+    "no": 10,
+    "family": "quimicos"
+  },
+  {
+    "id": "PM-11",
+    "order": 11,
+    "item": "Inspeccion de kit anti derrames",
+    "activity": "Inspeccion de kit anti derrames",
+    "risk": "Derrames sin contención inmediata o kit antiderrame incompleto.",
+    "legal": "Se realiza mensualmente en formato Checklist y ante su uso se reemplazara inmediatamente.",
+    "frequency": "Mensual",
+    "schedule": "Inspeccion de kit anti derrames",
+    "sector": "Playa de combustibles, descarga y kit antiderrame",
+    "status": "No conforme",
+    "toolType": "",
+    "registroAsociado": "Checklist SST · Kit antiderrame",
+    "instrumental": "Checklist SST · Kit antiderrame",
+    "observation": "Se realiza mensualmente en formato Checklist y ante su uso se reemplazara inmediatamente.",
+    "no": 11,
+    "family": "derrames"
+  },
+  {
+    "id": "PM-12",
+    "order": 12,
+    "item": "Análisis bacteriológico y químico de agua potable",
+    "activity": "Análisis bacteriológico y químico de agua potable",
+    "risk": "Exposición a vapores, hidrocarburos y contaminantes químicos.",
+    "legal": "Se realizara semestralmente según Ley 19,587 Dec. 351/79 Art. 57 y 58 Codigo Alimentario Argenttino",
+    "frequency": "Semestral",
+    "schedule": "Análisis bacteriológico y químico de agua potable",
+    "sector": "Playa, descarga, tanques, GNC y sectores con vapores",
+    "status": "No conforme",
+    "toolType": "gases",
+    "registroAsociado": "Informe técnico HyS · Gases y vapores",
+    "instrumental": "Informe técnico HyS · Gases y vapores",
+    "observation": "Se realizara semestralmente según Ley 19,587 Dec. 351/79 Art. 57 y 58 Codigo Alimentario Argenttino",
+    "no": 12,
+    "family": "quimicos"
+  },
+  {
+    "id": "PM-13",
+    "order": 13,
+    "item": "Estado, uso y cumplimiento de EPP",
+    "activity": "Estado, uso y cumplimiento de EPP",
+    "risk": "Uso deficiente o incumplimiento en elementos de protección personal.",
+    "legal": "Se realizara mensualmente en formato Checklist, según SRT 299/11 Dec. 351/79",
+    "frequency": "Mensual",
+    "schedule": "Estado, uso y cumplimiento de EPP",
+    "sector": "Personal operativo, playa, descarga, limpieza y mantenimiento",
+    "status": "No conforme",
+    "toolType": "",
+    "registroAsociado": "Checklist SST · Estado y uso de EPP",
+    "instrumental": "Checklist SST · Estado y uso de EPP",
+    "observation": "Se realizara mensualmente en formato Checklist, según SRT 299/11 Dec. 351/79",
+    "no": 13,
+    "family": "epp"
+  },
+  {
+    "id": "PM-14",
+    "order": 14,
+    "item": "Estado de señalizaciones",
+    "activity": "Estado de señalizaciones",
+    "risk": "Señalización insuficiente, poco visible o deteriorada.",
+    "legal": "Se realizara mensualmente en formato Checklist según Dec, 351/79 IRAM 10005",
+    "frequency": "Mensual",
+    "schedule": "Estado de señalizaciones",
+    "sector": "Toda la estación y sectores señalizados",
+    "status": "No conforme",
+    "toolType": "",
+    "registroAsociado": "Checklist SST · Señalización",
+    "instrumental": "Checklist SST · Señalización",
+    "observation": "Se realizara mensualmente en formato Checklist según Dec, 351/79 IRAM 10005",
+    "no": 14,
+    "family": "senal"
+  },
+  {
+    "id": "PM-POL",
+    "order": 15,
+    "item": "Revision de la Políticas de revisión de SST",
+    "activity": "Revision de la Políticas de revisión de SST",
+    "risk": "Política SST desactualizada o sin revisión anual.",
+    "legal": "Se realizara en forma anual, Según la Res SRT 103/05, iso 45001",
+    "frequency": "Anual",
+    "schedule": "Revision de la Políticas de revisión de SST",
+    "sector": "Dirección / Responsable SST / Sistema de gestión",
+    "status": "Actualizado",
+    "toolType": "",
+    "registroAsociado": "Registro de Verificación SST · Política SST",
+    "instrumental": "Registro de Verificación SST · Política SST",
+    "observation": "Se realizara en forma anual, Según la Res SRT 103/05, iso 45001",
+    "no": "",
+    "family": "politica"
+  },
+  {
+    "id": "PM-15",
+    "order": 16,
+    "item": "Cumplimiento del programa de Capacitación",
+    "activity": "Cumplimiento del programa de Capacitación",
+    "risk": "Incumplimiento del programa de capacitación y falta de evidencias formativas.",
+    "legal": "Se realizara en forma trimestral. Chequeo de planilla de asistencia y certificiacion de cursos  Decreto 359/79. Cap 21",
+    "frequency": "Trimestral",
+    "schedule": "Cumplimiento del programa de Capacitación",
+    "sector": "Todo el personal de la estación",
+    "status": "No conforme",
+    "toolType": "",
+    "registroAsociado": "Registro de capacitación / Planilla de asistencia",
+    "instrumental": "Registro de capacitación / Planilla de asistencia",
+    "observation": "Se realizara en forma trimestral. Chequeo de planilla de asistencia y certificiacion de cursos  Decreto 359/79. Cap 21",
+    "no": 15,
+    "family": "capacitacion"
+  }
+];
+  const HOJA6_MONTHS = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEPT","OCT","NOV","DIC"];
+  const STATUS_LABEL = { done:"Se realizó", pending:"Pendiente", overdue:"No realizado", scheduled:"Programado", na:"" };
+  const STATUS_ICON = { done:"✓", pending:"•", overdue:"!", scheduled:"", na:"—" };
+  const STATUS_CLASS = { done:"vigente", pending:"por-vencer", overdue:"vencido", scheduled:"programado", na:"programado" };
+  const esc = v => String(v == null ? "" : v).replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+  const norm = v => (typeof normalizeText === "function") ? normalizeText(v || "") : String(v || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  function cloneRows(rows) { return JSON.parse(JSON.stringify(rows || [])); }
+  function monthFromDate(dateText) { const d = dateText ? new Date(dateText + "T12:00:00") : null; return d && !Number.isNaN(d.getTime()) ? d.getMonth() + 1 : 0; }
+  function applyHoja6Cronograma() {
+    try { if (typeof sstSchedule !== "undefined" && Array.isArray(sstSchedule)) sstSchedule.splice(0, sstSchedule.length, ...cloneRows(HOJA6_SST_SCHEDULE)); } catch(e) { window.sstSchedule = cloneRows(HOJA6_SST_SCHEDULE); }
+    try { if (typeof monitoringProgram !== "undefined" && Array.isArray(monitoringProgram)) monitoringProgram.splice(0, monitoringProgram.length, ...cloneRows(HOJA6_MONITORING)); } catch(e) { window.monitoringProgram = cloneRows(HOJA6_MONITORING); }
+    try {
+      if (typeof hysToolCatalog !== "undefined") {
+        if (hysToolCatalog.pat) hysToolCatalog.pat.schedule = "Medición de Resistencia a la puesta a tierra y continuidad de las masas";
+        if (hysToolCatalog.ruido) hysToolCatalog.ruido.schedule = "Medición de Nivel Sonoro";
+        if (hysToolCatalog.termico) hysToolCatalog.termico.schedule = "Medicion de carga por estrés termico";
+        if (hysToolCatalog.fuego) hysToolCatalog.fuego.schedule = "calculo de carga de de fuego y control de extintores";
+        if (hysToolCatalog.lux) hysToolCatalog.lux.schedule = "Medición de nivel de luminosidad";
+        if (hysToolCatalog.gases) hysToolCatalog.gases.schedule = "Medición de contaminantes quimicos (hidrocarburos)";
+        if (hysToolCatalog.agua) hysToolCatalog.agua.schedule = "Análisis bacteriológico y químico de agua potable";
+      }
+    } catch(e) { console.warn("No se pudo alinear catálogo HyS con Hoja 6", e); }
+  }
+  function rows() { return (typeof sstSchedule !== "undefined" && Array.isArray(sstSchedule) && sstSchedule.length) ? sstSchedule : HOJA6_SST_SCHEDULE; }
+  function monitors() { return (typeof monitoringProgram !== "undefined" && Array.isArray(monitoringProgram) && monitoringProgram.length) ? monitoringProgram : HOJA6_MONITORING; }
+  function cellBaseState(row, month) { if (!row || !Array.isArray(row.months) || !row.months.includes(month)) return "na"; return (row.states && row.states[String(month)]) || "scheduled"; }
+  function closedSstFor(row, month) {
+    const records = (typeof sstRecords !== "undefined" && Array.isArray(sstRecords)) ? sstRecords : [];
+    const key = norm(row.activity || row.item || "");
+    return records.some(r => {
+      const m = monthFromDate(r.date);
+      if (m !== month || !(r.state === "Cerrado" || r.state === "Realizado")) return false;
+      const txt = norm([r.monitoreoNombre, r.monitoringName, r.finding, r.type, r.sector, r.risk, r.action, r.observations, r.frecuenciaCronograma].filter(Boolean).join(" "));
+      return txt.includes(key) || key.includes(norm(r.finding || ""));
+    });
+  }
+  function hysFor(row, month) {
+    const hist = (typeof hysToolsHistory !== "undefined" && Array.isArray(hysToolsHistory)) ? hysToolsHistory : [];
+    const key = norm(row.activity || "");
+    return hist.find(r => {
+      const m = monthFromDate(r.date);
+      if (m !== month) return false;
+      const byTool = row.toolType && r.type === row.toolType;
+      const txt = norm([r.schedule, r.tool, r.type, r.iper, r.legal, r.observations].filter(Boolean).join(" "));
+      return byTool || txt.includes(key) || key.includes(txt);
+    }) || null;
+  }
+  window.getSstScheduleCellState = function(row, month) {
+    const base = cellBaseState(row, month);
+    if (base === "na") return "na";
+    const hys = hysFor(row, month);
+    if (hys && hys.statusClass === "bad") return "overdue";
+    if ((hys && hys.statusClass !== "bad") || closedSstFor(row, month)) return "done";
+    return base;
+  };
+  window.getHoja6ScheduleStats = function() {
+    const out = { done:0, pending:0, overdue:0, scheduled:0, total:0 };
+    rows().forEach(row => HOJA6_MONTHS.forEach((_, i) => { const s = window.getSstScheduleCellState(row, i+1); if (s !== "na") { out[s] = (out[s] || 0) + 1; out.total += 1; } }));
+    out.controlTotal = out.done + out.pending + out.overdue;
+    out.compliance = out.controlTotal ? Math.round((out.done / out.controlTotal) * 100) : 0;
+    out.activities = rows().length;
+    return out;
+  };
+  function aggregateRowState(row) {
+    const states = HOJA6_MONTHS.map((_, i) => window.getSstScheduleCellState(row, i+1)).filter(s => s !== "na");
+    if (!states.length) return { txt:"Según ocurrencia", cls:"programado", state:"na" };
+    if (states.includes("overdue")) return { txt:"No realizado", cls:"vencido", state:"overdue" };
+    if (states.includes("pending")) return { txt:"Pendiente", cls:"por-vencer", state:"pending" };
+    if (states.every(s => s === "done")) return { txt:"Se realizó", cls:"vigente", state:"done" };
+    return { txt:"Programado", cls:"programado", state:"scheduled" };
+  }
+  window.renderSstSchedule = function() {
+    const table = document.getElementById("sstScheduleTable");
+    if (!table) return;
+    const st = window.getHoja6ScheduleStats();
+    const statsHtml = `<div class="hoja6-stats-strip"><div class="hoja6-stat done"><span>Se realizó</span><strong>${st.done}</strong></div><div class="hoja6-stat pending"><span>Pendiente</span><strong>${st.pending}</strong></div><div class="hoja6-stat overdue"><span>No realizado</span><strong>${st.overdue}</strong></div><div class="hoja6-stat scheduled"><span>Programado</span><strong>${st.scheduled}</strong></div><div class="hoja6-stat"><span>Cumplimiento</span><strong>${st.compliance}%</strong></div></div>`;
+    const parent = table.closest(".sst-schedule-wrap");
+    if (parent && !document.getElementById("hoja6ScheduleStats")) { const div = document.createElement("div"); div.id = "hoja6ScheduleStats"; div.innerHTML = statsHtml; parent.insertAdjacentElement("beforebegin", div); }
+    else { const div = document.getElementById("hoja6ScheduleStats"); if (div) div.innerHTML = statsHtml; }
+    table.classList.add("hoja6-schedule");
+    table.innerHTML = `<colgroup><col style="width:44px"><col style="width:300px"><col style="width:96px">${HOJA6_MONTHS.map(() => '<col style="width:42px">').join('')}<col style="width:122px"><col style="width:390px"></colgroup><thead><tr><th>N°</th><th>Descripción de la Actividad</th><th>Responsable</th>${HOJA6_MONTHS.map(m=>`<th class="month-head">${m}</th>`).join("")}<th>Estado</th><th>Observaciones</th></tr></thead><tbody>` + rows().map(row => {
+      const state = aggregateRowState(row);
+      const cells = HOJA6_MONTHS.map((m, i) => {
+        const s = window.getSstScheduleCellState(row, i+1);
+        const label = STATUS_LABEL[s] || "";
+        const icon = STATUS_ICON[s] || "";
+        return `<td class="month-cell"><span class="month-dot ${s}" title="${esc(row.activity)} · ${m}: ${esc(label)}">${icon}</span></td>`;
+      }).join("");
+      const number = row.no === "" || row.no == null ? "" : esc(row.no);
+      return `<tr><td class="num-cell">${number}</td><td class="desc-cell">${esc(row.activity)}<br><small>${esc(row.frequency || "")}</small></td><td class="resp-cell">${esc(row.responsible || "")}</td>${cells}<td class="state-cell"><span class="pill ${state.cls}">${state.txt}</span></td><td class="obs-cell">${esc(row.observation || row.legal || "")}</td></tr>`;
+    }).join("") + `</tbody>`;
+    const legend = document.querySelector("#verificationPanelCronograma .schedule-legend-inline");
+    if (legend && !legend.querySelector(".scheduled")) legend.insertAdjacentHTML("beforeend", '<span class="schedule-legend-pill scheduled"><b></b> Programado</span>');
+  };
+  window.downloadSstSchedule = function() {
+    const todayText = new Date().toLocaleDateString("es-AR");
+    const st = window.getHoja6ScheduleStats();
+    const bodyRows = rows().map(row => {
+      const agg = aggregateRowState(row);
+      const number = row.no === "" || row.no == null ? "" : esc(row.no);
+      const cells = HOJA6_MONTHS.map((m, i) => { const s = window.getSstScheduleCellState(row, i+1); return `<td class="m ${s}">${STATUS_ICON[s] || ""}</td>`; }).join("");
+      return `<tr><td class="num">${number}</td><td class="activity">${esc(row.activity)}<span>${esc(row.frequency || "")}</span></td><td class="resp">${esc(row.responsible || "")}</td>${cells}<td class="estado ${agg.state}">${agg.txt}</td><td class="obs">${esc(row.observation || "")}</td></tr>`;
+    }).join("");
+    const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Programa de Monitoreo SST</title><style>@page{size:A4 landscape;margin:6mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:8px;background:#eef2f7;color:#111827;-webkit-print-color-adjust:exact;print-color-adjust:exact}.actions{text-align:center;margin-bottom:8px}button{border:0;border-radius:10px;padding:9px 13px;font-weight:900;background:#0056a6;color:white}.sheet{background:white;border:2px solid #003f7d;overflow:hidden}.top{display:grid;grid-template-columns:95px 1fr 190px;border-bottom:4px solid #ffcc00;min-height:58px}.logo{background:#003f7d;color:white;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;letter-spacing:-2px;border:2px solid #ffcc00;margin:6px 8px}.title{text-align:center;padding:8px}.title h1{margin:0;color:#003f7d;font-size:16px;text-transform:uppercase}.title p{margin:4px 0 0;color:#475569;font-size:8px;font-weight:800}.meta{border-left:1px solid #003f7d;background:#f8fafc}.meta div{padding:3px 6px;border-bottom:1px solid #003f7d;font-size:8px;font-weight:800;color:#003f7d}.block-title{background:#003f7d;color:white;padding:5px 8px;font-weight:900;text-transform:uppercase;font-size:9.5px;margin:7px 8px 6px;border-left:8px solid #ffcc00}.legend{display:flex;gap:10px;margin:0 8px 6px;font-size:8px;font-weight:900;align-items:center}.sq{width:10px;height:10px;display:inline-block;border:1px solid #334155}.donebox{background:#A3D133}.pendingbox{background:#F8D921}.overduebox{background:#D01C1F}.schedbox{background:#F4F6F8}.summary{display:flex;gap:8px;margin:0 8px 6px;font-size:7.5px;font-weight:900;color:#003f7d}table{width:calc(100% - 16px);margin:0 8px 8px;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #003f7d;text-align:center;vertical-align:middle;overflow:hidden;font-size:6.2px;line-height:1.08;padding:2px}th{background:#003f7d;color:white;font-size:6.4px;text-transform:uppercase}.num{width:22px;font-weight:900}.activity{width:176px;text-align:left;font-weight:900;color:#003f7d;padding:3px}.activity span{display:block;color:#475569;font-size:5.4px;margin-top:1px}.resp{width:48px;font-weight:900;color:#334155}.m{width:18px;height:15px;font-weight:900;padding:0}.m.done{background:#A3D133;color:#166534}.m.pending{background:#F8D921;color:#7c5a00}.m.overdue{background:#D01C1F;color:white}.m.scheduled{background:#F4F6F8;color:#64748b}.m.na{background:white;color:#94a3b8}.estado{width:62px;font-weight:900}.estado.done{background:#dcfce7;color:#166534}.estado.pending{background:#fef3c7;color:#92400e}.estado.overdue{background:#fee2e2;color:#991b1b}.estado.scheduled{background:#f8fafc;color:#475569}.obs{width:300px;text-align:left;font-size:5.7px;font-weight:800;line-height:1.12;background:#fbfdff;padding:3px;white-space:normal}.footer{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:2px solid #003f7d;background:#f8fafc}.footer div{padding:5px 7px;border-right:1px solid #003f7d;font-size:7px;font-weight:800;color:#334155}@media print{body{background:white;padding:0}.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Imprimir / Guardar PDF</button></div><div class="sheet"><div class="top"><div class="logo">YPF</div><div class="title"><h1>PROGRAMA DE MONITOREO</h1><p>Form: PM-001 · Rev. 1 · Fecha: 19-06-2026 · Sistema Digital SST</p></div><div class="meta"><div>Form: PM-001</div><div>Rev. 1</div><div>Fecha: ${todayText}</div><div>Año: 2026</div></div></div><div class="block-title">Cronograma SST según Hoja 6</div><div class="legend"><span><b class="sq donebox"></b> Se realizó</span><span><b class="sq pendingbox"></b> Pendiente</span><span><b class="sq overduebox"></b> No realizado</span><span><b class="sq schedbox"></b> Programado</span></div><div class="summary"><span>Se realizó: ${st.done}</span><span>Pendiente: ${st.pending}</span><span>No realizado: ${st.overdue}</span><span>Programado: ${st.scheduled}</span><span>Cumplimiento: ${st.compliance}%</span></div><table><thead><tr><th>N°</th><th>Descripción de la Actividad</th><th>Resp.</th>${HOJA6_MONTHS.map(m=>`<th>${m}</th>`).join("")}<th>Estado</th><th>Observaciones</th></tr></thead><tbody>${bodyRows}</tbody></table><div class="footer"><div>Documento sin firma · Uso académico / demostrativo</div><div>Responsable: Sistema Digital SST YPF</div><div>Control: PM-001 · Rev. 1 · 2026</div></div></div><script>window.print()<\/script></body></html>`;
+    const w = window.open("", "_blank");
+    if (!w) { alert("Permití ventanas emergentes para imprimir el cronograma."); return; }
+    w.document.write(doc); w.document.close();
+  };
+  window.getMonitoringOptionsSource = function() { return cloneRows(HOJA6_MONITORING); };
+  window.renderSstMonitoringOptions = function() {
+    const select = document.getElementById("sstRecordFinding");
+    if (!select || select.tagName !== "SELECT") return;
+    const current = select.value;
+    select.innerHTML = '<option value="">Seleccionar monitoreo / hallazgo del Programa SST</option>' + HOJA6_MONITORING.map((m, idx) => `<option value="${esc(m.item)}">${m.no === "" ? "—" : esc(m.no)} · ${esc(m.item)}</option>`).join("");
+    if ([...select.options].some(o => o.value === current)) select.value = current;
+  };
+  window.getSelectedMonitoringItem = function() {
+    const name = document.getElementById("sstRecordFinding")?.value || "";
+    return HOJA6_MONITORING.find(m => norm(m.item) === norm(name)) || null;
+  };
+  window.onSstMonitoringSelectionChange = function() {
+    const m = window.getSelectedMonitoringItem();
+    if (!m) return;
+    const sector = document.getElementById("sstRecordSector");
+    const risk = document.getElementById("sstRecordRisk");
+    const action = document.getElementById("sstRecordAction");
+    const iper = document.getElementById("sstRecordIperId");
+    const legal = document.getElementById("sstRecordLegalId");
+    if (sector) sector.value = m.sector || "Estación de servicio YPF";
+    if (risk) risk.value = m.legal || m.risk || "Requisito asociado";
+    if (action && !action.value) action.value = "Registrar evidencia, evaluar resultado y cerrar acción según corresponda.";
+    if (iper) iper.value = m.id || "";
+    if (legal) legal.value = m.id || "";
+    const preview = document.getElementById("sstTraceabilityPreview");
+    if (preview) preview.innerHTML = `<b>Monitoreo:</b> ${esc(m.item)}<br><b>Sector / alcance:</b> ${esc(m.sector)}<br><b>IPER asociado:</b> ${esc(m.risk)}<br><b>Matriz legal / observación:</b> ${esc(m.legal)}<br><b>Frecuencia / cronograma:</b> ${esc(m.frequency)} · ${esc(m.schedule)}<br><b>Registro asociado:</b> ${esc(m.registroAsociado)}`;
+  };
+  window.getMonitoringStats = function() {
+    const st = window.getHoja6ScheduleStats();
+    return { total: st.controlTotal, updated: st.done, observed: st.pending, nonConforming: st.overdue, programado: st.scheduled, percent: st.compliance };
+  };
+  window.renderVerificationKpis = function() {
+    const container = document.getElementById("verificationKpis"); if (!container) return;
+    const st = window.getHoja6ScheduleStats();
+    const records = (typeof sstRecords !== "undefined" && Array.isArray(sstRecords)) ? sstRecords : [];
+    const cerrados = records.filter(r => r.state === "Cerrado" || r.state === "Realizado").length;
+    const nc = records.filter(r => r.type === "No Conformidad" && r.state !== "Cerrado" && r.state !== "Realizado").length;
+    container.innerHTML = `<div class="sst-kpi ok"><span>Cumplimiento cronograma</span><strong>${st.compliance}%</strong><small>${st.done} de ${st.controlTotal} controles computables.</small></div><div class="sst-kpi ok"><span>Se realizó</span><strong>${st.done}</strong><small>Celdas verdes del Programa de Monitoreo.</small></div><div class="sst-kpi warn"><span>Pendiente</span><strong>${st.pending}</strong><small>Celdas amarillas a completar.</small></div><div class="sst-kpi bad"><span>No realizado</span><strong>${st.overdue}</strong><small>Celdas rojas del cronograma.</small></div><div class="sst-kpi"><span>Programado</span><strong>${st.scheduled}</strong><small>Celdas grises programadas/neutras.</small></div><div class="sst-kpi legal"><span>Registros cerrados</span><strong>${cerrados}</strong><small>Historial SST vinculado. NC abiertas: ${nc}</small></div>`;
+  };
+  window.renderDashboardSstExecutiveKpis = function() {
+    const container = document.getElementById("dashboardSstExecutiveKpis"); if (!container) return;
+    const st = window.getHoja6ScheduleStats();
+    const cap = document.getElementById("compliance")?.textContent || "0%";
+    const capNumber = parseInt(String(cap).replace(/[^0-9]/g, ""), 10) || 0;
+    const records = (typeof sstRecords !== "undefined" && Array.isArray(sstRecords)) ? sstRecords : [];
+    const cerrados = records.filter(r => r.state === "Cerrado" || r.state === "Realizado").length;
+    const abiertos = records.filter(r => r.state !== "Cerrado" && r.state !== "Realizado").length;
+    const hysCount = (typeof hysToolsHistory !== "undefined" && Array.isArray(hysToolsHistory)) ? hysToolsHistory.length : 0;
+    const rowsData = [
+      { label:"Cumplimiento cronograma", value:`${st.compliance}%`, note:"Hoja 6 · Programa de Monitoreo", percent:st.compliance, cls:st.compliance>=75?"ok":st.compliance>=45?"warn":"bad" },
+      { label:"Se realizó", value:String(st.done), note:"Celdas verdes", percent:Math.round(st.done/Math.max(1,st.total)*100), cls:"ok" },
+      { label:"Pendiente", value:String(st.pending), note:"Celdas amarillas", percent:Math.round(st.pending/Math.max(1,st.total)*100), cls:st.pending?"warn":"ok" },
+      { label:"No realizado", value:String(st.overdue), note:"Celdas rojas", percent:Math.round(st.overdue/Math.max(1,st.total)*100), cls:st.overdue?"bad":"ok" },
+      { label:"Programado", value:String(st.scheduled), note:"Celdas grises/neutras", percent:Math.round(st.scheduled/Math.max(1,st.total)*100), cls:"future" },
+      { label:"Capacitaciones vigentes", value:cap, note:"Plan anual conectado", percent:capNumber, cls:capNumber>=90?"ok":capNumber>=75?"warn":"bad" },
+      { label:"Registros SST cerrados", value:String(cerrados), note:"Historial de verificación", percent:records.length?Math.round(cerrados/records.length*100):100, cls:abiertos?"warn":"ok" },
+      { label:"Herramientas HyS", value:String(hysCount), note:"Informes técnicos integrados", percent:(typeof getHysToolsStats === "function" ? getHysToolsStats().coverage : 0), cls:(typeof getHysToolsStats === "function" && getHysToolsStats().bad)?"bad":"ok" }
+    ];
+    container.className = "executive-bars";
+    container.innerHTML = rowsData.map(row => `<div class="executive-bar-row"><div class="executive-bar-label"><strong>${row.label}</strong><small>${row.note}</small></div><div class="executive-bar-track"><span class="executive-bar-fill ${row.cls}" style="width:${Math.max(4, Math.min(100,row.percent))}%"></span></div><div class="executive-bar-value">${row.value}</div></div>`).join("");
+  };
+  const oldRenderMonitoring = window.renderMonitoringProgram;
+  window.renderMonitoringProgram = function() {
+    const grid = document.getElementById("monitoringGrid"); if (!grid) return;
+    const st = window.getHoja6ScheduleStats();
+    const header = `<div class="monitor-summary-card"><strong>Programa de Monitoreo SST · Hoja 6</strong><span>${st.done} se realizó · ${st.pending} pendiente · ${st.overdue} no realizado · ${st.scheduled} programado</span></div><div class="monitor-summary-card legal"><strong>Vinculación automática</strong><span>Cronograma SST ↔ Registros SST ↔ Herramientas HyS ↔ IPER ↔ Matriz Legal ↔ Dashboard KPIs</span></div>`;
+    grid.innerHTML = header + monitors().map((m, i) => {
+      const row = rows().find(r => norm(r.activity) === norm(m.item));
+      const agg = row ? aggregateRowState(row) : { txt:m.status || "Programado", cls:"por-vencer", state:"pending" };
+      const cls = agg.state === "overdue" ? "bad" : agg.state === "done" ? "ok" : "warn";
+      const pillCls = cls === "ok" ? "vigente" : cls === "bad" ? "vencido" : "por-vencer";
+      return `<div class="monitor-card ${cls}"><div class="monitor-card-head"><strong>${m.no === "" ? "—" : esc(m.no)} · ${esc(m.item)}</strong><span class="pill ${pillCls}">● ${esc(agg.txt)}</span></div><small><b>Sector / alcance:</b> ${esc(m.sector)}</small><small><b>IPER:</b> ${esc(m.risk)}</small><small><b>Matriz legal / observación:</b> ${esc(m.legal)}</small><small><b>Frecuencia / Cronograma:</b> ${esc(m.frequency)} · ${esc(m.schedule)}</small><small><b>Registro asociado:</b> ${esc(m.registroAsociado || "Registro SST")}</small>${m.toolType ? `<button class="secondary" style="margin-top:6px;width:max-content;" onclick="goToHysTool('${esc(m.toolType)}')">Abrir herramienta</button>` : ""}</div>`;
+    }).join("");
+  };
+  const oldCargarSstSupabase = window.cargarSstSupabase;
+  if (typeof oldCargarSstSupabase === "function") {
+    window.cargarSstSupabase = async function(...args) { const res = await oldCargarSstSupabase.apply(this, args); applyHoja6Cronograma(); try { renderSstTraceabilityOptions(); refreshAll(); } catch(e) {} return res; };
+  }
+  function bootHoja6() {
+    applyHoja6Cronograma();
+    try { window.renderSstMonitoringOptions(); } catch(e) {}
+    try { if (typeof renderSstTraceabilityOptions === "function") renderSstTraceabilityOptions(); } catch(e) {}
+    try { window.renderSstSchedule(); window.renderMonitoringProgram(); window.renderVerificationKpis(); window.renderDashboardSstExecutiveKpis(); } catch(e) { console.warn("Cronograma Hoja 6:", e); }
+  }
+  window.applyHoja6CronogramaSst = bootHoja6;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootHoja6); else bootHoja6();
+  [150, 700, 1600, 3200].forEach(ms => setTimeout(bootHoja6, ms));
+})();
+</script>
+
+
+
+<!-- ===== V23: corrección final Cronograma SST Hoja 6 - grises neutros, sin Estado, KPIs actualizados ===== -->
+<style id="v23-cronograma-sst-final-fix">
+  #verificationPanelCronograma .schedule-legend-pill.scheduled,
+  #verificationPanelCronograma .schedule-legend-pill.programado { display:none !important; }
+  .month-dot.neutral,
+  .month-dot.scheduled,
+  .month-dot.na {
+    background:#e5e7eb !important;
+    color:transparent !important;
+    border-color:#cbd5e1 !important;
+  }
+  .hoja6-stat.neutral,
+  .hoja6-stat.scheduled { display:none !important; }
+  .sst-schedule.hoja6-schedule th,
+  .sst-schedule.hoja6-schedule td { font-size:11.5px !important; }
+  .sst-schedule.hoja6-schedule .month-head,
+  .sst-schedule.hoja6-schedule .month-cell { width:38px !important; min-width:38px !important; max-width:38px !important; padding:5px 4px !important; }
+  .sst-schedule.hoja6-schedule .desc-cell { min-width:300px !important; max-width:350px !important; }
+  .sst-schedule.hoja6-schedule .obs-cell { min-width:430px !important; max-width:520px !important; white-space:normal !important; line-height:1.3 !important; }
+  @media print {
+    .sst-schedule.hoja6-schedule { min-width:0 !important; width:100% !important; table-layout:fixed !important; }
+    .sst-schedule.hoja6-schedule th,
+    .sst-schedule.hoja6-schedule td { font-size:7.3px !important; padding:3px 2px !important; }
+    .sst-schedule.hoja6-schedule .month-head,
+    .sst-schedule.hoja6-schedule .month-cell { width:3.2% !important; min-width:0 !important; max-width:none !important; }
+    .sst-schedule.hoja6-schedule .obs-cell { width:29% !important; }
+  }
+</style>
+<script id="v23-cronograma-sst-final-fix">
+(function(){
+  const MONTHS = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEPT","OCT","NOV","DIC"];
+  const LABEL = { done:"Se realizó", pending:"Pendiente", overdue:"No realizado", neutral:"" };
+  const ICON = { done:"✓", pending:"P", overdue:"NR", neutral:"" };
+  const CELL_CLASS = { done:"done", pending:"pending", overdue:"overdue", neutral:"neutral" };
+  const esc = v => String(v == null ? "" : v).replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+  const norm = v => String(v == null ? "" : v).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  const pct = (a,b) => b ? Math.round((a / b) * 100) : 0;
+
+  function scheduleRows(){
+    try { if (typeof sstSchedule !== "undefined" && Array.isArray(sstSchedule)) return sstSchedule; } catch(e) {}
+    return Array.isArray(window.sstSchedule) ? window.sstSchedule : [];
+  }
+  function monitoringRows(){
+    try { if (typeof monitoringProgram !== "undefined" && Array.isArray(monitoringProgram)) return monitoringProgram; } catch(e) {}
+    return Array.isArray(window.monitoringProgram) ? window.monitoringProgram : [];
+  }
+  function sstRecordRows(){
+    try { if (typeof sstRecords !== "undefined" && Array.isArray(sstRecords)) return sstRecords; } catch(e) {}
+    return Array.isArray(window.sstRecords) ? window.sstRecords : [];
+  }
+  function hysHistoryRows(){
+    try { if (typeof hysToolsHistory !== "undefined" && Array.isArray(hysToolsHistory)) return hysToolsHistory; } catch(e) {}
+    return Array.isArray(window.hysToolsHistory) ? window.hysToolsHistory : [];
+  }
+  function monthFromDate(dateText){
+    const d = dateText ? new Date(dateText + "T12:00:00") : null;
+    return d && !Number.isNaN(d.getTime()) ? d.getMonth() + 1 : 0;
+  }
+  function baseState(row, month){
+    const raw = row && row.states ? row.states[String(month)] : "";
+    return (raw === "done" || raw === "pending" || raw === "overdue") ? raw : "neutral";
+  }
+  function closedSstFor(row, month){
+    const key = norm(row?.activity || row?.item || "");
+    if (!key) return false;
+    return sstRecordRows().some(r => {
+      const m = monthFromDate(r.date);
+      if (m !== month || !(r.state === "Cerrado" || r.state === "Realizado")) return false;
+      const txt = norm([r.monitoreoNombre, r.monitoringName, r.finding, r.type, r.sector, r.risk, r.action, r.observations, r.frecuenciaCronograma].filter(Boolean).join(" "));
+      return txt.includes(key) || key.includes(norm(r.finding || ""));
+    });
+  }
+  function hysFor(row, month){
+    const key = norm(row?.activity || row?.item || "");
+    return hysHistoryRows().find(r => {
+      const m = monthFromDate(r.date);
+      if (m !== month) return false;
+      const byTool = row?.toolType && r.type === row.toolType;
+      const txt = norm([r.schedule, r.tool, r.type, r.iper, r.legal, r.observations].filter(Boolean).join(" "));
+      return byTool || (key && txt.includes(key)) || (key && key.includes(txt));
+    }) || null;
+  }
+  function finalCellState(row, month){
+    const base = baseState(row, month);
+    if (base === "neutral") return "neutral";
+    const hys = hysFor(row, month);
+    if (hys && hys.statusClass === "bad") return "overdue";
+    if ((hys && hys.statusClass !== "bad") || closedSstFor(row, month)) return "done";
+    return base;
+  }
+  function aggregateRowState(row){
+    const states = MONTHS.map((_, i) => finalCellState(row, i + 1)).filter(s => s !== "neutral");
+    if (!states.length) return { txt:"Sin control asignado", cls:"programado", state:"neutral" };
+    if (states.includes("overdue")) return { txt:"No realizado", cls:"vencido", state:"overdue" };
+    if (states.includes("pending")) return { txt:"Pendiente", cls:"por-vencer", state:"pending" };
+    return { txt:"Se realizó", cls:"vigente", state:"done" };
+  }
+  function stats(){
+    const out = { done:0, pending:0, overdue:0, neutral:0, total:0, controlTotal:0, compliance:0, activities:scheduleRows().length };
+    scheduleRows().forEach(row => MONTHS.forEach((_, i) => {
+      const s = finalCellState(row, i + 1);
+      out[s] = (out[s] || 0) + 1;
+      if (s !== "neutral") out.total += 1;
+    }));
+    out.controlTotal = out.done + out.pending + out.overdue;
+    out.compliance = pct(out.done, out.controlTotal);
+    return out;
+  }
+  window.getSstScheduleCellState = finalCellState;
+  window.getHoja6ScheduleStats = stats;
+  window.getMonitoringStats = function(){
+    const st = stats();
+    return { total: st.controlTotal, updated: st.done, observed: st.pending, nonConforming: st.overdue, programado: 0, neutral: st.neutral, percent: st.compliance };
+  };
+
+  window.renderSstSchedule = function(){
+    const table = document.getElementById("sstScheduleTable");
+    if (!table) return;
+    const st = stats();
+    const statsHtml = `<div class="hoja6-stats-strip"><div class="hoja6-stat done"><span>Se realizó</span><strong>${st.done}</strong></div><div class="hoja6-stat pending"><span>Pendiente</span><strong>${st.pending}</strong></div><div class="hoja6-stat overdue"><span>No realizado</span><strong>${st.overdue}</strong></div><div class="hoja6-stat"><span>Cumplimiento</span><strong>${st.compliance}%</strong></div></div>`;
+    const parent = table.closest(".sst-schedule-wrap");
+    let div = document.getElementById("hoja6ScheduleStats");
+    if (!div && parent) { div = document.createElement("div"); div.id = "hoja6ScheduleStats"; parent.insertAdjacentElement("beforebegin", div); }
+    if (div) div.innerHTML = statsHtml;
+    document.querySelectorAll("#verificationPanelCronograma .schedule-legend-pill.scheduled, #verificationPanelCronograma .schedule-legend-pill.programado").forEach(x => x.remove());
+    table.classList.add("hoja6-schedule");
+    table.innerHTML = `<colgroup><col style="width:44px"><col style="width:320px"><col style="width:105px">${MONTHS.map(() => '<col style="width:38px">').join('')}<col style="width:450px"></colgroup><thead><tr><th>N°</th><th>Descripción de la Actividad</th><th>Responsable</th>${MONTHS.map(m=>`<th class="month-head">${m}</th>`).join("")}<th>Observaciones / Resolución</th></tr></thead><tbody>` + scheduleRows().map(row => {
+      const cells = MONTHS.map((m, i) => {
+        const s = finalCellState(row, i + 1);
+        const label = LABEL[s] || "";
+        const icon = ICON[s] || "";
+        return `<td class="month-cell"><span class="month-dot ${CELL_CLASS[s] || 'neutral'}" title="${esc(row.activity || row.item)} · ${m}${label ? ': ' + esc(label) : ''}">${icon}</span></td>`;
+      }).join("");
+      const number = row.no === "" || row.no == null ? "" : esc(row.no);
+      return `<tr><td class="num-cell">${number}</td><td class="desc-cell">${esc(row.activity || row.item || "")}<br><small>${esc(row.frequency || "")}</small></td><td class="resp-cell">${esc(row.responsible || "Responsable SST")}</td>${cells}<td class="obs-cell">${esc(row.observation || row.legal || "")}</td></tr>`;
+    }).join("") + `</tbody>`;
+  };
+
+  window.renderVerificationKpis = function(){
+    const container = document.getElementById("verificationKpis");
+    if (!container) return;
+    const st = stats();
+    const records = sstRecordRows();
+    const cerrados = records.filter(r => r.state === "Cerrado" || r.state === "Realizado").length;
+    const nc = records.filter(r => r.type === "No Conformidad" && r.state !== "Cerrado" && r.state !== "Realizado").length;
+    container.innerHTML = `<div class="sst-kpi ok"><span>Cumplimiento cronograma</span><strong>${st.compliance}%</strong><small>${st.done} de ${st.controlTotal} controles computables.</small></div><div class="sst-kpi ok"><span>Se realizó</span><strong>${st.done}</strong><small>Celdas verdes del Programa de Monitoreo.</small></div><div class="sst-kpi warn"><span>Pendiente</span><strong>${st.pending}</strong><small>Celdas amarillas a completar.</small></div><div class="sst-kpi bad"><span>No realizado</span><strong>${st.overdue}</strong><small>Celdas rojas del cronograma.</small></div><div class="sst-kpi legal"><span>Registros cerrados</span><strong>${cerrados}</strong><small>Historial SST vinculado. NC abiertas: ${nc}</small></div>`;
+  };
+
+  window.renderDashboardSstExecutiveKpis = function(){
+    const container = document.getElementById("dashboardSstExecutiveKpis");
+    if (!container) return;
+    const st = stats();
+    const cap = document.getElementById("compliance")?.textContent || "0%";
+    const capNumber = parseInt(String(cap).replace(/[^0-9]/g, ""), 10) || 0;
+    const records = sstRecordRows();
+    const cerrados = records.filter(r => r.state === "Cerrado" || r.state === "Realizado").length;
+    const abiertos = records.filter(r => r.state !== "Cerrado" && r.state !== "Realizado").length;
+    const hysCount = hysHistoryRows().length;
+    const hysStats = (typeof getHysToolsStats === "function") ? getHysToolsStats() : { coverage:0, bad:0 };
+    const rowsData = [
+      { label:"Cumplimiento cronograma", value:`${st.compliance}%`, note:"Hoja 6 · grises no computables", percent:st.compliance, cls:st.compliance>=75?"ok":st.compliance>=45?"warn":"bad" },
+      { label:"Se realizó", value:String(st.done), note:"Celdas verdes", percent:pct(st.done, st.controlTotal), cls:"ok" },
+      { label:"Pendiente", value:String(st.pending), note:"Celdas amarillas", percent:pct(st.pending, st.controlTotal), cls:st.pending?"warn":"ok" },
+      { label:"No realizado", value:String(st.overdue), note:"Celdas rojas", percent:pct(st.overdue, st.controlTotal), cls:st.overdue?"bad":"ok" },
+      { label:"Capacitaciones vigentes", value:cap, note:"Plan anual conectado", percent:capNumber, cls:capNumber>=90?"ok":capNumber>=75?"warn":"bad" },
+      { label:"Registros SST cerrados", value:String(cerrados), note:"Historial de verificación", percent:records.length?pct(cerrados, records.length):100, cls:abiertos?"warn":"ok" },
+      { label:"Herramientas HyS", value:String(hysCount), note:"Informes técnicos integrados", percent:hysStats.coverage || 0, cls:hysStats.bad?"bad":"ok" }
+    ];
+    container.className = "executive-bars";
+    container.innerHTML = rowsData.map(row => `<div class="executive-bar-row"><div class="executive-bar-label"><strong>${row.label}</strong><small>${row.note}</small></div><div class="executive-bar-track"><span class="executive-bar-fill ${row.cls}" style="width:${Math.max(4, Math.min(100,row.percent))}%"></span></div><div class="executive-bar-value">${row.value}</div></div>`).join("");
+  };
+
+  window.renderMonitoringProgram = function(){
+    const grid = document.getElementById("monitoringGrid");
+    if (!grid) return;
+    const st = stats();
+    const header = `<div class="monitor-summary-card"><strong>Programa de Monitoreo SST · Hoja 6</strong><span>${st.done} se realizó · ${st.pending} pendiente · ${st.overdue} no realizado · celdas grises sin cómputo</span></div><div class="monitor-summary-card legal"><strong>Vinculación automática</strong><span>Cronograma SST ↔ Registros SST ↔ Herramientas HyS ↔ IPER ↔ Matriz Legal ↔ Dashboard KPIs</span></div>`;
+    grid.innerHTML = header + monitoringRows().map(m => {
+      const row = scheduleRows().find(r => norm(r.activity || r.item) === norm(m.item));
+      const agg = row ? aggregateRowState(row) : { txt:m.status || "Pendiente", cls:"por-vencer", state:"pending" };
+      const cls = agg.state === "overdue" ? "bad" : agg.state === "done" ? "ok" : agg.state === "neutral" ? "" : "warn";
+      const pillCls = cls === "ok" ? "vigente" : cls === "bad" ? "vencido" : "por-vencer";
+      return `<div class="monitor-card ${cls}"><div class="monitor-card-head"><strong>${m.no === "" ? "—" : esc(m.no)} · ${esc(m.item)}</strong><span class="pill ${pillCls}">● ${esc(agg.txt)}</span></div><small><b>Sector / alcance:</b> ${esc(m.sector)}</small><small><b>IPER:</b> ${esc(m.risk)}</small><small><b>Matriz legal / observación:</b> ${esc(m.legal)}</small><small><b>Frecuencia / Cronograma:</b> ${esc(m.frequency)} · ${esc(m.schedule)}</small><small><b>Registro asociado:</b> ${esc(m.registroAsociado || "Registro SST")}</small>${m.toolType ? `<button class="secondary" style="margin-top:6px;width:max-content;" onclick="goToHysTool('${esc(m.toolType)}')">Abrir herramienta</button>` : ""}</div>`;
+    }).join("");
+  };
+
+  window.downloadSstSchedule = function(){
+    const st = stats();
+    const style = `<style>@page{size:A4 landscape;margin:7mm}body{font-family:Arial,sans-serif;color:#0f172a}h1{margin:0;color:#003f7d;font-size:18px}p{margin:3px 0 8px;color:#334155;font-size:10px}.meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.meta span{border:1px solid #cbd5e1;border-radius:10px;padding:5px 7px;font-size:9px;font-weight:700}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #94a3b8;padding:3px 3px;font-size:7px;vertical-align:middle}th{background:#003f7d;color:#fff;text-transform:uppercase}td.num{text-align:center;font-weight:700}td.month{text-align:center;padding:2px}.dot{display:inline-flex;width:16px;height:16px;border-radius:5px;align-items:center;justify-content:center;font-size:6px;font-weight:900;border:1px solid #777}.done{background:#92d050;color:#064e3b}.pending{background:#ffcc00;color:#7c5a00}.overdue{background:#e30613;color:#fff}.neutral{background:#d9d9d9;color:transparent}.desc{font-weight:700;color:#003f7d}.obs{line-height:1.22}.footer{margin-top:7px;display:flex;justify-content:space-between;font-size:8px;color:#475569}</style>`;
+    const bodyRows = scheduleRows().map(row => {
+      const cells = MONTHS.map((m, i) => { const s = finalCellState(row, i + 1); return `<td class="month"><span class="dot ${CELL_CLASS[s] || 'neutral'}">${ICON[s] || ""}</span></td>`; }).join("");
+      return `<tr><td class="num">${row.no == null ? "" : esc(row.no)}</td><td class="desc">${esc(row.activity || row.item || "")}<br><small>${esc(row.frequency || "")}</small></td><td>${esc(row.responsible || "Responsable SST")}</td>${cells}<td class="obs">${esc(row.observation || row.legal || "")}</td></tr>`;
+    }).join("");
+    const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Cronograma SST Hoja 6</title>${style}</head><body><h1>Programa / Cronograma SST 2026</h1><p>Estación de Servicio YPF · Hoja 6 · Celdas grises sin cómputo operativo.</p><div class="meta"><span>Se realizó: ${st.done}</span><span>Pendiente: ${st.pending}</span><span>No realizado: ${st.overdue}</span><span>Cumplimiento: ${st.compliance}%</span></div><table><colgroup><col style="width:3%"><col style="width:22%"><col style="width:8%">${MONTHS.map(()=>'<col style="width:3.2%">').join('')}<col style="width:28.6%"></colgroup><thead><tr><th>N°</th><th>Descripción de la Actividad</th><th>Resp.</th>${MONTHS.map(m=>`<th>${m}</th>`).join("")}<th>Observaciones / Resolución</th></tr></thead><tbody>${bodyRows}</tbody></table><div class="footer"><div>Documento sin firma · Uso académico / demostrativo</div><div>Responsable: Sistema Digital SST YPF</div><div>Control: PM-001 · Rev. 1 · 2026</div></div><script>window.print()<\/script></body></html>`;
+    const w = window.open("", "_blank");
+    if (!w) { alert("Permití ventanas emergentes para imprimir el cronograma."); return; }
+    w.document.write(doc); w.document.close();
+  };
+
+  function refreshFinalCronograma(){
+    try { window.renderSstSchedule(); } catch(e) { console.warn(e); }
+    try { window.renderVerificationKpis(); } catch(e) { console.warn(e); }
+    try { window.renderDashboardSstExecutiveKpis(); } catch(e) { console.warn(e); }
+    try { window.renderMonitoringProgram(); } catch(e) { console.warn(e); }
+  }
+  window.applyCronogramaSstHoja6FinalFix = refreshFinalCronograma;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", refreshFinalCronograma); else refreshFinalCronograma();
+  [120, 350, 900, 1800, 3600, 5200].forEach(ms => setTimeout(refreshFinalCronograma, ms));
+})();
+</script>
 </body>
 </html>
