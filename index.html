@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema Digital SST | YPF - Grupo 22 UTN BA</title>
+  <title>Sistema Digital SST Command Center v29 | YPF · UTN BA · Grupo 22</title>
   <style>
     :root {
       --ypf-blue: #0056a6;
@@ -4652,6 +4652,833 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
   }
 </style>
 
+
+
+<!-- ===== V28 PREMIUM COMMAND CENTER: rediseño visual high-tech sin tocar lógica/login ===== -->
+<style id="v28-premium-command-center">
+  @media screen {
+    :root {
+      --ypf-blue: #00a8ff;
+      --ypf-blue-dark: #07172f;
+      --ypf-blue-light: rgba(0,168,255,.12);
+      --ypf-sky: #38e8ff;
+      --ypf-red: #ff3158;
+      --ypf-yellow: #ffd166;
+      --green: #00f5a0;
+      --orange: #ffb020;
+      --red: #ff3158;
+      --gray-50: #0b1224;
+      --gray-100: #111a30;
+      --gray-200: rgba(148, 163, 184, .22);
+      --gray-300: rgba(148, 163, 184, .34);
+      --gray-500: #95a3b8;
+      --gray-700: #d4deee;
+      --gray-900: #f8fbff;
+      --white: rgba(10, 18, 36, .78);
+      --shadow: 0 22px 60px rgba(0,0,0,.33), inset 0 1px 0 rgba(255,255,255,.06);
+      --radius: 24px;
+      --premium-line: linear-gradient(90deg, #00a8ff, #38e8ff, #ffd166);
+      --premium-panel: linear-gradient(145deg, rgba(16,27,52,.88), rgba(8,14,30,.72));
+      --premium-panel-soft: linear-gradient(145deg, rgba(18,30,58,.84), rgba(9,17,34,.72));
+      --premium-border: 1px solid rgba(148,163,184,.22);
+    }
+
+    html { background:#020712 !important; }
+    body {
+      color: #eef6ff !important;
+      background:
+        radial-gradient(circle at 18% -6%, rgba(0,168,255,.30), transparent 28%),
+        radial-gradient(circle at 88% 10%, rgba(255,209,102,.18), transparent 23%),
+        radial-gradient(circle at 70% 92%, rgba(56,232,255,.12), transparent 32%),
+        linear-gradient(135deg, #020712 0%, #07101f 46%, #081122 100%) !important;
+      position: relative;
+    }
+
+    body::before {
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.024) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at 50% 35%, rgba(0,0,0,1), rgba(0,0,0,.34) 58%, transparent 90%);
+    }
+
+    body:not(.login-locked) .app,
+    body:not(.login-locked) main,
+    body:not(.login-locked) .section,
+    body:not(.login-locked) .section.active {
+      position: relative !important;
+      z-index: 1 !important;
+    }
+
+    /* Login premium */
+    .login-screen {
+      background:
+        radial-gradient(circle at 20% 10%, rgba(0,168,255,.34), transparent 30%),
+        radial-gradient(circle at 88% 16%, rgba(255,209,102,.22), transparent 24%),
+        linear-gradient(135deg, #020712, #081122) !important;
+    }
+    .login-card {
+      background: rgba(8,16,34,.82) !important;
+      color: #eef6ff !important;
+      border: 1px solid rgba(0,168,255,.22) !important;
+      border-top: 1px solid rgba(56,232,255,.42) !important;
+      box-shadow: 0 34px 90px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.08) !important;
+      backdrop-filter: blur(18px) saturate(135%) !important;
+    }
+    .login-card::before {
+      content:"SAFETY COMMAND CENTER";
+      position:absolute;
+      top:14px;
+      right:18px;
+      color:rgba(56,232,255,.55);
+      font-size:10px;
+      font-weight:950;
+      letter-spacing:.16em;
+      z-index:1;
+    }
+    .login-brand h2, .login-help, .login-brand small { color:#eef6ff !important; }
+    .login-help {
+      background: rgba(0,168,255,.10) !important;
+      border-color: rgba(56,232,255,.22) !important;
+      color: #d7f8ff !important;
+    }
+    .login-card input { background: rgba(255,255,255,.06) !important; color:#fff !important; border-color: rgba(148,163,184,.28) !important; }
+    .login-card input::placeholder { color: rgba(226,232,240,.64) !important; }
+
+    /* Barra superior premium */
+    body:not(.login-locked) aside {
+      background:
+        linear-gradient(90deg, rgba(6,13,28,.94), rgba(7,23,47,.92)) !important;
+      border-bottom: 1px solid rgba(56,232,255,.24) !important;
+      box-shadow: 0 18px 45px rgba(0,0,0,.30), inset 0 -1px 0 rgba(255,209,102,.34) !important;
+      backdrop-filter: blur(18px) saturate(140%) !important;
+    }
+    body:not(.login-locked) aside::after {
+      content:"UTN BA · GRUPO 22 · DIGITAL SST";
+      position:absolute;
+      right:18px;
+      bottom:6px;
+      color:rgba(255,209,102,.75);
+      font-size:9px;
+      font-weight:950;
+      letter-spacing:.14em;
+      pointer-events:none;
+    }
+    .brand h1, .brand small { color:#ffffff !important; }
+    .brand h1 { letter-spacing:-.02em !important; }
+    .brand small { color:#9fdcff !important; }
+    .logo {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.98), rgba(205,242,255,.90)) !important;
+      color:#07172f !important;
+      box-shadow: 0 10px 26px rgba(0,168,255,.22), inset 0 -5px 0 rgba(0,168,255,.17) !important;
+    }
+    .logo::after { background: linear-gradient(90deg, #00a8ff, #38e8ff) !important; }
+
+    body:not(.login-locked) .nav-btn {
+      background: rgba(255,255,255,.055) !important;
+      border: 1px solid rgba(148,163,184,.18) !important;
+      color: rgba(238,246,255,.86) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04) !important;
+    }
+    body:not(.login-locked) .nav-btn:hover,
+    body:not(.login-locked) .nav-btn.active {
+      background: linear-gradient(135deg, rgba(0,168,255,.28), rgba(56,232,255,.12)) !important;
+      color:#ffffff !important;
+      border-color: rgba(56,232,255,.44) !important;
+      box-shadow: 0 0 24px rgba(0,168,255,.18), inset 0 1px 0 rgba(255,255,255,.10) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    /* Header Command Center */
+    body:not(.login-locked) .topbar {
+      background:
+        radial-gradient(circle at 88% 16%, rgba(255,209,102,.17), transparent 24%),
+        radial-gradient(circle at 18% 12%, rgba(0,168,255,.22), transparent 36%),
+        linear-gradient(135deg, rgba(16,27,52,.88), rgba(6,12,27,.78)) !important;
+      border: 1px solid rgba(56,232,255,.18) !important;
+      border-top: 1px solid rgba(255,255,255,.10) !important;
+      box-shadow: var(--shadow) !important;
+      backdrop-filter: blur(18px) saturate(140%) !important;
+      overflow: hidden !important;
+    }
+    body:not(.login-locked) .topbar::before {
+      content:"SST" !important;
+      z-index:0 !important;
+      right:150px !important;
+      color: rgba(56,232,255,.10) !important;
+      text-shadow: 0 0 40px rgba(56,232,255,.14) !important;
+      letter-spacing:-.08em !important;
+    }
+    body:not(.login-locked) .topbar::after {
+      height: 2px !important;
+      width: min(640px, 52%) !important;
+      background: var(--premium-line) !important;
+      box-shadow: 0 0 18px rgba(56,232,255,.32) !important;
+    }
+    .topbar .title h2 {
+      color:#ffffff !important;
+      text-shadow: 0 0 24px rgba(0,168,255,.16) !important;
+      letter-spacing:-.045em !important;
+    }
+    .topbar .title p { color:#9eb6d4 !important; font-weight:800 !important; }
+    .topbar .title p::after {
+      content:" · UTN BA · Grupo 22";
+      color:#ffd166;
+      font-weight:950;
+    }
+    .session-chip {
+      background: rgba(0,168,255,.12) !important;
+      color:#dbf8ff !important;
+      border: 1px solid rgba(56,232,255,.30) !important;
+      box-shadow: 0 10px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08) !important;
+    }
+
+    /* Paneles, tarjetas y módulos */
+    .card, .modal-content, .doc-card, .course-card,
+    .risk-card, .kpi-card, .history-item, .academic-card,
+    .norm-item, .improvement-item, .month-card, .training-entry-card,
+    .employee-profile-card, .person-card, .personnel-board,
+    .executive-list-card, .alert-card, .hys-tool-card,
+    .hys-history-item, .monitor-card, .monitor-summary-card,
+    .dashboard-detail-card, .training-mini-stat, .quarter-block,
+    .checklist-stage-compact, .checklist-category, .hys-link-card,
+    .hys-integration-kpi, .training-summary-card, .training-item {
+      background: var(--premium-panel) !important;
+      color:#edf6ff !important;
+      border: var(--premium-border) !important;
+      box-shadow: var(--shadow) !important;
+      backdrop-filter: blur(14px) saturate(130%) !important;
+    }
+    .card:hover, .employee-profile-card:hover, .person-card:hover,
+    .training-entry-card:hover, .alert-card:hover, .hys-tool-card:hover,
+    .monitor-card:hover {
+      transform: translateY(-2px) !important;
+      border-color: rgba(56,232,255,.35) !important;
+      box-shadow: 0 28px 70px rgba(0,0,0,.38), 0 0 0 1px rgba(56,232,255,.06) inset !important;
+    }
+    .card h3, .card h4, .risk-card h4, .phva-card h4,
+    .employee-profile-card strong, .personnel-main-cell strong,
+    .doc-card strong, .course-card strong, .monitor-card strong,
+    .hys-tool-card strong, .history-item strong, .training-item strong,
+    .training-entry-card strong, .dashboard-detail-card strong,
+    .executive-list-card h4, .alert-card strong, .norm-item strong {
+      color:#ffffff !important;
+    }
+    .card p, .card small, .history-meta, .monitor-card small,
+    .doc-card small, .course-card small, .hys-tool-card small,
+    .hys-history-item small, .alert-card small, .dashboard-detail-card small,
+    .training-item small, .training-entry-card small,
+    .personnel-main-cell small, .personnel-role-cell small,
+    .norm-item small, .modal-list-item small {
+      color:#a9b9d1 !important;
+    }
+
+    /* KPI dashboard command center */
+    #dashboard .executive-dashboard.ypf-main-kpis-card {
+      background:
+        radial-gradient(circle at 95% 12%, rgba(56,232,255,.18), transparent 28%),
+        radial-gradient(circle at 5% 100%, rgba(255,209,102,.09), transparent 26%),
+        linear-gradient(145deg, rgba(13,26,55,.92), rgba(5,11,25,.82)) !important;
+      border: 1px solid rgba(56,232,255,.22) !important;
+      border-top: 1px solid rgba(255,209,102,.42) !important;
+    }
+    #dashboard .executive-dashboard.ypf-main-kpis-card::before {
+      content:"COMMAND" !important;
+      color: rgba(56,232,255,.055) !important;
+      letter-spacing:-.08em !important;
+    }
+    .executive-dashboard-header h3 { color:#ffffff !important; }
+    .executive-dashboard-header p { color:#a9b9d1 !important; }
+    #dashboardSstExecutiveKpis .executive-bar-row {
+      background: rgba(255,255,255,.052) !important;
+      border: 1px solid rgba(148,163,184,.18) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05) !important;
+    }
+    #dashboardSstExecutiveKpis .executive-bar-label strong { color:#f8fbff !important; }
+    #dashboardSstExecutiveKpis .executive-bar-label small { color:#8da3c0 !important; }
+    #dashboardSstExecutiveKpis .executive-bar-track {
+      background: rgba(148,163,184,.18) !important;
+      box-shadow: inset 0 0 12px rgba(0,0,0,.34) !important;
+    }
+    #dashboardSstExecutiveKpis .executive-bar-fill {
+      background: linear-gradient(90deg,#00a8ff,#38e8ff) !important;
+      box-shadow: 0 0 16px rgba(56,232,255,.38) !important;
+    }
+    #dashboardSstExecutiveKpis .executive-bar-fill.ok { background: linear-gradient(90deg,#00f5a0,#b6ffd5) !important; box-shadow:0 0 16px rgba(0,245,160,.35)!important; }
+    #dashboardSstExecutiveKpis .executive-bar-fill.warn { background: linear-gradient(90deg,#ffb020,#ffd166) !important; box-shadow:0 0 16px rgba(255,209,102,.34)!important; }
+    #dashboardSstExecutiveKpis .executive-bar-fill.bad { background: linear-gradient(90deg,#ff3158,#ff8ba0) !important; box-shadow:0 0 16px rgba(255,49,88,.34)!important; }
+    #dashboardSstExecutiveKpis .executive-bar-value { color:#38e8ff !important; }
+
+    /* Badges / estados */
+    .badge, .pill, .schedule-legend-pill, .risk-level,
+    .personnel-chip-row span, .personnel-mini-kpis span,
+    .course-chip-row span, .employee-kpi, .person-kpi,
+    .training-summary-card, .hys-mini, .course-detail-field {
+      border: 1px solid rgba(148,163,184,.22) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05) !important;
+    }
+    .badge, .calendar-badge {
+      background: rgba(255,209,102,.12) !important;
+      border-color: rgba(255,209,102,.28) !important;
+      color:#ffe29a !important;
+    }
+    .vigente, .quarter-status.ok, .month-dot.done, .hys-result.ok, .inspection-result-ok,
+    .alert-card.ok { background: rgba(0,245,160,.13) !important; color:#a6ffd2 !important; border-color: rgba(0,245,160,.30) !important; }
+    .por-vencer, .quarter-status.warn, .month-dot.pending, .hys-result.warn, .inspection-result-mid,
+    .alert-card.warning { background: rgba(255,176,32,.14) !important; color:#ffe0a1 !important; border-color: rgba(255,209,102,.32) !important; }
+    .vencido, .quarter-status.bad, .month-dot.overdue, .hys-result.bad, .inspection-result-bad,
+    .alert-card.critical { background: rgba(255,49,88,.13) !important; color:#ffb3c0 !important; border-color: rgba(255,49,88,.32) !important; }
+    .programado, .quarter-status.future { background: rgba(0,168,255,.13) !important; color:#bdefff !important; border-color: rgba(56,232,255,.26) !important; }
+
+    /* Tablas premium */
+    table, .training-table-wrap, .sst-history-table-wrap, .sst-schedule-wrap,
+    .quarter-table-wrap { color:#edf6ff !important; }
+    th {
+      background: linear-gradient(135deg, rgba(0,168,255,.20), rgba(56,232,255,.08)) !important;
+      color:#d8f6ff !important;
+      border-bottom: 1px solid rgba(56,232,255,.22) !important;
+    }
+    td { border-bottom-color: rgba(148,163,184,.16) !important; color:#dce8f8 !important; }
+    tbody tr:hover { background: rgba(56,232,255,.055) !important; }
+    .sst-schedule th:first-child, .sst-schedule td:first-child,
+    .quarter-table th:first-child, .quarter-table td:first-child,
+    .schedule .activity, .activity, .month-card-summary,
+    .course-compact-row, .checklist-stage-body,
+    .checklist-category-body, .modal-list-item {
+      background: rgba(255,255,255,.045) !important;
+      color:#eaf7ff !important;
+    }
+
+    /* Formularios y controles */
+    input, select, textarea {
+      background: rgba(255,255,255,.055) !important;
+      border-color: rgba(148,163,184,.24) !important;
+      color:#f8fbff !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04) !important;
+    }
+    input::placeholder, textarea::placeholder { color: rgba(210,224,242,.54) !important; }
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(56,232,255,.55) !important;
+      box-shadow: 0 0 0 4px rgba(56,232,255,.10), 0 0 22px rgba(0,168,255,.14) !important;
+    }
+    option { background:#07101f !important; color:#eef6ff !important; }
+    button.primary, button.secondary, button.danger {
+      letter-spacing:.01em !important;
+      box-shadow: 0 12px 28px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.12) !important;
+    }
+    button.primary {
+      background: linear-gradient(135deg,#008cff,#38e8ff) !important;
+      color:#03101e !important;
+    }
+    button.secondary {
+      background: rgba(0,168,255,.13) !important;
+      color:#d7f8ff !important;
+      border: 1px solid rgba(56,232,255,.24) !important;
+    }
+    button.danger {
+      background: linear-gradient(135deg,#ff3158,#ff6b85) !important;
+      color:#fff !important;
+    }
+
+    /* Secciones premium */
+    .section-clean-head,
+    .training-back-row,
+    .personnel-compact-toolbar,
+    .checklist-stage-selector,
+    .traceability-card,
+    .footer-note,
+    .training-note,
+    .hys-legal-note,
+    .hys-formula-note,
+    .alert-action {
+      background: rgba(255,255,255,.055) !important;
+      border: 1px solid rgba(148,163,184,.20) !important;
+      color:#edf6ff !important;
+      box-shadow: var(--shadow) !important;
+      backdrop-filter: blur(14px) !important;
+    }
+    .section-clean-head h3, .training-back-row span { color:#ffffff !important; }
+    .section-clean-head p, .traceability-card small, .footer-note, .training-note { color:#a9b9d1 !important; }
+
+    /* Cabeceras internas */
+    .month-card-header, .quarter-title, .checklist-stage-compact summary,
+    .checklist-category-title, .checklist-category-head,
+    .employee-detail-header, .training-hero, .personnel-hero,
+    .emergency-hero, .kpi-intro {
+      background:
+        radial-gradient(circle at 90% 18%, rgba(255,209,102,.18), transparent 28%),
+        linear-gradient(135deg, rgba(0,168,255,.22), rgba(7,23,47,.88)) !important;
+      border-bottom-color: rgba(255,209,102,.64) !important;
+      color:#fff !important;
+    }
+    .employee-detail-header h3, .training-hero h3, .personnel-hero h3,
+    .emergency-hero h3, .kpi-intro h3 { color:#fff !important; }
+    .employee-detail-header p, .training-hero p, .personnel-hero p,
+    .emergency-hero p, .kpi-intro p { color:#cfe5ff !important; }
+
+    /* Alertas como centro operativo */
+    .alerts-dashboard {
+      background:
+        radial-gradient(circle at top right, rgba(255,49,88,.16), transparent 30%),
+        linear-gradient(145deg, rgba(16,27,52,.88), rgba(8,14,30,.74)) !important;
+      border-top: 1px solid rgba(255,49,88,.42) !important;
+    }
+    .alert-grid { gap: 14px !important; }
+    .alert-card { position: relative; overflow: hidden; }
+    .alert-card::after {
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0;
+      height:2px;
+      background: currentColor;
+      opacity:.42;
+    }
+
+    /* Scrollbar premium */
+    * { scrollbar-color: rgba(56,232,255,.35) rgba(255,255,255,.04); }
+    *::-webkit-scrollbar { width: 10px; height: 10px; }
+    *::-webkit-scrollbar-track { background: rgba(255,255,255,.04); }
+    *::-webkit-scrollbar-thumb { background: rgba(56,232,255,.32); border-radius: 999px; border: 2px solid rgba(2,7,18,.65); }
+
+    /* Respeta legibilidad en mobile */
+    @media (max-width: 900px) {
+      body:not(.login-locked) aside::after { display:none !important; }
+      .topbar .title p::after { display:none !important; content:"" !important; }
+      body:not(.login-locked) .topbar::before { display:none !important; }
+    }
+  }
+
+  @media print {
+    body { background:white !important; color:#0f172a !important; }
+    body::before, body:not(.login-locked) aside::after { display:none !important; }
+  }
+</style>
+
+
+<!-- ===== V29: contraste premium + login institucional con bandera argentina animada ===== -->
+<style id="v29-contrast-login-argentina">
+  @media screen {
+    /* Ajuste global: elimina paneles claros que desentonan con Command Center */
+    :root {
+      --v29-panel-blue: linear-gradient(145deg, rgba(7, 28, 61, .94), rgba(4, 13, 31, .88));
+      --v29-panel-blue-soft: linear-gradient(145deg, rgba(9, 38, 78, .88), rgba(6, 19, 42, .82));
+      --v29-panel-blue-deep: linear-gradient(145deg, rgba(3, 13, 32, .96), rgba(8, 31, 64, .86));
+      --v29-border-cyan: 1px solid rgba(80, 220, 255, .24);
+      --v29-text-main: #f1f8ff;
+      --v29-text-soft: #bdd3ea;
+      --v29-text-muted: #8fa8c5;
+      --v29-accent-cyan: #63e6ff;
+      --v29-accent-gold: #ffd166;
+    }
+
+    body:not(.login-locked) .card,
+    body:not(.login-locked) .doc-card,
+    body:not(.login-locked) .course-card,
+    body:not(.login-locked) .plan-word-card,
+    body:not(.login-locked) .month-card,
+    body:not(.login-locked) .month-course,
+    body:not(.login-locked) .month-card-summary,
+    body:not(.login-locked) .course-compact-row,
+    body:not(.login-locked) .course-detail-box,
+    body:not(.login-locked) .course-detail-field,
+    body:not(.login-locked) .risk-card,
+    body:not(.login-locked) .kpi-card,
+    body:not(.login-locked) .stat,
+    body:not(.login-locked) .history-item,
+    body:not(.login-locked) .dashboard-detail-card,
+    body:not(.login-locked) .academic-card,
+    body:not(.login-locked) .norm-item,
+    body:not(.login-locked) .improvement-item,
+    body:not(.login-locked) .check-item,
+    body:not(.login-locked) .advanced-check-item,
+    body:not(.login-locked) .checklist-row-compact,
+    body:not(.login-locked) .checklist-stage-body,
+    body:not(.login-locked) .checklist-category-body,
+    body:not(.login-locked) .training-entry-card,
+    body:not(.login-locked) .training-calendar-card,
+    body:not(.login-locked) .training-summary-card,
+    body:not(.login-locked) .training-item,
+    body:not(.login-locked) .training-note,
+    body:not(.login-locked) .training-control-note,
+    body:not(.login-locked) .employee-profile-card,
+    body:not(.login-locked) .employee-detail-panel,
+    body:not(.login-locked) .employee-list-card,
+    body:not(.login-locked) .employee-kpi,
+    body:not(.login-locked) .person-card,
+    body:not(.login-locked) .personnel-board,
+    body:not(.login-locked) .personnel-board-head,
+    body:not(.login-locked) .compact-personnel-board-head,
+    body:not(.login-locked) .personnel-compact-toolbar,
+    body:not(.login-locked) .personnel-row,
+    body:not(.login-locked) .person-meta span,
+    body:not(.login-locked) .person-kpi,
+    body:not(.login-locked) .executive-list-card,
+    body:not(.login-locked) .executive-mini-row,
+    body:not(.login-locked) .alert-card,
+    body:not(.login-locked) .hys-tool-card,
+    body:not(.login-locked) .hys-history-item,
+    body:not(.login-locked) .hys-result,
+    body:not(.login-locked) .hys-mini,
+    body:not(.login-locked) .hys-legal-note,
+    body:not(.login-locked) .hys-formula-note,
+    body:not(.login-locked) .hys-link-card,
+    body:not(.login-locked) .hys-integration-kpi,
+    body:not(.login-locked) .hys-calibration-status,
+    body:not(.login-locked) .monitor-card,
+    body:not(.login-locked) .monitor-summary-card,
+    body:not(.login-locked) .quarter-block,
+    body:not(.login-locked) .quarter-table th:first-child,
+    body:not(.login-locked) .quarter-table td:first-child,
+    body:not(.login-locked) .sst-schedule th:first-child,
+    body:not(.login-locked) .sst-schedule td:first-child,
+    body:not(.login-locked) .sst-field-note,
+    body:not(.login-locked) .sst-evidence-box,
+    body:not(.login-locked) .modal-content,
+    body:not(.login-locked) .modal-list-item,
+    body:not(.login-locked) .multi-assign-item,
+    body:not(.login-locked) .traceability-card,
+    body:not(.login-locked) .footer-note,
+    body:not(.login-locked) .institutional-summary,
+    body:not(.login-locked) .scale-row,
+    body:not(.login-locked) .training-empty,
+    body:not(.login-locked) .checklist-stage-selector,
+    body:not(.login-locked) .section-clean-head {
+      background: var(--v29-panel-blue) !important;
+      color: var(--v29-text-main) !important;
+      border: var(--v29-border-cyan) !important;
+      box-shadow: 0 22px 58px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255, 255, 255, .055) !important;
+      backdrop-filter: blur(16px) saturate(135%) !important;
+    }
+
+    body:not(.login-locked) .card:nth-of-type(even),
+    body:not(.login-locked) .plan-word-card:nth-child(even),
+    body:not(.login-locked) .training-entry-card:nth-child(even),
+    body:not(.login-locked) .monitor-card:nth-child(even),
+    body:not(.login-locked) .hys-tool-card:nth-child(even),
+    body:not(.login-locked) .alert-card:nth-child(even) {
+      background: var(--v29-panel-blue-soft) !important;
+    }
+
+    body:not(.login-locked) .card h3,
+    body:not(.login-locked) .card h4,
+    body:not(.login-locked) .doc-card strong,
+    body:not(.login-locked) .course-card strong,
+    body:not(.login-locked) .plan-word-card strong,
+    body:not(.login-locked) .month-course strong,
+    body:not(.login-locked) .risk-card h4,
+    body:not(.login-locked) .academic-card strong,
+    body:not(.login-locked) .norm-item strong,
+    body:not(.login-locked) .improvement-item strong,
+    body:not(.login-locked) .training-entry-card strong,
+    body:not(.login-locked) .training-item strong,
+    body:not(.login-locked) .employee-profile-card strong,
+    body:not(.login-locked) .personnel-main-cell strong,
+    body:not(.login-locked) .personnel-role-cell strong,
+    body:not(.login-locked) .dashboard-detail-card strong,
+    body:not(.login-locked) .executive-mini-row strong,
+    body:not(.login-locked) .alert-card strong,
+    body:not(.login-locked) .hys-tool-card strong,
+    body:not(.login-locked) .hys-history-item strong,
+    body:not(.login-locked) .hys-mini strong,
+    body:not(.login-locked) .hys-link-card strong,
+    body:not(.login-locked) .monitor-card strong,
+    body:not(.login-locked) .monitor-summary-card strong,
+    body:not(.login-locked) .modal-list-item strong,
+    body:not(.login-locked) .checklist-category-title,
+    body:not(.login-locked) .checklist-category-head strong {
+      color: var(--v29-text-main) !important;
+      text-shadow: 0 0 22px rgba(99, 230, 255, .10) !important;
+    }
+
+    body:not(.login-locked) .card p,
+    body:not(.login-locked) .card small,
+    body:not(.login-locked) .doc-card small,
+    body:not(.login-locked) .course-card small,
+    body:not(.login-locked) .plan-word-card small,
+    body:not(.login-locked) .plan-word-card li,
+    body:not(.login-locked) .month-course small,
+    body:not(.login-locked) .course-detail-field small,
+    body:not(.login-locked) .course-detail-field span,
+    body:not(.login-locked) .history-meta,
+    body:not(.login-locked) .dashboard-detail-card small,
+    body:not(.login-locked) .academic-card small,
+    body:not(.login-locked) .norm-item small,
+    body:not(.login-locked) .training-entry-card small,
+    body:not(.login-locked) .training-item small,
+    body:not(.login-locked) .employee-profile-card small,
+    body:not(.login-locked) .personnel-main-cell small,
+    body:not(.login-locked) .personnel-role-cell small,
+    body:not(.login-locked) .executive-mini-row small,
+    body:not(.login-locked) .alert-card small,
+    body:not(.login-locked) .alert-action,
+    body:not(.login-locked) .hys-tool-card small,
+    body:not(.login-locked) .hys-history-item small,
+    body:not(.login-locked) .hys-mini small,
+    body:not(.login-locked) .hys-link-card small,
+    body:not(.login-locked) .monitor-card small,
+    body:not(.login-locked) .monitor-summary-card span,
+    body:not(.login-locked) .modal-list-item small,
+    body:not(.login-locked) .sst-help-text,
+    body:not(.login-locked) .footer-note,
+    body:not(.login-locked) .traceability-card small {
+      color: var(--v29-text-soft) !important;
+    }
+
+    body:not(.login-locked) .section-clean-head,
+    body:not(.login-locked) .training-back-row,
+    body:not(.login-locked) .calendar-header,
+    body:not(.login-locked) .quarter-matrix-header,
+    body:not(.login-locked) .executive-dashboard-header,
+    body:not(.login-locked) .alerts-dashboard-header {
+      background: linear-gradient(135deg, rgba(11, 49, 100, .72), rgba(5, 15, 36, .68)) !important;
+      border: 1px solid rgba(99, 230, 255, .22) !important;
+      border-left: 5px solid rgba(99, 230, 255, .65) !important;
+      border-radius: 20px !important;
+      padding: 14px 16px !important;
+    }
+
+    /* Estilo de subtítulos similar al texto de Capacitaciones que funcionó bien */
+    body:not(.login-locked) .section-clean-head p,
+    body:not(.login-locked) .calendar-header p,
+    body:not(.login-locked) .quarter-matrix-header p,
+    body:not(.login-locked) .executive-dashboard-header p,
+    body:not(.login-locked) .alerts-dashboard-header p,
+    body:not(.login-locked) .training-back-row span,
+    body:not(.login-locked) .topbar .title p {
+      color: #9fdcff !important;
+      font-weight: 850 !important;
+      letter-spacing: .01em !important;
+    }
+
+    body:not(.login-locked) .topbar .title p::after {
+      color: var(--v29-accent-gold) !important;
+    }
+
+    /* Tablas y matrices con contraste técnico */
+    body:not(.login-locked) table,
+    body:not(.login-locked) .quarter-table,
+    body:not(.login-locked) .sst-schedule {
+      background: rgba(2, 12, 28, .42) !important;
+      border-radius: 18px !important;
+      overflow: hidden !important;
+    }
+    body:not(.login-locked) th {
+      background: linear-gradient(135deg, rgba(13, 58, 116, .82), rgba(5, 20, 48, .86)) !important;
+      color: #dffaff !important;
+      border-bottom-color: rgba(99, 230, 255, .24) !important;
+    }
+    body:not(.login-locked) td {
+      background: rgba(6, 22, 48, .42) !important;
+      color: #e6f3ff !important;
+      border-bottom-color: rgba(148, 163, 184, .14) !important;
+    }
+    body:not(.login-locked) tbody tr:hover td {
+      background: rgba(0, 168, 255, .075) !important;
+    }
+
+    /* Estados: se preservan colores operativos con mejor contraste */
+    body:not(.login-locked) .vigente,
+    body:not(.login-locked) .quarter-status.ok,
+    body:not(.login-locked) .month-dot.done,
+    body:not(.login-locked) .hys-result.ok,
+    body:not(.login-locked) .inspection-result-ok,
+    body:not(.login-locked) .alert-card.ok,
+    body:not(.login-locked) .scale-good {
+      background: rgba(0, 245, 160, .16) !important;
+      color: #baffdc !important;
+      border-color: rgba(0, 245, 160, .36) !important;
+    }
+    body:not(.login-locked) .por-vencer,
+    body:not(.login-locked) .quarter-status.warn,
+    body:not(.login-locked) .month-dot.pending,
+    body:not(.login-locked) .hys-result.warn,
+    body:not(.login-locked) .inspection-result-mid,
+    body:not(.login-locked) .alert-card.warning,
+    body:not(.login-locked) .scale-mid {
+      background: rgba(255, 176, 32, .18) !important;
+      color: #ffe2a7 !important;
+      border-color: rgba(255, 209, 102, .38) !important;
+    }
+    body:not(.login-locked) .vencido,
+    body:not(.login-locked) .quarter-status.bad,
+    body:not(.login-locked) .month-dot.overdue,
+    body:not(.login-locked) .hys-result.bad,
+    body:not(.login-locked) .inspection-result-bad,
+    body:not(.login-locked) .alert-card.critical,
+    body:not(.login-locked) .scale-bad {
+      background: rgba(255, 49, 88, .18) !important;
+      color: #ffc1cc !important;
+      border-color: rgba(255, 49, 88, .40) !important;
+    }
+    body:not(.login-locked) .programado,
+    body:not(.login-locked) .quarter-status.future,
+    body:not(.login-locked) .month-dot.na,
+    body:not(.login-locked) .quarter-status.empty {
+      background: rgba(0, 168, 255, .15) !important;
+      color: #c6f3ff !important;
+      border-color: rgba(99, 230, 255, .30) !important;
+    }
+
+    /* Inputs y select: evita cajas blancas dentro de paneles */
+    body:not(.login-locked) input,
+    body:not(.login-locked) select,
+    body:not(.login-locked) textarea {
+      background: rgba(2, 12, 28, .48) !important;
+      color: #f4fbff !important;
+      border-color: rgba(99, 230, 255, .22) !important;
+    }
+    body:not(.login-locked) input::placeholder,
+    body:not(.login-locked) textarea::placeholder {
+      color: rgba(190, 214, 240, .62) !important;
+    }
+
+    /* Login institucional con bandera argentina flameando */
+    .login-screen {
+      position: fixed !important;
+      overflow: hidden !important;
+      isolation: isolate !important;
+      background:
+        radial-gradient(circle at 20% 8%, rgba(0, 168, 255, .34), transparent 28%),
+        radial-gradient(circle at 78% 22%, rgba(255, 209, 102, .18), transparent 24%),
+        linear-gradient(135deg, #020712, #061528 48%, #020712) !important;
+    }
+    .login-screen::before {
+      content: "";
+      position: absolute;
+      width: min(1180px, 126vw);
+      height: min(520px, 52vh);
+      left: 50%;
+      top: 50%;
+      z-index: 0;
+      opacity: .20;
+      pointer-events: none;
+      transform-origin: center;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 209, 102, .88) 0 5%, rgba(255, 209, 102, .25) 5.5% 8%, transparent 8.5%),
+        linear-gradient(180deg,
+          rgba(116, 199, 255, .94) 0 32%,
+          rgba(255, 255, 255, .92) 32% 66%,
+          rgba(116, 199, 255, .94) 66% 100%);
+      background-size: 130% 100%, 100% 100%;
+      background-position: 0 0, center;
+      filter: saturate(120%) blur(.15px);
+      clip-path: polygon(0 16%, 12% 12%, 25% 17%, 38% 12%, 52% 17%, 65% 12%, 78% 17%, 90% 12%, 100% 16%, 100% 84%, 88% 88%, 74% 83%, 62% 88%, 49% 83%, 35% 88%, 22% 83%, 10% 88%, 0 84%);
+      animation: argentinaFlagWave 9s ease-in-out infinite;
+    }
+    .login-screen::after {
+      content: "UTN.BA · GRUPO 22";
+      position: absolute;
+      left: 28px;
+      bottom: 24px;
+      z-index: 0;
+      color: rgba(213, 240, 255, .26);
+      font-size: clamp(32px, 6vw, 86px);
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -.08em;
+      transform: skewX(-8deg);
+      pointer-events: none;
+      text-shadow: 0 0 36px rgba(99, 230, 255, .18);
+      animation: utnLoginGlow 5.8s ease-in-out infinite;
+    }
+    .login-screen > * {
+      position: relative !important;
+      z-index: 1 !important;
+    }
+    .login-card {
+      background: linear-gradient(145deg, rgba(5, 17, 40, .84), rgba(3, 9, 24, .78)) !important;
+      border: 1px solid rgba(99, 230, 255, .28) !important;
+      box-shadow: 0 36px 96px rgba(0,0,0,.52), 0 0 0 1px rgba(255,255,255,.04) inset !important;
+    }
+    .login-brand {
+      position: relative !important;
+      padding-right: 88px !important;
+    }
+    .login-brand::after {
+      content: "UTN.BA";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%) skewX(-8deg);
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(0, 168, 255, .12);
+      border: 1px solid rgba(99, 230, 255, .26);
+      color: #dffaff;
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing: -.035em;
+      text-shadow: 0 0 18px rgba(99, 230, 255, .28);
+      animation: utnBadgePulse 4.8s ease-in-out infinite;
+    }
+    .login-card .logo {
+      box-shadow: 0 0 30px rgba(99, 230, 255, .22), inset 0 -5px 0 rgba(0,168,255,.18) !important;
+    }
+    .login-help {
+      background: linear-gradient(135deg, rgba(13, 58, 116, .55), rgba(5, 20, 48, .62)) !important;
+      color: #dffaff !important;
+      border-color: rgba(99,230,255,.24) !important;
+    }
+    .login-form small {
+      color: #bcd2ea !important;
+    }
+    .login-form small b {
+      color: #ffd166 !important;
+    }
+
+    @keyframes argentinaFlagWave {
+      0%, 100% {
+        transform: translate(-50%, -50%) rotate(-4deg) skewY(-2deg) scale(1.02);
+        background-position: 0% 0, center;
+        clip-path: polygon(0 16%, 12% 12%, 25% 17%, 38% 12%, 52% 17%, 65% 12%, 78% 17%, 90% 12%, 100% 16%, 100% 84%, 88% 88%, 74% 83%, 62% 88%, 49% 83%, 35% 88%, 22% 83%, 10% 88%, 0 84%);
+      }
+      50% {
+        transform: translate(-50%, -50%) rotate(-2deg) skewY(2.2deg) scale(1.035);
+        background-position: 100% 0, center;
+        clip-path: polygon(0 12%, 12% 18%, 25% 13%, 38% 18%, 52% 13%, 65% 18%, 78% 13%, 90% 18%, 100% 12%, 100% 88%, 88% 82%, 74% 87%, 62% 82%, 49% 87%, 35% 82%, 22% 87%, 10% 82%, 0 88%);
+      }
+    }
+    @keyframes utnLoginGlow {
+      0%, 100% { opacity: .72; filter: blur(0); }
+      50% { opacity: 1; filter: drop-shadow(0 0 18px rgba(99,230,255,.28)); }
+    }
+    @keyframes utnBadgePulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(99,230,255,0); }
+      50% { box-shadow: 0 0 24px rgba(99,230,255,.22); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .login-screen::before,
+      .login-screen::after,
+      .login-brand::after {
+        animation: none !important;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .login-brand { padding-right: 0 !important; }
+      .login-brand::after { display: none !important; }
+      .login-screen::after { font-size: 36px; left: 16px; bottom: 14px; }
+      .login-screen::before { width: 135vw; height: 44vh; opacity: .16; }
+    }
+  }
+
+  @media print {
+    .login-screen::before,
+    .login-screen::after,
+    .login-brand::after {
+      display: none !important;
+      content: none !important;
+    }
+  }
+</style>
+
 </head>
 <body class="login-locked">
 
@@ -4719,7 +5546,7 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
           <p>Estación de Servicio YPF · San Nicolás de los Arroyos · Implementación ISO 45001</p>
         </div>
         <div class="topbar-actions">
-          <span class="session-chip" id="sessionChip">👤 Grupo22</span>
+          <span class="session-chip" id="sessionChip"><span class="utn-session-mark">UTN.BA</span><span>Grupo 22</span></span>
         </div>
       </div>
 
@@ -11283,10 +12110,10 @@ Legal: ${record.legal}`,
       const raw = localStorage.getItem("ypfCurrentUser");
       const user = raw ? JSON.parse(raw) : null;
       if (!user) {
-        chip.innerHTML = "👤 Sin sesión";
+        chip.innerHTML = '<span class="utn-session-mark">UTN.BA</span><span>Sin sesión</span>';
         return;
       }
-      chip.innerHTML = `<span>👤 Grupo22</span><button type="button" title="Cerrar sesión" onclick="cerrarSesionDemo()">Salir</button>`;
+      chip.innerHTML = `<span class="utn-session-mark">UTN.BA</span><span>Grupo 22</span><button type="button" title="Cerrar sesión" onclick="cerrarSesionDemo()">Salir</button>`;
     }
 
     function initLoginDemo() {
@@ -15533,5 +16360,561 @@ Legal: ${record.legal}`,
 })();
 </script>
 
+
+<!-- ===== V30: ajustes finos de contraste por solapa y paneles críticos ===== -->
+<style id="v30-panel-contrast-fixes">
+  @media screen {
+    :root {
+      --v30-bg-a: rgba(4, 15, 35, .96);
+      --v30-bg-b: rgba(7, 32, 68, .90);
+      --v30-card: linear-gradient(145deg, rgba(7, 32, 68, .94), rgba(3, 12, 30, .90));
+      --v30-card-soft: linear-gradient(145deg, rgba(9, 45, 90, .90), rgba(4, 17, 39, .88));
+      --v30-head: linear-gradient(135deg, rgba(10, 55, 110, .94), rgba(3, 18, 44, .92));
+      --v30-line: rgba(96, 224, 255, .28);
+      --v30-cyan: #78eaff;
+      --v30-cyan-soft: #aeefff;
+      --v30-text: #f4fbff;
+      --v30-soft: #bddcf2;
+      --v30-muted: #8eb5d2;
+      --v30-gold: #ffd166;
+    }
+
+    /* 1. Dashboard de capacitaciones */
+    body:not(.login-locked) .training-kpi-dashboard-v25,
+    body:not(.login-locked) #trainingDashboardGeneralV25,
+    body:not(.login-locked) #trainingKpisModuleV25 {
+      background: radial-gradient(circle at top right, rgba(120,234,255,.14), transparent 34%), var(--v30-card) !important;
+      border: 1px solid var(--v30-line) !important;
+      border-top: 5px solid rgba(120,234,255,.68) !important;
+      box-shadow: 0 24px 70px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.06) !important;
+      color: var(--v30-text) !important;
+    }
+    body:not(.login-locked) .training-kpi-dashboard-v25 h3,
+    body:not(.login-locked) .training-kpi-dashboard-v25 .calendar-header h3 {
+      color: var(--v30-text) !important;
+    }
+    body:not(.login-locked) .training-kpi-dashboard-v25 p,
+    body:not(.login-locked) .training-kpi-dashboard-v25 .calendar-header p {
+      color: var(--v30-cyan-soft) !important;
+      font-weight: 850 !important;
+    }
+    body:not(.login-locked) .training-kpi-v25,
+    body:not(.login-locked) .training-alert-v25 {
+      background: linear-gradient(145deg, rgba(7, 32, 68, .88), rgba(2, 10, 26, .82)) !important;
+      border: 1px solid rgba(120,234,255,.24) !important;
+      box-shadow: 0 12px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.055) !important;
+      color: var(--v30-text) !important;
+    }
+    body:not(.login-locked) .training-kpi-v25.ok { border-top-color: #30e89f !important; }
+    body:not(.login-locked) .training-kpi-v25.warn { border-top-color: #ffd166 !important; }
+    body:not(.login-locked) .training-kpi-v25.future { border-top-color: #78eaff !important; }
+    body:not(.login-locked) .training-kpi-v25.bad { border-top-color: #ff5f7a !important; }
+    body:not(.login-locked) .training-kpi-v25 span,
+    body:not(.login-locked) .training-alert-v25 span { color: var(--v30-cyan-soft) !important; }
+    body:not(.login-locked) .training-kpi-v25 strong,
+    body:not(.login-locked) .training-alert-v25 strong { color: var(--v30-text) !important; }
+    body:not(.login-locked) .training-kpi-v25 small,
+    body:not(.login-locked) .training-alert-v25 small { color: var(--v30-soft) !important; }
+
+    /* 2. Resumen documental del plan: 4 tarjetas en una sola línea en escritorio */
+    body:not(.login-locked) #capacitaciones .plan-word-overview {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 14px !important;
+      align-items: stretch !important;
+    }
+    body:not(.login-locked) #capacitaciones .plan-word-card,
+    body:not(.login-locked) #capacitaciones .plan-word-card.consideraciones-full {
+      grid-column: auto !important;
+      background: var(--v30-card) !important;
+      border: 1px solid rgba(120,234,255,.24) !important;
+      border-left: 5px solid rgba(120,234,255,.72) !important;
+      color: var(--v30-text) !important;
+      min-height: 156px !important;
+    }
+    body:not(.login-locked) #capacitaciones .plan-word-card strong { color: var(--v30-text) !important; }
+    body:not(.login-locked) #capacitaciones .plan-word-card small,
+    body:not(.login-locked) #capacitaciones .plan-word-card li { color: var(--v30-soft) !important; }
+    body:not(.login-locked) #capacitaciones .plan-word-card.consideraciones-full ul {
+      columns: 1 !important;
+      padding-left: 17px !important;
+    }
+
+    /* 3. Números de emergencia */
+    body:not(.login-locked) #emergencias .step-list,
+    body:not(.login-locked) #emergencias .card {
+      color: var(--v30-text) !important;
+    }
+    body:not(.login-locked) #emergencias .step {
+      background: var(--v30-card) !important;
+      color: var(--v30-text) !important;
+      border: 1px solid rgba(120,234,255,.23) !important;
+      box-shadow: 0 12px 32px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.05) !important;
+    }
+    body:not(.login-locked) #emergencias .step strong { color: var(--v30-text) !important; }
+    body:not(.login-locked) #emergencias .step::before {
+      background: linear-gradient(135deg, rgba(120,234,255,.92), rgba(0,120,255,.82)) !important;
+      color: #03101f !important;
+      box-shadow: 0 0 18px rgba(120,234,255,.28) !important;
+    }
+
+    /* 4, 5 y 6. Verificación, cronograma y pestañas */
+    body:not(.login-locked) #verificacion .section-clean-head,
+    body:not(.login-locked) #verificacion .card,
+    body:not(.login-locked) #verificationPanelCronograma .card,
+    body:not(.login-locked) #verificationPanelRegistro .card,
+    body:not(.login-locked) #verificationPanelHistorial .card,
+    body:not(.login-locked) #verificationPanelMonitoreos .card,
+    body:not(.login-locked) #verificationPanelChecklist .card {
+      background: var(--v30-card) !important;
+      color: var(--v30-text) !important;
+      border: 1px solid rgba(120,234,255,.23) !important;
+      box-shadow: 0 22px 58px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.055) !important;
+    }
+    body:not(.login-locked) #verificacion h3,
+    body:not(.login-locked) #verificacion h4,
+    body:not(.login-locked) #verificacion strong,
+    body:not(.login-locked) #verificationPanelCronograma h3 {
+      color: var(--v30-text) !important;
+    }
+    body:not(.login-locked) #verificacion p,
+    body:not(.login-locked) #verificacion small,
+    body:not(.login-locked) #verificationPanelCronograma p,
+    body:not(.login-locked) #verificationPanelCronograma small {
+      color: var(--v30-soft) !important;
+    }
+    body:not(.login-locked) #verificacion .verification-tabs {
+      background: linear-gradient(135deg, rgba(6, 25, 56, .58), rgba(2, 10, 26, .52)) !important;
+      border: 1px solid rgba(120,234,255,.18) !important;
+      border-radius: 20px !important;
+      padding: 10px !important;
+    }
+    body:not(.login-locked) #verificacion .verification-tab {
+      background: linear-gradient(135deg, rgba(12, 53, 105, .90), rgba(5, 19, 45, .88)) !important;
+      color: #e8fbff !important;
+      border: 1px solid rgba(120,234,255,.30) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 8px 18px rgba(0,0,0,.20) !important;
+      text-shadow: none !important;
+    }
+    body:not(.login-locked) #verificacion .verification-tab:hover,
+    body:not(.login-locked) #verificacion .verification-tab.active {
+      background: linear-gradient(135deg, rgba(120,234,255,.92), rgba(0,120,255,.84)) !important;
+      color: #03101f !important;
+      border-color: rgba(120,234,255,.80) !important;
+      box-shadow: 0 0 26px rgba(120,234,255,.22) !important;
+    }
+
+    body:not(.login-locked) #verificacion .sst-kpi,
+    body:not(.login-locked) #verificationKpis .sst-kpi {
+      background: linear-gradient(145deg, rgba(7, 32, 68, .92), rgba(3, 13, 32, .88)) !important;
+      border: 1px solid rgba(120,234,255,.23) !important;
+      color: var(--v30-text) !important;
+      box-shadow: 0 14px 34px rgba(0,0,0,.25) !important;
+    }
+    body:not(.login-locked) #verificacion .sst-kpi span { color: var(--v30-cyan-soft) !important; }
+    body:not(.login-locked) #verificacion .sst-kpi strong { color: var(--v30-text) !important; }
+    body:not(.login-locked) #verificacion .sst-kpi small { color: var(--v30-soft) !important; }
+
+    body:not(.login-locked) #verificationPanelCronograma .sst-schedule-wrap,
+    body:not(.login-locked) #verificationPanelCronograma .sst-history-table-wrap {
+      background: linear-gradient(145deg, rgba(2, 10, 26, .76), rgba(7, 32, 68, .48)) !important;
+      border: 1px solid rgba(120,234,255,.20) !important;
+      border-radius: 20px !important;
+      padding: 10px !important;
+    }
+    body:not(.login-locked) .sst-schedule,
+    body:not(.login-locked) .sst-schedule-excel,
+    body:not(.login-locked) .sst-schedule-v26 {
+      background: rgba(3, 13, 32, .82) !important;
+      color: var(--v30-text) !important;
+    }
+    body:not(.login-locked) .sst-schedule th,
+    body:not(.login-locked) .sst-schedule-excel th,
+    body:not(.login-locked) .sst-schedule-v26 th {
+      background: var(--v30-head) !important;
+      color: #eaffff !important;
+      border-color: rgba(120,234,255,.24) !important;
+    }
+    body:not(.login-locked) .sst-schedule td,
+    body:not(.login-locked) .sst-schedule-excel td,
+    body:not(.login-locked) .sst-schedule-v26 td {
+      background: rgba(7, 32, 68, .58) !important;
+      color: #e7f5ff !important;
+      border-color: rgba(120,234,255,.14) !important;
+    }
+    body:not(.login-locked) .sst-schedule th:first-child,
+    body:not(.login-locked) .sst-schedule td:first-child,
+    body:not(.login-locked) .sst-schedule-excel th:nth-child(1),
+    body:not(.login-locked) .sst-schedule-excel td:nth-child(1),
+    body:not(.login-locked) .sst-schedule-excel th:nth-child(2),
+    body:not(.login-locked) .sst-schedule-excel td:nth-child(2) {
+      background: linear-gradient(135deg, rgba(6, 36, 78, .96), rgba(3, 13, 32, .94)) !important;
+      color: #f4fbff !important;
+      border-color: rgba(120,234,255,.22) !important;
+    }
+    body:not(.login-locked) .sst-schedule .legal-cell,
+    body:not(.login-locked) .sst-schedule .obs-cell,
+    body:not(.login-locked) .sst-schedule-excel .sst-obs-col,
+    body:not(.login-locked) .sst-schedule-v26 .sst-obs-col {
+      background: rgba(4, 19, 44, .76) !important;
+      color: #d9efff !important;
+    }
+    body:not(.login-locked) .sst-schedule-v26 .excel-neutral,
+    body:not(.login-locked) .sst-schedule-excel .excel-neutral {
+      background: rgba(148, 163, 184, .10) !important;
+      color: rgba(202, 216, 232, .70) !important;
+    }
+    body:not(.login-locked) .sst-schedule-v26 .excel-done,
+    body:not(.login-locked) .sst-schedule-excel .excel-done { background: #92d050 !important; color: #063c2a !important; }
+    body:not(.login-locked) .sst-schedule-v26 .excel-pending,
+    body:not(.login-locked) .sst-schedule-excel .excel-pending { background: #ffd166 !important; color: #3b2700 !important; }
+    body:not(.login-locked) .sst-schedule-v26 .excel-overdue,
+    body:not(.login-locked) .sst-schedule-excel .excel-overdue { background: #e30613 !important; color: #ffffff !important; }
+
+    /* 7. Matrices SST vigentes */
+    body:not(.login-locked) .official-matrix-dashboard,
+    body:not(.login-locked) #officialMatrixSummaryV26 {
+      background: radial-gradient(circle at top right, rgba(255,209,102,.12), transparent 34%), var(--v30-card) !important;
+      border: 1px solid rgba(120,234,255,.24) !important;
+      border-top: 5px solid rgba(255,209,102,.78) !important;
+      color: var(--v30-text) !important;
+      box-shadow: 0 24px 70px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.055) !important;
+    }
+    body:not(.login-locked) .official-matrix-dashboard .calendar-header {
+      background: var(--v30-head) !important;
+      border: 1px solid rgba(120,234,255,.24) !important;
+      color: var(--v30-text) !important;
+    }
+    body:not(.login-locked) .official-matrix-dashboard .calendar-header h3 { color: var(--v30-text) !important; }
+    body:not(.login-locked) .official-matrix-dashboard .calendar-header p { color: var(--v30-cyan-soft) !important; }
+    body:not(.login-locked) .official-matrix-kpi {
+      background: linear-gradient(145deg, rgba(7, 32, 68, .92), rgba(3, 13, 32, .86)) !important;
+      border: 1px solid rgba(120,234,255,.24) !important;
+      color: var(--v30-text) !important;
+      box-shadow: 0 12px 28px rgba(0,0,0,.24) !important;
+    }
+    body:not(.login-locked) .official-matrix-kpi span { color: var(--v30-cyan-soft) !important; }
+    body:not(.login-locked) .official-matrix-kpi strong { color: var(--v30-text) !important; }
+    body:not(.login-locked) .official-matrix-kpi small { color: var(--v30-soft) !important; }
+    body:not(.login-locked) .official-table-wrap {
+      background: linear-gradient(145deg, rgba(2, 10, 26, .64), rgba(7, 32, 68, .42)) !important;
+      border: 1px solid rgba(120,234,255,.18) !important;
+      border-radius: 18px !important;
+      padding: 10px !important;
+      color: var(--v30-text) !important;
+    }
+    body:not(.login-locked) .official-mini-table th {
+      background: var(--v30-head) !important;
+      color: #eaffff !important;
+      border-color: rgba(120,234,255,.22) !important;
+    }
+    body:not(.login-locked) .official-mini-table td,
+    body:not(.login-locked) .official-mini-table tr:nth-child(even) td,
+    body:not(.login-locked) .official-mini-table td:first-child {
+      background: rgba(7, 32, 68, .56) !important;
+      color: #e7f5ff !important;
+      border-color: rgba(120,234,255,.12) !important;
+    }
+    body:not(.login-locked) .official-pill:not(.warn):not(.bad):not(.ok),
+    body:not(.login-locked) summary.official-pill {
+      background: linear-gradient(135deg, rgba(120,234,255,.18), rgba(0,120,255,.16)) !important;
+      color: #eaffff !important;
+      border: 1px solid rgba(120,234,255,.34) !important;
+    }
+
+    /* Badges generales dentro de estos bloques */
+    body:not(.login-locked) #trainingDashboardGeneralV25 .badge,
+    body:not(.login-locked) #trainingKpisModuleV25 .badge,
+    body:not(.login-locked) #emergencias .badge,
+    body:not(.login-locked) #verificacion .badge,
+    body:not(.login-locked) #officialMatrixSummaryV26 .badge {
+      background: rgba(120,234,255,.14) !important;
+      color: #eaffff !important;
+      border: 1px solid rgba(120,234,255,.28) !important;
+    }
+
+    @media (max-width: 1180px) {
+      body:not(.login-locked) #capacitaciones .plan-word-overview {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+    @media (max-width: 760px) {
+      body:not(.login-locked) #capacitaciones .plan-word-overview {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  }
+</style>
+
+
+
+<!-- ===== V31 REPARADO: tarjetas premium uniformes + sesión UTN.BA + contraste sin tocar login ===== -->
+<style id="v31-reparado-login-estable">
+  @media screen {
+    :root{
+      --repair-card: linear-gradient(145deg, rgba(7, 32, 68, .95), rgba(3, 12, 30, .91));
+      --repair-card-soft: linear-gradient(145deg, rgba(9, 45, 90, .92), rgba(4, 17, 39, .89));
+      --repair-head: linear-gradient(135deg, rgba(10, 55, 110, .96), rgba(3, 18, 44, .94));
+      --repair-line: rgba(120,234,255,.27);
+      --repair-line-strong: rgba(120,234,255,.46);
+      --repair-text: #f4fbff;
+      --repair-subtext: #c6e6fa;
+      --repair-muted: #91bad7;
+      --repair-cyan: #78eaff;
+      --repair-gold: #ffd166;
+      --repair-ink: #03101f;
+    }
+
+    /* Base visual: mismo lenguaje del Dashboard de capacitaciones */
+    body:not(.login-locked) .card,
+    body:not(.login-locked) .doc-card,
+    body:not(.login-locked) .course-card,
+    body:not(.login-locked) .month-card,
+    body:not(.login-locked) .month-course,
+    body:not(.login-locked) .training-entry-card,
+    body:not(.login-locked) .training-kpi-dashboard-v25,
+    body:not(.login-locked) .training-kpi-v25,
+    body:not(.login-locked) .training-alert-v25,
+    body:not(.login-locked) .employee-profile-card,
+    body:not(.login-locked) .employee-detail-panel,
+    body:not(.login-locked) .employee-list-card,
+    body:not(.login-locked) .personnel-board,
+    body:not(.login-locked) .personnel-row,
+    body:not(.login-locked) .person-card,
+    body:not(.login-locked) .history-item,
+    body:not(.login-locked) .dashboard-detail-card,
+    body:not(.login-locked) .academic-card,
+    body:not(.login-locked) .norm-item,
+    body:not(.login-locked) .improvement-item,
+    body:not(.login-locked) .check-item,
+    body:not(.login-locked) .risk-card,
+    body:not(.login-locked) .phva-card,
+    body:not(.login-locked) .modal-list-item,
+    body:not(.login-locked) .hys-tool-card,
+    body:not(.login-locked) .hys-history-item,
+    body:not(.login-locked) .hys-link-card,
+    body:not(.login-locked) .hys-mini,
+    body:not(.login-locked) .hys-result,
+    body:not(.login-locked) .training-summary-card,
+    body:not(.login-locked) .training-item,
+    body:not(.login-locked) .training-note,
+    body:not(.login-locked) .training-control-note,
+    body:not(.login-locked) .traceability-card,
+    body:not(.login-locked) .footer-note,
+    body:not(.login-locked) .sst-field-note,
+    body:not(.login-locked) .sst-evidence-box,
+    body:not(.login-locked) .checklist-category,
+    body:not(.login-locked) .checklist-stage-compact,
+    body:not(.login-locked) .checklist-row-compact,
+    body:not(.login-locked) .scale-row,
+    body:not(.login-locked) .step,
+    body:not(.login-locked) .multi-assign-item,
+    body:not(.login-locked) .executive-kpi,
+    body:not(.login-locked) .kpi-card,
+    body:not(.login-locked) .stat,
+    body:not(.login-locked) .sst-kpi,
+    body:not(.login-locked) .training-mini-stat,
+    body:not(.login-locked) .monitor-card,
+    body:not(.login-locked) .monitor-summary-card,
+    body:not(.login-locked) .alert-card,
+    body:not(.login-locked) .executive-list-card,
+    body:not(.login-locked) .executive-mini-row,
+    body:not(.login-locked) .quarter-block,
+    body:not(.login-locked) .plan-word-card {
+      background: radial-gradient(circle at top right, rgba(120,234,255,.12), transparent 36%), var(--repair-card) !important;
+      color: var(--repair-text) !important;
+      border: 1px solid var(--repair-line) !important;
+      box-shadow: 0 22px 58px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.055) !important;
+    }
+
+    body:not(.login-locked) .card h3,
+    body:not(.login-locked) .card h4,
+    body:not(.login-locked) .card strong,
+    body:not(.login-locked) .doc-card strong,
+    body:not(.login-locked) .course-card strong,
+    body:not(.login-locked) .month-course strong,
+    body:not(.login-locked) .training-entry-card strong,
+    body:not(.login-locked) .employee-profile-card strong,
+    body:not(.login-locked) .employee-detail-panel h3,
+    body:not(.login-locked) .employee-list-card h3,
+    body:not(.login-locked) .personnel-row strong,
+    body:not(.login-locked) .history-item strong,
+    body:not(.login-locked) .dashboard-detail-card strong,
+    body:not(.login-locked) .academic-card strong,
+    body:not(.login-locked) .norm-item strong,
+    body:not(.login-locked) .improvement-item strong,
+    body:not(.login-locked) .check-item strong,
+    body:not(.login-locked) .risk-card h4,
+    body:not(.login-locked) .phva-card h4,
+    body:not(.login-locked) .modal-list-item strong,
+    body:not(.login-locked) .hys-tool-card strong,
+    body:not(.login-locked) .hys-history-item strong,
+    body:not(.login-locked) .hys-link-card strong,
+    body:not(.login-locked) .hys-mini strong,
+    body:not(.login-locked) .training-summary-card strong,
+    body:not(.login-locked) .training-item strong,
+    body:not(.login-locked) .training-group h4,
+    body:not(.login-locked) .calendar-header h3,
+    body:not(.login-locked) .plan-word-card strong,
+    body:not(.login-locked) .section-clean-head h3,
+    body:not(.login-locked) .checklist-category-title,
+    body:not(.login-locked) .checklist-category-head strong,
+    body:not(.login-locked) th {
+      color: var(--repair-text) !important;
+      text-shadow: 0 0 18px rgba(120,234,255,.12) !important;
+    }
+
+    body:not(.login-locked) .card p,
+    body:not(.login-locked) .card small,
+    body:not(.login-locked) .card li,
+    body:not(.login-locked) .doc-card small,
+    body:not(.login-locked) .course-card small,
+    body:not(.login-locked) .month-course small,
+    body:not(.login-locked) .training-entry-card small,
+    body:not(.login-locked) .employee-profile-card small,
+    body:not(.login-locked) .employee-detail-panel p,
+    body:not(.login-locked) .employee-list-card p,
+    body:not(.login-locked) .personnel-row small,
+    body:not(.login-locked) .history-item small,
+    body:not(.login-locked) .dashboard-detail-card small,
+    body:not(.login-locked) .academic-card small,
+    body:not(.login-locked) .norm-item small,
+    body:not(.login-locked) .improvement-item small,
+    body:not(.login-locked) .modal-list-item small,
+    body:not(.login-locked) .hys-tool-card small,
+    body:not(.login-locked) .hys-history-item small,
+    body:not(.login-locked) .hys-link-card small,
+    body:not(.login-locked) .hys-mini small,
+    body:not(.login-locked) .training-summary-card span,
+    body:not(.login-locked) .training-item small,
+    body:not(.login-locked) .plan-word-card small,
+    body:not(.login-locked) .plan-word-card li,
+    body:not(.login-locked) .section-clean-head p,
+    body:not(.login-locked) .checklist-stage-compact summary small,
+    body:not(.login-locked) .checklist-category-title small,
+    body:not(.login-locked) td,
+    body:not(.login-locked) label,
+    body:not(.login-locked) .hys-help,
+    body:not(.login-locked) .auto-action-note {
+      color: var(--repair-subtext) !important;
+    }
+
+    /* Resumen documental del plan: 4 tarjetas en una línea en escritorio */
+    body:not(.login-locked) #capacitaciones .plan-word-overview {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 14px !important;
+      align-items: stretch !important;
+    }
+    body:not(.login-locked) #capacitaciones .plan-word-card,
+    body:not(.login-locked) #capacitaciones .plan-word-card.consideraciones-full {
+      grid-column: auto !important;
+      min-height: 158px !important;
+      border-left: 5px solid rgba(120,234,255,.72) !important;
+    }
+    body:not(.login-locked) #capacitaciones .plan-word-card.consideraciones-full ul {
+      columns: 1 !important;
+      padding-left: 17px !important;
+    }
+    @media (max-width: 1200px) {
+      body:not(.login-locked) #capacitaciones .plan-word-overview { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    }
+    @media (max-width: 760px) {
+      body:not(.login-locked) #capacitaciones .plan-word-overview { grid-template-columns: 1fr !important; }
+    }
+
+    /* Emergencias: quitar encabezado solicitado, mantener tarjetas operativas */
+    body:not(.login-locked) #emergencias > .section-clean-head {
+      display: none !important;
+    }
+
+    /* Session chip premium UTN.BA */
+    body:not(.login-locked) .session-chip {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 7px 10px !important;
+      background: linear-gradient(135deg, rgba(7,32,68,.94), rgba(3,12,30,.92)) !important;
+      color: var(--repair-text) !important;
+      border: 1px solid var(--repair-line-strong) !important;
+      box-shadow: 0 10px 26px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06) !important;
+      border-radius: 999px !important;
+      font-weight: 900 !important;
+      white-space: nowrap !important;
+    }
+    body:not(.login-locked) .utn-session-mark {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 54px !important;
+      padding: 4px 8px !important;
+      border-radius: 999px !important;
+      background: linear-gradient(135deg, rgba(120,234,255,.96), rgba(0,120,255,.82)) !important;
+      color: var(--repair-ink) !important;
+      letter-spacing: .035em !important;
+      font-size: 10.5px !important;
+      font-weight: 950 !important;
+      box-shadow: 0 0 18px rgba(120,234,255,.28) !important;
+    }
+    body:not(.login-locked) .session-chip button {
+      background: rgba(255,209,102,.16) !important;
+      color: var(--repair-gold) !important;
+      border: 1px solid rgba(255,209,102,.32) !important;
+      padding: 5px 8px !important;
+      border-radius: 999px !important;
+      font-weight: 950 !important;
+    }
+
+    /* Toast/bienvenida: texto visible sobre fondo oscuro premium */
+    .toast,
+    body:not(.login-locked) .toast {
+      background: linear-gradient(145deg, rgba(7,32,68,.98), rgba(3,12,30,.96)) !important;
+      color: #eaffff !important;
+      border: 1px solid rgba(120,234,255,.40) !important;
+      box-shadow: 0 18px 46px rgba(0,0,0,.34), 0 0 26px rgba(120,234,255,.10) !important;
+      text-shadow: none !important;
+    }
+
+    /* Tablas y formularios dentro del modo premium */
+    body:not(.login-locked) table {
+      background: rgba(3,13,32,.80) !important;
+      color: var(--repair-text) !important;
+    }
+    body:not(.login-locked) th {
+      background: var(--repair-head) !important;
+      border-color: rgba(120,234,255,.22) !important;
+    }
+    body:not(.login-locked) td {
+      background: rgba(7,32,68,.46) !important;
+      border-color: rgba(120,234,255,.13) !important;
+    }
+    body:not(.login-locked) input,
+    body:not(.login-locked) select,
+    body:not(.login-locked) textarea {
+      background: rgba(3,13,32,.78) !important;
+      color: var(--repair-text) !important;
+      border: 1px solid rgba(120,234,255,.25) !important;
+    }
+    body:not(.login-locked) input::placeholder,
+    body:not(.login-locked) textarea::placeholder { color: rgba(198,230,250,.62) !important; }
+
+    /* Botones de tabs de verificación siempre legibles */
+    body:not(.login-locked) #verificacion .verification-tab {
+      color: #eaffff !important;
+      background: linear-gradient(135deg, rgba(12,53,105,.92), rgba(5,19,45,.90)) !important;
+      border: 1px solid rgba(120,234,255,.35) !important;
+      text-shadow: none !important;
+    }
+    body:not(.login-locked) #verificacion .verification-tab.active,
+    body:not(.login-locked) #verificacion .verification-tab:hover {
+      color: var(--repair-ink) !important;
+      background: linear-gradient(135deg, rgba(120,234,255,.96), rgba(0,120,255,.84)) !important;
+    }
+  }
+
+  @media print {
+    #v31-reparado-login-estable { display:none !important; }
+  }
+</style>
 </body>
 </html>
