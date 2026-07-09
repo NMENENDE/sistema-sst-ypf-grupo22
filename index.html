@@ -15981,20 +15981,6 @@ Legal: ${record.legal}`,
         <div class="training-alert-v25 future"><div><strong>Segundo semestre programado</strong><br><small>${s.programmed} capacitaciones/participante programadas para generar avisos preventivos.</small></div><span class="pill programado">Programado</span></div>
       </div>`;
   }
-
-  function renderTrainingDashboardV25(){
-    const dash = document.getElementById('dashboard');
-    if(dash && !document.getElementById('trainingDashboardGeneralV25')){
-      const alerts = dash.querySelector('.alerts-dashboard');
-      const card = document.createElement('div');
-      card.id = 'trainingDashboardGeneralV25';
-      card.className = 'card training-kpi-dashboard-v25';
-      card.innerHTML = trainingKpiHtmlV25('🎓 Dashboard de capacitaciones', 'Indicadores del Plan Anual de Capacitación sin mezclar criterios con el Cronograma de Monitoreo SST.');
-      if(alerts) dash.insertBefore(card, alerts); else dash.appendChild(card);
-    } else if(document.getElementById('trainingDashboardGeneralV25')) {
-      document.getElementById('trainingDashboardGeneralV25').innerHTML = trainingKpiHtmlV25('🎓 Dashboard de capacitaciones', 'Indicadores del Plan Anual de Capacitación sin mezclar criterios con el Cronograma de Monitoreo SST.');
-    }
-
     const module = document.querySelector('#capacitaciones .training-module');
     if(module && !document.getElementById('trainingKpisModuleV25')){
       const box = document.createElement('div');
