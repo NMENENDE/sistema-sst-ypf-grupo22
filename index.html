@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema Digital SST Command Center v29 | YPF · UTN BA · Grupo 22</title>
+  <title>Sistema Digital SST | YPF · UTN BA · Grupo 22</title>
   <style>
     :root {
       --ypf-blue: #0056a6;
@@ -4730,17 +4730,6 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
       box-shadow: 0 34px 90px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.08) !important;
       backdrop-filter: blur(18px) saturate(135%) !important;
     }
-    .login-card::before {
-      content:"SAFETY COMMAND CENTER";
-      position:absolute;
-      top:14px;
-      right:18px;
-      color:rgba(56,232,255,.55);
-      font-size:10px;
-      font-weight:950;
-      letter-spacing:.16em;
-      z-index:1;
-    }
     .login-brand h2, .login-help, .login-brand small { color:#eef6ff !important; }
     .login-help {
       background: rgba(0,168,255,.10) !important;
@@ -4889,7 +4878,7 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
       border-top: 1px solid rgba(255,209,102,.42) !important;
     }
     #dashboard .executive-dashboard.ypf-main-kpis-card::before {
-      content:"COMMAND" !important;
+      content:"Grupo22" !important;
       color: rgba(56,232,255,.055) !important;
       letter-spacing:-.08em !important;
     }
@@ -5758,7 +5747,6 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
 
     <div class="card" id="trainingModuleHome">
       <h3>Centro de gestión de capacitaciones</h3>
-      <p>Ingresá al calendario anual o al módulo de personal registrado. Ambos submódulos conservan los datos del plan y permiten volver a esta portada.</p>
       <div class="training-entry-grid">
         <div class="training-entry-card">
           <strong>📅 Calendario anual SST</strong>
@@ -5885,7 +5873,6 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
 
         <div class="card">
           <h3>Flujograma de actuación y toma de decisiones</h3>
-          <p>Consulta rápida del circuito de decisión ante incendio, derrame, fuga de GNC, accidente con lesionados o evacuación general.</p>
           <div class="doc-card">
             <strong>📌 Procedimiento de decisión ante emergencias</strong>
             <a href="flujograma-emergencias.pdf" target="_blank" rel="noopener">
@@ -5943,7 +5930,6 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
     <div class="grid two">
       <div class="card sst-form-card">
         <h3>Nuevo Registro SST</h3>
-        <p>El formulario cambia según el tipo de registro para que cada acta tenga los campos reales que corresponden.</p>
         <div class="form-grid">
           <select id="sstRecordType" onchange="updateSstRecordCode()">
             <option value="Inspección">Registro de Inspección SST</option>
@@ -6040,7 +6026,6 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
       <div class="calendar-header">
         <div>
           <h3>✅ Checklist digital de inspección SST</h3>
-          <p>Control preventivo integrado a Verificación y Actuación. Al finalizar, queda evidencia en el historial de inspecciones.</p>
         </div>
         <span class="badge calendar-badge">Inspección operativa</span>
       </div>
@@ -6049,11 +6034,6 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
 
     <div class="card">
       <h3>Checklist digital de inspección SST</h3>
-
-      <p>
-        Checklist SST por etapas desplegables. Elegí una etapa específica o el checklist completo. Marcá cada control como Conforme o No Conforme y dejá una observación general al final.
-      </p>
-
       <div class="checklist-meta-grid">
         <input id="inspectionResponsible" placeholder="Realizado por / Responsable SST" value="Responsable SST" />
         <input id="inspectionSector" placeholder="Sector inspeccionado" value="Playa / Tienda / GNC" />
@@ -6144,7 +6124,6 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
       <div class="calendar-header">
         <div>
           <h3>Integración HyS</h3>
-          <p>Los informes técnicos impactan automáticamente en Cronograma SST, Historial SST, IPER, Matriz Legal y Dashboard Ejecutivo.</p>
         </div>
         <span class="badge calendar-badge">Integración activa</span>
       </div>
@@ -6373,13 +6352,6 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
       <h3>Biblioteca documental SST</h3>
 
       <div class="grid" id="docList"></div>
-
-      <div class="footer-note" style="margin-top:18px;">
-        Toda la documentación fue integrada digitalmente para facilitar
-        el acceso rápido a procedimientos, emergencias, capacitaciones
-        y registros preventivos del Sistema SST.
-      </div>
-    </div>
 
     <div class="card">
 
@@ -7746,11 +7718,10 @@ async function guardarRealizacionSupabase(training) {
     ];
 
     const academicSupervisors = [
-      { name: "Martín Bruno", function: "Seguimiento académico y criterios preventivos" },
-      { name: "Maria Valeria Salvatore", function: "Seguimiento académico y criterios preventivos" },
-      { name: "Valeria Salvatore", function: "Supervisión técnica y operativa del proyecto" },
-      { name: "Víctor Morera", function: "Evaluación de riesgos, controles y mejora continua" },
-      { name: "Sebastián Ezpeleta", function: "Gestión SST, documentación y enfoque preventivo" }
+      { name: "Maria Valeria Salvatore"},
+      { name: "Valeria Salvatore",},
+      { name: "Víctor Morera",},
+      { name: "Sebastián Ezpeleta",}
     ];
 
     const normativeFramework = [
@@ -10061,7 +10032,7 @@ const courseCounts = courses.slice(0, 7).map(course => {
             </div>
 
             <div class="signatures">
-              <div class="sig">Martín Bruno<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
+              <div class="sig">José Messina<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
               <div class="sig">Valeria Salvatore<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
               <div class="sig">Víctor Morera<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
               <div class="sig">Sebastián Ezpeleta<br><span style="font-size:12px; color:#64748b;">Docente · Tecnicatura Universitaria en Higiene y Seguridad en el Trabajo</span></div>
@@ -14322,7 +14293,7 @@ Legal: ${record.legal}`,
     window.ensureSstTraceChecks();
     const type = document.getElementById('sstRecordType')?.value || '';
     const note = document.querySelector('.sst-field-note');
-    if (note) note.textContent = `Campos específicos de ${type}. Diseño compacto: completar solo lo aplicable; Enter y viñetas quedan respetados en el informe.`;
+    if (note) note.textContent = `Campos específicos de ${type}.`;
   };
 
   window.onSstMonitoringSelectionChange = function(){
