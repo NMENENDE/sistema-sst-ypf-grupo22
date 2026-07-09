@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema Digital SST | YPF · UTN BA · Grupo 22</title>
+  <title>Sistema Digital SST Command Center v29 | YPF · UTN BA · Grupo 22</title>
   <style>
     :root {
       --ypf-blue: #0056a6;
@@ -4730,7 +4730,17 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
       box-shadow: 0 34px 90px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.08) !important;
       backdrop-filter: blur(18px) saturate(135%) !important;
     }
-  
+    .login-card::before {
+      content:"SAFETY COMMAND CENTER";
+      position:absolute;
+      top:14px;
+      right:18px;
+      color:rgba(56,232,255,.55);
+      font-size:10px;
+      font-weight:950;
+      letter-spacing:.16em;
+      z-index:1;
+    }
     .login-brand h2, .login-help, .login-brand small { color:#eef6ff !important; }
     .login-help {
       background: rgba(0,168,255,.10) !important;
@@ -4879,7 +4889,7 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
       border-top: 1px solid rgba(255,209,102,.42) !important;
     }
     #dashboard .executive-dashboard.ypf-main-kpis-card::before {
-      content:"GRUPO 22" !important;
+      content:"COMMAND" !important;
       color: rgba(56,232,255,.055) !important;
       letter-spacing:-.08em !important;
     }
@@ -15981,6 +15991,20 @@ Legal: ${record.legal}`,
         <div class="training-alert-v25 future"><div><strong>Segundo semestre programado</strong><br><small>${s.programmed} capacitaciones/participante programadas para generar avisos preventivos.</small></div><span class="pill programado">Programado</span></div>
       </div>`;
   }
+
+  function renderTrainingDashboardV25(){
+    const dash = document.getElementById('dashboard');
+    if(dash && !document.getElementById('trainingDashboardGeneralV25')){
+      const alerts = dash.querySelector('.alerts-dashboard');
+      const card = document.createElement('div');
+      card.id = 'trainingDashboardGeneralV25';
+      card.className = 'card training-kpi-dashboard-v25';
+      card.innerHTML = trainingKpiHtmlV25('🎓 Dashboard de capacitaciones', 'Indicadores del Plan Anual de Capacitación sin mezclar criterios con el Cronograma de Monitoreo SST.');
+      if(alerts) dash.insertBefore(card, alerts); else dash.appendChild(card);
+    } else if(document.getElementById('trainingDashboardGeneralV25')) {
+      document.getElementById('trainingDashboardGeneralV25').innerHTML = trainingKpiHtmlV25('🎓 Dashboard de capacitaciones', 'Indicadores del Plan Anual de Capacitación sin mezclar criterios con el Cronograma de Monitoreo SST.');
+    }
+
     const module = document.querySelector('#capacitaciones .training-module');
     if(module && !document.getElementById('trainingKpisModuleV25')){
       const box = document.createElement('div');
