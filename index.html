@@ -19835,5 +19835,455 @@ Legal: ${record.legal}`,
 })();
 </script>
 
+
+<!-- ===== V55: auditoría y corrección cursos julio + sincronización Registro SST → Cronograma IPER/RRLL ===== -->
+<style id="v55-cursos-registros-iper-rrll-style">
+  @media screen {
+    .v55-empty-july {
+      border: 1px dashed rgba(125, 211, 252, .35) !important;
+      border-radius: 16px !important;
+      padding: 14px !important;
+      background: rgba(255,255,255,.055) !important;
+      color: #dbeafe !important;
+      font-weight: 850 !important;
+      line-height: 1.4 !important;
+    }
+    .v55-sync-note {
+      display: block;
+      margin-top: 6px;
+      color: #a6ffd2 !important;
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1.35;
+    }
+  }
+</style>
+<script id="v55-cursos-registros-iper-rrll-script">
+(function(){
+  'use strict';
+  if (window.__SST_V55_CURSOS_REGISTROS_IPER_RRLL__) return;
+  window.__SST_V55_CURSOS_REGISTROS_IPER_RRLL__ = true;
+
+  var V55 = window.SST_V55 = {
+    version: 'V55',
+    objetivo: 'Corregir cursos Julio y sincronización Registro SST con Cronograma IPER + RRLL',
+    julyEmpty: true,
+    syncInstalled: false
+  };
+
+  var MONTH_NUM_V55 = {
+    'Enero':1,'Febrero':2,'Marzo':3,'Abril':4,'Mayo':5,'Junio':6,
+    'Julio':7,'Agosto':8,'Septiembre':9,'Octubre':10,'Noviembre':11,'Diciembre':12
+  };
+  var MONTHS_SHORT_V55 = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
+  var IL_ROWS_V55 = [
+    {code:'IL-01', origin:'cronograma_iper_legal', activity:'Revisión de Matriz IPER', frequency:'Trimestral', responsible:'Responsable SST', registro:'Matriz IPER revisada', iper:'Matriz IPER general', legal:'ISO 45001:2018 cláusula 6.1.2', tool:'Matriz IPER + Registro SST de verificación', module:'IPER / Verificación', evidence:'Matriz IPER actualizada, registro de revisión y evidencia documental'},
+    {code:'IL-02', origin:'cronograma_iper_legal', activity:'Actualización de peligros y riesgos', frequency:'Trimestral', responsible:'SST / Encargado', registro:'Registro de actualización IPER', iper:'IPER por puesto y sector', legal:'Ley 19.587 · Decreto 351/79 · ISO 45001', tool:'Matriz IPER + Planes de acción', module:'IPER / Registros SST', evidence:'Peligro actualizado, valoración de riesgo, control y acción asociada'},
+    {code:'IL-03', origin:'cronograma_iper_legal', activity:'Verificación de controles existentes', frequency:'Mensual', responsible:'SST / Encargado', registro:'Registro de verificación de controles', iper:'Controles definidos por IPER', legal:'Decreto 351/79 · Res. SRT 905/15', tool:'Checklist SST + Registros SST + Herramientas HyS', module:'Verificación y Actuación', evidence:'Checklist, fotografía, medición o acta de verificación'},
+    {code:'IL-04', origin:'cronograma_iper_legal', activity:'Revisión de requisitos legales aplicables', frequency:'Trimestral', responsible:'Responsable SST', registro:'Matriz Legal revisada', iper:'Riesgos con requisito legal asociado', legal:'Ley 19.587 · Decreto 351/79 · Ley 24.557 · Res. SRT aplicables', tool:'Matriz Legal + Normativa aplicada', module:'Matriz Legal / Institucional', evidence:'Requisito legal verificado, registro respaldatorio y evidencia'},
+    {code:'IL-05', origin:'cronograma_iper_legal', activity:'Actualización de Matriz Legal', frequency:'Trimestral', responsible:'SST / Administración', registro:'Matriz Legal actualizada', iper:'Riesgos legales asociados', legal:'Matriz Legal SST', tool:'Matriz Legal + Control documental', module:'Matriz Legal / Documentación', evidence:'Matriz legal actualizada y documento respaldatorio'},
+    {code:'IL-06', origin:'cronograma_iper_legal', activity:'Verificación de cumplimiento normativo', frequency:'Trimestral', responsible:'Responsable SST', registro:'Evaluación de cumplimiento legal', iper:'Riesgos críticos y controles legales', legal:'Matriz Legal SST', tool:'Matriz Legal + Checklist documental', module:'Matriz Legal / Verificación', evidence:'Evaluación de cumplimiento, evidencia y responsable'},
+    {code:'IL-07', origin:'cronograma_iper_legal', activity:'Seguimiento de acciones derivadas de IPER', frequency:'Mensual', responsible:'Responsable SST', registro:'Plan de acción IPER', iper:'Riesgos altos / medios con acción', legal:'ISO 45001 · Res. SRT 905/15', tool:'Planes de acción + Registro SST Acción Correctiva', module:'Verificación y Actuación / IPER', evidence:'Acción cerrada, responsable, fecha compromiso y evidencia'},
+    {code:'IL-08', origin:'cronograma_iper_legal', activity:'Seguimiento de acciones derivadas de requisitos legales', frequency:'Mensual', responsible:'SST / Administración', registro:'Plan de acción legal', iper:'Riesgos legales asociados', legal:'Matriz Legal SST', tool:'Planes de acción + Matriz Legal', module:'Matriz Legal / Registros SST', evidence:'Acción legal cerrada, documento o constancia asociada'},
+    {code:'IL-09', origin:'cronograma_iper_legal', activity:'Revisión documental asociada', frequency:'Trimestral', responsible:'Control documental SST', registro:'Control documental SST', iper:'Documentación de controles IPER', legal:'ISO 45001 · Decreto 351/79', tool:'Biblioteca documental + Control documental', module:'Documentación / Institucional', evidence:'Documento vigente, versión, fecha y responsable'},
+    {code:'IL-10', origin:'cronograma_iper_legal', activity:'Evidencias / registros asociados', frequency:'Mensual', responsible:'Responsable SST', registro:'Registro SST / Evidencias', iper:'IPER y controles vinculados', legal:'Matriz Legal · ISO 45001', tool:'Registros SST + Evidencias documentales', module:'Registros SST / Dashboard', evidence:'Archivo, foto, acta, checklist o informe técnico asociado'}
+  ];
+
+  function escV55(v){
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
+  }
+  function normV55(v){
+    return String(v == null ? '' : v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  }
+  function isClosedV55(v){ return /cerrado|realizado|cumplido|actualizado|completo|verificado|finalizado/i.test(String(v || '')); }
+  function todayIsoV55(){ return new Date().toISOString().slice(0,10); }
+  function dateMonthV55(iso){
+    var d = iso ? new Date(String(iso).slice(0,10) + 'T12:00:00') : new Date();
+    return isNaN(d.getTime()) ? (new Date().getMonth()+1) : (d.getMonth()+1);
+  }
+
+  function clearJulyCoursesV55(){
+    try {
+      if (typeof trainingPlan !== 'undefined' && Array.isArray(trainingPlan)) {
+        var july = trainingPlan.find(function(m){ return normV55(m.month) === 'julio' || m.short === 'JUL'; });
+        if (july) july.courses = [];
+      }
+    } catch(e) { console.warn('V55 no pudo limpiar Julio en trainingPlan:', e); }
+
+    try {
+      if (typeof courses !== 'undefined' && Array.isArray(courses)) {
+        for (var i = courses.length - 1; i >= 0; i--) {
+          if (/seguimiento de capacitaciones.*pendientes|refuerzo operativo/i.test(String(courses[i] || ''))) courses.splice(i, 1);
+        }
+      }
+    } catch(e) {}
+
+    try {
+      if (typeof courseDetails !== 'undefined' && courseDetails) {
+        Object.keys(courseDetails).forEach(function(k){
+          if (/seguimiento de capacitaciones.*pendientes|refuerzo operativo/i.test(k)) delete courseDetails[k];
+        });
+      }
+    } catch(e) {}
+
+    try {
+      if (typeof trainings !== 'undefined' && Array.isArray(trainings)) {
+        var before = trainings.length;
+        trainings = trainings.filter(function(t){
+          var txt = normV55([t.courseId, t.course, t.courseMonth, t.source].join(' '));
+          var generatedJuly = /seguimiento capacitaciones pendientes|seguimiento de capacitaciones sst pendientes|refuerzo operativo|seguimiento capacitacion jul|jul v27/.test(txt);
+          var explicitJulyPlan = normV55(t.courseMonth) === 'julio' && generatedJuly;
+          return !(generatedJuly || explicitJulyPlan);
+        });
+        if (trainings.length !== before) localStorage.setItem('ypfTrainings', JSON.stringify(trainings));
+      }
+    } catch(e) { console.warn('V55 no pudo limpiar registros de capacitación de Julio:', e); }
+
+    try { localStorage.setItem('ypfNoCursosJulioV55', 'true'); } catch(e) {}
+  }
+
+  function planItemsWithoutJulyV55(){
+    try {
+      if (typeof trainingPlan === 'undefined' || !Array.isArray(trainingPlan)) return [];
+      return trainingPlan.flatMap(function(m){
+        if (normV55(m.month) === 'julio' || m.short === 'JUL') return [];
+        return (m.courses || []).map(function(c){ return Object.assign({}, c, {month:m.month, short:m.short, monthNumber:MONTH_NUM_V55[m.month] || 0}); });
+      });
+    } catch(e) { return []; }
+  }
+
+  function activePeopleV55(){
+    try { if (Array.isArray(employees)) return employees.filter(function(e){ return e.active !== false; }); } catch(e) {}
+    return [];
+  }
+
+  function trainingStatsNoJulyV55(){
+    clearJulyCoursesV55();
+    var people = activePeopleV55();
+    var items = planItemsWithoutJulyV55();
+    var rows = [];
+    try { rows = Array.isArray(trainings) ? trainings : []; } catch(e) {}
+    var total = Math.max(people.length * items.length, rows.filter(function(t){ return normV55(t.courseMonth) !== 'julio' && !/seguimiento capacitaciones pendientes|refuerzo operativo/.test(normV55(t.course)); }).length);
+    var done = rows.filter(function(t){ return t && t.done && normV55(t.courseMonth) !== 'julio' && !/seguimiento capacitaciones pendientes|refuerzo operativo/.test(normV55(t.course)); }).length;
+    var today = todayIsoV55();
+    var expired = rows.filter(function(t){ return t && !t.done && t.due && String(t.due).slice(0,10) < today && normV55(t.courseMonth) !== 'julio' && !/seguimiento capacitaciones pendientes|refuerzo operativo/.test(normV55(t.course)); }).length;
+    var pending = Math.max(0, rows.filter(function(t){ return t && !t.done && t.due && String(t.due).slice(0,10) >= today && normV55(t.courseMonth) !== 'julio' && !/seguimiento capacitaciones pendientes|refuerzo operativo/.test(normV55(t.course)); }).length);
+    var plannedFuture = items.filter(function(i){ return i.monthNumber >= 8; }).length * people.length;
+    var compliance = total ? Math.round((done / total) * 100) : 100;
+    return { people: people.length, items: items.length, total: total, done: done, pending: pending, programmed: plannedFuture, expired: expired, compliance: compliance };
+  }
+
+  function renderTrainingDashboardNoJulyV55(){
+    clearJulyCoursesV55();
+    var s = trainingStatsNoJulyV55();
+    var html = '<div class="executive-dashboard-header"><div><h3>📊 KPIs del Plan Anual de Capacitación</h3><p>Indicadores consolidados del plan anual. Julio queda sin cursos programados.</p></div><span class="badge calendar-badge">Plan Anual 2026</span></div>'+
+      '<div class="training-kpi-grid-v25">'+
+      '<div class="training-kpi-v25"><span>Total planificadas</span><strong>'+escV55(s.total)+'</strong><small>'+escV55(s.people)+' participantes · '+escV55(s.items)+' actividades.</small></div>'+
+      '<div class="training-kpi-v25 ok"><span>Realizadas</span><strong>'+escV55(s.done)+'</strong><small>Cursos cargados como realizados.</small></div>'+
+      '<div class="training-kpi-v25 warn"><span>Pendientes vigentes</span><strong>'+escV55(s.pending)+'</strong><small>No incluye julio sin planificación.</small></div>'+
+      '<div class="training-kpi-v25 future"><span>Programadas</span><strong>'+escV55(s.programmed)+'</strong><small>Agosto a diciembre según plan.</small></div>'+
+      '<div class="training-kpi-v25 '+(s.expired?'bad':'ok')+'"><span>Vencidas</span><strong>'+escV55(s.expired)+'</strong><small>Solo vencimientos reales.</small></div>'+
+      '<div class="training-kpi-v25 '+(s.compliance>=80?'ok':'warn')+'"><span>Cumplimiento</span><strong>'+escV55(s.compliance)+'%</strong><small>Avance sin cursos ficticios de julio.</small></div>'+
+      '</div><div class="training-alert-list-v25"><div class="training-alert-v25 future"><div><strong>Julio sin cursos programados</strong><br><small>No se generan asignaciones ni alertas automáticas para julio.</small></div><span class="pill programado">Sin cursos</span></div></div>';
+
+    var dash = document.getElementById('trainingDashboardGeneralV25');
+    if (dash) dash.innerHTML = html.replace('📊 KPIs del Plan Anual de Capacitación','🎓 Dashboard de capacitaciones');
+    var module = document.getElementById('trainingKpisModuleV25');
+    if (module) module.innerHTML = html;
+  }
+
+  function cleanJulyCalendarUiV55(){
+    clearJulyCoursesV55();
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.month-card'));
+    cards.forEach(function(card){
+      var text = normV55(card.querySelector('.month-card-header')?.textContent || card.textContent || '');
+      if (!/julio|\bjul\b/.test(text)) return;
+      var list = card.querySelector('.month-course-list');
+      if (list) list.innerHTML = '<div class="training-empty v55-empty-july">Julio no tiene cursos programados en el Plan Anual de Capacitación SST.</div>';
+      var inline = card.querySelector('.month-inline-summary');
+      if (inline) inline.innerHTML = '<b>0 cursos</b> · Sin asignaciones programadas';
+      var summary = card.querySelector('.month-card-summary small');
+      if (summary) summary.textContent = 'Sin cursos programados para julio.';
+    });
+  }
+
+  function patchTrainingFunctionsV55(){
+    clearJulyCoursesV55();
+    try { window.ensureJulyCourse = clearJulyCoursesV55; } catch(e) {}
+    try { window.ensureJulyCourseV27 = clearJulyCoursesV55; } catch(e) {}
+    try { window.getTrainingStatsV25 = trainingStatsNoJulyV55; } catch(e) {}
+    try { window.renderTrainingDashboardV25 = renderTrainingDashboardNoJulyV55; } catch(e) {}
+
+    try {
+      if (typeof window.renderTrainingCalendar === 'function' && !window.renderTrainingCalendar.__v55Wrapped) {
+        var oldCalendar = window.renderTrainingCalendar;
+        var wrapped = function(){ var r = oldCalendar.apply(this, arguments); setTimeout(cleanJulyCalendarUiV55, 0); return r; };
+        wrapped.__v55Wrapped = true;
+        window.renderTrainingCalendar = wrapped;
+        try { renderTrainingCalendar = wrapped; } catch(e) {}
+      }
+    } catch(e) {}
+
+    try {
+      if (typeof window.renderQuarterTrainingMatrix === 'function' && !window.renderQuarterTrainingMatrix.__v55Wrapped) {
+        var oldQuarter = window.renderQuarterTrainingMatrix;
+        var wrappedQuarter = function(){ clearJulyCoursesV55(); var r = oldQuarter.apply(this, arguments); return r; };
+        wrappedQuarter.__v55Wrapped = true;
+        window.renderQuarterTrainingMatrix = wrappedQuarter;
+        try { renderQuarterTrainingMatrix = wrappedQuarter; } catch(e) {}
+      }
+    } catch(e) {}
+  }
+
+  function getSelectedMetaV55(){
+    var sel = document.getElementById('sstRecordFinding');
+    var opt = sel && sel.options && sel.selectedIndex >= 0 ? sel.options[sel.selectedIndex] : null;
+    var value = sel ? (sel.value || '') : '';
+    if (opt && opt.dataset && opt.dataset.code) {
+      return {
+        code: opt.dataset.code,
+        origin: opt.dataset.origin || (String(opt.dataset.code).indexOf('IL-') === 0 ? 'cronograma_iper_legal' : 'cronograma_sst'),
+        activity: opt.dataset.activity || value,
+        frequency: opt.dataset.frequency || '',
+        responsible: opt.dataset.responsible || '',
+        registro: opt.dataset.registro || '',
+        iper: opt.dataset.iper || '',
+        legal: opt.dataset.legal || '',
+        tool: opt.dataset.tool || '',
+        module: opt.dataset.module || '',
+        evidence: opt.dataset.evidence || ''
+      };
+    }
+    var txt = normV55(value + ' ' + (document.getElementById('sstRecordType')?.value || '') + ' ' + (document.getElementById('sstRecordRisk')?.value || '') + ' ' + (document.getElementById('sstRecordObservations')?.value || ''));
+    var all = [];
+    try { if (typeof window.sstTraceabilityMaster !== 'undefined' && Array.isArray(window.sstTraceabilityMaster)) all = all.concat(window.sstTraceabilityMaster.map(function(r){ return {code:r.codigo || r.code || r.id, origin:String(r.codigo || r.code || '').indexOf('IL-') === 0 ? 'cronograma_iper_legal' : 'cronograma_sst', activity:r.activity || r.item || r.cronograma || r.schedule, frequency:r.frequency || '', responsible:r.responsible || r.responsable || '', registro:r.registro || r.registroAsociado || '', iper:r.iper || r.risk || '', legal:r.legal || '', tool:r.tool || r.instrumental || '', module:r.module || '', evidence:r.evidence || r.evidencia || ''}; })); } catch(e) {}
+    all = all.concat(IL_ROWS_V55);
+    var exact = all.find(function(r){ return normV55(r.code) === txt || normV55(r.activity) === txt || txt.indexOf(normV55(r.code)) >= 0 || txt.indexOf(normV55(r.activity)) >= 0; });
+    if (exact) return exact;
+
+    if (/matriz iper|iper/.test(txt) && /revision|revis/.test(txt)) return IL_ROWS_V55[0];
+    if (/peligro|riesgo|actualizacion/.test(txt)) return IL_ROWS_V55[1];
+    if (/inspeccion|verificacion|control|checklist|epp|matafuego|botiquin|luces|senalizacion|derrame|orden limpieza/.test(txt)) return IL_ROWS_V55[2];
+    if (/matriz legal|requisito legal|normativa|rrll|cumplimiento legal/.test(txt)) return IL_ROWS_V55[3];
+    if (/accion|acciones|correctiva|preventiva/.test(txt) && /legal/.test(txt)) return IL_ROWS_V55[7];
+    if (/accion|acciones|correctiva|preventiva|seguimiento/.test(txt)) return IL_ROWS_V55[6];
+    if (/documental|documento|evidencia|registro/.test(txt)) return IL_ROWS_V55[9];
+    return null;
+  }
+
+  function captureRecordFormV55(){
+    return {
+      meta: getSelectedMetaV55(),
+      date: document.getElementById('sstRecordDate')?.value || todayIsoV55(),
+      state: document.getElementById('sstRecordState')?.value || '',
+      finding: document.getElementById('sstRecordFinding')?.value || '',
+      type: document.getElementById('sstRecordType')?.value || '',
+      sector: document.getElementById('sstRecordSector')?.value || '',
+      risk: document.getElementById('sstRecordRisk')?.value || '',
+      action: document.getElementById('sstRecordAction')?.value || '',
+      due: document.getElementById('sstRecordDue')?.value || '',
+      observations: document.getElementById('sstRecordObservations')?.value || '',
+      evidence: Array.prototype.slice.call(document.getElementById('sstRecordEvidence')?.files || []).map(function(f){ return f.name; })
+    };
+  }
+
+  function getLocalRecordsV55(){
+    try { if (typeof sstRecords !== 'undefined' && Array.isArray(sstRecords)) return sstRecords; } catch(e) {}
+    try { var rows = JSON.parse(localStorage.getItem('ypfSstRecords') || '[]'); return Array.isArray(rows) ? rows : []; } catch(e) { return []; }
+  }
+  function persistLocalRecordsV55(rows){
+    try { sstRecords = rows; } catch(e) {}
+    try { window.sstRecords = rows; } catch(e) {}
+    try { localStorage.setItem('ypfSstRecords', JSON.stringify(rows)); } catch(e) {}
+  }
+
+  function findLatestRecordV55(capture){
+    var rows = getLocalRecordsV55().slice();
+    if (!rows.length) return { rows: rows, index: -1, record: null };
+    var capDate = String(capture.date || '').slice(0,10);
+    var capFinding = normV55(capture.finding || capture.meta?.activity || '');
+    var idx = rows.findIndex(function(r){
+      var rDate = String(r.date || r.fecha || '').slice(0,10);
+      var rText = normV55([r.finding, r.hallazgo, r.monitoreo_nombre, r.monitoreoNombre, r.type, r.tipo].join(' '));
+      return (!capDate || rDate === capDate) && (!capFinding || rText.indexOf(capFinding) >= 0 || capFinding.indexOf(rText) >= 0);
+    });
+    if (idx < 0) idx = 0;
+    return { rows: rows, index: idx, record: rows[idx] || null };
+  }
+
+  function statusFromCaptureV55(record, capture){
+    var state = record?.state || record?.estado || capture.state || '';
+    if (isClosedV55(state)) return 'done';
+    var due = record?.due || record?.fecha_compromiso || record?.vencimiento || capture.due || '';
+    if (due && String(due).slice(0,10) < todayIsoV55()) return 'overdue';
+    return 'pending';
+  }
+
+  function persistImpactV55(record, capture){
+    var meta = capture.meta || getSelectedMetaV55();
+    if (!meta || !meta.code) return null;
+    var month = String(dateMonthV55(record?.date || record?.fecha || capture.date)).padStart(2,'0');
+    var status = statusFromCaptureV55(record, capture);
+    var data = {};
+    try { data = JSON.parse(localStorage.getItem('ypfCronogramaImpactosV38') || '{}') || {}; } catch(e) { data = {}; }
+    var evidence = '';
+    try { evidence = Array.isArray(record?.evidenceFiles) ? record.evidenceFiles.join(', ') : (record?.evidencia || record?.evidence || capture.evidence.join(', ')); } catch(e) {}
+    data[meta.code + '|' + month] = {
+      code: meta.code,
+      month: month,
+      status: status,
+      recordCode: record?.code || record?.codigo || '',
+      date: record?.date || record?.fecha || capture.date,
+      state: record?.state || record?.estado || capture.state,
+      evidence: evidence || '',
+      origin: meta.origin || 'cronograma_iper_legal',
+      title: meta.activity || capture.finding
+    };
+    try { localStorage.setItem('ypfCronogramaImpactosV38', JSON.stringify(data)); } catch(e) {}
+    return data[meta.code + '|' + month];
+  }
+
+  async function updateSupabaseMetadataV55(record, capture){
+    try {
+      var meta = capture.meta;
+      if (!meta || !meta.code || !window.supabaseClient) return;
+      var codigo = record?.code || record?.codigo;
+      if (!codigo) return;
+      var payload = {
+        actividad_codigo: meta.code,
+        actividad_origen: meta.origin || 'cronograma_iper_legal',
+        cronograma_origen: meta.origin || 'cronograma_iper_legal',
+        monitoreo_codigo: meta.code,
+        monitoreo_nombre: meta.activity,
+        iper_asociado: meta.iper || '',
+        legal_asociado: meta.legal || '',
+        herramienta_asociada: meta.tool || '',
+        modulo_asociado: meta.module || '',
+        evidencia_esperada: meta.evidence || '',
+        mes_impacto: String(dateMonthV55(record?.date || record?.fecha || capture.date)).padStart(2,'0'),
+        impacta_cronograma: true
+      };
+      var res = await window.supabaseClient.from('registros_sst').update(payload).eq('codigo', codigo);
+      if (res && res.error && /column|schema cache|actividad_codigo|mes_impacto|impacta_cronograma/i.test(res.error.message || '')) {
+        await window.supabaseClient.from('registros_sst').update({ monitoreo_nombre: meta.activity, iper_asociado: meta.iper || '', legal_asociado: meta.legal || '' }).eq('codigo', codigo);
+      }
+    } catch(e) { console.warn('V55 metadata Supabase opcional:', e); }
+  }
+
+  function augmentLocalRecordV55(capture){
+    if (!capture || !capture.meta || !capture.meta.code) return null;
+    var found = findLatestRecordV55(capture);
+    if (!found.record) return null;
+    var r = Object.assign({}, found.record);
+    var meta = capture.meta;
+    r.actividad_codigo = meta.code;
+    r.actividad_origen = meta.origin || 'cronograma_iper_legal';
+    r.cronograma_origen = meta.origin || 'cronograma_iper_legal';
+    r.monitoreo_codigo = meta.code;
+    r.monitoreo_nombre = meta.activity;
+    r.monitoreoNombre = meta.activity;
+    r.iper_asociado = meta.iper || r.iper_asociado || '';
+    r.iperAsociado = r.iper_asociado;
+    r.legal_asociado = meta.legal || r.legal_asociado || '';
+    r.legalAsociado = r.legal_asociado;
+    r.herramienta_asociada = meta.tool || '';
+    r.modulo_asociado = meta.module || '';
+    r.evidencia_esperada = meta.evidence || '';
+    r.mes_impacto = String(dateMonthV55(r.date || r.fecha || capture.date)).padStart(2,'0');
+    r.impacta_cronograma = true;
+    r.registro_asociado = meta.registro || r.registroAsociado || 'Registro SST';
+    r.registroAsociado = r.registro_asociado;
+    r.frecuenciaCronograma = meta.frequency || r.frecuenciaCronograma || '';
+    if ((!r.evidenceFiles || !r.evidenceFiles.length) && capture.evidence && capture.evidence.length) r.evidenceFiles = capture.evidence;
+    found.rows[found.index] = r;
+    persistLocalRecordsV55(found.rows);
+    persistImpactV55(r, capture);
+    updateSupabaseMetadataV55(r, capture);
+    return r;
+  }
+
+  function renderAfterRecordSyncV55(){
+    try { if (typeof window.renderCronogramaIPERLegal === 'function') window.renderCronogramaIPERLegal(); } catch(e) {}
+    try { if (typeof window.actualizarCronogramaIPERLegalDesdeRegistros === 'function') window.actualizarCronogramaIPERLegalDesdeRegistros(); } catch(e) {}
+    try { if (typeof window.renderMonitoringProgram === 'function') window.renderMonitoringProgram(); } catch(e) {}
+    try { if (typeof window.renderDashboardSstExecutiveKpis === 'function') window.renderDashboardSstExecutiveKpis(); } catch(e) {}
+    try { if (typeof window.actualizarDashboard === 'function') window.actualizarDashboard(); } catch(e) {}
+    try { if (typeof window.renderVerificationModule === 'function') window.renderVerificationModule(); } catch(e) {}
+  }
+
+  function installSaveSyncV55(){
+    if (V55.syncInstalled) return;
+    if (typeof window.saveSstRecord !== 'function') return;
+    V55.syncInstalled = true;
+    var previousSave = window.saveSstRecord;
+    var wrappedSave = async function(){
+      var capture = captureRecordFormV55();
+      var result;
+      try { result = await previousSave.apply(this, arguments); }
+      finally {
+        setTimeout(function(){
+          var augmented = augmentLocalRecordV55(capture);
+          renderAfterRecordSyncV55();
+          if (augmented && capture.meta && typeof window.showToast === 'function') {
+            var destino = capture.meta.origin === 'cronograma_iper_legal' ? 'Cronograma IPER + RRLL' : 'Programa SST';
+            window.showToast('✅ Registro sincronizado con ' + destino + ': ' + capture.meta.code + ' · ' + capture.meta.activity);
+          }
+        }, 120);
+        setTimeout(renderAfterRecordSyncV55, 450);
+        setTimeout(renderAfterRecordSyncV55, 1200);
+      }
+      return result;
+    };
+    wrappedSave.__v55Wrapped = true;
+    window.saveSstRecord = wrappedSave;
+    try { saveSstRecord = wrappedSave; } catch(e) {}
+  }
+
+  function reinforceFindingOptionsV55(){
+    try {
+      var sel = document.getElementById('sstRecordFinding');
+      if (!sel || sel.tagName !== 'SELECT') return;
+      var hasIl = Array.prototype.slice.call(sel.options || []).some(function(o){ return /^IL-/.test(o.dataset?.code || o.textContent || ''); });
+      if (hasIl) return;
+      IL_ROWS_V55.forEach(function(r){
+        var opt = document.createElement('option');
+        opt.value = r.activity;
+        opt.textContent = r.code + ' · ' + r.activity + ' · Cronograma IPER + Legal';
+        opt.dataset.code = r.code;
+        opt.dataset.origin = r.origin;
+        opt.dataset.activity = r.activity;
+        opt.dataset.frequency = r.frequency;
+        opt.dataset.responsible = r.responsible;
+        opt.dataset.registro = r.registro;
+        opt.dataset.iper = r.iper;
+        opt.dataset.legal = r.legal;
+        opt.dataset.tool = r.tool;
+        opt.dataset.module = r.module;
+        opt.dataset.evidence = r.evidence;
+        sel.appendChild(opt);
+      });
+    } catch(e) { console.warn('V55 no pudo reforzar opciones IPER/RRLL:', e); }
+  }
+
+  function applyV55(){
+    patchTrainingFunctionsV55();
+    clearJulyCoursesV55();
+    cleanJulyCalendarUiV55();
+    renderTrainingDashboardNoJulyV55();
+    reinforceFindingOptionsV55();
+    installSaveSyncV55();
+  }
+
+  window.aplicarV55CursosRegistrosIperRrll = applyV55;
+  window.limpiarCursosJulioV55 = clearJulyCoursesV55;
+  window.forzarSincronizacionRegistroIperLegalV55 = function(){ var c = captureRecordFormV55(); var r = augmentLocalRecordV55(c); renderAfterRecordSyncV55(); return r; };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyV55);
+  else applyV55();
+  [80,250,700,1400,2600,4200,6500,9000].forEach(function(t){ setTimeout(applyV55, t); });
+})();
+</script>
+<!-- ===== FIN V55 ===== -->
 </body>
 </html>
