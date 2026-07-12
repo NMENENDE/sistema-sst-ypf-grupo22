@@ -1,4 +1,4 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -5638,6 +5638,80 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
   }
 }
 </style>
+
+
+<!-- ===== V57: ajuste quirúrgico ancho Programa / Cronograma SST 2026 ===== -->
+<style id="v57-cronograma-sst-ancho-cuadrante">
+  @media screen {
+    /* Alcance limitado: solo el cuadro del Programa / Cronograma SST 2026. */
+    body:not(.login-locked) #verificationPanelCronograma {
+      width: 100% !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      justify-self: stretch !important;
+      align-self: stretch !important;
+      grid-column: 1 / -1 !important;
+      box-sizing: border-box !important;
+    }
+
+    body:not(.login-locked) #verificationPanelCronograma > .card {
+      width: 100% !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      grid-column: 1 / -1 !important;
+      box-sizing: border-box !important;
+    }
+
+    body:not(.login-locked) #verificationPanelCronograma .calendar-header,
+    body:not(.login-locked) #verificationPanelCronograma .sst-schedule-wrap {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    body:not(.login-locked) #verificationPanelCronograma .sst-schedule-wrap {
+      display: block !important;
+      overflow-x: auto !important;
+      overflow-y: visible !important;
+    }
+
+    body:not(.login-locked) #verificationPanelCronograma #sstScheduleTable,
+    body:not(.login-locked) #verificationPanelCronograma table#sstScheduleTable,
+    body:not(.login-locked) #verificationPanelCronograma .sst-schedule,
+    body:not(.login-locked) #verificationPanelCronograma .sst-schedule-excel,
+    body:not(.login-locked) #verificationPanelCronograma .sst-schedule-v26,
+    body:not(.login-locked) #verificationPanelCronograma .v39-sst-schedule {
+      width: 100% !important;
+      min-width: 1360px !important;
+      max-width: none !important;
+      box-sizing: border-box !important;
+    }
+
+    @media (min-width: 1700px) {
+      body:not(.login-locked) #verificationPanelCronograma #sstScheduleTable,
+      body:not(.login-locked) #verificationPanelCronograma table#sstScheduleTable,
+      body:not(.login-locked) #verificationPanelCronograma .sst-schedule,
+      body:not(.login-locked) #verificationPanelCronograma .sst-schedule-excel,
+      body:not(.login-locked) #verificationPanelCronograma .sst-schedule-v26,
+      body:not(.login-locked) #verificationPanelCronograma .v39-sst-schedule {
+        min-width: 100% !important;
+      }
+    }
+  }
+
+  @media print {
+    #verificationPanelCronograma,
+    #verificationPanelCronograma > .card,
+    #verificationPanelCronograma .sst-schedule-wrap,
+    #verificationPanelCronograma #sstScheduleTable {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+  }
+</style>
+
 </head>
 <body class="login-locked">
 
