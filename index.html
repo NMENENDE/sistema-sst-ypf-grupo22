@@ -5712,6 +5712,253 @@ body:not(.login-locked) #documentos img[alt="QR Sistema SST"] { max-width: 120px
   }
 </style>
 
+
+
+<!-- ===== V58: mejora visual campos Nuevo Registro SST ===== -->
+<style id="v58-registro-sst-campos-premium">
+  @media screen {
+    /* Alcance limitado: solo el formulario Nuevo Registro SST. No modifica lógica, Supabase ni otros módulos. */
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card {
+      position: relative !important;
+      overflow: hidden !important;
+      border: 1px solid rgba(99, 230, 255, .28) !important;
+      border-top: 1px solid rgba(255, 209, 102, .45) !important;
+      background:
+        radial-gradient(circle at 98% 0%, rgba(99, 230, 255, .16), transparent 30%),
+        radial-gradient(circle at 0% 100%, rgba(255, 209, 102, .10), transparent 28%),
+        linear-gradient(145deg, rgba(7, 28, 61, .96), rgba(4, 13, 31, .90)) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card::before {
+      content: "REGISTRO SST";
+      position: absolute;
+      right: 20px;
+      top: 14px;
+      font-size: clamp(28px, 5vw, 64px);
+      font-weight: 950;
+      letter-spacing: -0.08em;
+      color: rgba(99, 230, 255, .055);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card h3 {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      margin-bottom: 16px !important;
+      padding-bottom: 12px !important;
+      border-bottom: 1px solid rgba(99, 230, 255, .22) !important;
+      color: #ffffff !important;
+      font-size: 18px !important;
+      letter-spacing: -0.02em !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card h3::before {
+      content: "✍";
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(0,168,255,.26), rgba(56,232,255,.12));
+      border: 1px solid rgba(99,230,255,.30);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 22px rgba(56,232,255,.12);
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card .form-grid {
+      grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)) !important;
+      gap: 14px !important;
+      align-items: stretch !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card input,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card select,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card textarea {
+      min-height: 48px !important;
+      border-radius: 18px !important;
+      padding: 13px 15px !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.035)) !important;
+      border: 1px solid rgba(148,163,184,.26) !important;
+      color: #f6fbff !important;
+      font-weight: 800 !important;
+      letter-spacing: .005em !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.055),
+        0 8px 18px rgba(0,0,0,.13) !important;
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card input::placeholder,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card textarea::placeholder {
+      color: rgba(203, 225, 245, .62) !important;
+      font-weight: 750 !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card input:hover,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card select:hover,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card textarea:hover {
+      border-color: rgba(99,230,255,.42) !important;
+      background: linear-gradient(145deg, rgba(255,255,255,.095), rgba(255,255,255,.045)) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card input:focus,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card select:focus,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card textarea:focus {
+      border-color: rgba(99,230,255,.72) !important;
+      box-shadow:
+        0 0 0 4px rgba(56,232,255,.11),
+        0 0 26px rgba(0,168,255,.18),
+        inset 0 1px 0 rgba(255,255,255,.08) !important;
+      transform: translateY(-1px) !important;
+      outline: none !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card select {
+      cursor: pointer !important;
+      color-scheme: dark !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card option {
+      background: #07172f !important;
+      color: #eef6ff !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro #sstRecordCode[readonly] {
+      background:
+        linear-gradient(135deg, rgba(255,209,102,.22), rgba(0,168,255,.10)) !important;
+      border-color: rgba(255,209,102,.42) !important;
+      color: #ffe29a !important;
+      font-weight: 950 !important;
+      letter-spacing: .06em !important;
+      text-transform: uppercase !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 0 22px rgba(255,209,102,.10) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro #sstRecordFinding,
+    body:not(.login-locked) #verificationPanelRegistro #sstRecordIperId,
+    body:not(.login-locked) #verificationPanelRegistro #sstRecordLegalId {
+      border-color: rgba(99,230,255,.34) !important;
+      background:
+        radial-gradient(circle at 96% 20%, rgba(0,168,255,.14), transparent 30%),
+        linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.035)) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro #sstRecordObservations {
+      grid-column: 1 / -1 !important;
+      min-height: 150px !important;
+      line-height: 1.52 !important;
+      resize: vertical !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-dynamic-fields {
+      grid-column: 1 / -1 !important;
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)) !important;
+      gap: 14px !important;
+      padding: 12px !important;
+      border-radius: 20px !important;
+      background: rgba(255,255,255,.035) !important;
+      border: 1px solid rgba(148,163,184,.18) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-dynamic-fields:empty {
+      display: none !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-field-note {
+      background: rgba(0,168,255,.105) !important;
+      color: #d8f6ff !important;
+      border: 1px solid rgba(99,230,255,.25) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-box {
+      grid-column: 1 / -1 !important;
+      border-radius: 22px !important;
+      padding: 16px !important;
+      background:
+        radial-gradient(circle at top right, rgba(255,209,102,.12), transparent 30%),
+        rgba(255,255,255,.045) !important;
+      border: 1px dashed rgba(255,209,102,.40) !important;
+      color: #f6fbff !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-box strong {
+      color: #ffffff !important;
+      font-size: 13px !important;
+      text-transform: uppercase !important;
+      letter-spacing: .04em !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-box small {
+      color: #bdd3ea !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro #sstRecordEvidence {
+      border-style: dashed !important;
+      border-color: rgba(255,209,102,.35) !important;
+      background: rgba(255,209,102,.075) !important;
+      cursor: pointer !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-preview span {
+      background: rgba(0,168,255,.13) !important;
+      border: 1px solid rgba(99,230,255,.26) !important;
+      color: #d8f6ff !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card .footer-note {
+      margin-top: 16px !important;
+      background:
+        linear-gradient(135deg, rgba(0,168,255,.10), rgba(255,209,102,.075)) !important;
+      border: 1px solid rgba(99,230,255,.24) !important;
+      color: #cfe5ff !important;
+      border-radius: 18px !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card > button.primary,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card > button.secondary {
+      width: auto !important;
+      min-width: 170px !important;
+      margin-right: 8px !important;
+      margin-top: 2px !important;
+      border-radius: 999px !important;
+      padding: 12px 18px !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .traceability-card,
+    body:not(.login-locked) #verificationPanelRegistro #sstTypeGuide .doc-card,
+    body:not(.login-locked) #verificationPanelRegistro #sstTypeGuide .course-card {
+      border-radius: 22px !important;
+      border-color: rgba(99,230,255,.24) !important;
+    }
+  }
+
+  @media screen and (max-width: 760px) {
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card .form-grid,
+    body:not(.login-locked) #verificationPanelRegistro .sst-dynamic-fields {
+      grid-template-columns: 1fr !important;
+    }
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card > button.primary,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card > button.secondary {
+      width: 100% !important;
+      margin-right: 0 !important;
+    }
+  }
+</style>
+
 </head>
 <body class="login-locked">
 
