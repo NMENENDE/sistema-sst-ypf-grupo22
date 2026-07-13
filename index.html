@@ -22002,242 +22002,176 @@ Legal: ${record.legal}`,
 </style>
 
 
-<!-- ===== V62: Centro de Alertas Preventivas + botón imprimir IPER Legal ===== -->
-<style id="v62-alertas-iper-print-style">
-  body:not(.login-locked) .alerts-dashboard {
-    border-top-color: rgba(255,49,88,.72) !important;
-  }
+<!-- ===== V63: Alertas estables + impresión IPER Legal con colores reales ===== -->
+<style id="v63-alertas-estables-iper-colores-style">
   body:not(.login-locked) .alerts-dashboard .alert-grid {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
     gap: 14px !important;
   }
-  body:not(.login-locked) .alerts-dashboard .v62-alert-summary {
+  body:not(.login-locked) .alerts-dashboard .v63-alert-summary {
     grid-column: 1 / -1 !important;
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
     gap: 10px !important;
-    margin-bottom: 2px !important;
   }
-  body:not(.login-locked) .alerts-dashboard .v62-alert-kpi {
-    border-radius: 16px !important;
-    padding: 12px 14px !important;
-    background: linear-gradient(145deg, rgba(12,28,58,.92), rgba(8,17,36,.82)) !important;
-    border: 1px solid rgba(148,163,184,.22) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 12px 28px rgba(0,0,0,.18) !important;
-  }
-  body:not(.login-locked) .alerts-dashboard .v62-alert-kpi span {
-    display: block !important;
-    color: #a9b9d1 !important;
-    font-weight: 900 !important;
-    font-size: 10.5px !important;
-    text-transform: uppercase !important;
-    letter-spacing: .045em !important;
-  }
-  body:not(.login-locked) .alerts-dashboard .v62-alert-kpi strong {
-    display: block !important;
-    margin-top: 5px !important;
-    color: #ffffff !important;
-    font-size: 25px !important;
-    line-height: 1 !important;
-  }
-  body:not(.login-locked) .alerts-dashboard .v62-alert {
+  body:not(.login-locked) .alerts-dashboard .v63-alert-kpi,
+  body:not(.login-locked) .alerts-dashboard .v63-alert {
     background: linear-gradient(145deg, rgba(13,26,55,.96), rgba(7,15,32,.90)) !important;
     border: 1px solid rgba(148,163,184,.24) !important;
-    border-left-width: 7px !important;
     color: #eef6ff !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 16px 34px rgba(0,0,0,.20) !important;
   }
-  body:not(.login-locked) .alerts-dashboard .v62-alert.critical { border-left-color: #ff3158 !important; }
-  body:not(.login-locked) .alerts-dashboard .v62-alert.warning { border-left-color: #ffb020 !important; }
-  body:not(.login-locked) .alerts-dashboard .v62-alert.future { border-left-color: #38e8ff !important; }
-  body:not(.login-locked) .alerts-dashboard .v62-alert.ok { border-left-color: #00f5a0 !important; }
-  body:not(.login-locked) .alerts-dashboard .v62-alert strong {
-    color: #ffffff !important;
-    font-size: 14px !important;
-    line-height: 1.25 !important;
+  body:not(.login-locked) .alerts-dashboard .v63-alert-kpi {
+    border-radius: 16px !important;
+    padding: 12px 14px !important;
   }
-  body:not(.login-locked) .alerts-dashboard .v62-alert small,
-  body:not(.login-locked) .alerts-dashboard .v62-alert span {
-    color: #c9d8ea !important;
-    font-weight: 800 !important;
-    line-height: 1.35 !important;
+  body:not(.login-locked) .alerts-dashboard .v63-alert-kpi span {
+    display:block !important;
+    color:#a9b9d1 !important;
+    font-size:10.5px !important;
+    font-weight:900 !important;
+    text-transform:uppercase !important;
+    letter-spacing:.045em !important;
   }
-  body:not(.login-locked) .alerts-dashboard .v62-alert b { color: #eef6ff !important; }
-  body:not(.login-locked) .alerts-dashboard .v62-alert-tag {
-    display: inline-flex !important;
-    width: fit-content !important;
-    border-radius: 999px !important;
-    padding: 5px 8px !important;
-    font-size: 10.5px !important;
-    font-weight: 950 !important;
-    letter-spacing: .035em !important;
-    text-transform: uppercase !important;
-    background: rgba(255,255,255,.07) !important;
-    border: 1px solid rgba(255,255,255,.12) !important;
-    color: #eaf7ff !important;
+  body:not(.login-locked) .alerts-dashboard .v63-alert-kpi strong {
+    display:block !important;
+    color:#fff !important;
+    font-size:25px !important;
+    margin-top:5px !important;
+    line-height:1 !important;
+  }
+  body:not(.login-locked) .alerts-dashboard .v63-alert {
+    border-radius: 18px !important;
+    border-left-width: 7px !important;
+    display:grid !important;
+    gap:8px !important;
+  }
+  body:not(.login-locked) .alerts-dashboard .v63-alert.critical { border-left-color:#ff3158 !important; }
+  body:not(.login-locked) .alerts-dashboard .v63-alert.warning { border-left-color:#ffb020 !important; }
+  body:not(.login-locked) .alerts-dashboard .v63-alert.future { border-left-color:#38e8ff !important; }
+  body:not(.login-locked) .alerts-dashboard .v63-alert.ok { border-left-color:#00f5a0 !important; }
+  body:not(.login-locked) .alerts-dashboard .v63-alert strong { color:#fff !important; font-size:14px !important; line-height:1.25 !important; }
+  body:not(.login-locked) .alerts-dashboard .v63-alert small,
+  body:not(.login-locked) .alerts-dashboard .v63-alert span { color:#c9d8ea !important; font-weight:800 !important; line-height:1.35 !important; }
+  body:not(.login-locked) .alerts-dashboard .v63-alert b { color:#eef6ff !important; }
+  body:not(.login-locked) .alerts-dashboard .v63-alert-tag {
+    display:inline-flex !important;
+    width:fit-content !important;
+    border-radius:999px !important;
+    padding:5px 8px !important;
+    font-size:10.5px !important;
+    font-weight:950 !important;
+    letter-spacing:.035em !important;
+    text-transform:uppercase !important;
+    background:rgba(255,255,255,.07) !important;
+    border:1px solid rgba(255,255,255,.12) !important;
+    color:#eaf7ff !important;
   }
 </style>
 
-
-<script id="v62-alertas-iper-print-script">
+<script id="v63-alertas-estables-iper-colores-script">
 (function(){
   'use strict';
   var MONTHS = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
   var MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   var APP_YEAR = 2026;
-  var today = new Date();
+  var lastAlertHash = '';
+  var renderTimer = null;
+  var renderingAlerts = false;
 
-  function esc(v){
-    return String(v == null ? '' : v).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]; });
-  }
-  function norm(v){
-    return String(v == null ? '' : v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
-  }
-  function currentMonthIndex(){
-    if(today.getFullYear() < APP_YEAR) return -1;
-    if(today.getFullYear() > APP_YEAR) return 11;
-    return today.getMonth();
-  }
-  function isFutureMonth(idx){ return idx > currentMonthIndex(); }
-  function isPastMonth(idx){ return idx < currentMonthIndex(); }
+  function today(){ return new Date(); }
+  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]; }); }
+  function norm(v){ return String(v == null ? '' : v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+  function currentMonthIndex(){ var d=today(); if(d.getFullYear() < APP_YEAR) return -1; if(d.getFullYear() > APP_YEAR) return 11; return d.getMonth(); }
   function monthLabel(idx){ return MONTHS[idx] + ' ' + APP_YEAR; }
   function toDate(v){
     if(!v) return null;
     if(v instanceof Date && !isNaN(v.getTime())) return v;
-    var s = String(v).trim();
-    if(!s || /^no aplica$/i.test(s)) return null;
-    var m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
-    if(m) return new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
-    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if(m) return new Date(Number(m[3]), Number(m[2])-1, Number(m[1]));
-    var d = new Date(s);
-    return isNaN(d.getTime()) ? null : d;
+    var s = String(v).trim(); if(!s || /^no aplica$/i.test(s)) return null;
+    var m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); if(m) return new Date(+m[1], +m[2]-1, +m[3]);
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); if(m) return new Date(+m[3], +m[2]-1, +m[1]);
+    var d = new Date(s); return isNaN(d.getTime()) ? null : d;
   }
-  function daysTo(v){
-    var d = toDate(v);
-    if(!d) return null;
-    var a = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    var b = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    return Math.round((b-a)/86400000);
-  }
-  function fmtDate(v){
-    var d = toDate(v);
-    return d ? d.toLocaleDateString('es-AR') : String(v || '-');
-  }
-  function isClosedState(v){
-    var s = norm(v);
-    return /cerrado|realizado|actualizado|cumplido|vigente|finalizado|aprobado|conforme|ok/.test(s) && !/no realizado|vencido|pendiente|abierto|en proceso/.test(s);
-  }
+  function daysTo(v){ var d=toDate(v); if(!d) return null; var a=today(); a = new Date(a.getFullYear(), a.getMonth(), a.getDate()); var b = new Date(d.getFullYear(), d.getMonth(), d.getDate()); return Math.round((b-a)/86400000); }
+  function fmtDate(v){ var d=toDate(v); return d ? d.toLocaleDateString('es-AR') : String(v || '-'); }
+
   function statusFromValue(v){
     var s = norm(v);
-    if(!s || /neutral|na|n\/a|sin computo|no computable/.test(s)) return 'neutral';
-    if(/excel-done|done|realizado|cumplido|vigente|cerrado|ok|✓|✅/.test(s)) return 'done';
-    if(/overdue|excel-overdue|vencid|no realizado|bad|critical|critico|!|❌/.test(s)) return 'overdue';
-    if(/pending|excel-pending|pendiente|programad|warn|warning|•|⚠/.test(s)) return 'pending';
+    if(!s || /neutral|excel-neutral|\bna\b|n\/a|sin computo|no computable|no aplica/.test(s)) return 'neutral';
+    if(/overdue|excel-overdue|vencid|no realizado|no-realizado|bad|critical|critico|rojo|❌/.test(s) || /!/.test(String(v||''))) return 'overdue';
+    if(/pending|excel-pending|pendiente|programad|warn|warning|amarillo|⚠/.test(s) || /•/.test(String(v||''))) return 'pending';
+    if(/excel-done|\bdone\b|realizado|cumplido|cerrado|aprobado|conforme|verde|✅/.test(s) || /✓/.test(String(v||''))) return 'done';
     return 'neutral';
   }
   function statusFromDot(dot){
     if(!dot) return 'neutral';
-    return statusFromValue([dot.className || '', dot.textContent || '', dot.getAttribute('title') || '', dot.getAttribute('data-progress') || ''].join(' '));
+    var raw = [dot.className || '', dot.textContent || '', dot.getAttribute('title') || '', dot.getAttribute('data-progress') || '', dot.getAttribute('data-status') || ''].join(' ');
+    return statusFromValue(raw);
   }
+  function statusSymbol(st){ return st === 'done' ? '✓' : st === 'pending' ? '•' : st === 'overdue' ? '!' : ''; }
+  function isClosedState(v){ var s=norm(v); return /cerrado|realizado|actualizado|cumplido|vigente|finalizado|aprobado|conforme|ok/.test(s) && !/no realizado|vencido|pendiente|abierto|en proceso/.test(s); }
+
   function getRowsFromTable(selector, moduleName){
-    var table = document.querySelector(selector);
-    if(!table) return [];
-    var out = [];
+    var table = document.querySelector(selector); if(!table) return [];
+    var out=[];
     Array.prototype.slice.call(table.querySelectorAll('tbody tr')).forEach(function(tr, rowIndex){
-      var dots = Array.prototype.slice.call(tr.querySelectorAll('.month-dot, .iper-dot, .quarter-status'));
+      var dots = Array.prototype.slice.call(tr.querySelectorAll('.iper-dot, .month-dot, .quarter-status'));
       if(dots.length < 12) return;
       var cells = Array.prototype.slice.call(tr.children);
-      var code = (cells[0] && cells[0].textContent || '').trim() || (moduleName.indexOf('IPER') >= 0 ? 'IL-' : 'SST-') + String(rowIndex+1).padStart(2,'0');
+      var code = (cells[0] && cells[0].textContent || '').replace(/\s+/g,' ').trim() || (moduleName.indexOf('IPER') >= 0 ? 'IL-' : 'SST-') + String(rowIndex+1).padStart(2,'0');
       var activity = (cells[1] && cells[1].textContent || '').replace(/\s+/g,' ').trim() || 'Actividad SST';
-      var responsible = (cells[2] && cells[2].textContent || '').replace(/\s+/g,' ').trim() || 'Responsable SST';
-      out.push({code:code, activity:activity, responsible:responsible, months:dots.slice(0,12).map(statusFromDot)});
+      var objective = (cells[2] && cells[2].textContent || '').replace(/\s+/g,' ').trim();
+      var frequency = (cells[3] && cells[3].textContent || '').replace(/\s+/g,' ').trim();
+      var responsible = (cells[4] && cells[4].textContent || '').replace(/\s+/g,' ').trim() || 'Responsable SST';
+      out.push({code:code, activity:activity, objective:objective, frequency:frequency, responsible:responsible, registro:'', iper:'', legal:'', observations:'', months:dots.slice(0,12).map(statusFromDot)});
     });
     return out;
   }
+  function normalizeRow(r, i, prefix){
+    var months = Array.isArray(r && r.months) ? r.months.map(statusFromValue) : Array(12).fill('neutral');
+    while(months.length < 12) months.push('neutral');
+    return {code:(r && (r.code || r.codigo)) || prefix + String(i+1).padStart(2,'0'), activity:(r && (r.activity || r.actividad || r.item)) || 'Actividad SST', objective:(r && (r.objective || r.objetivo)) || '', frequency:(r && (r.frequency || r.frecuencia)) || '', responsible:(r && (r.responsible || r.responsable)) || 'SST', registro:(r && (r.registro || r.registro_asociado)) || '', iper:(r && (r.iper || r.iper_asociado)) || '', legal:(r && (r.legal || r.legal_asociado)) || '', observations:(r && (r.observations || r.observaciones)) || '', months:months.slice(0,12)};
+  }
   function getProgramRows(){
-    var dom = getRowsFromTable('#sstScheduleTable', 'Programa / Cronograma SST 2026');
-    if(dom.length) return dom;
-    var src = [];
-    try{ if(Array.isArray(window.cronogramaMonitoreoHoja1Final)) src = window.cronogramaMonitoreoHoja1Final; }catch(e){}
+    var dom = getRowsFromTable('#sstScheduleTable', 'Programa / Cronograma SST 2026'); if(dom.length) return dom;
+    var src=[]; try{ if(Array.isArray(window.cronogramaMonitoreoHoja1Final)) src = window.cronogramaMonitoreoHoja1Final; }catch(e){}
     try{ if(!src.length && Array.isArray(window.SCHEDULE)) src = window.SCHEDULE; }catch(e){}
     try{ if(!src.length && Array.isArray(window.sstSchedule)) src = window.sstSchedule; }catch(e){}
-    return (src || []).map(function(r, i){
-      var months = Array.isArray(r.months) ? r.months.map(statusFromValue) : Array(12).fill('neutral');
-      return {code:r.code || r.codigo || 'SST-'+String(i+1).padStart(2,'0'), activity:r.activity || r.actividad || r.item || 'Actividad SST', responsible:r.responsible || r.responsable || 'SST', months:months};
-    });
+    return (src || []).map(function(r,i){ return normalizeRow(r,i,'SST-'); });
   }
   function getIperRows(){
-    var dom = getRowsFromTable('#iperLegalScheduleTable', 'Cronograma IPER + Legal');
-    if(dom.length) return dom;
-    var src = [];
-    try{ if(Array.isArray(window.__CRONOGRAMA_IPER_LEGAL_V36)) src = window.__CRONOGRAMA_IPER_LEGAL_V36; }catch(e){}
+    var dom = getRowsFromTable('#iperLegalScheduleTable', 'Cronograma IPER + Legal'); if(dom.length) return dom;
+    var src=[]; try{ if(Array.isArray(window.__CRONOGRAMA_IPER_LEGAL_V36)) src = window.__CRONOGRAMA_IPER_LEGAL_V36; }catch(e){}
     try{ if(!src.length && Array.isArray(window.IPER_LEGAL_V36)) src = window.IPER_LEGAL_V36; }catch(e){}
-    return (src || []).map(function(r, i){
-      return {code:r.code || r.codigo || 'IL-'+String(i+1).padStart(2,'0'), activity:r.activity || r.actividad || r.item || 'Actividad IPER + Legal', objective:r.objective || r.objetivo || '', frequency:r.frequency || r.frecuencia || '', responsible:r.responsible || r.responsable || 'SST', registro:r.registro || '', iper:r.iper || '', legal:r.legal || '', observations:r.observations || r.observaciones || '', months:(r.months || []).map(statusFromValue)};
-    });
+    return (src || []).map(function(r,i){ return normalizeRow(r,i,'IL-'); });
   }
   function collectLocalArray(keys){
-    var out=[];
-    keys.forEach(function(k){
-      try{ if(Array.isArray(window[k])) out = out.concat(window[k]); }catch(e){}
-      try{ var local = JSON.parse(localStorage.getItem(k) || 'null'); if(Array.isArray(local)) out = out.concat(local); }catch(e){}
-    });
-    return out.filter(Boolean);
+    var out=[]; keys.forEach(function(k){ try{ if(Array.isArray(window[k])) out = out.concat(window[k]); }catch(e){} try{ var v=JSON.parse(localStorage.getItem(k)||'null'); if(Array.isArray(v)) out=out.concat(v); }catch(e){} });
+    var seen={}; return out.filter(function(x){ var key=JSON.stringify(x).slice(0,260); if(seen[key]) return false; seen[key]=1; return true; });
   }
-  function getTrainings(){
-    var out=[];
-    try{ if(Array.isArray(window.trainings)) out = out.concat(window.trainings); }catch(e){}
-    out = out.concat(collectLocalArray(['ypfTrainings','trainings','trainingRecords','asignacionesCapacitacion','trainingAssignments']));
-    var seen={};
-    return out.filter(function(t){ var key = JSON.stringify([t.employee,t.empleado,t.course,t.curso,t.due,t.fecha_vencimiento,t.completed,t.estado]).slice(0,220); if(seen[key]) return false; seen[key]=1; return true; });
-  }
+  function getTrainings(){ var out=[]; try{ if(Array.isArray(window.trainings)) out=out.concat(window.trainings); }catch(e){} return out.concat(collectLocalArray(['ypfTrainings','trainings','trainingRecords','asignacionesCapacitacion','trainingAssignments'])); }
   function trainingDue(t){ return t && (t.fecha_programada || t.fechaPlanificada || t.fecha_planificada || t.fecha_vencimiento || t.fechaVencimiento || t.vencimiento || t.due || t.plannedDue || t.date || t.fecha); }
-  function trainingDone(t){ return !!(t && (t.done === true || t.realizada === true || t.completed || t.fecha_realizacion || t.fechaRealizacion || isClosedState(t.estado || t.state || t.status || t.resultado || t.asistencia))); }
-  function trainingName(t){ return (t && (t.curso || t.course || t.nombre_curso || t.training || t.title || t.nombre || t.tema)) || 'Capacitación SST'; }
-  function trainingPerson(t){ return (t && (t.employee || t.empleado || t.trabajador || t.persona || t.nombre_personal || t.personal || t.asignado_a)) || 'Personal'; }
-  function getRecords(){
-    var out=[];
-    try{ if(Array.isArray(window.sstRecords)) out = out.concat(window.sstRecords); }catch(e){}
-    out = out.concat(collectLocalArray(['ypfSstRecords','sstRecords','registrosSst','registros_sst','ypfRegistrosSst']));
-    var seen={};
-    return out.filter(function(r){ var key = String(r.id || r.supabaseId || r.code || r.codigo || JSON.stringify(r).slice(0,160)); if(seen[key]) return false; seen[key]=1; return true; });
-  }
-  function getActions(){ return collectLocalArray(['ypfActionPlans','planesAccion','planesDeAccion','actionPlans','accionesPreventivas','accionesCorrectivas']); }
-  function addAlert(list, a){
-    if(!a || !a.tipo || !a.descripcion) return;
-    var baseDesc = String(a.descripcion).replace(/ · (ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC) 2026/g,'');
-    var key = norm([a.modulo || '', a.codigo || '', baseDesc].join('|'));
-    var rank = {'Vencida':0, 'Próxima a vencer':1, 'Pendiente vigente':2};
-    var found = list.find(function(x){ return x.__key === key; });
-    a.__key = key;
-    if(!a.meses) a.meses = a.mes ? [a.mes] : [];
-    if(!found){ list.push(a); return; }
-    if((rank[a.tipo] ?? 9) < (rank[found.tipo] ?? 9)){
-      var oldMeses = found.meses || [];
-      Object.keys(found).forEach(function(k){ delete found[k]; });
-      Object.assign(found, a);
-      found.meses = Array.from(new Set((found.meses || []).concat(oldMeses)));
-    } else {
-      found.meses = Array.from(new Set((found.meses || []).concat(a.meses || [])));
-    }
-  }
+  function trainingDone(t){ return !!(t && (t.done === true || t.realizada === true || t.completed === true || /realiz|cerrad|aprob|vigente|cumpl/.test(norm(t.estado || t.status || t.resultado)))); }
+  function getRecords(){ var out=[]; try{ if(Array.isArray(window.sstRecords)) out=out.concat(window.sstRecords); }catch(e){} return out.concat(collectLocalArray(['ypfSstRecords','sstRecords','registrosSst','registros_sst'])); }
+  function recordDue(r){ return r && (r.due || r.fecha_compromiso || r.fechaCompromiso || r.vencimiento || r.deadline || r.fecha_cierre_prevista); }
+  function recordClosed(r){ return !!(r && (r.closed === true || r.done === true || isClosedState(r.state || r.estado || r.status || r.resultado))); }
+
   function addScheduleAlerts(list, rows, moduleName){
-    (rows || []).forEach(function(r, ri){
-      var code = r.code || r.codigo || (moduleName.indexOf('IPER') >= 0 ? 'IL-' : 'SST-') + String(ri+1).padStart(2,'0');
-      var activity = r.activity || r.actividad || r.item || 'Actividad SST';
-      var responsible = r.responsible || r.responsable || 'Responsable SST';
-      (r.months || []).forEach(function(st, idx){
+    var cutoff = currentMonthIndex(); if(cutoff < 0) return;
+    rows.forEach(function(r){
+      var grouped = {overdue:[], pending:[]};
+      (r.months || []).slice(0,12).forEach(function(st, idx){
         st = statusFromValue(st);
-        if(st === 'neutral' || st === 'done') return;
-        if(isFutureMonth(idx)) return;
-        if(isPastMonth(idx) || st === 'overdue'){
-          addAlert(list, {tipo:'Vencida', modulo:moduleName, codigo:code, descripcion:String(code)+' · '+String(activity), prioridad:'Alta', fecha:monthLabel(idx), estado:'Vencida real / no realizada al período', responsable:responsible, mes:MONTHS[idx]});
-        } else {
-          addAlert(list, {tipo:'Pendiente vigente', modulo:moduleName, codigo:code, descripcion:String(code)+' · '+String(activity), prioridad:'Media', fecha:monthLabel(idx), estado:'Pendiente dentro del período exigible', responsable:responsible, mes:MONTHS[idx]});
-        }
+        if(idx > cutoff) return;
+        if(st === 'overdue') grouped.overdue.push(idx);
+        else if(st === 'pending' && idx === cutoff) grouped.pending.push(idx);
       });
+      if(grouped.overdue.length){
+        list.push({tipo:'Vencida', modulo:moduleName, descripcion:(r.code || '')+' · '+(r.activity || ''), prioridad:'Alta', fecha:grouped.overdue.map(monthLabel).join(', '), estado:'Vencida real / no realizada', responsable:r.responsible || '', meses:grouped.overdue.map(function(i){return MONTHS[i];})});
+      } else if(grouped.pending.length){
+        list.push({tipo:'Pendiente vigente', modulo:moduleName, descripcion:(r.code || '')+' · '+(r.activity || ''), prioridad:'Media', fecha:grouped.pending.map(monthLabel).join(', '), estado:'Pendiente dentro del período actual', responsable:r.responsible || '', meses:grouped.pending.map(function(i){return MONTHS[i];})});
+      }
     });
   }
   function buildAlerts(){
@@ -22245,133 +22179,78 @@ Legal: ${record.legal}`,
     addScheduleAlerts(list, getProgramRows(), 'Programa / Cronograma SST 2026');
     addScheduleAlerts(list, getIperRows(), 'Cronograma IPER + Legal');
     getTrainings().forEach(function(t){
-      var due = trainingDue(t), d = daysTo(due), done = trainingDone(t);
-      if(d == null || done) return;
-      if(d < 0) addAlert(list,{tipo:'Vencida', modulo:'Capacitaciones / Certificados', descripcion:String(trainingPerson(t))+' · '+String(trainingName(t)), prioridad:'Alta', fecha:fmtDate(due), estado:'Vencida real'});
-      else if(d <= 30) addAlert(list,{tipo:'Próxima a vencer', modulo:'Capacitaciones / Certificados', descripcion:String(trainingPerson(t))+' · '+String(trainingName(t)), prioridad:'Media', fecha:fmtDate(due), estado:'Próxima a vencer'});
+      if(trainingDone(t)) return; var d=trainingDue(t); var days=daysTo(d); if(days == null) return;
+      if(days < 0) list.push({tipo:'Vencida', modulo:'Capacitaciones / certificados', descripcion:(t.course || t.curso || t.name || 'Capacitación')+' · '+(t.employee || t.empleado || t.persona || 'Personal'), prioridad:'Alta', fecha:fmtDate(d), estado:'Vencida'});
+      else if(days <= 30) list.push({tipo:'Próxima a vencer', modulo:'Capacitaciones / certificados', descripcion:(t.course || t.curso || t.name || 'Capacitación')+' · '+(t.employee || t.empleado || t.persona || 'Personal'), prioridad:'Media', fecha:fmtDate(d), estado:'Vence en '+days+' día(s)'});
     });
     getRecords().forEach(function(r){
-      if(isClosedState(r.state || r.estado || r.status)) return;
-      var due = r.due || r.fecha_compromiso || r.fechaCompromiso || r.vencimiento || r.fecha_vencimiento;
-      var d = daysTo(due);
-      if(d == null) return;
-      var desc = r.code || r.codigo || r.monitoreo_nombre || r.actividad || r.finding || r.hallazgo || 'Registro SST abierto';
-      if(d < 0) addAlert(list,{tipo:'Vencida', modulo:'Registros SST', descripcion:String(desc), prioridad:'Alta', fecha:fmtDate(due), estado:'Registro abierto vencido', responsable:r.responsible || r.responsable || ''});
-      else if(d <= 30) addAlert(list,{tipo:'Próxima a vencer', modulo:'Registros SST', descripcion:String(desc), prioridad:'Media', fecha:fmtDate(due), estado:'Fecha compromiso próxima', responsable:r.responsible || r.responsable || ''});
+      if(recordClosed(r)) return; var d=recordDue(r); var days=daysTo(d); if(days == null) return;
+      var desc=(r.code || r.codigo || 'Registro SST')+' · '+(r.finding || r.hallazgo || r.monitoreo_nombre || r.type || r.tipo || 'Hallazgo');
+      if(days < 0) list.push({tipo:'Vencida', modulo:'Registros SST abiertos', descripcion:desc, prioridad:'Alta', fecha:fmtDate(d), estado:'Fecha compromiso vencida', responsable:r.responsible || r.responsable || ''});
+      else if(days <= 15) list.push({tipo:'Próxima a vencer', modulo:'Registros SST abiertos', descripcion:desc, prioridad:'Media', fecha:fmtDate(d), estado:'Vence en '+days+' día(s)', responsable:r.responsible || r.responsable || ''});
     });
-    getActions().forEach(function(a){
-      if(isClosedState(a.state || a.estado || a.status)) return;
-      var due = a.due || a.fecha_compromiso || a.fechaCompromiso || a.vencimiento || a.fecha_vencimiento;
-      var d = daysTo(due);
-      if(d == null) return;
-      var desc = a.action || a.accion || a.descripcion || a.title || 'Plan de acción SST';
-      if(d < 0) addAlert(list,{tipo:'Vencida', modulo:'Planes de Acción', descripcion:String(desc), prioridad:'Alta', fecha:fmtDate(due), estado:'Acción abierta vencida', responsable:a.responsable || a.responsible || ''});
-      else if(d <= 30) addAlert(list,{tipo:'Próxima a vencer', modulo:'Planes de Acción', descripcion:String(desc), prioridad:'Media', fecha:fmtDate(due), estado:'Dentro de los próximos 30 días', responsable:a.responsable || a.responsible || ''});
-    });
-    var order = {'Vencida':0, 'Próxima a vencer':1, 'Pendiente vigente':2};
+    var seen={};
+    list = list.filter(function(a){ var key=norm([a.tipo,a.modulo,a.descripcion,a.fecha].join('|')); if(seen[key]) return false; seen[key]=1; return true; });
+    var order={'Vencida':0,'Próxima a vencer':1,'Pendiente vigente':2};
     return list.sort(function(a,b){ return (order[a.tipo] ?? 9) - (order[b.tipo] ?? 9) || String(a.modulo).localeCompare(String(b.modulo)); });
   }
-  function renderAlerts(){
-    var host = document.getElementById('supabaseAlertsPanel');
-    if(!host) return;
-    var desc = document.querySelector('.alerts-dashboard-header p');
-    if(desc) desc.textContent = 'Listado automático de vencidas reales, próximas a vencer y pendientes vigentes. Las actividades futuras no se marcan como vencidas.';
-    var alerts = buildAlerts();
-    var total = alerts.length;
-    var vencidas = alerts.filter(function(a){return a.tipo === 'Vencida';}).length;
-    var proximas = alerts.filter(function(a){return a.tipo === 'Próxima a vencer';}).length;
-    var pendientes = alerts.filter(function(a){return a.tipo === 'Pendiente vigente';}).length;
-    if(!alerts.length){
-      host.innerHTML = '<div data-v62-alerts="1" class="alert-card v62-alert ok"><strong>✅ Sin alertas operativas.</strong><small>No se registran vencimientos reales, próximos vencimientos ni pendientes vigentes según los datos cargados.</small><span class="v62-alert-tag">Sistema sin criticidad activa</span></div>';
-      return;
-    }
-    var summary = '<div data-v62-alerts="1" class="v62-alert-summary">'+
-      '<div class="v62-alert-kpi"><span>Total activas</span><strong>'+total+'</strong></div>'+
-      '<div class="v62-alert-kpi"><span>Vencidas reales</span><strong>'+vencidas+'</strong></div>'+
-      '<div class="v62-alert-kpi"><span>Próximas a vencer</span><strong>'+proximas+'</strong></div>'+
-      '<div class="v62-alert-kpi"><span>Pendientes vigentes</span><strong>'+pendientes+'</strong></div>'+
-    '</div>';
-    var cards = alerts.slice(0,60).map(function(a){
-      var cls = a.tipo === 'Vencida' ? 'critical' : (a.tipo === 'Próxima a vencer' ? 'warning' : 'future');
-      var meses = a.meses && a.meses.length > 1 ? ' · Meses: ' + a.meses.join(', ') : '';
-      return '<div class="alert-card v62-alert '+cls+'" data-v62-alert="1"><span class="v62-alert-tag">'+esc(a.prioridad || (a.tipo === 'Vencida' ? 'Alta' : 'Media'))+'</span><strong>'+esc(a.tipo)+'</strong><small><b>Módulo:</b> '+esc(a.modulo)+'</small><small><b>Detalle:</b> '+esc(a.descripcion + meses)+'</small><small><b>Fecha / período:</b> '+esc(a.fecha || '-')+'</small><small><b>Estado:</b> '+esc(a.estado || '-')+'</small>'+(a.responsable ? '<small><b>Responsable:</b> '+esc(a.responsable)+'</small>' : '')+'</div>';
-    }).join('');
-    host.innerHTML = summary + cards;
+  function renderAlerts(force){
+    if(renderingAlerts) return;
+    var host=document.getElementById('supabaseAlertsPanel'); if(!host) return;
+    var alerts=buildAlerts();
+    var hash=JSON.stringify(alerts.map(function(a){ return [a.tipo,a.modulo,a.descripcion,a.fecha,a.estado,a.responsable]; }));
+    if(!force && hash === lastAlertHash && host.querySelector('[data-v63-alerts="1"], [data-v63-alert="1"]')) return;
+    lastAlertHash=hash; renderingAlerts=true;
+    try{
+      var desc=document.querySelector('.alerts-dashboard-header p');
+      if(desc) desc.textContent='Listado estable de vencidas reales, próximas a vencer y pendientes vigentes. Las actividades futuras no se marcan como vencidas.';
+      var total=alerts.length, vencidas=alerts.filter(function(a){return a.tipo==='Vencida';}).length, proximas=alerts.filter(function(a){return a.tipo==='Próxima a vencer';}).length, pendientes=alerts.filter(function(a){return a.tipo==='Pendiente vigente';}).length;
+      if(!alerts.length){ host.innerHTML='<div data-v63-alerts="1" class="alert-card v63-alert ok"><strong>✅ Sin alertas operativas.</strong><small>No se registran vencimientos reales, próximos vencimientos ni pendientes vigentes según los datos cargados.</small><span class="v63-alert-tag">Sistema sin criticidad activa</span></div>'; return; }
+      var summary='<div data-v63-alerts="1" class="v63-alert-summary"><div class="v63-alert-kpi"><span>Total activas</span><strong>'+total+'</strong></div><div class="v63-alert-kpi"><span>Vencidas reales</span><strong>'+vencidas+'</strong></div><div class="v63-alert-kpi"><span>Próximas a vencer</span><strong>'+proximas+'</strong></div><div class="v63-alert-kpi"><span>Pendientes vigentes</span><strong>'+pendientes+'</strong></div></div>';
+      var cards=alerts.slice(0,60).map(function(a){ var cls=a.tipo==='Vencida'?'critical':(a.tipo==='Próxima a vencer'?'warning':'future'); var meses=a.meses&&a.meses.length>1?' · Meses: '+a.meses.join(', '):''; return '<div class="alert-card v63-alert '+cls+'" data-v63-alert="1"><span class="v63-alert-tag">'+esc(a.prioridad || (a.tipo==='Vencida'?'Alta':'Media'))+'</span><strong>'+esc(a.tipo)+'</strong><small><b>Módulo:</b> '+esc(a.modulo)+'</small><small><b>Detalle:</b> '+esc((a.descripcion || '') + meses)+'</small><small><b>Fecha / período:</b> '+esc(a.fecha || '-')+'</small><small><b>Estado:</b> '+esc(a.estado || '-')+'</small>'+(a.responsable?'<small><b>Responsable:</b> '+esc(a.responsable)+'</small>':'')+'</div>'; }).join('');
+      host.innerHTML = summary + cards;
+    } finally { renderingAlerts=false; }
   }
-  function statusSymbol(st){ return st === 'done' ? '✓' : st === 'pending' ? '•' : st === 'overdue' ? '!' : ''; }
-  function rowState(row){
-    var s = {done:0,pending:0,overdue:0,neutral:0,total:0};
-    (row.months || []).forEach(function(m){ m = statusFromValue(m); s[m] = (s[m] || 0) + 1; });
-    s.total = s.done + s.pending + s.overdue;
-    return s;
+  function queueRender(delay){ clearTimeout(renderTimer); renderTimer=setTimeout(function(){ try{ renderAlerts(false); }catch(e){ console.warn('V63 alertas:', e); } }, delay == null ? 220 : delay); }
+  function rowState(row){ var s={done:0,pending:0,overdue:0,neutral:0,total:0}; (row.months || []).slice(0,12).forEach(function(m){ m=statusFromValue(m); s[m]=(s[m]||0)+1; }); s.total=s.done+s.pending+s.overdue; return s; }
+  function printCell(st){
+    st=statusFromValue(st);
+    if(st==='done') return '<td style="background:#92d050!important;color:#063b1c!important;font-weight:900;text-align:center">✓</td>';
+    if(st==='pending') return '<td style="background:#ffcc00!important;color:#3f2f00!important;font-weight:900;text-align:center">•</td>';
+    if(st==='overdue') return '<td style="background:#e30613!important;color:#ffffff!important;font-weight:900;text-align:center">!</td>';
+    return '<td style="background:#f4f6f8!important;color:#94a3b8!important;text-align:center">—</td>';
   }
   function downloadIperLegal(){
-    var rows = getIperRows();
-    if(!rows.length){
-      alert('No hay datos disponibles del Cronograma IPER + Legal para imprimir.');
-      return;
-    }
-    var body = rows.map(function(r, idx){
-      var months = (r.months || Array(12).fill('neutral')).slice(0,12);
-      while(months.length < 12) months.push('neutral');
-      var st = rowState(r);
-      var estado = st.overdue ? 'Vencido / no realizado' : (st.pending ? 'Pendiente' : 'Realizado');
-      return '<tr><td>'+esc(r.code || ('IL-'+String(idx+1).padStart(2,'0')))+'</td><td class="act">'+esc(r.activity || '')+'</td><td class="obj">'+esc(r.objective || '')+'</td><td>'+esc(r.frequency || '')+'</td><td>'+esc(r.responsible || '')+'</td>'+months.map(function(m){ var s = statusFromValue(m); return '<td class="m '+s+'">'+statusSymbol(s)+'</td>'; }).join('')+'<td>'+esc(estado)+'</td><td>'+esc(r.registro || '')+'</td><td>'+esc(r.iper || '')+'</td><td>'+esc(r.legal || '')+'</td><td class="obs">'+esc(r.observations || '')+'</td></tr>';
-    }).join('');
-    var totals = rows.reduce(function(a,r){ var st = rowState(r); a.done += st.done; a.pending += st.pending; a.overdue += st.overdue; return a; }, {done:0,pending:0,overdue:0});
-    totals.total = totals.done + totals.pending + totals.overdue;
-    totals.compliance = totals.total ? Math.round((totals.done / totals.total) * 100) : 100;
-    var html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cronograma IPER + Legal</title><style>@page{size:A4 landscape;margin:6mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#eef2f7;color:#0f172a;padding:8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}.actions{text-align:center;margin-bottom:8px}button{background:#0056a6;color:white;border:0;border-radius:999px;padding:8px 12px;font-weight:900}.sheet{background:white;border:2px solid #0056a6}.head{display:grid;grid-template-columns:90px 1fr 170px;gap:10px;align-items:center;border-bottom:5px solid #ffcc00;padding:8px 10px}.logo{background:#0056a6;color:white;border-bottom:6px solid #00a3e0;border-radius:8px;text-align:center;font-size:28px;font-weight:900;padding:10px}h1{color:#003f7d;text-align:center;margin:0;font-size:18px}.sub{text-align:center;color:#64748b;font-size:10px;font-weight:800;margin-top:4px}.meta{text-align:right;color:#003f7d;font-weight:900;font-size:10px;line-height:1.45}.legend{display:flex;gap:12px;padding:7px 10px;background:#f8fafc;border-bottom:1px solid #cbd5e1;font-size:10px;font-weight:900}.box{display:inline-block;width:10px;height:10px;border:1px solid #94a3b8;border-radius:2px;margin-right:4px}.donebox{background:#92d050}.pendingbox{background:#ffcc00}.overduebox{background:#e30613}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #94a3b8;padding:3px;font-size:6.3px;vertical-align:middle;text-align:center;line-height:1.12;word-break:break-word}th{background:#003f7d;color:white;text-transform:uppercase}.act{width:110px;text-align:left;color:#003f7d;font-weight:900}.obj{width:145px;text-align:left}.obs{width:160px;text-align:left}.m{width:18px;height:16px;font-weight:900}.m.done{background:#92d050;color:#063b1c}.m.pending{background:#ffcc00;color:#3f2f00}.m.overdue{background:#e30613;color:white}.m.neutral{background:#f4f6f8;color:#94a3b8}.foot{padding:7px 10px;background:#f8fafc;border-top:1px solid #cbd5e1;font-size:9px;font-weight:700}@media print{body{background:white;padding:0}.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Imprimir / guardar PDF</button><button onclick="window.close()">Cerrar</button></div><div class="sheet"><div class="head"><div class="logo">YPF</div><div><h1>CRONOGRAMA IPER + LEGAL 2026</h1><div class="sub">Matriz IPER · Matriz Legal · Requisitos normativos · Evidencias asociadas</div></div><div class="meta">FORM: IL-001<br>Rev. 01<br>Fecha: '+new Date().toLocaleDateString('es-AR')+'</div></div><div class="legend"><span><i class="box donebox"></i>Realizado</span><span><i class="box pendingbox"></i>Pendiente</span><span><i class="box overduebox"></i>Vencido / No realizado</span><span>Gris: sin cómputo</span></div><table><thead><tr><th>Código</th><th>Actividad</th><th>Objetivo</th><th>Frec.</th><th>Resp.</th>'+MONTHS.map(function(m){return '<th>'+m+'</th>';}).join('')+'<th>Estado</th><th>Registro</th><th>IPER</th><th>Legal</th><th>Obs.</th></tr></thead><tbody>'+body+'</tbody></table><div class="foot">Total computable '+totals.total+': '+totals.done+' realizadas, '+totals.pending+' pendientes y '+totals.overdue+' vencidas/no realizadas. Cumplimiento IPER + Legal: '+totals.compliance+'%.</div></div><script>setTimeout(function(){ window.print(); }, 350);<\/script></body></html>';
-    var w = window.open('', '_blank');
-    if(!w){ alert('El navegador bloqueó la ventana emergente. Habilitá pop-ups para imprimir o guardar el Cronograma IPER + Legal.'); return; }
-    w.document.open();
-    w.document.write(html);
-    w.document.close();
+    var rows=getIperRows(); if(!rows.length){ alert('No hay datos disponibles del Cronograma IPER + Legal para imprimir.'); return; }
+    var body=rows.map(function(r,idx){ var months=(r.months || []).slice(0,12); while(months.length<12) months.push('neutral'); var st=rowState(r); var estado=st.overdue?'Vencido / no realizado':(st.pending?'Pendiente':'Realizado'); return '<tr><td>'+esc(r.code || ('IL-'+String(idx+1).padStart(2,'0')))+'</td><td class="act">'+esc(r.activity || '')+'</td><td class="obj">'+esc(r.objective || '')+'</td><td>'+esc(r.frequency || '')+'</td><td>'+esc(r.responsible || '')+'</td>'+months.map(printCell).join('')+'<td>'+esc(estado)+'</td><td>'+esc(r.registro || '')+'</td><td>'+esc(r.iper || '')+'</td><td>'+esc(r.legal || '')+'</td><td class="obs">'+esc(r.observations || '')+'</td></tr>'; }).join('');
+    var totals=rows.reduce(function(a,r){ var st=rowState(r); a.done+=st.done; a.pending+=st.pending; a.overdue+=st.overdue; return a; },{done:0,pending:0,overdue:0}); totals.total=totals.done+totals.pending+totals.overdue; totals.compliance=totals.total?Math.round(totals.done/totals.total*100):100;
+    var html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cronograma IPER + Legal</title><style>@page{size:A4 landscape;margin:6mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#eef2f7;color:#0f172a;padding:8px;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}.actions{text-align:center;margin-bottom:8px}button{background:#0056a6;color:white;border:0;border-radius:999px;padding:8px 12px;font-weight:900}.sheet{background:white;border:2px solid #0056a6}.head{display:grid;grid-template-columns:90px 1fr 170px;gap:10px;align-items:center;border-bottom:5px solid #ffcc00;padding:8px 10px}.logo{background:#0056a6;color:white;border-bottom:6px solid #00a3e0;border-radius:8px;text-align:center;font-size:28px;font-weight:900;padding:10px}h1{color:#003f7d;text-align:center;margin:0;font-size:18px}.sub{text-align:center;color:#64748b;font-size:10px;font-weight:800;margin-top:4px}.meta{text-align:right;color:#003f7d;font-weight:900;font-size:10px;line-height:1.45}.legend{display:flex;gap:12px;padding:7px 10px;background:#f8fafc;border-bottom:1px solid #cbd5e1;font-size:10px;font-weight:900}.box{display:inline-block;width:10px;height:10px;border:1px solid #94a3b8;border-radius:2px;margin-right:4px}.donebox{background:#92d050}.pendingbox{background:#ffcc00}.overduebox{background:#e30613}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #94a3b8;padding:3px;font-size:6.3px;vertical-align:middle;text-align:center;line-height:1.12;word-break:break-word;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}th{background:#003f7d;color:white;text-transform:uppercase}.act{width:110px;text-align:left;color:#003f7d;font-weight:900}.obj{width:145px;text-align:left}.obs{width:160px;text-align:left}.foot{padding:7px 10px;background:#f8fafc;border-top:1px solid #cbd5e1;font-size:9px;font-weight:700}@media print{body{background:white;padding:0}.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Imprimir / guardar PDF</button><button onclick="window.close()">Cerrar</button></div><div class="sheet"><div class="head"><div class="logo">YPF</div><div><h1>CRONOGRAMA IPER + LEGAL 2026</h1><div class="sub">Matriz IPER · Matriz Legal · Requisitos normativos · Evidencias asociadas</div></div><div class="meta">FORM: IL-001<br>Rev. 01<br>Fecha: '+new Date().toLocaleDateString('es-AR')+'</div></div><div class="legend"><span><i class="box donebox"></i>Realizado</span><span><i class="box pendingbox"></i>Pendiente</span><span><i class="box overduebox"></i>Vencido / No realizado</span><span>Gris: sin cómputo</span></div><table><thead><tr><th>Código</th><th>Actividad</th><th>Objetivo</th><th>Frec.</th><th>Resp.</th>'+MONTHS.map(function(m){return '<th>'+m+'</th>';}).join('')+'<th>Estado</th><th>Registro</th><th>IPER</th><th>Legal</th><th>Obs.</th></tr></thead><tbody>'+body+'</tbody></table><div class="foot">Total computable '+totals.total+': '+totals.done+' realizadas, '+totals.pending+' pendientes y '+totals.overdue+' vencidas/no realizadas. Cumplimiento IPER + Legal: '+totals.compliance+'%.</div></div><script>setTimeout(function(){ window.print(); }, 350);<\/script></body></html>';
+    var w=window.open('', '_blank'); if(!w){ alert('El navegador bloqueó la ventana emergente. Habilitá pop-ups para imprimir o guardar el Cronograma IPER + Legal.'); return; }
+    w.document.open(); w.document.write(html); w.document.close();
   }
-  function updateButtons(){
-    Array.prototype.slice.call(document.querySelectorAll('button[onclick*="downloadCronogramaIperLegal"], button[onclick*="downloadMonitoringIperLegal"]')).forEach(function(btn){
-      if(/IPER|Legal|Descargar/i.test(btn.textContent || '')) btn.textContent = '⬇ Descargar / imprimir IPER + Legal';
-    });
-  }
-  function schedule(){ [0,80,260,800,1600,3200,6500,9500,12500].forEach(function(t){ setTimeout(function(){ try{ renderAlerts(); updateButtons(); }catch(e){ console.warn('V62 alertas:', e); } }, t); }); }
+  function updateButtons(){ Array.prototype.slice.call(document.querySelectorAll('button[onclick*="downloadCronogramaIperLegal"], button[onclick*="downloadMonitoringIperLegal"]')).forEach(function(btn){ if(/IPER|Legal|Descargar/i.test(btn.textContent || '')) btn.textContent='⬇ Descargar / imprimir IPER + Legal'; }); }
 
-  window.buildAlertasPreventivasV62 = buildAlerts;
-  window.renderAlertasPreventivasV62 = renderAlerts;
-  window.renderAlertasPreventivas = renderAlerts;
-  window.recalcularAlertasPreventivas = renderAlerts;
-  window.renderSupabaseAlertsPanel = renderAlerts;
+  window.buildAlertasPreventivasV63 = buildAlerts;
+  window.renderAlertasPreventivasV63 = function(){ renderAlerts(true); };
+  window.renderAlertasPreventivas = function(){ renderAlerts(false); };
+  window.recalcularAlertasPreventivas = window.renderAlertasPreventivas;
+  window.renderSupabaseAlertsPanel = window.renderAlertasPreventivas;
   window.downloadCronogramaIperLegal = downloadIperLegal;
   window.downloadMonitoringIperLegal = downloadIperLegal;
 
   var oldRefresh = window.refreshAll;
-  if(typeof oldRefresh === 'function'){
-    window.refreshAll = function(){ var r = oldRefresh.apply(this, arguments); schedule(); return r; };
-  }
-  var oldDash = window.renderDashboard;
-  if(typeof oldDash === 'function'){
-    window.renderDashboard = function(){ var r = oldDash.apply(this, arguments); schedule(); return r; };
+  if(typeof oldRefresh === 'function' && !oldRefresh.__v63Wrapped){
+    var wrappedRefresh = function(){ var r=oldRefresh.apply(this, arguments); queueRender(350); return r; };
+    wrappedRefresh.__v63Wrapped = true; window.refreshAll = wrappedRefresh;
   }
   var oldShow = window.showVerificationTab;
-  if(typeof oldShow === 'function'){
-    window.showVerificationTab = function(){ var r = oldShow.apply(this, arguments); setTimeout(updateButtons, 120); return r; };
+  if(typeof oldShow === 'function' && !oldShow.__v63Wrapped){
+    var wrappedShow = function(){ var r=oldShow.apply(this, arguments); setTimeout(updateButtons, 120); queueRender(420); return r; };
+    wrappedShow.__v63Wrapped = true; window.showVerificationTab = wrappedShow;
   }
-  try{
-    var host = document.getElementById('supabaseAlertsPanel');
-    if(host && window.MutationObserver){
-      var restoring = false;
-      new MutationObserver(function(){
-        if(restoring) return;
-        if(!host.querySelector('[data-v62-alerts="1"], [data-v62-alert="1"]')){
-          restoring = true;
-          setTimeout(function(){ try{ renderAlerts(); }finally{ restoring = false; } }, 80);
-        }
-      }).observe(host, {childList:true, subtree:false});
-    }
-  }catch(e){}
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', schedule);
-  else schedule();
+  function init(){ updateButtons(); queueRender(120); setTimeout(function(){ renderAlerts(true); updateButtons(); }, 1200); setTimeout(function(){ renderAlerts(true); updateButtons(); }, 4200); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
-
 </body>
 </html>
