@@ -21654,5 +21654,156 @@ Legal: ${record.legal}`,
 </script>
 <!-- ===== FIN V61: Centro de Alertas Preventivas ===== -->
 
+
+
+<!-- ===== V64: Nuevo Registro SST · marcos oscuros integrados ===== -->
+<style id="v64-nuevo-registro-sst-marcos-oscuros">
+  @media screen {
+    /* Alcance quirúrgico: solo la sección Nuevo Registro SST. */
+    body:not(.login-locked) #verificationPanelRegistro,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card {
+      --v64-registro-panel: linear-gradient(145deg, rgba(7, 28, 61, .96), rgba(4, 13, 31, .90));
+      --v64-registro-panel-soft: linear-gradient(145deg, rgba(9, 38, 78, .90), rgba(6, 19, 42, .84));
+      --v64-registro-field: linear-gradient(180deg, rgba(8, 25, 54, .96), rgba(10, 32, 66, .88));
+      --v64-registro-border: rgba(99, 230, 255, .24);
+      --v64-registro-border-soft: rgba(148, 163, 184, .22);
+      --v64-registro-text: #eef6ff;
+      --v64-registro-muted: #b8cbe2;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card,
+    body:not(.login-locked) #verificationPanelRegistro .card.sst-form-card {
+      background: var(--v64-registro-panel) !important;
+      border: 1px solid var(--v64-registro-border) !important;
+      border-top: 1px solid rgba(255, 209, 102, .42) !important;
+      box-shadow: 0 22px 58px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255,255,255,.055) !important;
+      color: var(--v64-registro-text) !important;
+    }
+
+    /* Marcos blancos de los campos específicos dinámicos */
+    body:not(.login-locked) #verificationPanelRegistro #sstDynamicFields,
+    body:not(.login-locked) #verificationPanelRegistro .sst-dynamic-fields {
+      background: transparent !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro #sstDynamicFields .hys-field-label,
+    body:not(.login-locked) #verificationPanelRegistro .sst-dynamic-fields .hys-field-label,
+    body:not(.login-locked) #verificationPanelRegistro .sst-field-note,
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-box,
+    body:not(.login-locked) #verificationPanelRegistro .traceability-card,
+    body:not(.login-locked) #verificationPanelRegistro .sst-type-guide .doc-card,
+    body:not(.login-locked) #verificationPanelRegistro #sstTypeGuide .doc-card,
+    body:not(.login-locked) #verificationPanelRegistro .sst-trace-checks,
+    body:not(.login-locked) #verificationPanelRegistro .sst-link-card,
+    body:not(.login-locked) #verificationPanelRegistro .sst-record-trace,
+    body:not(.login-locked) #verificationPanelRegistro .record-traceability,
+    body:not(.login-locked) #verificationPanelRegistro .form-grid > label {
+      background: var(--v64-registro-panel-soft) !important;
+      border: 1px solid var(--v64-registro-border-soft) !important;
+      color: var(--v64-registro-text) !important;
+      border-radius: 18px !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 8px 18px rgba(0,0,0,.16) !important;
+      backdrop-filter: blur(12px) saturate(130%) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro #sstDynamicFields .hys-field-label,
+    body:not(.login-locked) #verificationPanelRegistro .sst-dynamic-fields .hys-field-label,
+    body:not(.login-locked) #verificationPanelRegistro .form-grid > label {
+      padding: 12px !important;
+      display: grid !important;
+      gap: 8px !important;
+      font-size: 12px !important;
+      font-weight: 900 !important;
+      line-height: 1.25 !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-field-note,
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-box,
+    body:not(.login-locked) #verificationPanelRegistro .traceability-card,
+    body:not(.login-locked) #verificationPanelRegistro .sst-type-guide .doc-card,
+    body:not(.login-locked) #verificationPanelRegistro #sstTypeGuide .doc-card {
+      padding: 14px !important;
+    }
+
+    /* Campos internos: mismo idioma visual que el Command Center */
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card input,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card select,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card textarea,
+    body:not(.login-locked) #verificationPanelRegistro #sstRecordEvidence,
+    body:not(.login-locked) #verificationPanelRegistro [data-sst-extra="1"] {
+      background: var(--v64-registro-field) !important;
+      border: 1px solid rgba(99, 230, 255, .22) !important;
+      color: var(--v64-registro-text) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 6px 16px rgba(0,0,0,.14) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card input:hover,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card select:hover,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card textarea:hover,
+    body:not(.login-locked) #verificationPanelRegistro [data-sst-extra="1"]:hover {
+      background: linear-gradient(180deg, rgba(10, 32, 66, .98), rgba(12, 42, 84, .90)) !important;
+      border-color: rgba(99, 230, 255, .42) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card input:focus,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card select:focus,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card textarea:focus,
+    body:not(.login-locked) #verificationPanelRegistro [data-sst-extra="1"]:focus {
+      background: linear-gradient(180deg, rgba(11, 38, 76, 1), rgba(12, 46, 92, .94)) !important;
+      border-color: rgba(99, 230, 255, .70) !important;
+      box-shadow: 0 0 0 4px rgba(56, 232, 255, .10), 0 0 24px rgba(0,168,255,.16), inset 0 1px 0 rgba(255,255,255,.06) !important;
+      outline: none !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card input::placeholder,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card textarea::placeholder {
+      color: rgba(203, 225, 245, .66) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card label,
+    body:not(.login-locked) #verificationPanelRegistro .hys-field-label,
+    body:not(.login-locked) #verificationPanelRegistro .sst-field-note,
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-box,
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-box small,
+    body:not(.login-locked) #verificationPanelRegistro .sst-help-text,
+    body:not(.login-locked) #verificationPanelRegistro .traceability-card,
+    body:not(.login-locked) #verificationPanelRegistro .doc-card,
+    body:not(.login-locked) #verificationPanelRegistro .doc-card span,
+    body:not(.login-locked) #verificationPanelRegistro .doc-card small {
+      color: var(--v64-registro-muted) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card h3,
+    body:not(.login-locked) #verificationPanelRegistro .sst-form-card strong,
+    body:not(.login-locked) #verificationPanelRegistro .hys-field-label,
+    body:not(.login-locked) #verificationPanelRegistro .doc-card strong {
+      color: #ffffff !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro #sstRecordCode[readonly] {
+      background: linear-gradient(135deg, rgba(255, 209, 102, .20), rgba(0, 168, 255, .12)) !important;
+      border-color: rgba(255, 209, 102, .36) !important;
+      color: #ffe29a !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro .sst-evidence-preview span {
+      background: rgba(255, 255, 255, .07) !important;
+      border: 1px solid rgba(99, 230, 255, .20) !important;
+      color: #eef6ff !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04) !important;
+    }
+
+    body:not(.login-locked) #verificationPanelRegistro input[type="file"]::file-selector-button {
+      border: 1px solid rgba(99,230,255,.28) !important;
+      border-radius: 12px !important;
+      background: rgba(0,168,255,.14) !important;
+      color: #d7f8ff !important;
+      font-weight: 900 !important;
+      padding: 8px 10px !important;
+      margin-right: 10px !important;
+    }
+  }
+</style>
+
 </body>
 </html>
