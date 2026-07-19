@@ -15,6 +15,6 @@ No cambiar los nombres de los PDF: la aplicación utiliza estas rutas para abrir
 
 ## Supabase
 
-El HTML contiene la URL y la clave publicable del proyecto Supabase. Antes de usar información real, verificar que todas las tablas expuestas tengan RLS activado y políticas limitadas a las operaciones necesarias.
+El HTML contiene la URL y la clave publicable del proyecto Supabase. La biblioteca del cliente está incluida en `supabase.min.js`, por lo que también debe subirse a la raíz del repositorio. Antes de usar información real, verificar que todas las tablas expuestas tengan RLS activado y políticas limitadas a las operaciones necesarias.
 
 Nunca publicar una clave `service_role` dentro del HTML o del repositorio.
